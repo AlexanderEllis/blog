@@ -1,5 +1,5 @@
 # Site settings
-baseurl = "https://alexanderellis.github.io/blog"
+baseurl = "https://alexanderellis.github.io/blog/"
 # HTML Language Code Reference, such as en, zh-cn
 languageCode = "en"
 title = "Alex Blog Title"
@@ -74,4 +74,3 @@ publishdir = "docs"
   facebook-square = "your_facebook_link"
   twitter-square = "your_twitter_link"
   github-square = "your_github_link"
-
