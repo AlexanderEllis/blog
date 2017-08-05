@@ -8,7 +8,7 @@
            <div class="page-tags" id="tags">
                {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
                 <span class="tags">
-                    <a href="/tags/{{ $name | urlize }}" rel="{{ len $taxonomy }}">{{ $name }}({{ len $taxonomy }})</a>
+                    <a href="{{ $.Site.BaseURL }}tags/{{ $name | urlize }}" rel="{{ len $taxonomy }}">{{ $name }}({{ len $taxonomy }})</a>
                 </span>
                {{ end }}
            </div>

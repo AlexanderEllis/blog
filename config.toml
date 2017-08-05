@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "https://alexanderellis.github.io/blog/"
+baseURL = "https://alexanderellis.github.io/blog"
 # HTML Language Code Reference, such as en, zh-cn
 languageCode = "en"
 title = "Alex Blog Title"
@@ -22,11 +22,6 @@ publishDir = "docs"
   # Disable disqus comments by set `enableDisqus = "false"`
   enableDisqus = false
 
-  # Duoshuo comment
-  duoshuoShortname = "your_duoshuo_short_name"
-  # Disable duoshuo comments by set `enableDuoshuo = "false"`
-  enableDuoshuo = false
-
   enableGithubIssuesTips = false
 
   # Enable googleAnalytics
@@ -34,8 +29,6 @@ publishDir = "docs"
 
   # Enable baiduAnalytics
   enableBaiduAnalytics = false
-  # Baidu Tongji Code
-  baiduAnalytics = 'your_baidu_tongji_code'
 
   # Add custom assets with their paths relative to the static folder
   customCSS = []
@@ -56,7 +49,7 @@ publishDir = "docs"
   readMore = ""
   copyright = ""
   # Sharing options and author information in posts
-  aboutAuthor = "I am so interesting."
+  aboutAuthor = ""
   tweet = ""
   share = ""
   # 404 page
@@ -71,6 +64,4 @@ publishDir = "docs"
 
 # Add additional social link entries underneath
 [social]
-  facebook-square = "your_facebook_link"
-  twitter-square = "your_twitter_link"
-  github-square = "your_github_link"
+  github-square = "https://github.com/alexanderellis"
