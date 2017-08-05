@@ -2,7 +2,7 @@
     <section id="wrapper">
         <header id="header">
             <a href='{{ .Site.BaseURL }}about'>
-                <img id="avatar" class="2x" src="{{ .Site.BaseURL }}images/avatar.png"/>
+                <img id="avatar" src="{{ .Site.BaseURL }}images/background.jpeg"/>
             </a>
             <h1>{{ .Site.Params.name }}</h1>
             {{ with .Site.Params.bio }}<h2>{{ . | markdownify }}</h2>{{ end }}

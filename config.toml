@@ -10,9 +10,9 @@ hasCJKLanguage = true
 publishDir = "docs"
 
 [params]
-  name = "Hugo"
-  description = "Blog Description"
-  bio = "Blog biology"
+  name = "Alex"
+  description = ""
+  bio = ""
   # Enter optionally your twitter account
   twitter = "your_twotter"
   enableRSS = false
