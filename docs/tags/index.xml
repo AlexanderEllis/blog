@@ -11,5 +11,23 @@
 	<atom:link href="https://alexanderellis.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Tag1</title>
+      <link>https://alexanderellis.github.io/blog/tags/tag1/</link>
+      <pubDate>Tue, 01 Aug 2017 21:16:01 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/tags/tag1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tag2</title>
+      <link>https://alexanderellis.github.io/blog/tags/tag2/</link>
+      <pubDate>Tue, 01 Aug 2017 21:16:01 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/tags/tag2/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
