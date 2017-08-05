@@ -2,7 +2,7 @@
 baseURL = "https://alexanderellis.github.io/blog/"
 # HTML Language Code Reference, such as en, zh-cn
 languageCode = "en"
-title = "Alex Blog Title"
+title = "Caffeinspiration"
 theme = "hugo-theme-cactus-plus"
 # Enter your tracking code to enable Google Analytics
 googleAnalytics = "your_google_analytics_code"
@@ -10,11 +10,11 @@ hasCJKLanguage = true
 publishDir = "docs"
 
 [params]
-  name = "Alex"
+  name = "Alex Ellis"
   description = ""
-  bio = ""
+  bio = "I work with computers"
   # Enter optionally your twitter account
-  twitter = "your_twotter"
+  twitter = "your_twitter"
   enableRSS = false
 
   # Disqus comment
@@ -65,3 +65,4 @@ publishDir = "docs"
 # Add additional social link entries underneath
 [social]
   github-square = "https://github.com/alexanderellis"
+  home = "https://alexanderell.is"
