@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</loc>
+    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/about/</loc>
     <lastmod>2015-06-20T14:02:37+02:00</lastmod>
   </url>
@@ -14,11 +19,30 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
+    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://alexanderellis.github.io/blog/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://alexanderellis.github.io/blog/tags/design/</loc>
+    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://alexanderellis.github.io/blog/posts/</loc>
+    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://alexanderellis.github.io/blog/tags/ux-analysis/</loc>
+    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
     <priority>0</priority>
   </url>
   

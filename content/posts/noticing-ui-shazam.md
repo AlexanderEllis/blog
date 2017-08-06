@@ -1,7 +1,8 @@
 ---
 title: "Noticing UI: Shazam's loading screen"
 date: 2017-08-05T21:29:38-04:00
-draft: true
+tags: ["Design", "UX Analysis"]
+draft: false
 ---
 
 ### Shazam's loading screen
