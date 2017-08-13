@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/arduino-project-3/</loc>
+    <lastmod>2017-08-13T15:16:13-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</loc>
     <lastmod>2017-08-05T21:29:38-04:00</lastmod>
   </url>
@@ -18,8 +23,14 @@
   </url>
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/tags/arduino/</loc>
+    <lastmod>2017-08-13T15:16:13-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
+    <lastmod>2017-08-13T15:16:13-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -36,7 +47,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
-    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
+    <lastmod>2017-08-13T15:16:13-04:00</lastmod>
     <priority>0</priority>
   </url>
   

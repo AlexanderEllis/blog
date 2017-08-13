@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/</link>
-    <description>Recent content on Caffeinspiration</description>
+    <title>Arduino on Caffeinspiration</title>
+    <link>https://alexanderellis.github.io/blog/tags/arduino/</link>
+    <description>Recent content in Arduino on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 13 Aug 2017 15:16:13 -0400</lastBuildDate>
     
-	<atom:link href="https://alexanderellis.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderellis.github.io/blog/tags/arduino/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,18 +20,6 @@
       <description>I worked through the third basic project in the Arduino Starter Kit Projects Book. I like to write about the projects to reinforce my own understanding.
 The third project, the &amp;ldquo;Love-O-Meter&amp;rdquo;, creates a simple circuit with a temperature sensor. Using the Analog-to-Digital converter, the Arduino reads in the value coming from the temperature sensor, then lights up a combination of 3 LEDs depending on that value.
 Here&amp;rsquo;s what my circuit looked like:</description>
-    </item>
-    
-    <item>
-      <title>Noticing UI: Shazam&#39;s loading screen</title>
-      <link>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</link>
-      <pubDate>Sat, 05 Aug 2017 21:29:38 -0400</pubDate>
-      
-      <guid>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</guid>
-      <description>Shazam&amp;rsquo;s loading screen I was pleasantly surprised by Shazam&amp;rsquo;s iPhone app loading screen, and I took a look into what makes it stand out.
-Here&amp;rsquo;s what it looked like:
-This felt different, and it made me look at the experience of opening apps. I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn&amp;rsquo;t like other apps.
-Loading&amp;hellip; A loading screen tells a user that the app or other result is not ready yet.</description>
     </item>
     
   </channel>
