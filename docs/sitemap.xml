@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/shipping-breadth-first-growth/</loc>
+    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/spaced-repetition-motivation/</loc>
     <lastmod>2017-08-13T20:47:45-04:00</lastmod>
   </url>
@@ -35,7 +40,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2017-08-13T20:47:45-04:00</lastmod>
+    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -51,8 +56,20 @@
   </url>
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/tags/just-shipping/</loc>
+    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://alexanderellis.github.io/blog/tags/mvp/</loc>
+    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
-    <lastmod>2017-08-13T20:47:45-04:00</lastmod>
+    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
     <priority>0</priority>
   </url>
   
