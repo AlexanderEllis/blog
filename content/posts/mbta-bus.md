@@ -2,7 +2,7 @@
 title: "MBTA Bus Mirrors"
 date: 2017-12-06T08:51:05-05:00
 tags: ["Design", "Design in the wild"]
-draft: true
+draft: false
 ---
 
 I take the MBTA 86 bus as part of my commute in the morning. It runs from Reservoir in Brighton to Sullivan Station in Cambridge, and it stops at Harvard on the way, which is where I get off.

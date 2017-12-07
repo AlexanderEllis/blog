@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 29 Oct 2017 17:30:20 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 06 Dec 2017 08:51:05 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderellis.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MBTA Bus Mirrors</title>
+      <link>https://alexanderellis.github.io/blog/posts/mbta-bus/</link>
+      <pubDate>Wed, 06 Dec 2017 08:51:05 -0500</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/mbta-bus/</guid>
+      <description>I take the MBTA 86 bus as part of my commute in the morning. It runs from Reservoir in Brighton to Sullivan Station in Cambridge, and it stops at Harvard on the way, which is where I get off.
+Right after the Eliot street stop, there are two ways for the bus to get underground to the Harvard stop. One way is to go down Bennett St., take a right on University Road, take a right on Mt.</description>
+    </item>
     
     <item>
       <title>Launching Breadth First Growth Newsletter</title>
