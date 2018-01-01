@@ -5,12 +5,6 @@ tags: ["Arduino", "Node"]
 draft: false
 ---
 
-Outline:
-* Motivation
-* First cut
-* Refactoring
-* Future
-
 ### Arduinode
 
 I've been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet.  Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.
