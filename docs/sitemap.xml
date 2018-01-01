@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/arduinode/</loc>
+    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/mbta-bus/</loc>
     <lastmod>2017-12-06T08:51:05-05:00</lastmod>
   </url>
@@ -39,13 +44,13 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/tags/arduino/</loc>
-    <lastmod>2017-08-13T15:16:13-04:00</lastmod>
+    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2017-12-06T08:51:05-05:00</lastmod>
+    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -79,8 +84,14 @@
   </url>
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/tags/node/</loc>
+    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
-    <lastmod>2017-12-06T08:51:05-05:00</lastmod>
+    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
     <priority>0</priority>
   </url>
   
