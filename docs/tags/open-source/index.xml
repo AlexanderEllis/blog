@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Open Source on Caffeinspiration</title>
+    <link>https://alexanderellis.github.io/blog/tags/open-source/</link>
+    <description>Recent content in Open Source on Caffeinspiration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 06 Jan 2018 11:37:37 -0500</lastBuildDate>
+    
+	<atom:link href="https://alexanderellis.github.io/blog/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Investigating a Bug in Moment.js</title>
+      <link>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</link>
+      <pubDate>Sat, 06 Jan 2018 11:37:37 -0500</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</guid>
+      <description>Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times. Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some</description>
+    </item>
+    
+  </channel>
+</rss>
