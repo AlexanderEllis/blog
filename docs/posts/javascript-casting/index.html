@@ -1,0 +1,266 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.25.1" />
+		<title>Investigating JavaScript Casting Behavior &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderellis.github.io/blog/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderellis.github.io/blog/css/style.css">
+		<link rel="stylesheet" href="https://alexanderellis.github.io/blog/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderellis.github.io/blog/css/font-awesome.min.css">
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderellis.github.io/blog/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderellis.github.io/blog/posts'>Archive</a>
+	<a href='https://alexanderellis.github.io/blog/tags'>Tags</a>
+	<a href='https://alexanderellis.github.io/blog/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Investigating JavaScript Casting Behavior
+                    </h1>
+                    <h2 class="headline">
+                    Mar 18, 2018 11:14
+                    · 1480 words
+                    · 7 minutes read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://alexanderellis.github.io/blog/tags/javascript">JavaScript</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>The disconnect between &ldquo;what seems like it should happen&rdquo; and &ldquo;what happens&rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast <code>null</code> into 0 by accident in JavaScript.</p>
+
+<p>For more on JavaScript&rsquo;s unintuitive behavior, please watch (or rewatch) <a href="https://www.destroyallsoftware.com/talks/wat">wat</a>.</p>
+
+<p>Much of this behavior can be explained by JavaScript&rsquo;s casting.  From ECMAScipt: &ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.&rdquo;  Since knowing is half the battle, I&rsquo;ve found it helpful to know of the unexpected behavior so that it&rsquo;s in the back of my mind when writing new code.</p>
+
+<hr />
+
+<p>I&rsquo;ve worked with and am reasonably comfortable with JavaScript, but occasionally unintuitive behavior will still show up unannounced.  For instance, I recently ran into the following unexpected code:</p>
+
+<pre><code>&gt; 0 == null
+false
+&gt; 0 === null
+false
+&gt; 0 &lt; null
+false
+&gt; 0 &lt;= null
+true
+</code></pre>
+
+<p>At first glance, not knowing the exact casting behavior, this seems to make no sense at all (especially without an idea of what&rsquo;s going on under the hood).  If 0 isn&rsquo;t equal to null, either with equality or strict equality, and 0 is not less than null, why would <code>0 &lt;= null</code> be true?</p>
+
+<p><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-relational-operators-runtime-semantics-evaluation">Diving into the ECMAScript docs</a> tells us more:</p>
+
+<pre><code>RelationalExpression:RelationalExpression&lt;=ShiftExpression
+
+1) Let lref be the result of evaluating RelationalExpression.
+2) Let lval be ? GetValue(lref).
+3) Let rref be the result of evaluating ShiftExpression.
+4) Let rval be ? GetValue(rref).
+5) Let r be the result of performing Abstract Relational Comparison rval &lt; lval with LeftFirst equal to false.
+6) ReturnIfAbrupt(r).
+7) If r is true or undefined, return false. Otherwise, return true.
+</code></pre>
+
+<p>So this evaluates the left side, gets the value, evaluates the right side, gets the value, and performs <em><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison">Abstract Relational Comparison rval &lt; lval with LeftFirst equal to false</a></em>.</p>
+
+<p>Note how the right and left values are swapped in the Abstract Relational Comparison.  This uses the idea that <code>a &lt;= b</code> is the same as <code>!(b &lt; a)</code>.  If <code>b</code> is not less than <code>a</code>, it must be greater than or equal to <code>a</code>, or flipped, <code>a</code> must be less than or equal to <code>b</code>.</p>
+
+<p>Let&rsquo;s take a look at the Abstract Relational Comparison x &lt; y:</p>
+
+<pre><code>Abstract Relational Comparison x &lt; y
+
+1. If the LeftFirst flag is true, then
+    a. Let px be ? ToPrimitive(x, hint Number).
+    b. Let py be ? ToPrimitive(y, hint Number).
+
+2. Else the order of evaluation needs to be reversed to preserve left to right evaluation,
+    a. Let py be ? ToPrimitive(y, hint Number).
+    b. Let px be ? ToPrimitive(x, hint Number).
+
+3. If both px and py are Strings, then
+    a. If py is a prefix of px, return false. (A String value p is a prefix of String value q if q can be the result of concatenating p and some other String r. Note that any String is a prefix of itself, because r may be the empty String.)
+    b. If px is a prefix of py, return true.
+    c. Let k be the smallest nonnegative integer such that the code unit at index k within px is different from the code unit at index k within py. (There must be such a k, for neither String is a prefix of the other.)
+    d. Let m be the integer that is the code unit value at index k within px.
+    e. Let n be the integer that is the code unit value at index k within py.
+    f. If m &lt; n, return true. Otherwise, return false.
+
+4. Else,
+    a. Let nx be ? ToNumber(px). Because px and py are primitive values evaluation order is not important.
+    b. Let ny be ? ToNumber(py).
+    c. If nx is NaN, return undefined.
+    d. If ny is NaN, return undefined.
+    e. If nx and ny are the same Number value, return false.
+    f. If nx is +0 and ny is -0, return false.
+    g. If nx is -0 and ny is +0, return false.
+    h. If nx is +∞, return false.
+    i. If ny is +∞, return true.
+    j. If ny is -∞, return false.
+    k. If nx is -∞, return true.
+    l. If the mathematical value of nx is less than the mathematical value of ny —note that these mathematical values are both finite and not both zero—return true. Otherwise, return false.
+</code></pre>
+
+<p>For our case comparing <code>0 &lt;= null</code>, the inputs are evaluated in the second step (as LeftFirst was passed in as false) with <strong>ToPrimitive</strong> with a hint of <code>Number</code>.  Since they aren&rsquo;t both strings, step 3 is skipped, and and later <strong>ToNumber</strong> is called on them in step 4.  This seems promising!</p>
+
+<p>Let&rsquo;s take a look at <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-toprimitive">ToPrimitive</a> to see what&rsquo;s happening here:</p>
+
+<pre><code>ToPrimitive ( input [ , PreferredType ] )
+
+1. Assert: input is an ECMAScript language value.
+2. If Type(input) is Object, then
+
+    a. If PreferredType was not passed, let hint be &quot;default&quot;.
+    b. Else if PreferredType is hint String, let hint be &quot;string&quot;.
+    c. Else PreferredType is hint Number, let hint be &quot;number&quot;.
+    d. Let exoticToPrim be ? GetMethod(input, @@toPrimitive).
+    e. If exoticToPrim is not undefined, then
+        i. Let result be ? Call(exoticToPrim, input, « hint »).
+        ii. If Type(result) is not Object, return result.
+        iii. Throw a TypeError exception.
+
+    f. If hint is &quot;default&quot;, set hint to &quot;number&quot;.
+    g. Return ? OrdinaryToPrimitive(input, hint).
+
+3. Return input.
+</code></pre>
+
+<p>I expected the <code>Number</code> hint to be the smoking gun after seeing it before (and referenced on StackOverflow), but I don&rsquo;t think that&rsquo;s what&rsquo;s causing this behavior.  When <code>null</code> is passed to <code>ToPrimitive</code>, the first step correctly asserts that it&rsquo;s a language value.  The second step conditional, however does not evaluate as true, as null is <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-ecmascript-data-types-and-values"><strong>the Null type</strong></a>, not the Object type.  (TODO: future blog post on why <code>typeof(null)</code> evaluates to <code>'object'</code>.)</p>
+
+<p>So it actually looks like ToPrimitive immediate goes to step 3, where it just returns <code>null</code>.  This means we can look back at the 4th step in Abstract Relational Comparison.  The next call is <code>Let nx be ? ToNumber(px)</code>.  This is where the magic is happening.  <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-tonumber"><strong>ToNumber</strong></a> does what you&rsquo;d (mostly) expect and returns <code>+0</code> for an argument type of <code>Null</code>, which is what we&rsquo;ve passed in with <code>null</code>.</p>
+
+<p>This is finally where we&rsquo;re comparing 0 and +0.  +0 is not less than 0, so our call to Abstract Relational Comparison returns false, and our original &lt;= RelationalExpression returns true, evaluating <code>0 &lt;= null</code> as true.</p>
+
+<p>Returning to our original troublesome code, we can connect why this leads to our <code>0 &lt;= null</code> being true.  The only things left to look at are the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison"><strong>equality comparisons</strong></a>.</p>
+
+<pre><code>Abstract Equality Comparison
+
+The comparison x == y, where x and y are values, produces true or false. Such a comparison is performed as follows:
+
+1. If Type(x) is the same as Type(y), then
+    a. Return the result of performing Strict Equality Comparison x === y.
+2. If x is null and y is undefined, return true.
+3. If x is undefined and y is null, return true.
+4. If Type(x) is Number and Type(y) is String, return the result of the comparison x == ToNumber(y).
+5. If Type(x) is String and Type(y) is Number, return the result of the comparison ToNumber(x) == y.
+6. If Type(x) is Boolean, return the result of the comparison ToNumber(x) == y.
+7. If Type(y) is Boolean, return the result of the comparison x == ToNumber(y).
+8. If Type(x) is either String, Number, or Symbol and Type(y) is Object, return the result of the comparison x == ToPrimitive(y).
+9. If Type(x) is Object and Type(y) is either String, Number, or Symbol, return the result of the comparison ToPrimitive(x) == y.
+10. Return false.
+</code></pre>
+
+<pre><code>Strict Equality Comparison
+
+The comparison x === y, where x and y are values, produces true or false. Such a comparison is performed as follows:
+
+1. If Type(x) is different from Type(y), return false.
+2. If Type(x) is Number, then
+    a. If x is NaN, return false.
+    b. If y is NaN, return false.
+    c. If x is the same Number value as y, return true.
+    d. If x is +0 and y is -0, return true.
+    e. If x is -0 and y is +0, return true.
+    f. Return false.
+3. Return SameValueNonNumber(x, y).
+</code></pre>
+
+<p>For the Abstract Equality, we can see that there is no ToNumber call that would make <code>null</code> +0, and we can also see that the Strict Equality immediately returns false when Type(0), <strong>Number</strong>, is different from Type(null), <strong>Null</strong>.</p>
+
+<pre><code>&gt; 0 == null
+false // No casting in Abstract Equality
+&gt; 0 === null
+false // No casting in Strict Equality
+&gt; 0 &lt; null
+false // Similar casting as above, and 0 &lt; +0 is false
+&gt; 0 &lt;= null
+true // Main casting question, and 0 &lt;= +0
+</code></pre>
+
+<p>Definitely tricky, but good to keep in the back of your mind!</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderellis.github.io/blog/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderellis.github.io/blog/js/main.js"></script>
+<script src="https://alexanderellis.github.io/blog/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

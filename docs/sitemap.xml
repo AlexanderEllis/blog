@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/javascript-casting/</loc>
+    <lastmod>2018-03-18T11:14:19-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</loc>
     <lastmod>2018-01-06T11:37:37-05:00</lastmod>
   </url>
@@ -55,7 +60,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2018-01-06T11:37:37-05:00</lastmod>
+    <lastmod>2018-03-18T11:14:19-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -78,7 +83,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/tags/javascript/</loc>
-    <lastmod>2018-01-06T11:37:37-05:00</lastmod>
+    <lastmod>2018-03-18T11:14:19-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -108,7 +113,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
-    <lastmod>2018-01-06T11:37:37-05:00</lastmod>
+    <lastmod>2018-03-18T11:14:19-04:00</lastmod>
     <priority>0</priority>
   </url>
   

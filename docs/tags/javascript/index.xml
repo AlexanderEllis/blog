@@ -6,10 +6,21 @@
     <description>Recent content in Javascript on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 06 Jan 2018 11:37:37 -0500</lastBuildDate>
+    <lastBuildDate>Sun, 18 Mar 2018 11:14:19 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderellis.github.io/blog/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Investigating JavaScript Casting Behavior</title>
+      <link>https://alexanderellis.github.io/blog/posts/javascript-casting/</link>
+      <pubDate>Sun, 18 Mar 2018 11:14:19 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/javascript-casting/</guid>
+      <description>The disconnect between &amp;ldquo;what seems like it should happen&amp;rdquo; and &amp;ldquo;what happens&amp;rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast null into 0 by accident in JavaScript.
+For more on JavaScript&amp;rsquo;s unintuitive behavior, please watch (or rewatch) wat.
+Much of this behavior can be explained by JavaScript&amp;rsquo;s casting. From ECMAScipt: &amp;ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.</description>
+    </item>
     
     <item>
       <title>Investigating a Bug in Moment.js</title>
