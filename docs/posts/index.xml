@@ -6,10 +6,22 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Mar 2018 11:14:19 -0400</lastBuildDate>
+    <lastBuildDate>Mon, 19 Mar 2018 08:40:17 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderellis.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>typeof null: investigating a classic JavaScript bug</title>
+      <link>https://alexanderellis.github.io/blog/posts/typeof-null/</link>
+      <pubDate>Mon, 19 Mar 2018 08:40:17 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/typeof-null/</guid>
+      <description>In my last post, I looked into some JavaScript casting and explored why 0 &amp;lt;= null evaluates as true.
+For this post, I&amp;rsquo;d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
+This is a well-known bug, and we&amp;rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
+The main idea is that the code assigned each item some bits for use as flags for different types, but null was different.</description>
+    </item>
     
     <item>
       <title>Investigating JavaScript Casting Behavior</title>
