@@ -59,6 +59,7 @@ Finally we reach step 4: "Return a String according to Table 35."  Here's Table 
 | Type of val                                                  | Result                                                                                                   |
 |--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
 | Undefined                                                    | "undefined"                                                                                              |
+| Null                                                    | "object"                                                                                                   |
 | Boolean                                                      | "boolean                                                                                                 |
 | Number                                                       | "number"                                                                                                 |
 | String                                                       | "string"                                                                                                 |
