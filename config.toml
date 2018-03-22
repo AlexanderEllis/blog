@@ -5,7 +5,7 @@ languageCode = "en"
 title = "Caffeinspiration"
 theme = "hugo-theme-cactus-plus"
 # Enter your tracking code to enable Google Analytics
-googleAnalytics = "your_google_analytics_code"
+googleAnalytics = "UA-116211054-1"
 hasCJKLanguage = true
 publishDir = "docs"
 
@@ -25,7 +25,7 @@ publishDir = "docs"
   enableGithubIssuesTips = false
 
   # Enable googleAnalytics
-  enableGoogleAnalytics = false
+  enableGoogleAnalytics = true
 
   # Enable baiduAnalytics
   enableBaiduAnalytics = false
