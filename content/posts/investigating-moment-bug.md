@@ -12,7 +12,7 @@ In this post, I walk through the steps I took while investigating a bug in Momen
 
 Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some roundabout work.  When reading about someone else's work, I've found that it's very valuable to see both what worked *and* what didn't work.
 
-One of my recent goals has been to contribute more to open source.  OSS makes my life easier, and the least I can do is to give back with small bug fixes or documentation updates. 
+One of my recent goals has been to contribute more to open source.  OSS makes my life easier, and the least I can do is to give back with small bug fixes or documentation updates.
 
 I've used Moment.js a number of times, both for side projects and for my day job.  Recently, I've been occasionally visiting the issues page to see if there was anything I could help out with.  Since I work with JavaScript a lot, I figured something like this would be the most approachable for me.  I also wanted to learn about how it works internally, and I knew that this would be a great chance to dig through the code and learn more.
 
@@ -51,7 +51,7 @@ If you click on Result and check your console, you'll see the TypeError.  This w
 
 I then forked and cloned the Moment repository so that I could have a local copy.  This let me dig around in the code and search for specific things.
 
-As a quick check, I searched for a few things using `grep` to see how often they came up.  `localeData`, `.replace`, and `.year` appeared often, but `toUpperCase()` appeared only twice: 
+As a quick check, I searched for a few things using `grep` to see how often they came up.  `localeData`, `.replace`, and `.year` appeared often, but `toUpperCase()` appeared only twice:
 ```
 moment: $ grep -r toUpperCase src
 src/lib/locale/formats.js:        formatUpper = this._longDateFormat[key.toUpperCase()];
@@ -104,9 +104,9 @@ import {
     listWeekdaysShort  as weekdaysShort
 } from './lib/locale/locale';
 ...
-``` 
+```
 
-This let me know that `localeData` comes from `getLocale`, which lives in `src/lib/locale/locale.js`.  Warmer!  
+This let me know that `localeData` comes from `getLocale`, which lives in `src/lib/locale/locale.js`.  Warmer!
 
 I also noticed that there was another locale directory with the various configurations for different locales.  The first one, `af.js`, is the Afrikaans configuration.  The files in this directory were all similarly named, so the `localeData` code probably wouldn't live in there.
 
@@ -299,7 +299,7 @@ export function localeWeek (mom) {
 ...
 ```
 
-Alright, we've seen this one before! So this is the function being given to the prototype, which is accessible to the localeData as `.week()`.  The only problem is that `localeWeek` is called with a `mom` argument, and it passes it to `weekOfYear`, which appears in `src/lib/units/week-calendar-utils.js` :.   
+Alright, we've seen this one before! So this is the function being given to the prototype, which is accessible to the localeData as `.week()`.  The only problem is that `localeWeek` is called with a `mom` argument, and it passes it to `weekOfYear`, which appears in `src/lib/units/week-calendar-utils.js` :.
 
 ```
 /*
@@ -367,5 +367,8 @@ I didn't end up submitting a PR for the code itself, but I was able to contribut
 
 You can check out the Moment.js code [here](https://github.com/moment/moment) and [read through the docs here](https://momentjs.com/).
 
+#### Update April 4, 2018
+
+My PR got merged today, and the docs should be updated with their next release.  Great!
 
 
