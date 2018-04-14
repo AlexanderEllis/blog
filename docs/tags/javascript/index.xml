@@ -6,10 +6,19 @@
     <description>Recent content in Javascript on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Mar 2018 11:14:19 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 01 Apr 2018 09:51:00 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderellis.github.io/blog/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JavaScript: Writing your own Array.reduce</title>
+      <link>https://alexanderellis.github.io/blog/posts/javascript-array-reduce/</link>
+      <pubDate>Sun, 01 Apr 2018 09:51:00 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/javascript-array-reduce/</guid>
+      <description>I&amp;rsquo;ve found that one of the best ways for me to really understand anything is to implement it myself. Between the ECMAScript spec and a few lines of JavaScript, you can build a chunk of knowledge for a very specific area of JavaScript. Doing this often is a great way to gain a deeper understanding of the language, and it&amp;rsquo;s a great exercise in reading the docs, reading code, and creating your own solution.</description>
+    </item>
     
     <item>
       <title>Investigating JavaScript Casting Behavior</title>
