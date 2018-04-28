@@ -6,10 +6,22 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 01 Apr 2018 09:51:00 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 28 Apr 2018 13:22:25 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderellis.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Investigating JavaScript&#39;s RegExp Lookbehind</title>
+      <link>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</link>
+      <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</guid>
+      <description>Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.” Now they have two problems.
+ Jamie Zawinski
+Regular Expression Lookbehinds I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.
+In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it.</description>
+    </item>
     
     <item>
       <title>JavaScript: Writing your own Array.reduce</title>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</loc>
+    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/javascript-array-reduce/</loc>
     <lastmod>2018-04-01T09:51:00-04:00</lastmod>
   </url>
@@ -70,7 +75,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2018-04-01T09:51:00-04:00</lastmod>
+    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -92,8 +97,14 @@
   </url>
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/tags/investigations/</loc>
+    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/tags/javascript/</loc>
-    <lastmod>2018-04-01T09:51:00-04:00</lastmod>
+    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -123,7 +134,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
-    <lastmod>2018-04-01T09:51:00-04:00</lastmod>
+    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
     <priority>0</priority>
   </url>
   
