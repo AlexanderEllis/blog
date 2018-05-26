@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/simple-cache-server-in-python/</loc>
+    <lastmod>2018-05-26T10:24:05-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</loc>
     <lastmod>2018-04-28T13:22:25-04:00</lastmod>
   </url>
@@ -75,7 +80,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
+    <lastmod>2018-05-26T10:24:05-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -134,7 +139,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
-    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
+    <lastmod>2018-05-26T10:24:05-04:00</lastmod>
     <priority>0</priority>
   </url>
   
