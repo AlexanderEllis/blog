@@ -5,6 +5,8 @@ draft: true
 ---
 
 
+### Informed searching
+
 How do you know where to look for something you're searching for?
 
 If you know some information about what you're looking for, you can take an educated guess.
@@ -22,6 +24,8 @@ Choosing the best option based on whether or not it's a good guess is the main i
 In the driving example, our rule for whether or not it's a good guess is very simple: does the road go towards Montpelier?  This is called the **heuristic function**.  It allows us to evaluate a choice.
 
 The one from our driving example is very simple: _yes_, the road goes in the direction of Montpelier, or _no_, it does not.  Is this enough to get us there?  It might be, but it doesn't allow for any flexibility.  What if a road first goes north, then another road goes west?  What if we could first go east, then take a faster road north?  What if we have two roads that go north-west and we want to see if one is better than the other?  Only having a boolean _yes_ or _no_ may not allow us to efficiently decide.  For a complicated question like "How do I get there?", there can be many factors that decide whether or not something is a good guess.
+
+### Maze seraching
 
 Let's consider a much simpler problem: I have a maze, I know where I start, and I know where the end is.  How can I find a path through the maze?
 
@@ -138,7 +142,6 @@ You may have reached the deadend and not known what to do. That's ok, as we didn
 A    #
 ######
 
-
 At: (4, 2)
 Options:
 * Go back to (4, 1). 5 steps to goal.
@@ -161,7 +164,7 @@ Options:
 
 This is a problem.  By looking only at the step that takes us closest to the goal, we end up in a position where we can oscillate between a dead end and the step before it, as each will be the best option from the other.  By being too greedy, we would never allow ourselves to move away from the goal in order to eventually move towards it.
 
-### Smarter searching
+### Smarter maze searching
 
 We can solve this problem by looking at more than just _distance to goal_ when deciding on our next option.  One way to improve is to take into account the total distance traveled to our current position, the cost of moving, _and_ our original heuristic function.
 
@@ -169,9 +172,9 @@ We can add the three to get a better guess.  Let's count each step as costing 1.
 
 `value(x) = shortest_path_to(current) + cost_to_go_to(x) + distance_to_goal_from(x)`
 
-We can also be smarter about knowing that we don't want to keep track of returning to a position but instead we want to keep track of the options available from each position.  We can implement this by keeping track of all of our available options, and when we visit a node, we'll remove it from our available options.  If we've already visited it, we won't add it to our options.
+We can also be smarter about knowing that we don't want to keep track of returning to a position but instead we want to keep track of the options available from each position.  We can implement this by keeping track of all of our available options, and when we visit a option, we'll remove it from our available options.  If we've already visited it, we won't add it to our options. If we find a better path to an option, we can update it in our available options with the better path.
 
-Let's play computer with the same maze we got stuck in.  It's a little different, as we won't be revisiting nodes, but here are the steps:
+Let's play computer with the same maze that got us stuck.  It's different, as we won't be revisiting nodes, but here are the steps:
 
 ######
 #    B
@@ -223,7 +226,9 @@ Options:
 
 Note that we aren't cheating by jumping from (5, 4) to (4, 3).  This is the change from thinking about our path as a "route we take through the maze" and more "finding the best route through the maze" coming into play.  We just found that (5, 4) is a dead end and that (4, 3) is the route we should have taken. We can continue to build our path from there, and it will eventually solve the maze.
 
-This new way of finding a path is called **A-star**.  You'll see the list of options referred to as the **frontier**, as they're the outskirts of the area we've already discovered.  The frontier is usually implemented using a priority queue that keeps the lowest total cost at the front for easy access.  Here's the algorithm in pseudocode, which looks a lot like Python. Or maybe the other way around?
+### A-star
+
+This algorithm is called **A-star**.  You'll see the list of options referred to as the **frontier**, as they're the outskirts of the area we've already discovered.  The frontier is usually implemented using a priority queue that keeps the lowest total cost at the front for easy access.  Here's the algorithm in pseudocode, which looks a lot like Python. Or maybe the other way around?
 
 ```python
 def a_star(problem):
@@ -250,3 +255,8 @@ Methods like `remove_min`, `initialize_frontier`, `insert`, `option_in_frontier`
 One last detail: for a heuristic function to always give you an answer and always give the best answer first, it will need to be _admissible_ (it never overestimates the real cost to get to the goal) and _consistent_ (if you can go from position _a_ to position _b_, the estimate for _a_ -> _goal_ can never be more than the real cost of going _a_ -> _b_ plus the estimated cost of _b_ -> _goal_).  Did our distance heuristic function cover these?
 
 The applications of this algorithm get more interesting as you complicate the problem.  If you're searching for the solution to a [sliding-8 problem](TODO: add link to sliding 8), you can come up with a heuristic to find the fastest way to win.  If you're [flipping pancakes](TODO: add link to pancake problem) like [Bill Gates](TODO: link to Gates pancake flipping heuristic), you can come up with a cost function and a heuristic that will get you to the proper stack as soon as possible.  And if you're searching for the best way to get to Montpelier, it can help you find the way.
+
+Stopped at 2517 words.
+
+# TODO: update URLS
+# TODO: rewrite second draft
