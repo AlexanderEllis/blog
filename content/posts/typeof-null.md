@@ -1,6 +1,7 @@
 ---
 title: "typeof null: investigating a classic JavaScript bug"
 date: 2018-03-19T08:40:17-04:00
+tags: ['javascript']
 draft: false
 ---
 

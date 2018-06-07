@@ -1,7 +1,7 @@
 ---
 title: "Connecting Arduino with a Node Server"
 date: 2018-01-01T09:59:52-05:00
-tags: ["Arduino", "Node"]
+tags: ["Arduino", "Node", "Javascript"]
 draft: false
 ---
 
@@ -49,7 +49,7 @@ void loop() {
     }
   }
 }
-``` 
+```
 
 Not too bad!  My server code was similarly simple.  One thing to note is that there's a slight delay between opening the Serial port and being able to send a message.  Apparently [when the port is opened, the Arduino code restarts](https://github.com/noopkat/avrgirl-arduino/issues/43#issuecomment-166146526), leading to a slight delay. I got around this by adding in a 2 second delay before the server sends the `1`.
 
@@ -60,7 +60,7 @@ Not too bad!  My server code was similarly simple.  One thing to note is that th
 // Import SerialPort
 var SerialPort = require('serialport');
 
-// Create a new connection with the correct path to the Arduino and a baudRate that matches 
+// Create a new connection with the correct path to the Arduino and a baudRate that matches
 var port = new SerialPort('/dev/cu.usbmodemFD131', { baudRate: 9600 }, function(err) {
   if (err) {
     console.log('Error: ', err.message);
@@ -81,7 +81,7 @@ After connecting and uploading the Arduino code, I started the server and the LE
 ----
 #### Hello, Server
 
-The next step was to get the Arduino talking to the server.  Since I had the server to Arduino code already set, I added an event listener to the server that would listen for new data on the Serial port.  I kept it simple, sending a `1` if it heard a `1` and a `0` if it heard a `0`.   
+The next step was to get the Arduino talking to the server.  Since I had the server to Arduino code already set, I added an event listener to the server that would listen for new data on the Serial port.  I kept it simple, sending a `1` if it heard a `1` and a `0` if it heard a `0`.
 
 ```
 /*
@@ -136,7 +136,7 @@ void setup() {
 }
 
 void loop() {
-  // Read the voltage coming in from the button 
+  // Read the voltage coming in from the button
   switchState = digitalRead(2);
 
   if (switchState == HIGH && switchState != previousSwitchState) {
@@ -204,10 +204,10 @@ port.on('open', function() {
   project.ino
 */
 /*
-Setup: 
+Setup:
   Initialize I/O pins
   Initialize Serial port
-Loop: 
+Loop:
   Check for button press change and send to server with Serial
   Check for incoming message and turn LED on/off accordingly
 */

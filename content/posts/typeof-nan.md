@@ -1,6 +1,7 @@
 ---
 title: "typeof NaN: more unintuitive JavaScript behavior"
 date: 2018-03-22T09:51:00-04:00
+tags: ['javascript']
 draft: true
 ---
 

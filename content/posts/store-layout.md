@@ -1,78 +1,36 @@
 ---
-title: "Let My Users Go: Analyzing a Store Layout"
+title: "Letting the User Guide You: Analyzing Store Design"
 date: 2018-06-06T09:02:23-04:00
-draft: true
+tags: ['Design', 'Design in the wild']
+draft: false
 ---
 
+I enjoy looking at design in everyday life and the balance between how things are designed and how people try to use them.
 
-Design is in everything we see.
+A store I visited recently had bad customer flow, and the signs were there.  There was literally a sign telling customers where to line up for the checkout line.  Customers didn't naturally line up there, and an employee was correcting customers who missed the sign.  This is bad design.
 
-You don't notice good design.
+Here's a quick sketch of the layout of the checkout corner of the store (not quite to scale):
 
-You do notice bad design.
+![Store layout](layout.JPG)
 
-Sometimes design is hard.
-
-I was at a store recently with bad design, and the signs were there.  First, there was literally a sign telling customers where to line up for the checkout line.  Second, customers didn't naturally line up there.  Third, an employee was telling customers where to line up.  This is bad design.
-
-Here's a quick sketch of the layout:
-
-```python
-"""
-     #              ##############################
-     #              #                            #
-     #              # Gift wrapping supplies     #
-     #              #                            #
-     #              #                            #
-     #              #                            #
-     #              #                   #        #
-     #              #                   #        #
-     #              #                   #        #
-     #              #                   #        #
-     #              #                   #        #
-     #              #                   #        #
-     #              #                   #   A    #
-     #              #                   #        #
-     #              #                  #         #
-     #              #              2 #           #
-     #              #           1 #              #
-     #              #         #                  #
-     #              #########                    #
-     ################   B                        #
-                                                 #
-                                                 #
-                                                 #
-        ----------                               #
-       | display  |                              #
-        ----------                               #
-                                                 #
-                                 entrance/exit   #
-                                      ||         #
-                                      \/         #
-"""
-```
-
-A curved counter extended from one wall down towards the back of the store.  Two cash registers were on the bottom-right section of the curve.  There was a display of small checkout-trinkets at B and calligraphy materials on the right wall at A.
+A curved counter extended from one wall towards the back of the store.  Two cash registers (1 and 2 on the diagram) were on the bottom-right section of the curve.  There was a display of small checkout trinkets at B and calligraphy materials on the right wall at A.
 
 Where would you line up?  Where would you want customers to line up?
 
-Customers would naturally approach the cash registers from where they had been, and we can assume that they will usually be coming from the rest of the store where the majority of the supplies are.  They can spend time waiting in line looking at the checkout-trinkets ("I _should_ buy a mini rubrick's cube and a pocket magnifying glass for $2.99!"), and as they move through the line to the cash register, they can turn to the right and follow the wall to the exit.
+Imagine you're a customer seeing this for the first time.  It would be natural to line up at B after you approach the cash registers from the rest of the store.  That's where the majority of the supplies are, so that's probably where you spent most of your time.  You could spend your line-waiting time looking at the checkout trinkets ("I _should_ buy dog stickers for $2.99!").  Once you check out, you could turn to the right and follow the wall to the exit.
 
-Instead, they had a sign hanging from the ceiling above A that said something along the lines of "Line starts here."  Customers would naturally line up at B, and one of the employees would let them know that the line began at A.  From the employee's exasperated tone, this clearly happened often and it was the customer's fault.
+However, this store had the line start at A.  They had a "Line Starts Here" sign hanging from the ceiling.  Customers who didn't see the sign would line up at B, and one of the employees would let them know that the line began at A.  Judging from the employee's exasperated tone, this happened often.
 
-Customers would then walk over to A.  If there was a line, they would then walk to the back of the store to go into the line.  It didn't seem like there was a line, but now there was an additional wait as the customer went from first in line to last.  A's corridor is only around two people wide, which meant congestion and many "excuse me pardon me" as people shuffled past and even more if someone was looking at the calligraphy section.
+Customers would then walk over to A.  If there were already other customers waiting, the arriving customer would walk to the back of the store to the end of the line.  A's corridor is only around two people wide, which meant there was congestion as people shuffled to the rear with even more if someone was looking at the calligraphy section.
 
-This is wasted energy.  Walking to the rear of the store to walk towards the front is a waste of the customer's time and energy.  The jump from "I'm next in line" to "Oh, there are people ahead of me" is unnecessary.   Blaming the customers is absolutely wasted energy.  In retail, it does not take much to make some customers unhappy.  Directing customers with a sign and an employee is a waste of the employee's time and energy.
+This is wasted energy.  The customer has to think about where to go, and their experience is affected.  If their experience is anything but easy, it's not right.  For the employees, having to worry about how customers are lining up is time and energy that could be better spent elsewhere.
 
-(Disclaimer: I was not one of the disgruntled customers, and this is not a form of revenge.  Life is too short to worry about things like getting to check out first, but life is not too short to worry about improving peoples' experiences.  Additionally, this )
+Disclaimer: I was not one of the disgruntled customers.  I noticed the odd design when looking for the checkout, and the sign stood out to me.  I noticed the sequence above happen multiple times while I was waiting to check out.  Life is too short to worry about things like getting to check out first, but life is not too short to think about peoples' experiences.
 
-How can we tell this is bad design?  We can tell it's not intuitive, as customers are not behaving this way by default.  We can tell it's not working as expected because they [had to put up a sign](TODO: link to norman doors).  We can tell it's not a natural flow because the employee has to tell people where to go and the majority of customers are not going to the checkout from the gift wrapping section.
+How can we tell this is bad design?  We can tell it's not intuitive, as customers are not lining up at A on their own.  If it was intuitive, [you wouldn't need to put up a sign](https://99percentinvisible.org/article/norman-doors-dont-know-whether-push-pull-blame-design/).  Even with the sign it's not natural; the employee had to tell people where to go.
 
-Users are very generous, as they will show you what they expected by trying to do that first.  Seeing someone use something without direction illuminates the differences between the assumptions of the designer and the assumptions of the user.  It lets you build empathy for your user.
+People are generous with their intuitions.  They will show you what they expected as they try to do that first, and you have to listen.  Seeing a user interact with a design underlines the differences between the assumptions of the designer and the assumptions of the user, and it lets you build empathy for your user.
 
-In this case, the customers are already showing the store what is intuitive.  Let customers line up at B.  Ditch the sign. Let your employee not have to direct, and let customers go to the rear of the store if they want to wrap gifts.  Keep it simple.
+In this case, the customers are showing their assumptions and are already doing what's natural.  Let them line up at B.  Ditch the sign. Let your employees not worry about directing, and let customers go to the rear of the store on their own if they want to wrap gifts. Keep it simple.  Design isn't easy, but it's not always hard.
 
-Design isn't always easy, but it's not always hard.
-
-PS: If you can tell what store this is, I'll buy you a beer/coffee/tea if you're ever in Boston.
-PPS: The store may be in the Boston area.
+_PS: If you can identify and tell me what store this is, I'll buy you a beer/coffee/tea/notebook if you're ever in Boston! Side note: the store may be in the Boston area._
