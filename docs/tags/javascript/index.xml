@@ -33,6 +33,18 @@ In particular, I was trying to find a certain substring from a string that did n
     </item>
     
     <item>
+      <title>typeof null: investigating a classic JavaScript bug</title>
+      <link>https://alexanderellis.github.io/blog/posts/typeof-null/</link>
+      <pubDate>Mon, 19 Mar 2018 08:40:17 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/typeof-null/</guid>
+      <description>In my last post, I looked into some JavaScript casting and explored why 0 &amp;lt;= null evaluates as true.
+For this post, I&amp;rsquo;d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
+This is a well-known bug, and we&amp;rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
+The main idea is that the code assigned each item some bits for use as flags for different types, but null was different.</description>
+    </item>
+    
+    <item>
       <title>Investigating JavaScript Casting Behavior</title>
       <link>https://alexanderellis.github.io/blog/posts/javascript-casting/</link>
       <pubDate>Sun, 18 Mar 2018 11:14:19 -0400</pubDate>
@@ -50,6 +62,15 @@ Much of this behavior can be explained by JavaScript&amp;rsquo;s casting. From E
       
       <guid>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</guid>
       <description>Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times. Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some</description>
+    </item>
+    
+    <item>
+      <title>Connecting Arduino with a Node Server</title>
+      <link>https://alexanderellis.github.io/blog/posts/arduinode/</link>
+      <pubDate>Mon, 01 Jan 2018 09:59:52 -0500</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/arduinode/</guid>
+      <description>Arduinode I&amp;rsquo;ve been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet. Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.</description>
     </item>
     
   </channel>

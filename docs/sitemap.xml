@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/store-layout/</loc>
+    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/simple-cache-server-in-python/</loc>
     <lastmod>2018-05-26T10:24:05-04:00</lastmod>
   </url>
@@ -80,7 +85,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2018-05-26T10:24:05-04:00</lastmod>
+    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -91,13 +96,13 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/tags/design/</loc>
-    <lastmod>2017-12-06T08:51:05-05:00</lastmod>
+    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://alexanderellis.github.io/blog/tags/design-in-the-wild/</loc>
-    <lastmod>2017-12-06T08:51:05-05:00</lastmod>
+    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -139,6 +144,12 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
+    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://alexanderellis.github.io/blog/tags/python/</loc>
     <lastmod>2018-05-26T10:24:05-04:00</lastmod>
     <priority>0</priority>
   </url>

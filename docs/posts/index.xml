@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 26 May 2018 10:24:05 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 06 Jun 2018 09:02:23 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderellis.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Letting the User Guide You: Analyzing Store Design</title>
+      <link>https://alexanderellis.github.io/blog/posts/store-layout/</link>
+      <pubDate>Wed, 06 Jun 2018 09:02:23 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/store-layout/</guid>
+      <description>I enjoy looking at design in everyday life and the balance between how things are designed and how people try to use them.
+A store I visited recently had bad customer flow, and the signs were there. There was literally a sign telling customers where to line up for the checkout line. Customers didn&amp;rsquo;t naturally line up there, and an employee was correcting customers who missed the sign. This is bad design.</description>
+    </item>
     
     <item>
       <title>Building a Simple Cache Server in Python</title>
