@@ -16,6 +16,6 @@ Academically, I've studied physics and am currently studying computer science.
 
 I'm on [GitHub](https://github.com/AlexanderEllis), twitter (infrequently) [@lxmkls](https://twitter.com/lxmkls), and [Hacker News](https://news.ycombinator.com/user?id=otras).
 
-I write to teach, practice, and get better at writing.  I also like to help out on [reddit](https://www.reddit.com/u/0101110010110) and [stackoverflow](https://stackoverflow.com/users/8382625/alex).  I've found that writing and teaching is one of the best ways to learn.
+I write to teach, practice, and get better at writing.  I also like to help out on [reddit](https://www.reddit.com/u/0101110010110) and [stackoverflow](https://stackoverflow.com/users/8382625/alex).  I've found that writing and teaching are two of the best ways to learn.
 
 I also run [a weekly newsletter for growing horizontally as a developer and learning about new things](https://breadthfirstgrowth.com/).
