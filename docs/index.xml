@@ -6,10 +6,21 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 06 Jun 2018 09:02:23 -0400</lastBuildDate>
+    <lastBuildDate>Fri, 08 Jun 2018 10:27:44 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderellis.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Why does a spray bottle work?</title>
+      <link>https://alexanderellis.github.io/blog/posts/check-valve/</link>
+      <pubDate>Fri, 08 Jun 2018 10:27:44 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/check-valve/</guid>
+      <description>Exploring a simple machine I took apart a simple spray bottle to see how it kept fluid flowing only in one direction from the reservoir to the nozzle. It does so with simple check valves made of two pieces of plastic, a spring, and a small sphere. It&amp;rsquo;s a simple way to solve a tricky problem.
+ A simple spray bottle 
+One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.</description>
+    </item>
     
     <item>
       <title>Letting the User Guide You: Analyzing Store Design</title>

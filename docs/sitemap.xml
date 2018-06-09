@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderellis.github.io/blog/posts/check-valve/</loc>
+    <lastmod>2018-06-08T10:27:44-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderellis.github.io/blog/posts/store-layout/</loc>
     <lastmod>2018-06-06T09:02:23-04:00</lastmod>
   </url>
@@ -85,7 +90,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/</loc>
-    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
+    <lastmod>2018-06-08T10:27:44-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -96,7 +101,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/tags/design/</loc>
-    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
+    <lastmod>2018-06-08T10:27:44-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -144,7 +149,7 @@
   
   <url>
     <loc>https://alexanderellis.github.io/blog/posts/</loc>
-    <lastmod>2018-06-06T09:02:23-04:00</lastmod>
+    <lastmod>2018-06-08T10:27:44-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -157,6 +162,12 @@
   <url>
     <loc>https://alexanderellis.github.io/blog/tags/studying/</loc>
     <lastmod>2017-08-13T20:47:45-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://alexanderellis.github.io/blog/tags/taking-apart/</loc>
+    <lastmod>2018-06-08T10:27:44-04:00</lastmod>
     <priority>0</priority>
   </url>
   
