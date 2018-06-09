@@ -7,25 +7,27 @@ draft: true
 
 ### Informed searching
 
-How do you know where to look for something you're searching for?
+How do you know where to look when you're searching for something?
 
 If you know some information about what you're looking for, you can take an educated guess.
 
-If you know you're looking for milk at the supermarket, you can look in the dairy aisle.  If you know you had your keys in the living room, you can check there for them.  If you know you're traveling north, you can look for a route that takes you north.
+If you know you're looking for milk at the supermarket, you can look in the dairy aisle.  If you know you had your keys in the living room, you can check there first.  If you know you're traveling north, you can look for a route that takes you north.
 
-For instance, say you're driving from Boston, MA to Montpelier, VT, and you decide to plot a route without the use of a GPS.  How would you select the roads to take?
+Let's say you're driving from Boston, MA to Montpelier, VT, and you decide to plan a route without the use of a GPS.  How would you select the roads to take?
 
-Looking at your current position, you could look at the roads you can take that will get you closer to your destination.  This makes sense, as you wouldn't want to drive in the other direction.  By evaluating the roads with this simple metric, you're able to build an educated guess about your path.  "I want to drive north-west, so I will pick roads that are in that direction."
+![Map of New England with Montpelier, VT highlighted](boston-to-montpelier.png)
 
-This is immensely helpful.  Imagine the pain of having to evaluate every road.  First, you would have to consider every road going out from your current location.  At every intersection, you'd have to then consider every additional road.  This gets busy fast.
+You could look at the available roads from your current location that would get you closer to your destination.  This makes sense, as you wouldn't want to drive in the wrong direction.  By evaluating the roads with this simple metric, you're able to build an educated guess about your path.  "I want to drive north-west, so I will pick roads that are in that direction."
+
+This is immensely helpful.  Imagine the pain of having to evaluate every road.  First, you would have to consider all roads spreading out from your current location.  At every intersection, you'd have to then consider every additional road.  This gets busy fast.
 
 Choosing the best option based on whether or not it's a good guess is the main idea behind informed search.
 
-In the driving example, our rule for whether or not it's a good guess is very simple: does the road go towards Montpelier?  This is called the **heuristic function**.  It allows us to evaluate a choice.
+In the driving example, our good-guess rule is simple: does the road go towards Montpelier?  This is called the **heuristic function**.  It allows us to evaluate a choice.
 
-The one from our driving example is very simple: _yes_, the road goes in the direction of Montpelier, or _no_, it does not.  Is this enough to get us there?  It might be, but it doesn't allow for any flexibility.  What if a road first goes north, then another road goes west?  What if we could first go east, then take a faster road north?  What if we have two roads that go north-west and we want to see if one is better than the other?  Only having a boolean _yes_ or _no_ may not allow us to efficiently decide.  For a complicated question like "How do I get there?", there can be many factors that decide whether or not something is a good guess.
+The one from our driving example is very simple: _yes_, the road goes in the direction of Montpelier, or _no_, it does not.  Is this enough to get us there?  It might be, but it doesn't allow for any flexibility.  What if a road first goes north, then another road goes west?  What if we could first go east, then take a faster road north?  What if we have two roads that go north-west and we want to see if one is better than the other?  Only having a boolean _yes_ or _no_ may not allow us to efficiently decide.  For a complicated question like "How do I get there?", you can use many factors that decide whether or not something is a good guess.
 
-### Maze seraching
+### Maze searching
 
 Let's consider a much simpler problem: I have a maze, I know where I start, and I know where the end is.  How can I find a path through the maze?
 
@@ -38,8 +40,7 @@ Let's simplify this further.  Here are a few more requirements:
 
 Here's a very basic maze.
 
-
-** Maze image with grid **
+![Simple Maze to solve](simple-maze-to-solve.png)
 
 There are many ways to solve this.  I recommend that you take a moment to solve it yourself.
 
