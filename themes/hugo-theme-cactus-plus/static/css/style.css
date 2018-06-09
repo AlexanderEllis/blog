@@ -457,9 +457,9 @@ thead th, th {
 }
 
 img {
-    width: 100%;
-    max-width: 100%;ß
-    border-radius: 3px;
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 
