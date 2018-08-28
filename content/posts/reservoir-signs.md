@@ -5,7 +5,7 @@ tags: ["Design", "Design in the wild"]
 draft: false
 ---
 
-I often walk my dog around a small reservoir near my apartment.  It's a perfect distance for tiring a terrier, and it's a beautiful area.
+I often walk my dog around a small reservoir near my apartment.  It's a perfect distance for tiring a small terrier, and it's a beautiful area.
 
 There are a number of signs around the reservoir that tell you to not swim in the water (as it's a backup emergency water supply) and to not walk on the ice when it's frozen over in the winter (as it's very, very cold if you fall in). These signs are switched for the appropriate season.
 
@@ -27,4 +27,4 @@ If you have two signs, each for roughly half of the year, where do you keep the 
 
 Every sign to be swapped can be visited with just a handful of tools.  You don't have to worry about storing, bringing, counting, misplacing, or manufacturing the other signs.  It's the Mass Department of Conservation and Recreation, and they want to save the extra metal!
 
-It's not the cleanest looking solution, but it is simple and elegant.  It seems like an obvious choice when you notice it, as good design should.
+It's not the cleanest looking solution, but it is simple and it works.  It seems like an obvious choice when you notice it, as good design should.
