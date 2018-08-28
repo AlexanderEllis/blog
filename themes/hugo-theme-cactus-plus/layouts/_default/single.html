@@ -13,13 +13,7 @@
                     · {{ if lt 1 .WordCount }}{{ .WordCount }} words{{ else }}{{ .WordCount }} word{{ end }}
                     · {{ if eq 1 .ReadingTime }}{{ .ReadingTime }} minute read{{ else }}{{ .ReadingTime }} minutes read{{ end }}
                       <span class="tags">
-                      {{ with .Params.tags }}
-                      {{ if ge (len .) 1 }}
-                          {{ range . }}
-                              <a href="{{ $.Site.BaseURL }}tags/{{ . | urlize }}">{{ . }}</a>
-                          {{ end }}
-                      {{ end }}
-                      {{ end}}
+                            {{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}<a href="{{ $.Site.BaseURL }}tags/{{ . | urlize }}">{{ . }}</a>{{ end }}
                       </span>
                     </h2>
                 </header>
