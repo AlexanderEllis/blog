@@ -14,8 +14,8 @@ publishDir = "docs"
   description = ""
   bio = "I work with computers"
   # Enter optionally your twitter account
-  twitter = "your_twitter"
-  enableRSS = false
+  twitter = "lxmkls"
+  enableRSS = true
 
   # Disqus comment
   disqusShortname = "your_disqus_short_name"

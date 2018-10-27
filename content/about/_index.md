@@ -10,7 +10,7 @@ hidden = true
 
 That's Karl, my dog. He's anxious, smart, and shy with strangers, but he's a good boy.
 
-I work as a software engineer at [Giant Otter Technologies](http://www.giantotter.com/).  I work mainly towards the frontend but pitch in across the stack.
+I work as a software engineer at Google.
 
 Academically, I've studied physics and am currently studying computer science.
 
