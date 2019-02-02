@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/categories/</link>
+    <link>https://alexanderell.is/categories/</link>
     <description>Recent content in Categories on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	<atom:link href="https://alexanderellis.github.io/blog/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderell.is/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

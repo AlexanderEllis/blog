@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Investigations on Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/tags/investigations/</link>
+    <link>https://alexanderell.is/tags/investigations/</link>
     <description>Recent content in Investigations on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sat, 28 Apr 2018 13:22:25 -0400</lastBuildDate>
     
-	<atom:link href="https://alexanderellis.github.io/blog/tags/investigations/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderell.is/tags/investigations/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Investigating JavaScript&#39;s RegExp Lookbehind</title>
-      <link>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</link>
+      <link>https://alexanderell.is/posts/regex-lookbehind/</link>
       <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</guid>
+      <guid>https://alexanderell.is/posts/regex-lookbehind/</guid>
       <description>Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.” Now they have two problems.
  Jamie Zawinski
 Regular Expression Lookbehinds I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.

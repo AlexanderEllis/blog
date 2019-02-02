@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ux Analysis on Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/tags/ux-analysis/</link>
+    <link>https://alexanderell.is/tags/ux-analysis/</link>
     <description>Recent content in Ux Analysis on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sat, 05 Aug 2017 21:29:38 -0400</lastBuildDate>
     
-	<atom:link href="https://alexanderellis.github.io/blog/tags/ux-analysis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderell.is/tags/ux-analysis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Noticing UI: Shazam&#39;s loading screen</title>
-      <link>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</link>
+      <link>https://alexanderell.is/posts/noticing-ui-shazam/</link>
       <pubDate>Sat, 05 Aug 2017 21:29:38 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</guid>
+      <guid>https://alexanderell.is/posts/noticing-ui-shazam/</guid>
       <description>Shazam&amp;rsquo;s loading screen I was pleasantly surprised by Shazam&amp;rsquo;s iPhone app loading screen, and I took a look into what makes it stand out.
 Here&amp;rsquo;s what it looked like:
 This felt different, and it made me look at the experience of opening apps. I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn&amp;rsquo;t like other apps.

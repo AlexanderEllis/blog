@@ -2,129 +2,129 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/tags/</link>
+    <link>https://alexanderell.is/tags/</link>
     <description>Recent content in Tags on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sat, 20 Jun 2015 14:02:37 +0200</lastBuildDate>
     
-	<atom:link href="https://alexanderellis.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderell.is/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Arduino</title>
-      <link>https://alexanderellis.github.io/blog/tags/arduino/</link>
+      <link>https://alexanderell.is/tags/arduino/</link>
       <pubDate>Mon, 01 Jan 2018 09:59:52 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/arduino/</guid>
+      <guid>https://alexanderell.is/tags/arduino/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Design</title>
-      <link>https://alexanderellis.github.io/blog/tags/design/</link>
+      <link>https://alexanderell.is/tags/design/</link>
       <pubDate>Mon, 27 Aug 2018 23:52:22 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/design/</guid>
+      <guid>https://alexanderell.is/tags/design/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Design in the Wild</title>
-      <link>https://alexanderellis.github.io/blog/tags/design-in-the-wild/</link>
+      <link>https://alexanderell.is/tags/design-in-the-wild/</link>
       <pubDate>Mon, 27 Aug 2018 23:52:22 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/design-in-the-wild/</guid>
+      <guid>https://alexanderell.is/tags/design-in-the-wild/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Investigations</title>
-      <link>https://alexanderellis.github.io/blog/tags/investigations/</link>
+      <link>https://alexanderell.is/tags/investigations/</link>
       <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/investigations/</guid>
+      <guid>https://alexanderell.is/tags/investigations/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Javascript</title>
-      <link>https://alexanderellis.github.io/blog/tags/javascript/</link>
+      <link>https://alexanderell.is/tags/javascript/</link>
       <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/javascript/</guid>
+      <guid>https://alexanderell.is/tags/javascript/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Just Shipping</title>
-      <link>https://alexanderellis.github.io/blog/tags/just-shipping/</link>
+      <link>https://alexanderell.is/tags/just-shipping/</link>
       <pubDate>Sun, 29 Oct 2017 17:30:20 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/just-shipping/</guid>
+      <guid>https://alexanderell.is/tags/just-shipping/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Mvp</title>
-      <link>https://alexanderellis.github.io/blog/tags/mvp/</link>
+      <link>https://alexanderell.is/tags/mvp/</link>
       <pubDate>Sun, 29 Oct 2017 17:30:20 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/mvp/</guid>
+      <guid>https://alexanderell.is/tags/mvp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Node</title>
-      <link>https://alexanderellis.github.io/blog/tags/node/</link>
+      <link>https://alexanderell.is/tags/node/</link>
       <pubDate>Mon, 01 Jan 2018 09:59:52 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/node/</guid>
+      <guid>https://alexanderell.is/tags/node/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Open Source</title>
-      <link>https://alexanderellis.github.io/blog/tags/open-source/</link>
+      <link>https://alexanderell.is/tags/open-source/</link>
       <pubDate>Sat, 06 Jan 2018 11:37:37 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/open-source/</guid>
+      <guid>https://alexanderell.is/tags/open-source/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>https://alexanderellis.github.io/blog/tags/python/</link>
+      <link>https://alexanderell.is/tags/python/</link>
       <pubDate>Sat, 26 May 2018 10:24:05 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/python/</guid>
+      <guid>https://alexanderell.is/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Studying</title>
-      <link>https://alexanderellis.github.io/blog/tags/studying/</link>
+      <link>https://alexanderell.is/tags/studying/</link>
       <pubDate>Sun, 13 Aug 2017 20:47:45 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/studying/</guid>
+      <guid>https://alexanderell.is/tags/studying/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Taking Apart</title>
-      <link>https://alexanderellis.github.io/blog/tags/taking-apart/</link>
+      <link>https://alexanderell.is/tags/taking-apart/</link>
       <pubDate>Fri, 08 Jun 2018 10:27:44 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/taking-apart/</guid>
+      <guid>https://alexanderell.is/tags/taking-apart/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ux Analysis</title>
-      <link>https://alexanderellis.github.io/blog/tags/ux-analysis/</link>
+      <link>https://alexanderell.is/tags/ux-analysis/</link>
       <pubDate>Sat, 05 Aug 2017 21:29:38 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/tags/ux-analysis/</guid>
+      <guid>https://alexanderell.is/tags/ux-analysis/</guid>
       <description></description>
     </item>
     

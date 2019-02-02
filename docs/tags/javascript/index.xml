@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javascript on Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/tags/javascript/</link>
+    <link>https://alexanderell.is/tags/javascript/</link>
     <description>Recent content in Javascript on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sat, 28 Apr 2018 13:22:25 -0400</lastBuildDate>
     
-	<atom:link href="https://alexanderellis.github.io/blog/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderell.is/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Investigating JavaScript&#39;s RegExp Lookbehind</title>
-      <link>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</link>
+      <link>https://alexanderell.is/posts/regex-lookbehind/</link>
       <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</guid>
+      <guid>https://alexanderell.is/posts/regex-lookbehind/</guid>
       <description>Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.” Now they have two problems.
  Jamie Zawinski
 Regular Expression Lookbehinds I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.
@@ -25,19 +25,19 @@ In particular, I was trying to find a certain substring from a string that did n
     
     <item>
       <title>JavaScript: Writing your own Array.reduce</title>
-      <link>https://alexanderellis.github.io/blog/posts/javascript-array-reduce/</link>
+      <link>https://alexanderell.is/posts/javascript-array-reduce/</link>
       <pubDate>Sun, 01 Apr 2018 09:51:00 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/javascript-array-reduce/</guid>
+      <guid>https://alexanderell.is/posts/javascript-array-reduce/</guid>
       <description>I&amp;rsquo;ve found that one of the best ways for me to really understand anything is to implement it myself. Between the ECMAScript spec and a few lines of JavaScript, you can build a chunk of knowledge for a very specific area of JavaScript. Doing this often is a great way to gain a deeper understanding of the language, and it&amp;rsquo;s a great exercise in reading the docs, reading code, and creating your own solution.</description>
     </item>
     
     <item>
       <title>typeof null: investigating a classic JavaScript bug</title>
-      <link>https://alexanderellis.github.io/blog/posts/typeof-null/</link>
+      <link>https://alexanderell.is/posts/typeof-null/</link>
       <pubDate>Mon, 19 Mar 2018 08:40:17 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/typeof-null/</guid>
+      <guid>https://alexanderell.is/posts/typeof-null/</guid>
       <description>In my last post, I looked into some JavaScript casting and explored why 0 &amp;lt;= null evaluates as true.
 For this post, I&amp;rsquo;d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
 This is a well-known bug, and we&amp;rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
@@ -46,10 +46,10 @@ The main idea is that the code assigned each item some bits for use as flags for
     
     <item>
       <title>Investigating JavaScript Casting Behavior</title>
-      <link>https://alexanderellis.github.io/blog/posts/javascript-casting/</link>
+      <link>https://alexanderell.is/posts/javascript-casting/</link>
       <pubDate>Sun, 18 Mar 2018 11:14:19 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/javascript-casting/</guid>
+      <guid>https://alexanderell.is/posts/javascript-casting/</guid>
       <description>The disconnect between &amp;ldquo;what seems like it should happen&amp;rdquo; and &amp;ldquo;what happens&amp;rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast null into 0 by accident in JavaScript.
 For more on JavaScript&amp;rsquo;s unintuitive behavior, please watch (or rewatch) wat.
 Much of this behavior can be explained by JavaScript&amp;rsquo;s casting. From ECMAScipt: &amp;ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.</description>
@@ -57,19 +57,19 @@ Much of this behavior can be explained by JavaScript&amp;rsquo;s casting. From E
     
     <item>
       <title>Investigating a Bug in Moment.js</title>
-      <link>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</link>
+      <link>https://alexanderell.is/posts/investigating-moment-bug/</link>
       <pubDate>Sat, 06 Jan 2018 11:37:37 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</guid>
+      <guid>https://alexanderell.is/posts/investigating-moment-bug/</guid>
       <description>Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times. Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some</description>
     </item>
     
     <item>
       <title>Connecting Arduino with a Node Server</title>
-      <link>https://alexanderellis.github.io/blog/posts/arduinode/</link>
+      <link>https://alexanderell.is/posts/arduinode/</link>
       <pubDate>Mon, 01 Jan 2018 09:59:52 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/arduinode/</guid>
+      <guid>https://alexanderell.is/posts/arduinode/</guid>
       <description>Arduinode I&amp;rsquo;ve been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet. Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.</description>
     </item>
     

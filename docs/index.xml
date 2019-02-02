@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/</link>
+    <link>https://alexanderell.is/</link>
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 27 Aug 2018 23:52:22 -0400</lastBuildDate>
     
-	<atom:link href="https://alexanderellis.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Good Design: Double Sided Park Signs</title>
-      <link>https://alexanderellis.github.io/blog/posts/reservoir-signs/</link>
+      <link>https://alexanderell.is/posts/reservoir-signs/</link>
       <pubDate>Mon, 27 Aug 2018 23:52:22 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/reservoir-signs/</guid>
+      <guid>https://alexanderell.is/posts/reservoir-signs/</guid>
       <description>I often walk my dog around a small reservoir near my apartment. It&amp;rsquo;s a perfect distance for tiring a small terrier, and it&amp;rsquo;s a beautiful area.
 There are a number of signs around the reservoir that tell you to not swim in the water (as it&amp;rsquo;s a backup emergency water supply) and to not walk on the ice when it&amp;rsquo;s frozen over in the winter (as it&amp;rsquo;s very, very cold if you fall in).</description>
     </item>
     
     <item>
       <title>Why does a spray bottle work?</title>
-      <link>https://alexanderellis.github.io/blog/posts/check-valve/</link>
+      <link>https://alexanderell.is/posts/check-valve/</link>
       <pubDate>Fri, 08 Jun 2018 10:27:44 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/check-valve/</guid>
+      <guid>https://alexanderell.is/posts/check-valve/</guid>
       <description>Exploring a simple machine I took apart a simple spray bottle to see how it kept fluid flowing only in one direction from the reservoir to the nozzle. It does so with simple check valves made of two pieces of plastic, a spring, and a small sphere. It&amp;rsquo;s a simple way to solve a tricky problem.
  A simple spray bottle 
 One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.</description>
@@ -34,20 +34,20 @@ One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.
     
     <item>
       <title>Letting the User Guide You: Analyzing Store Design</title>
-      <link>https://alexanderellis.github.io/blog/posts/store-layout/</link>
+      <link>https://alexanderell.is/posts/store-layout/</link>
       <pubDate>Wed, 06 Jun 2018 09:02:23 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/store-layout/</guid>
+      <guid>https://alexanderell.is/posts/store-layout/</guid>
       <description>I enjoy looking at design in everyday life and the balance between how things are designed and how people try to use them.
 A store I visited recently had bad customer flow, and the signs were there. There was literally a sign telling customers where to line up for the checkout line. Customers didn&amp;rsquo;t naturally line up there, and an employee was correcting customers who missed the sign. This is bad design.</description>
     </item>
     
     <item>
       <title>Building a Simple Cache Server in Python</title>
-      <link>https://alexanderellis.github.io/blog/posts/simple-cache-server-in-python/</link>
+      <link>https://alexanderell.is/posts/simple-cache-server-in-python/</link>
       <pubDate>Sat, 26 May 2018 10:24:05 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/simple-cache-server-in-python/</guid>
+      <guid>https://alexanderell.is/posts/simple-cache-server-in-python/</guid>
       <description>I&amp;rsquo;m a fan of small toy projects that have the sole purpose of demonstrating a concept. This is a small project that demonstrates how a cache server works.
 I think it&amp;rsquo;s important to balance toy projects with getting exposure to production-level code. While this project has been helpful for understanding the idea, an open source project like Squid-Cache is definitely on my reading list!
 At the very simplest level, an HTTP server responds to requests.</description>
@@ -55,10 +55,10 @@ At the very simplest level, an HTTP server responds to requests.</description>
     
     <item>
       <title>Investigating JavaScript&#39;s RegExp Lookbehind</title>
-      <link>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</link>
+      <link>https://alexanderell.is/posts/regex-lookbehind/</link>
       <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/regex-lookbehind/</guid>
+      <guid>https://alexanderell.is/posts/regex-lookbehind/</guid>
       <description>Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.” Now they have two problems.
  Jamie Zawinski
 Regular Expression Lookbehinds I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.
@@ -67,19 +67,19 @@ In particular, I was trying to find a certain substring from a string that did n
     
     <item>
       <title>JavaScript: Writing your own Array.reduce</title>
-      <link>https://alexanderellis.github.io/blog/posts/javascript-array-reduce/</link>
+      <link>https://alexanderell.is/posts/javascript-array-reduce/</link>
       <pubDate>Sun, 01 Apr 2018 09:51:00 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/javascript-array-reduce/</guid>
+      <guid>https://alexanderell.is/posts/javascript-array-reduce/</guid>
       <description>I&amp;rsquo;ve found that one of the best ways for me to really understand anything is to implement it myself. Between the ECMAScript spec and a few lines of JavaScript, you can build a chunk of knowledge for a very specific area of JavaScript. Doing this often is a great way to gain a deeper understanding of the language, and it&amp;rsquo;s a great exercise in reading the docs, reading code, and creating your own solution.</description>
     </item>
     
     <item>
       <title>typeof null: investigating a classic JavaScript bug</title>
-      <link>https://alexanderellis.github.io/blog/posts/typeof-null/</link>
+      <link>https://alexanderell.is/posts/typeof-null/</link>
       <pubDate>Mon, 19 Mar 2018 08:40:17 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/typeof-null/</guid>
+      <guid>https://alexanderell.is/posts/typeof-null/</guid>
       <description>In my last post, I looked into some JavaScript casting and explored why 0 &amp;lt;= null evaluates as true.
 For this post, I&amp;rsquo;d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
 This is a well-known bug, and we&amp;rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
@@ -88,10 +88,10 @@ The main idea is that the code assigned each item some bits for use as flags for
     
     <item>
       <title>Investigating JavaScript Casting Behavior</title>
-      <link>https://alexanderellis.github.io/blog/posts/javascript-casting/</link>
+      <link>https://alexanderell.is/posts/javascript-casting/</link>
       <pubDate>Sun, 18 Mar 2018 11:14:19 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/javascript-casting/</guid>
+      <guid>https://alexanderell.is/posts/javascript-casting/</guid>
       <description>The disconnect between &amp;ldquo;what seems like it should happen&amp;rdquo; and &amp;ldquo;what happens&amp;rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast null into 0 by accident in JavaScript.
 For more on JavaScript&amp;rsquo;s unintuitive behavior, please watch (or rewatch) wat.
 Much of this behavior can be explained by JavaScript&amp;rsquo;s casting. From ECMAScipt: &amp;ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.</description>
@@ -99,38 +99,38 @@ Much of this behavior can be explained by JavaScript&amp;rsquo;s casting. From E
     
     <item>
       <title>Investigating a Bug in Moment.js</title>
-      <link>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</link>
+      <link>https://alexanderell.is/posts/investigating-moment-bug/</link>
       <pubDate>Sat, 06 Jan 2018 11:37:37 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/investigating-moment-bug/</guid>
+      <guid>https://alexanderell.is/posts/investigating-moment-bug/</guid>
       <description>Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times. Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some</description>
     </item>
     
     <item>
       <title>Connecting Arduino with a Node Server</title>
-      <link>https://alexanderellis.github.io/blog/posts/arduinode/</link>
+      <link>https://alexanderell.is/posts/arduinode/</link>
       <pubDate>Mon, 01 Jan 2018 09:59:52 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/arduinode/</guid>
+      <guid>https://alexanderell.is/posts/arduinode/</guid>
       <description>Arduinode I&amp;rsquo;ve been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet. Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.</description>
     </item>
     
     <item>
       <title>MBTA Bus Mirrors</title>
-      <link>https://alexanderellis.github.io/blog/posts/mbta-bus/</link>
+      <link>https://alexanderell.is/posts/mbta-bus/</link>
       <pubDate>Wed, 06 Dec 2017 08:51:05 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/mbta-bus/</guid>
+      <guid>https://alexanderell.is/posts/mbta-bus/</guid>
       <description>I take the MBTA 86 bus as part of my commute in the morning. It runs from Reservoir in Brighton to Sullivan Station in Cambridge, and it stops at Harvard on the way, which is where I get off.
 Right after the Eliot street stop, there are two ways for the bus to get underground to the Harvard stop. One way is to go down Bennett St., take a right on University Road, take a right on Mt.</description>
     </item>
     
     <item>
       <title>Launching Breadth First Growth Newsletter</title>
-      <link>https://alexanderellis.github.io/blog/posts/shipping-breadth-first-growth/</link>
+      <link>https://alexanderell.is/posts/shipping-breadth-first-growth/</link>
       <pubDate>Sun, 29 Oct 2017 17:30:20 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/shipping-breadth-first-growth/</guid>
+      <guid>https://alexanderell.is/posts/shipping-breadth-first-growth/</guid>
       <description>I recently started a weekly newsletter.
 I love the idea of growing as a T-shaped developer. I had seen the term on Hacker News in reference to the Valve Handbook for New Employees:
  We value “T-shaped” people.
@@ -139,10 +139,10 @@ That is, people who are both generalists (highly skilled at a broad set of valua
     
     <item>
       <title>Spaced Repetition Motivation</title>
-      <link>https://alexanderellis.github.io/blog/posts/spaced-repetition-motivation/</link>
+      <link>https://alexanderell.is/posts/spaced-repetition-motivation/</link>
       <pubDate>Sun, 13 Aug 2017 20:47:45 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/spaced-repetition-motivation/</guid>
+      <guid>https://alexanderell.is/posts/spaced-repetition-motivation/</guid>
       <description>I&amp;rsquo;ve been kicking around the idea of a spaced repetition app for a while now, and I&amp;rsquo;d like to explore some of the motivation behind this project.
 With anything, the key to getting better is practice and repetition. The goal is deliberate practice and spaced repetition.
 For me, one key to learning and getting better is making it easy to get to the uncomfortable state where I&amp;rsquo;m improving. This means very little analysis of what I should be studying and more time spent working.</description>
@@ -150,10 +150,10 @@ For me, one key to learning and getting better is making it easy to get to the u
     
     <item>
       <title>Temperature Sensing with Arduino</title>
-      <link>https://alexanderellis.github.io/blog/posts/arduino-project-3/</link>
+      <link>https://alexanderell.is/posts/arduino-project-3/</link>
       <pubDate>Sun, 13 Aug 2017 15:16:13 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/arduino-project-3/</guid>
+      <guid>https://alexanderell.is/posts/arduino-project-3/</guid>
       <description>I worked through the third basic project in the Arduino Starter Kit Projects Book. I like to write about the projects to reinforce my own understanding.
 The third project, the &amp;ldquo;Love-O-Meter&amp;rdquo;, creates a simple circuit with a temperature sensor. Using the Analog-to-Digital converter, the Arduino reads in the value coming from the temperature sensor, then lights up a combination of 3 LEDs depending on that value.
 Here&amp;rsquo;s what my circuit looked like:</description>
@@ -161,10 +161,10 @@ Here&amp;rsquo;s what my circuit looked like:</description>
     
     <item>
       <title>Noticing UI: Shazam&#39;s loading screen</title>
-      <link>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</link>
+      <link>https://alexanderell.is/posts/noticing-ui-shazam/</link>
       <pubDate>Sat, 05 Aug 2017 21:29:38 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/noticing-ui-shazam/</guid>
+      <guid>https://alexanderell.is/posts/noticing-ui-shazam/</guid>
       <description>Shazam&amp;rsquo;s loading screen I was pleasantly surprised by Shazam&amp;rsquo;s iPhone app loading screen, and I took a look into what makes it stand out.
 Here&amp;rsquo;s what it looked like:
 This felt different, and it made me look at the experience of opening apps. I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn&amp;rsquo;t like other apps.

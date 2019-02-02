@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Arduino on Caffeinspiration</title>
-    <link>https://alexanderellis.github.io/blog/tags/arduino/</link>
+    <link>https://alexanderell.is/tags/arduino/</link>
     <description>Recent content in Arduino on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 01 Jan 2018 09:59:52 -0500</lastBuildDate>
     
-	<atom:link href="https://alexanderellis.github.io/blog/tags/arduino/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexanderell.is/tags/arduino/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Connecting Arduino with a Node Server</title>
-      <link>https://alexanderellis.github.io/blog/posts/arduinode/</link>
+      <link>https://alexanderell.is/posts/arduinode/</link>
       <pubDate>Mon, 01 Jan 2018 09:59:52 -0500</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/arduinode/</guid>
+      <guid>https://alexanderell.is/posts/arduinode/</guid>
       <description>Arduinode I&amp;rsquo;ve been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet. Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.</description>
     </item>
     
     <item>
       <title>Temperature Sensing with Arduino</title>
-      <link>https://alexanderellis.github.io/blog/posts/arduino-project-3/</link>
+      <link>https://alexanderell.is/posts/arduino-project-3/</link>
       <pubDate>Sun, 13 Aug 2017 15:16:13 -0400</pubDate>
       
-      <guid>https://alexanderellis.github.io/blog/posts/arduino-project-3/</guid>
+      <guid>https://alexanderell.is/posts/arduino-project-3/</guid>
       <description>I worked through the third basic project in the Arduino Starter Kit Projects Book. I like to write about the projects to reinforce my own understanding.
 The third project, the &amp;ldquo;Love-O-Meter&amp;rdquo;, creates a simple circuit with a temperature sensor. Using the Analog-to-Digital converter, the Arduino reads in the value coming from the temperature sensor, then lights up a combination of 3 LEDs depending on that value.
 Here&amp;rsquo;s what my circuit looked like:</description>
