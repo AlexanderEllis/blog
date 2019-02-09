@@ -83,3 +83,9 @@ What if we wanted to be able to open the valve manually? This is actually the sa
 <center>
 *Thanks to [Staffanlincoln](https://en.wikipedia.org/wiki/File:Schrader_valve_opening_and_closing_on_a_tire.gif) for the Schrader valve GIF*
 </center>
+
+<br>
+
+Update: this post got quite a few comments on Hacker News, and I recommend reading through for some interesting discussion! https://news.ycombinator.com/item?id=17273649
+
+Second update: this post has been translated into Japanese if you're interested: https://gigazine.net/news/20180611-why-does-spray-bottle-work/

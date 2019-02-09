@@ -61,17 +61,17 @@
 
 <p>For this post, I&rsquo;d like to investigate another unexpected behavior in JavaScript: why <code>typeof(null)</code> evaluates as <code>'object'</code>.</p>
 
-<p>This is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof">well-known bug</a>, and we&rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.</p>
+<p>This is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof" target="_blank">well-known bug</a>, and we&rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.</p>
 
 <p>The main idea is that the code assigned each item some bits for use as flags for different types, but <em>null</em> was different.  Objects had a flag of <code>000</code>, so an object&rsquo;s last 3 bits were <code>000</code>.  <em>null</em> was previously defined as 32 <code>0</code> bits: <code>00000000000000000000000000000000</code>.  When the code tried to check <em>null</em>&rsquo;s flag, the last three bits of <em>null</em> (<code>000</code>) matched the Object flag (<code>000</code>), so it was incorrectly determined to be an object.</p>
 
 <p>Let&rsquo;s take a deeper look!</p>
 
-<p>As before, for a proper background and preparation for this post, please watch (or rewatch!) <a href="https://www.destroyallsoftware.com/talks/wat">wat</a>.</p>
+<p>As before, for a proper background and preparation for this post, please watch (or rewatch!) <a href="https://www.destroyallsoftware.com/talks/wat" target="_blank">wat</a>.</p>
 
 <hr />
 
-<p>To start, let&rsquo;s take a look at the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-typeof-operator">ECMAScript spec for typeof</a>:</p>
+<p>To start, let&rsquo;s take a look at the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-typeof-operator" target="_blank">ECMAScript spec for typeof</a>:</p>
 
 <pre><code>The typeof Operator
 
@@ -86,7 +86,7 @@ UnaryExpression : typeof UnaryExpression
 4. Return a String according to Table 35.
 </code></pre>
 
-<p>So when we call <code>typeof null</code>, <em>null</em> is passed in as the UnaryExpression.  It is evaluated in step 1, and val gets its value, <em>null</em>.  Type(null) evaluates to the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-terms-and-definitions-null-type">Null type</a>, so Type(val) is not Reference and step 2 is false.  Next, step 3 calls GetValue on <em>null</em>.  We saw get value before, but let&rsquo;s take another look to confirm nothing odd is going on:</p>
+<p>So when we call <code>typeof null</code>, <em>null</em> is passed in as the UnaryExpression.  It is evaluated in step 1, and val gets its value, <em>null</em>.  Type(null) evaluates to the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-terms-and-definitions-null-type" target="_blank">Null type</a>, so Type(val) is not Reference and step 2 is false.  Next, step 3 calls GetValue on <em>null</em>.  We saw get value before, but let&rsquo;s take another look to confirm nothing odd is going on:</p>
 
 <pre><code>GetValue ( V )
 
@@ -170,9 +170,9 @@ UnaryExpression : typeof UnaryExpression
 
 <p>Not very illuminating.  It says that <code>typeof null</code> should just return the string <code>'object'</code>.  But why?  Let&rsquo;s dive a little deeper.</p>
 
-<p>I came across the <a href="http://2ality.com/2013/10/typeof-null.html">2ality post about the history of <code>typeof null</code></a>, and it answers the question very well with reference to an early implementation.  As Brendan Eich wrote in the top comment, the code comes from the 1996 Spider Monkey implementation, not the very original 10-day Mocha, although the bug existed in the original as well.  Let&rsquo;s take a look!</p>
+<p>I came across the <a href="http://2ality.com/2013/10/typeof-null.html" target="_blank">2ality post about the history of <code>typeof null</code></a>, and it answers the question very well with reference to an early implementation.  As Brendan Eich wrote in the top comment, the code comes from the 1996 Spider Monkey implementation, not the very original 10-day Mocha, although the bug existed in the original as well.  Let&rsquo;s take a look!</p>
 
-<p>Although the link from that post is deprecated, we can still see the classic version of the code on <a href="https://dxr.mozilla.org/classic/source/js/src/">https://dxr.mozilla.org/classic/source/js/src/</a>.</p>
+<p>Although the link from that post is deprecated, we can still see the classic version of the code on <a href="https://dxr.mozilla.org/classic/source/js/src/" target="_blank">https://dxr.mozilla.org/classic/source/js/src/</a>.</p>
 
 <p>Two main C files will be of interest here at first: <code>classic/js/src/jsapi.h</code> and <code>classic/js/src/jsapi.c</code>.  Let&rsquo;s take a look at the relevant part of <code>jsapi.c</code> first:</p>
 
@@ -250,7 +250,7 @@ JS_TypeOfValue(JSContext *cx, jsval v)
 #define JSVAL_TAG(v)            ((v) &amp; JSVAL_TAGMASK)
 </code></pre>
 
-<p><code>JS_BITMASK</code> comes from a different file, <a href="https://dxr.mozilla.org/classic/source/js/src/jstypes.h">jstypes.h</a>, and it builds the correct value to bitmask against tag.  This means that it grabs the last 3 bits from the value, and those three bits correspond to the tag.</p>
+<p><code>JS_BITMASK</code> comes from a different file, <a href="https://dxr.mozilla.org/classic/source/js/src/jstypes.h" target="_blank">jstypes.h</a>, and it builds the correct value to bitmask against tag.  This means that it grabs the last 3 bits from the value, and those three bits correspond to the tag.</p>
 
 <p>For instance, if we were working with a very simplified version with integers of 5 bit length and the last 3 bits were the tag, we may have a value like 00001001.  Here, the first 5 bits, <strong>00001</strong>, would correspond to the value, and the last 3 bits, <strong>001</strong>, wold be the tag (here, for an integer).  To get just the tag, we would do a bitwise AND comparison between our value <code>00001001</code> and a mask with 1s for the last three bits, <code>111</code>, to get just the tag, <code>001</code>.</p>
 
@@ -334,7 +334,7 @@ Value &amp; bitmask: 00000000000000000000000000000000
 
 <hr />
 
-<p>Thanks to <a href="https://brendaneich.com/">Brendan Eich</a> for writing JavaScript, Mozilla for hosting the classic code, and  <a href="http://2ality.com/p/about.html">Dr. Axel Rauschmayer</a> for the very helpful blog post about this topic.</p>
+<p>Thanks to <a href="https://brendaneich.com/" target="_blank">Brendan Eich</a> for writing JavaScript, Mozilla for hosting the classic code, and  <a href="http://2ality.com/p/about.html" target="_blank">Dr. Axel Rauschmayer</a> for the very helpful blog post about this topic.</p>
 
                 </section>
             </article>
@@ -359,6 +359,10 @@ Value &amp; bitmask: 00000000000000000000000000000000
         <i class="fa fa-home"></i>
     </a>
     
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
 
 
 </div>
@@ -366,11 +370,8 @@ Value &amp; bitmask: 00000000000000000000000000000000
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+       © Copyright 2019
     
-    </p>
-    <p class="small">
-        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
     </p>
 </footer>
 

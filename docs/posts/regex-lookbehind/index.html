@@ -63,7 +63,7 @@
 <p>Some people, when confronted with a problem, think “I know, I&rsquo;ll use regular expressions.”  Now they have two problems.</p>
 </blockquote>
 
-<p><a href="http://regex.info/blog/2006-09-15/247"><em>Jamie Zawinski</em></a></p>
+<p><a href="http://regex.info/blog/2006-09-15/247" target="_blank"><em>Jamie Zawinski</em></a></p>
 
 <h3 id="regular-expression-lookbehinds">Regular Expression Lookbehinds</h3>
 
@@ -105,17 +105,17 @@ null
 
 <p>In my case, I was trying to do a negative lookbehind for my replacement.  I was also attempting to do so with just a regular expression and no additional parsing through a function, as I was passing it to another module.  After a few attempts by hand, I did some searching to see if it was possible.  The results were not encouraging, mostly indicating in older posts that it was not supported but there were many hacks to work around it.</p>
 
-<p>I then came across <a href="http://2ality.com/2017/05/regexp-lookbehind-assertions.html">2ality&rsquo;s blog post on negative lookbehinds</a>, which looked much more promising.</p>
+<p>I then came across <a href="http://2ality.com/2017/05/regexp-lookbehind-assertions.html" target="_blank">2ality&rsquo;s blog post on negative lookbehinds</a>, which looked much more promising.</p>
 
 <blockquote>
 <p>The proposal “RegExp Lookbehind Assertions” by Gorkem Yakin, Nozomu Katō, Daniel Ehrenberg is at stage 4. This blog post explains it.</p>
 </blockquote>
 
-<p>This post featured a great explanation, and of note, an interesting link to a Feb 2016 blog post from the Google V8 team at the bottom: <a href="https://v8project.blogspot.de/2016/02/regexp-lookbehind-assertions.html">V8 JavaScript Engine: RegExp lookbehind assertions</a>.  The gist of that post is that the lookbehind assertions were very valuable, and although the TC39 proposal was in its early stages, it was already being rolled out in V8 version 4.9 and Chrome 49.</p>
+<p>This post featured a great explanation, and of note, an interesting link to a Feb 2016 blog post from the Google V8 team at the bottom: <a href="https://v8project.blogspot.de/2016/02/regexp-lookbehind-assertions.html" target="_blank">V8 JavaScript Engine: RegExp lookbehind assertions</a>.  The gist of that post is that the lookbehind assertions were very valuable, and although the TC39 proposal was in its early stages, it was already being rolled out in V8 version 4.9 and Chrome 49.</p>
 
 <p>At this point, I tried the posted examples in both my local Node (version 6.11.1) and Chrome (66).  They threw an error in Node, but worked in Chrome.  My usecase was part of a Node build script, so although the version was throwing an error, it seemed there was hope for a later version.  At this point, I could have just used the most recent version of Node or used the <code>--harmony</code> flag, but I wanted to confirm versions to ensure that I was able to be exact about the required version for future use.</p>
 
-<p>I then found a more recent <a href="https://v8project.blogspot.com/2017/07/upcoming-regexp-features.html">blog post by the V8 team from July 2017 featuring upcoming features</a>.  In particular:</p>
+<p>I then found a more recent <a href="https://v8project.blogspot.com/2017/07/upcoming-regexp-features.html" target="_blank">blog post by the V8 team from July 2017 featuring upcoming features</a>.  In particular:</p>
 
 <blockquote>
 <p>Lookbehind Assertions</p>
@@ -123,7 +123,7 @@ null
 <p>Lookahead assertions have been part of JavaScript’s regular expression syntax from the start. Their counterpart, lookbehind assertions, are finally being introduced. Some of you may remember that this has been part of V8 for quite some time already. We even use lookbehind asserts under the hood to implement the Unicode flag specified in ES2015.</p>
 </blockquote>
 
-<p>Then, an even more <a href="https://v8project.blogspot.com/2017/09/v8-release-62.html">recent V8 release post from September 2017 for V8 6.2</a>:</p>
+<p>Then, an even more <a href="https://v8project.blogspot.com/2017/09/v8-release-62.html" target="_blank">recent V8 release post from September 2017 for V8 6.2</a>:</p>
 
 <blockquote>
 <p>More regular expressions features</p>
@@ -133,7 +133,7 @@ null
 <p>Lookbehind assertions, another new regular expression feature, are now available by default.</p>
 </blockquote>
 
-<p>This meant that V8 6.2 had them available, which is why it worked in my Chrome 66.  The next check was to the <a href="https://nodejs.org/en/download/releases/">Node releases page</a>.  Here&rsquo;s the relevant section:</p>
+<p>This meant that V8 6.2 had them available, which is why it worked in my Chrome 66.  The next check was to the <a href="https://nodejs.org/en/download/releases/" target="_blank">Node releases page</a>.  Here&rsquo;s the relevant section:</p>
 
 <table>
 <thead>
@@ -215,6 +215,10 @@ null
         <i class="fa fa-home"></i>
     </a>
     
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
 
 
 </div>
@@ -222,11 +226,8 @@ null
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+       © Copyright 2019
     
-    </p>
-    <p class="small">
-        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
     </p>
 </footer>
 

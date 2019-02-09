@@ -59,7 +59,7 @@
                 <section id="post-body">
                     <p>The disconnect between &ldquo;what seems like it should happen&rdquo; and &ldquo;what happens&rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast <code>null</code> into 0 by accident in JavaScript.</p>
 
-<p>For more on JavaScript&rsquo;s unintuitive behavior, please watch (or rewatch) <a href="https://www.destroyallsoftware.com/talks/wat">wat</a>.</p>
+<p>For more on JavaScript&rsquo;s unintuitive behavior, please watch (or rewatch) <a href="https://www.destroyallsoftware.com/talks/wat" target="_blank">wat</a>.</p>
 
 <p>Much of this behavior can be explained by JavaScript&rsquo;s casting.  From ECMAScipt: &ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.&rdquo;  Since knowing is half the battle, I&rsquo;ve found it helpful to know of the unexpected behavior so that it&rsquo;s in the back of my mind when writing new code.</p>
 
@@ -79,7 +79,7 @@ true
 
 <p>At first glance, not knowing the exact casting behavior, this seems to make no sense at all (especially without an idea of what&rsquo;s going on under the hood).  If 0 isn&rsquo;t equal to null, either with equality or strict equality, and 0 is not less than null, why would <code>0 &lt;= null</code> be true?</p>
 
-<p><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-relational-operators-runtime-semantics-evaluation">Diving into the ECMAScript docs</a> tells us more:</p>
+<p><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-relational-operators-runtime-semantics-evaluation" target="_blank">Diving into the ECMAScript docs</a> tells us more:</p>
 
 <pre><code>RelationalExpression:RelationalExpression&lt;=ShiftExpression
 
@@ -92,7 +92,7 @@ true
 7) If r is true or undefined, return false. Otherwise, return true.
 </code></pre>
 
-<p>So this evaluates the left side, gets the value, evaluates the right side, gets the value, and performs <em><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison">Abstract Relational Comparison rval &lt; lval with LeftFirst equal to false</a></em>.</p>
+<p>So this evaluates the left side, gets the value, evaluates the right side, gets the value, and performs <em><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison" target="_blank">Abstract Relational Comparison rval &lt; lval with LeftFirst equal to false</a></em>.</p>
 
 <p>Note how the right and left values are swapped in the Abstract Relational Comparison.  This uses the idea that <code>a &lt;= b</code> is the same as <code>!(b &lt; a)</code>.  If <code>b</code> is not less than <code>a</code>, it must be greater than or equal to <code>a</code>, or flipped, <code>a</code> must be less than or equal to <code>b</code>.</p>
 
@@ -133,7 +133,7 @@ true
 
 <p>For our case comparing <code>0 &lt;= null</code>, the inputs are evaluated in the second step (as LeftFirst was passed in as false) with <strong>ToPrimitive</strong> with a hint of <code>Number</code>.  Since they aren&rsquo;t both strings, step 3 is skipped, and and later <strong>ToNumber</strong> is called on them in step 4.  This seems promising!</p>
 
-<p>Let&rsquo;s take a look at <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-toprimitive">ToPrimitive</a> to see what&rsquo;s happening here:</p>
+<p>Let&rsquo;s take a look at <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-toprimitive" target="_blank">ToPrimitive</a> to see what&rsquo;s happening here:</p>
 
 <pre><code>ToPrimitive ( input [ , PreferredType ] )
 
@@ -155,13 +155,13 @@ true
 3. Return input.
 </code></pre>
 
-<p>I expected the <code>Number</code> hint to be the smoking gun after seeing it before (and referenced on StackOverflow), but I don&rsquo;t think that&rsquo;s what&rsquo;s causing this behavior.  When <code>null</code> is passed to <code>ToPrimitive</code>, the first step correctly asserts that it&rsquo;s a language value.  The second step conditional, however does not evaluate as true, as null is <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-ecmascript-data-types-and-values"><strong>the Null type</strong></a>, not the Object type.  (TODO: future blog post on why <code>typeof(null)</code> evaluates to <code>'object'</code>.)</p>
+<p>I expected the <code>Number</code> hint to be the smoking gun after seeing it before (and referenced on StackOverflow), but I don&rsquo;t think that&rsquo;s what&rsquo;s causing this behavior.  When <code>null</code> is passed to <code>ToPrimitive</code>, the first step correctly asserts that it&rsquo;s a language value.  The second step conditional, however does not evaluate as true, as null is <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-ecmascript-data-types-and-values" target="_blank"><strong>the Null type</strong></a>, not the Object type.  (TODO: future blog post on why <code>typeof(null)</code> evaluates to <code>'object'</code>.)</p>
 
-<p>So it actually looks like ToPrimitive immediate goes to step 3, where it just returns <code>null</code>.  This means we can look back at the 4th step in Abstract Relational Comparison.  The next call is <code>Let nx be ? ToNumber(px)</code>.  This is where the magic is happening.  <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-tonumber"><strong>ToNumber</strong></a> does what you&rsquo;d (mostly) expect and returns <code>+0</code> for an argument type of <code>Null</code>, which is what we&rsquo;ve passed in with <code>null</code>.</p>
+<p>So it actually looks like ToPrimitive immediate goes to step 3, where it just returns <code>null</code>.  This means we can look back at the 4th step in Abstract Relational Comparison.  The next call is <code>Let nx be ? ToNumber(px)</code>.  This is where the magic is happening.  <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-tonumber" target="_blank"><strong>ToNumber</strong></a> does what you&rsquo;d (mostly) expect and returns <code>+0</code> for an argument type of <code>Null</code>, which is what we&rsquo;ve passed in with <code>null</code>.</p>
 
 <p>This is finally where we&rsquo;re comparing 0 and +0.  +0 is not less than 0, so our call to Abstract Relational Comparison returns false, and our original &lt;= RelationalExpression returns true, evaluating <code>0 &lt;= null</code> as true.</p>
 
-<p>Returning to our original troublesome code, we can connect why this leads to our <code>0 &lt;= null</code> being true.  The only things left to look at are the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison"><strong>equality comparisons</strong></a>.</p>
+<p>Returning to our original troublesome code, we can connect why this leads to our <code>0 &lt;= null</code> being true.  The only things left to look at are the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison" target="_blank"><strong>equality comparisons</strong></a>.</p>
 
 <pre><code>Abstract Equality Comparison
 
@@ -232,6 +232,10 @@ true // Main casting question, and 0 &lt;= +0
         <i class="fa fa-home"></i>
     </a>
     
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
 
 
 </div>
@@ -239,11 +243,8 @@ true // Main casting question, and 0 &lt;= +0
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+       © Copyright 2019
     
-    </p>
-    <p class="small">
-        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
     </p>
 </footer>
 

@@ -61,8 +61,11 @@ publishDir = "docs"
   # The social icons can be styled differently if you use mono as font - circle, rounded, or empty
   socialIconStyle = ""
 
+  # This makes absolute links open in new tabs
+  [blackfriday] hrefTargetBlank = true
 
 # Add additional social link entries underneath
 [social]
   github-square = "https://github.com/alexanderellis"
+  twitter-square = "https://twitter.com/lxmkls"
   home = "https://alexanderell.is"

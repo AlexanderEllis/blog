@@ -68,7 +68,7 @@
 <p>Here&rsquo;s what the schematic looks like:
 <img src="schematic.png" alt="Arduino circuitry" /></p>
 
-<p>After a little research, I came across the <a href="https://github.com/node-serialport/node-serialport">serialport </a>package, which would allow a simple connection between the server and the Arduino.  Easy enough!</p>
+<p>After a little research, I came across the <a href="https://github.com/node-serialport/node-serialport" target="_blank">serialport </a>package, which would allow a simple connection between the server and the Arduino.  Easy enough!</p>
 
 <h4 id="hello-arduino">Hello, Arduino</h4>
 
@@ -103,7 +103,7 @@ void loop() {
 }
 </code></pre>
 
-<p>Not too bad!  My server code was similarly simple.  One thing to note is that there&rsquo;s a slight delay between opening the Serial port and being able to send a message.  Apparently <a href="https://github.com/noopkat/avrgirl-arduino/issues/43#issuecomment-166146526">when the port is opened, the Arduino code restarts</a>, leading to a slight delay. I got around this by adding in a 2 second delay before the server sends the <code>1</code>.</p>
+<p>Not too bad!  My server code was similarly simple.  One thing to note is that there&rsquo;s a slight delay between opening the Serial port and being able to send a message.  Apparently <a href="https://github.com/noopkat/avrgirl-arduino/issues/43#issuecomment-166146526" target="_blank">when the port is opened, the Arduino code restarts</a>, leading to a slight delay. I got around this by adding in a 2 second delay before the server sends the <code>1</code>.</p>
 
 <pre><code>/*
   server.js
@@ -298,7 +298,7 @@ void loop() {
 
 <p>This project served as a good way to test out the communication between Arduino and computer, and it was an easy way to get something up and running with <code>serialport</code>.  With this project done, it&rsquo;ll be very easy to integrate the Arduino into any future Node project.</p>
 
-<p>You can see the full code on my GitHub page <a href="https://github.com/AlexanderEllis/arduino/tree/master/simple-arduino-node">here</a>.</p>
+<p>You can see the full code on my GitHub page <a href="https://github.com/AlexanderEllis/arduino/tree/master/simple-arduino-node" target="_blank">here</a>.</p>
 
                 </section>
             </article>
@@ -323,6 +323,10 @@ void loop() {
         <i class="fa fa-home"></i>
     </a>
     
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
 
 
 </div>
@@ -330,11 +334,8 @@ void loop() {
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+       © Copyright 2019
     
-    </p>
-    <p class="small">
-        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
     </p>
 </footer>
 

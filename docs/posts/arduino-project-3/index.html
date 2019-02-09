@@ -92,7 +92,7 @@ int sensorVal = analogRead(sensorPin);
 <pre><code>float voltage = (sensorVal / 1024.0) * 5.0;
 </code></pre>
 
-<p>The voltage output can then be used to convert to temperature.  The data sheet for the <a href="http://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf">TMP36 temperature sensor</a> has information about the conversion, and the relevant table is below:</p>
+<p>The voltage output can then be used to convert to temperature.  The data sheet for the <a href="http://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf" target="_blank">TMP36 temperature sensor</a> has information about the conversion, and the relevant table is below:</p>
 
 <p><img src="TMP36-output-characteristics.png" alt="TMP36 Output Characteristics" /></p>
 
@@ -134,7 +134,7 @@ Serial.println(temperature);
   }
 </code></pre>
 
-<p>At the end of the loop, a very slight delay is included to create a pause in between the analog-to-digital readings to ensure that the Analog-to-Digital Converter (ADC) <a href="https://www.quora.com/Why-is-a-little-delay-needed-after-analogRead-in-Arduino">can reset successfully before the next reading</a>.</p>
+<p>At the end of the loop, a very slight delay is included to create a pause in between the analog-to-digital readings to ensure that the Analog-to-Digital Converter (ADC) <a href="https://www.quora.com/Why-is-a-little-delay-needed-after-analogRead-in-Arduino" target="_blank">can reset successfully before the next reading</a>.</p>
 
 <pre><code>  delay(10);
 </code></pre>
@@ -143,7 +143,7 @@ Serial.println(temperature);
 
 <p><img src="demo.gif" alt="Result gif" /></p>
 
-<p>You can see the full code <a href="https://gist.github.com/AlexanderEllis/5d25657a4d04ce2848e1747feaf52bfe">here</a>.</p>
+<p>You can see the full code <a href="https://gist.github.com/AlexanderEllis/5d25657a4d04ce2848e1747feaf52bfe" target="_blank">here</a>.</p>
 
                 </section>
             </article>
@@ -168,6 +168,10 @@ Serial.println(temperature);
         <i class="fa fa-home"></i>
     </a>
     
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
 
 
 </div>
@@ -175,11 +179,8 @@ Serial.println(temperature);
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+       © Copyright 2019
     
-    </p>
-    <p class="small">
-        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
     </p>
 </footer>
 

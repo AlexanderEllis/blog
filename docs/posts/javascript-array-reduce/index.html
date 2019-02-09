@@ -61,9 +61,9 @@
 
 <p>In this post, I&rsquo;ll walk through <code>Array.reduce</code> and my own implementation.  Although it&rsquo;s easy to read my code, I highly recommend that you go through this process yourself.</p>
 
-<p>Deep knowledge of how <code>Array.reduce</code> works is useful to have in your JavaScript toolkit.  It allows you to succinctly break down an array using a function of your choice.  The idea of reducing, especially when paired with mapping, is a common one that can be found in <a href="https://en.wikipedia.org/wiki/MapReduce">MapReduce</a>, <a href="https://redux.js.org/">Redux</a>, <a href="https://docs.mongodb.com/manual/core/map-reduce/">mongoDB</a>, and many other areas.</p>
+<p>Deep knowledge of how <code>Array.reduce</code> works is useful to have in your JavaScript toolkit.  It allows you to succinctly break down an array using a function of your choice.  The idea of reducing, especially when paired with mapping, is a common one that can be found in <a href="https://en.wikipedia.org/wiki/MapReduce" target="_blank">MapReduce</a>, <a href="https://redux.js.org/" target="_blank">Redux</a>, <a href="https://docs.mongodb.com/manual/core/map-reduce/" target="_blank">mongoDB</a>, and many other areas.</p>
 
-<p>Let&rsquo;s start by <a href="https://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.reduce">looking at the spec</a> for <code>Array.reduce</code>:</p>
+<p>Let&rsquo;s start by <a href="https://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.reduce" target="_blank">looking at the spec</a> for <code>Array.reduce</code>:</p>
 
 <pre><code>22.1.3.18 Array.prototype.reduce ( callbackfn [ , initialValue ] )
 
@@ -214,7 +214,7 @@ console.log(reduce([1, 2, 3], (total, current) =&gt; total + current, 10));
 
 <p>Success!</p>
 
-<p>If you&rsquo;ve written your own, I highly recommend comparing to both my version and the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce#Polyfill">MDN Polyfill version</a>.  What&rsquo;s different? What choices did you make that are different?</p>
+<p>If you&rsquo;ve written your own, I highly recommend comparing to both my version and the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce#Polyfill" target="_blank">MDN Polyfill version</a>.  What&rsquo;s different? What choices did you make that are different?</p>
 
                 </section>
             </article>
@@ -239,6 +239,10 @@ console.log(reduce([1, 2, 3], (total, current) =&gt; total + current, 10));
         <i class="fa fa-home"></i>
     </a>
     
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
 
 
 </div>
@@ -246,11 +250,8 @@ console.log(reduce([1, 2, 3], (total, current) =&gt; total + current, 10));
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+       © Copyright 2019
     
-    </p>
-    <p class="small">
-        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
     </p>
 </footer>
 

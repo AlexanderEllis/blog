@@ -61,7 +61,7 @@
 
 <p>I&rsquo;m a fan of small toy projects that have the sole purpose of demonstrating a concept.  This is a small project that demonstrates how a cache server works.</p>
 
-<p>I think it&rsquo;s important to balance toy projects with getting exposure to production-level code.  While this project has been helpful for understanding the idea, an open source project like <a href="https://github.com/squid-cache/squid">Squid-Cache</a> is definitely on my reading list!</p>
+<p>I think it&rsquo;s important to balance toy projects with getting exposure to production-level code.  While this project has been helpful for understanding the idea, an open source project like <a href="https://github.com/squid-cache/squid" target="_blank">Squid-Cache</a> is definitely on my reading list!</p>
 
 <p>At the very simplest level, an HTTP server responds to requests.  Let&rsquo;s take a look at a simple server that can respond to GET requests:</p>
 
@@ -131,7 +131,7 @@
 
 <p><img src="caching-timeline.JPG" alt="Fetching item from cache server, timeline" /></p>
 
-<p>This isn&rsquo;t too bad! Let&rsquo;s build a very simple version in python.  We&rsquo;ll use <a href="http://joaoventura.net/blog/2017/python-webserver/">joaoventura&rsquo;s simple python webserver</a> as our simple http server and a template for our cache server.</p>
+<p>This isn&rsquo;t too bad! Let&rsquo;s build a very simple version in python.  We&rsquo;ll use <a href="http://joaoventura.net/blog/2017/python-webserver/" target="_blank">joaoventura&rsquo;s simple python webserver</a> as our simple http server and a template for our cache server.</p>
 
 <p>Here&rsquo;s how we can set the server up to abstract away the caching in the main process:</p>
 
@@ -278,7 +278,7 @@ def main():
 
 <p>How could we improve this further? First, our simple server only responds to GET requests, and it doesn&rsquo;t pay any attention to cache-related headers.  Furthermore, there&rsquo;s no expiration date for the files it saves, so the <code>index.html</code> it saves today would be served from the cache forever. For showing the main functionality, this works, and we can add more complexity in the future.</p>
 
-<p><a href="https://github.com/AlexanderEllis/simple-cache">Here&rsquo;s the full source code on GitHub.</a></p>
+<p><a href="https://github.com/AlexanderEllis/simple-cache" target="_blank">Here&rsquo;s the full source code on GitHub.</a></p>
 
                 </section>
             </article>
@@ -303,6 +303,10 @@ def main():
         <i class="fa fa-home"></i>
     </a>
     
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
 
 
 </div>
@@ -310,11 +314,8 @@ def main():
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Alex Ellis
+       © Copyright 2019
     
-    </p>
-    <p class="small">
-        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
     </p>
 </footer>
 
