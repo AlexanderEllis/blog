@@ -6,10 +6,20 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 27 Aug 2018 23:52:22 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 09 Feb 2019 00:12:00 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MapReduce in Simple Language</title>
+      <link>https://alexanderell.is/posts/simple-map-reduce/</link>
+      <pubDate>Sat, 09 Feb 2019 00:12:00 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/simple-map-reduce/</guid>
+      <description>MapReduce Explained Using the Ten Hundred Words People Use Most Often MapReduce is a good way to take a big job that would take a long time on one computer and break it up into smaller jobs that can be done by simple computers.
+If you can break down a big job into smaller jobs, you can run the smaller jobs on many simple computers. If you have a lot of simple computers, you can do a lot of the smaller jobs at the same time, and this can make your job go a lot faster.</description>
+    </item>
     
     <item>
       <title>Good Design: Double Sided Park Signs</title>
