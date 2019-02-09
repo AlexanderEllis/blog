@@ -18,7 +18,7 @@ MapReduce is one way to do this.  It does the planning and the sending for you, 
 
 ### The Cat Saw The Dog
 
-What if we were given a book and we had to count the number of times each word appears?  This a good problem for MapReduce because doing it by hand would be very boring, and although a single computer could probably do it, if the book is really long it could take a long time.
+What if we were given a book and we had to count the number of times each word appears?  What if we had a lot of books to count words in?  This a good problem for MapReduce because doing it by hand would be very boring, and although a single computer could probably do it, if we had a big number of books to look through, it could take a long time.
 
 Let's say we have a very simple book that is made up only of the words **"the cat saw the dog."**  Counting the words would give us this:
 
@@ -59,13 +59,13 @@ Let's see our reduce for a pile of two "the" cards (really, two "1" counts):
 ('the', [1, 1]) -> ('the', 2)
 ```
 
-Once we had the counts, we could just write them all down and we'd be done.  This would let us break up the job and count words in a big book really fast.
+Once we had the counts, we could just write them all down and we'd be done.  This would let us break up the job and count words in a lot of books really fast.
 
 ***
 
 ### Looking for things
 
-The word counting is not too exciting, and we could do even more interesting things.  Let's look at how we could do something like searching for every time a word appears in a book.  This is another job that could take a while on one computer for a big book; let's give it to the simple computers!
+The word counting is not too exciting, and we could do even more interesting things.  Let's look at how we could do something like searching for every time a word appears in a book.  This is another job that could take a while on one computer for a big number of books; let's give it to the simple computers!
 
 Let's look through this book:
 
@@ -95,7 +95,7 @@ Reduce: Take in a line and just return the line.
 
 What would we get at the end?  Since our map would only give out the line if the word appears in the line, only lines with that word would be sent to the reduce.  Our reduce just gives what it gets, so we'd end up with the lines that have the word in them.
 
-This would allow us to break down a book into many lines and give them to many computers.  If we have a lot of computers, we could do this very quickly!
+This would allow us to break down a large number of books into many lines and give them to many computers.  If we have a lot of computers, we could do this very quickly!
 
 ***
 
@@ -132,7 +132,7 @@ This would let us count it all very fast.
 
 ### Why is this good?
 
-Showing simple jobs for this can be boring, since they wouldn't be hard to do even by hand.  It gets interesting when you're working with big, big numbers.  What if there were more lines of the book?  What if there were ten hundred?  Ten hundred times more than that?  What about ten hundred times more than *that*? And ten times more?  That's more than there are people on Earth.  My computer does a lot for me, but it would take a long time to look through that many things!
+Showing simple jobs for this can be boring, since they wouldn't be hard to do even by hand.  It gets interesting when you're working with big, big numbers.  What if there were more lines of the book?  What if there were a hundred books?  What if there were ten hundred?  Ten hundred times more than that?  What about ten hundred times more than *that*? And ten times more?  That's more books than there are people on Earth.  My computer does a lot for me, but it would take a long time to look through that many things!
 
 If you're working with a very large number of things, that's when breaking it up and giving it to the smaller computers works the best.  MapReduce does the hard parts and lets you do just the two simple map and reduce parts, which lets you work on what you want to do and not worry about how exactly it gets done.
 
