@@ -1,6 +1,6 @@
 ---
 title: "MapReduce in Simple Language"
-date: 2019-02-09T00:12:00-05:00
+date: 2019-02-09T00:00:00-05:00
 draft: false
 ---
 

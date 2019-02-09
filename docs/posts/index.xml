@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 09 Feb 2019 00:12:00 -0500</lastBuildDate>
+    <lastBuildDate>Sat, 09 Feb 2019 00:00:00 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>MapReduce in Simple Language</title>
       <link>https://alexanderell.is/posts/simple-map-reduce/</link>
-      <pubDate>Sat, 09 Feb 2019 00:12:00 -0500</pubDate>
+      <pubDate>Sat, 09 Feb 2019 00:00:00 -0500</pubDate>
       
       <guid>https://alexanderell.is/posts/simple-map-reduce/</guid>
       <description>MapReduce Explained Using the Ten Hundred Words People Use Most Often MapReduce is a good way to take a big job that would take a long time on one computer and break it up into smaller jobs that can be done by simple computers.
