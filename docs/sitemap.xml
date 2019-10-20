@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderell.is/posts/clickbait-snail-mail/</loc>
+    <lastmod>2019-10-19T20:47:19-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderell.is/posts/simple-map-reduce/</loc>
     <lastmod>2019-02-09T00:00:00-05:00</lastmod>
   </url>
@@ -90,7 +95,7 @@
   
   <url>
     <loc>https://alexanderell.is/</loc>
-    <lastmod>2019-02-09T00:00:00-05:00</lastmod>
+    <lastmod>2019-10-19T20:47:19-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -107,7 +112,7 @@
   
   <url>
     <loc>https://alexanderell.is/tags/design-in-the-wild/</loc>
-    <lastmod>2018-08-27T23:52:22-04:00</lastmod>
+    <lastmod>2019-10-19T20:47:19-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -137,7 +142,7 @@
   
   <url>
     <loc>https://alexanderell.is/posts/</loc>
-    <lastmod>2019-02-09T00:00:00-05:00</lastmod>
+    <lastmod>2019-10-19T20:47:19-04:00</lastmod>
     <priority>0</priority>
   </url>
   

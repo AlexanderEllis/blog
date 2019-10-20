@@ -3,7 +3,7 @@ title: "Clickbait Snail Mail"
 subtitle: "How companies try to get me to open the mail they send"
 tags: ["Design in the wild"]
 date: 2019-10-19T20:47:19-04:00
-draft: true
+draft: false
 ---
 
 Junk mail is so interesting at its odd intersection between design, advertising, and psychology.
