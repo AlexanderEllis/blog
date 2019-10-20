@@ -8,6 +8,9 @@
                     <h1>
                         {{ .Title }}
                     </h1>
+                    <h2>
+                        {{ .Params.Subtitle }}
+                    </h2>
                     <h2 class="headline">
                     {{ .Date.Format "Jan 2, 2006" }}
                     · {{ if lt 1 .WordCount }}{{ .WordCount }} words{{ else }}{{ .WordCount }} word{{ end }}

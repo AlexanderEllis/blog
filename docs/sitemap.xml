@@ -63,16 +63,6 @@
   </url>
   
   <url>
-    <loc>https://alexanderell.is/posts/shipping-breadth-first-growth/</loc>
-    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/posts/spaced-repetition-motivation/</loc>
-    <lastmod>2017-08-13T20:47:45-04:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://alexanderell.is/posts/arduino-project-3/</loc>
     <lastmod>2017-08-13T15:16:13-04:00</lastmod>
   </url>
@@ -134,18 +124,6 @@
   </url>
   
   <url>
-    <loc>https://alexanderell.is/tags/just-shipping/</loc>
-    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/mvp/</loc>
-    <lastmod>2017-10-29T17:30:20-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://alexanderell.is/tags/node/</loc>
     <lastmod>2018-01-01T09:59:52-05:00</lastmod>
     <priority>0</priority>
@@ -166,12 +144,6 @@
   <url>
     <loc>https://alexanderell.is/tags/python/</loc>
     <lastmod>2018-05-26T10:24:05-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/studying/</loc>
-    <lastmod>2017-08-13T20:47:45-04:00</lastmod>
     <priority>0</priority>
   </url>
   
