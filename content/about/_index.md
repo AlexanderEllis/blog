@@ -16,6 +16,6 @@ I used to work at [Giant Otter Technologies](https://www.giantotter.com), a very
 
 I'm on [GitHub](https://github.com/AlexanderEllis), twitter (infrequently) [@lxmkls](https://twitter.com/lxmkls), and [Hacker News](https://news.ycombinator.com/user?id=otras).
 
-This blog is powered by [Hugo](http://www.gohugo.io/) and runs on GitHub pages. Theme is a modified version of Cactus Plus by [nodejh](https://github.com/nodejh/hugo-theme-cactus-plus).
+This blog is powered by [Hugo](http://www.gohugo.io/) and runs on GitHub pages ([repo](https://github.com/AlexanderEllis/blog)). Theme is a modified version of Cactus Plus by [nodejh](https://github.com/nodejh/hugo-theme-cactus-plus).
 
 The opinions stated here are my own, not those of my company.
