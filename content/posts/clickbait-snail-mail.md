@@ -1,7 +1,7 @@
 ---
 title: "Clickbait Snail Mail"
 subtitle: "How companies try to get me to open the mail they send"
-tags: ["Design in the wild"]
+tags: ["Design in the wild", "Design"]
 date: 2019-10-19T20:47:19-04:00
 draft: false
 ---
