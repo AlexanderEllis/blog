@@ -6,10 +6,26 @@
     <description>Recent content in Design in the Wild on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 19 Oct 2019 20:47:19 -0400</lastBuildDate>
+    <lastBuildDate>Thu, 24 Oct 2019 20:40:52 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/tags/design-in-the-wild/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dark pattern for autoplaying videos: clickjacking pause</title>
+      <link>https://alexanderell.is/posts/intercept-pause/</link>
+      <pubDate>Thu, 24 Oct 2019 20:40:52 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/intercept-pause/</guid>
+      <description>I recently saw a common clickjacking dark pattern when trying to pause a video the other day.
+On a Bloomberg news autoplaying video, the sound is initially muted.
+
+
+Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that&amp;rsquo;s probably what we have here:
+
+
+What&amp;rsquo;s interesting is that the control panel (pause, play, scrubbing, etc.</description>
+    </item>
     
     <item>
       <title>Clickbait Snail Mail</title>

@@ -2,7 +2,7 @@
 title: "Dark pattern for autoplaying videos: clickjacking pause"
 date: 2019-10-24T20:40:52-04:00
 tags: ["UX", "Design in the wild"]
-draft: true
+draft: false
 ---
 
 I recently saw a common [clickjacking](https://en.wikipedia.org/wiki/Clickjacking) dark pattern when trying to pause a video the other day.
