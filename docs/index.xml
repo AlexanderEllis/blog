@@ -6,10 +6,20 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 24 Oct 2019 20:40:52 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 16 Nov 2019 21:43:06 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Harnessing the Power of Shower Thoughts</title>
+      <link>https://alexanderell.is/posts/trust-in-your-unconscious/</link>
+      <pubDate>Sat, 16 Nov 2019 21:43:06 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/trust-in-your-unconscious/</guid>
+      <description>One of the best ways to learn and come up with new ideas is to focus intensely on a problem, then let your mind wander. I&amp;rsquo;ve enjoyed doing this when problem solving and learning, and recently I&amp;rsquo;ve been thinking about how weird it is to build trust in your unconscious to do the work for you, especially when it comes to technical work.
+Letting your mind focus and letting your mind wander The first recommendation I have for anyone taking a meta look at learning is Barbara Oakley&amp;rsquo;s Learning How To Learn.</description>
+    </item>
     
     <item>
       <title>Dark pattern for autoplaying videos: clickjacking pause</title>
