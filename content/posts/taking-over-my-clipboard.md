@@ -82,7 +82,7 @@ Interestingly, this function must run before the copy event is fully bubbled up.
 
 ## This is bad
 
-This falls into the category of not respecting the user's actions. Attribution is important, but changing things outside of what the site should be changng is a bad pattern. It's like smooth scrolling, where the page commandeers the user's scroll actions. I'm strongly of the opinion that you shouldn't do things behind the scenes that diverge from the user's normal expectations.
+This falls into the category of not respecting the user's actions. Attribution is important, but changing things outside of what the site should be changing is a bad pattern. It's like smooth scrolling, where the page commandeers the user's scroll actions. I'm strongly of the opinion that you shouldn't do things behind the scenes that diverge from the user's normal expectations.
 
 One other thing I'm also curious about is the validity of the copyright for small text selections. I don't know much about copyrights, but I'd be curious if an atomic selection from a creative work (like a single character, "—") would fall under the same copyright as the whole work.
 
