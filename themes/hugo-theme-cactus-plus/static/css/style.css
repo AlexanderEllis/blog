@@ -117,7 +117,7 @@ html, body {
 
 body {
     font: 16px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #666;
+    color: #222;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
@@ -131,7 +131,7 @@ h1 {
 
 h2 {
     font: italic 19px/1.3em Georgia, serif;
-    color: #666;
+    color: #222;
 }
 
 .profile #wrapper {
@@ -163,7 +163,7 @@ h2 {
 .profile h2 {
     font-size: 20px;
     font-weight: 300;
-    color: #666;
+    color: #222;
     margin-top: 10px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-style: normal;
@@ -309,7 +309,7 @@ em, i {
 .description {
     float: right;
     font: italic 14px/1.4em Georgia, serif;
-    color: #aaa;
+    color: #333;
 }
 
 .home h1 {
@@ -321,7 +321,7 @@ em, i {
 
 .home h2 {
     font: italic 19px/1.3em Georgia, serif;
-    color: #666;
+    color: #222;
 }
 
 .post header {
@@ -362,7 +362,7 @@ em, i {
 
 #post-list h2 {
     font: normal 17px/1.5em "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #aaa;
+    color: #333;
     max-width: 400px;
     margin-top: 2px;
 }
@@ -389,12 +389,12 @@ h5 {
 h6 {
     font-size: 13px;
     font-weight: bold;
-    color: #666;
+    color: #222;
     margin-bottom: 6px;
 }
 
 p.small {
-    color: #666;
+    color: #222;
     font-size: 14px;
     line-height: 1.5;
     display: block;
@@ -504,7 +504,7 @@ Post List
     position: relative;
     top: 1px;
     font: 300 17px/1.8 "Helvetica Neue", helvetica, Arial, sans-serif;
-    color: #666;
+    color: #222;
 }
 
 #post-list-footer {
@@ -562,7 +562,7 @@ Post List
 }
 
 #post-meta div span {
-    color: #aaa;
+    color: #333;
     font-weight: 500;
     display: block;
 }
@@ -676,7 +676,7 @@ h2.month {
     position: relative;
     top: 1px;
     font: 300 17px/1.7 "Helvetica Neue", helvetica, Arial, sans-serif;
-    color: #666;
+    color: #222;
 }
 
 #archive-list li a:hover, #archive-list li:hover .dates {
@@ -798,7 +798,7 @@ h2.month {
     display: inline-block;
     width: 60px;
     margin: 0;
-    color: #8a8a8a;
+    color: #222;
 }
 
 @media screen and (max-width: 768px) {
@@ -811,7 +811,7 @@ h2.month {
 }
 
 .archive .post-link {
-    color: #8a8a8a;
+    color: #222;
 }
 
 .archive .post-item:hover {
@@ -838,7 +838,7 @@ h2.month {
 }
 
 a.symbol {
-    color: #666;
+    color: #222;
     font-size: 2rem;
     text-decoration: none;
     margin-right: 0.3rem;
@@ -920,7 +920,7 @@ a.symbol:hover {
 }
 
 .page-tags .tags a {
-    color: #666;
+    color: #222;
 }
 
 .page-tags .tags:hover a {
