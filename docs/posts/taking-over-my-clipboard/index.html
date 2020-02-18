@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     Feb 17, 2020
-                    · 667 words
+                    · 668 words
                     · 4 minutes read
                       <span class="tags">
                             <a href="https://alexanderell.is/tags/javascript">Javascript</a>, <a href="https://alexanderell.is/tags/ux">UX</a>
@@ -131,7 +131,7 @@ document.addEventListener('copy', addLink);
 
 <p>It then adds this function as a listener on the copy event, so every time the browser hears that you&rsquo;re copying, this is run first. The magic is from <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection" target="_blank"><code>window.getSelection()</code></a>, which gives access to the string that the user has selected. It then updates this selection with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Selection/selectAllChildren" target="_blank"><code>selection.selectAllChildren</code></a>, which updates the selected text to be the text in the newly created div.</p>
 
-<p>Now that I know how it&rsquo;s done, another thing makes sense—when I highlight text and hit copy, the highlight goes away. This is because the focus and selection has shifted to that other div.</p>
+<p>Now that I know how it&rsquo;s done, another unusual thing makes sense—when I highlight text and hit copy, the highlight goes away. This is because the focus and selection has shifted to that other div.</p>
 
 <p><img src="highlight-disappears.gif" alt="GIF of text highlighting going away after I hit copy" /></p>
 

@@ -74,7 +74,7 @@ This creates a function *addLink* that does the following:
 
 It then adds this function as a listener on the copy event, so every time the browser hears that you're copying, this is run first. The magic is from [`window.getSelection()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection), which gives access to the string that the user has selected. It then updates this selection with [`selection.selectAllChildren`](https://developer.mozilla.org/en-US/docs/Web/API/Selection/selectAllChildren), which updates the selected text to be the text in the newly created div.
 
-Now that I know how it's done, another thing makes sense—when I highlight text and hit copy, the highlight goes away. This is because the focus and selection has shifted to that other div.
+Now that I know how it's done, another unusual thing makes sense—when I highlight text and hit copy, the highlight goes away. This is because the focus and selection has shifted to that other div.
 
 ![GIF of text highlighting going away after I hit copy](highlight-disappears.gif)
 
