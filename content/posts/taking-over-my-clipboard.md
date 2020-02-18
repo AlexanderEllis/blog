@@ -28,7 +28,7 @@ Immediately suspicious. It looks like this site is overriding the copied text so
 
 Two of the good things about JavaScript are that it runs on your computer and it's easily inspectable. I've worked with JavaScript quite a bit, but I've never modified a user's copy command. Out of curiousity I inspected the page to see if I could figure how they were doing this.
 
-My first instinct was that they were using some genericly named "copy-copyright" library somewhere, so I inspected the HTML. JavaScript tags usually come at the end of the page, so straight to the bottom.
+My first instinct was that they were using some generically named "copy-copyright" library somewhere, so I inspected the HTML. JavaScript tags usually come at the end of the page, so straight to the bottom.
 
 ![Screenshot of the HTML of site with the JS script visible](script-tag.png)
 
