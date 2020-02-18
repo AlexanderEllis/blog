@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     Feb 17, 2020
-                    · 668 words
+                    · 672 words
                     · 4 minutes read
                       <span class="tags">
                             <a href="https://alexanderell.is/tags/javascript">Javascript</a>, <a href="https://alexanderell.is/tags/ux">UX</a>
@@ -135,17 +135,15 @@ document.addEventListener('copy', addLink);
 
 <p><img src="highlight-disappears.gif" alt="GIF of text highlighting going away after I hit copy" /></p>
 
-<p>Interestingly this function must run before the copy event is bubbled up fully. This means that it&rsquo;s intercepting the copy event, modifying the text that&rsquo;s selected, and passing it on, like a man-in-the-middle attack against your clipboard.</p>
+<p>Interestingly, this function must run before the copy event is fully bubbled up. This means that it&rsquo;s intercepting the copy event, modifying the text that&rsquo;s selected, and passing it on, like a man-in-the-middle attack against your clipboard.</p>
 
 <h2 id="this-is-bad">This is bad</h2>
 
-<p>This falls into the category of not respecting the user&rsquo;s actions. Attribution is important, but changing things outside of what the site should change is a bad pattern. It&rsquo;s like smooth scrolling, where the page commandeers the user&rsquo;s scroll actions. I&rsquo;m strongly of the opinion that you shouldn&rsquo;t do things behind the scenes that diverge from the normal user&rsquo;s expectations.</p>
+<p>This falls into the category of not respecting the user&rsquo;s actions. Attribution is important, but changing things outside of what the site should be changng is a bad pattern. It&rsquo;s like smooth scrolling, where the page commandeers the user&rsquo;s scroll actions. I&rsquo;m strongly of the opinion that you shouldn&rsquo;t do things behind the scenes that diverge from the user&rsquo;s normal expectations.</p>
 
-<p>One other thing I&rsquo;m curious about is the validity of the copyright for small text selections. I don&rsquo;t know much about copyright, but I&rsquo;d be curious if an atomic selection from a creative work (like a single character, &ldquo;—&rdquo;) would fall under the same copyright as the whole work.</p>
+<p>One other thing I&rsquo;m also curious about is the validity of the copyright for small text selections. I don&rsquo;t know much about copyrights, but I&rsquo;d be curious if an atomic selection from a creative work (like a single character, &ldquo;—&rdquo;) would fall under the same copyright as the whole work.</p>
 
-<h3 id="maybe-copy-paste-isn-t-so-bad">Maybe copy/paste isn&rsquo;t so bad?</h3>
-
-<p>Ironically, a little reverse searching reveals that this code was copied verbatim from <a href="https://stackoverflow.com/questions/2026335/how-to-add-extra-info-to-copied-web-text?rq=1" target="_blank">this StackOverflow post</a> (see &ldquo;Manipulating the selection&rdquo; from the top answer).</p>
+<p>Ironically, a little reverse searching reveals that this code was copied verbatim without attribution from <a href="https://stackoverflow.com/questions/2026335/how-to-add-extra-info-to-copied-web-text?rq=1" target="_blank">this StackOverflow post</a> (see &ldquo;Manipulating the selection&rdquo; from the top answer). Maybe copy/paste isn&rsquo;t so bad?</p>
 
                 </section>
             </article>

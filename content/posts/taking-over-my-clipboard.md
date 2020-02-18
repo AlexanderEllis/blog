@@ -78,14 +78,12 @@ Now that I know how it's done, another unusual thing makes sense—when I highli
 
 ![GIF of text highlighting going away after I hit copy](highlight-disappears.gif)
 
-Interestingly this function must run before the copy event is bubbled up fully. This means that it's intercepting the copy event, modifying the text that's selected, and passing it on, like a man-in-the-middle attack against your clipboard.
+Interestingly, this function must run before the copy event is fully bubbled up. This means that it's intercepting the copy event, modifying the text that's selected, and passing it on, like a man-in-the-middle attack against your clipboard.
 
 ## This is bad
 
-This falls into the category of not respecting the user's actions. Attribution is important, but changing things outside of what the site should change is a bad pattern. It's like smooth scrolling, where the page commandeers the user's scroll actions. I'm strongly of the opinion that you shouldn't do things behind the scenes that diverge from the normal user's expectations.
+This falls into the category of not respecting the user's actions. Attribution is important, but changing things outside of what the site should be changng is a bad pattern. It's like smooth scrolling, where the page commandeers the user's scroll actions. I'm strongly of the opinion that you shouldn't do things behind the scenes that diverge from the user's normal expectations.
 
-One other thing I'm curious about is the validity of the copyright for small text selections. I don't know much about copyright, but I'd be curious if an atomic selection from a creative work (like a single character, "—") would fall under the same copyright as the whole work.
+One other thing I'm also curious about is the validity of the copyright for small text selections. I don't know much about copyrights, but I'd be curious if an atomic selection from a creative work (like a single character, "—") would fall under the same copyright as the whole work.
 
-### Maybe copy/paste isn't so bad?
-
-Ironically, a little reverse searching reveals that this code was copied verbatim from [this StackOverflow post](https://stackoverflow.com/questions/2026335/how-to-add-extra-info-to-copied-web-text?rq=1) (see "Manipulating the selection" from the top answer).
+Ironically, a little reverse searching reveals that this code was copied verbatim without attribution from [this StackOverflow post](https://stackoverflow.com/questions/2026335/how-to-add-extra-info-to-copied-web-text?rq=1) (see "Manipulating the selection" from the top answer). Maybe copy/paste isn't so bad?
