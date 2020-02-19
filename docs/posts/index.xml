@@ -40,8 +40,7 @@ Letting your mind focus and letting your mind wander The first recommendation I 
       <guid>https://alexanderell.is/posts/intercept-pause/</guid>
       <description>I recently saw a common clickjacking dark pattern when trying to pause a video the other day.
 On a Bloomberg news autoplaying video, the sound is initially muted.
-If you try to click pause, your click will instead be intercepted by that covering layer and unmute the video. Only then is the control panel clickable.
- User action: mouse click on pause button Expected result: pause video Actual result: unmute video  Classic misdirection.</description>
+Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that&#39;s probably what we have here: What&#39;s interesting is that the control panel (pause, play, scrubbing, etc.</description>
     </item>
     
     <item>
@@ -82,7 +81,7 @@ There are a number of signs around the reservoir that tell you to not swim in th
       
       <guid>https://alexanderell.is/posts/check-valve/</guid>
       <description>Exploring a simple machine I took apart a simple spray bottle to see how it kept fluid flowing only in one direction from the reservoir to the nozzle. It does so with simple check valves made of two pieces of plastic, a spring, and a small sphere. It&amp;rsquo;s a simple way to solve a tricky problem.
-One way flow It&amp;rsquo;s often useful to restrict flow to only one direction. One simple use case is in a spray bottle.</description>
+ *A simple spray bottle*  One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.</description>
     </item>
     
     <item>
@@ -197,7 +196,7 @@ Here&amp;rsquo;s what my circuit looked like:</description>
       <guid>https://alexanderell.is/posts/noticing-ui-shazam/</guid>
       <description>Shazam&amp;rsquo;s loading screen I was pleasantly surprised by Shazam&amp;rsquo;s iPhone app loading screen, and I took a look into what makes it stand out.
 Here&amp;rsquo;s what it looked like:
-This felt different, and it made me look at the experience of opening apps. I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn&amp;rsquo;t like other apps.
+ This felt different, and it made me look at the experience of opening apps. I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn&amp;rsquo;t like other apps.
 Loading&amp;hellip; A loading screen tells a user that the app or other result is not ready yet.</description>
     </item>
     

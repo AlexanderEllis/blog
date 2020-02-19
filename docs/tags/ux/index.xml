@@ -30,8 +30,7 @@ I&amp;rsquo;m a sucker for a good copy and paste, so I selected the em dash char
       <guid>https://alexanderell.is/posts/intercept-pause/</guid>
       <description>I recently saw a common clickjacking dark pattern when trying to pause a video the other day.
 On a Bloomberg news autoplaying video, the sound is initially muted.
-If you try to click pause, your click will instead be intercepted by that covering layer and unmute the video. Only then is the control panel clickable.
- User action: mouse click on pause button Expected result: pause video Actual result: unmute video  Classic misdirection.</description>
+Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that&#39;s probably what we have here: What&#39;s interesting is that the control panel (pause, play, scrubbing, etc.</description>
     </item>
     
   </channel>

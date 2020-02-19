@@ -7,11 +7,11 @@ draft: false
 
 ### Shazam's loading screen
 
-I was pleasantly surprised by Shazam's iPhone app loading screen, and I took a look into what makes it stand out.  
+I was pleasantly surprised by Shazam's iPhone app loading screen, and I took a look into what makes it stand out.
 
 Here's what it looked like:
 
-![Example image](shazam-loading.gif)
+{{< video webmSrc="shazam-loading.webm" mp4Src="shazam-loading.mp4" >}}
 
 This felt different, and it made me look at the experience of opening apps.  I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn't like other apps.
 

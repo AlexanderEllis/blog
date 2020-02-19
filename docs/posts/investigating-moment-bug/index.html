@@ -87,7 +87,7 @@ Please resolve this issue.
 Thank you.
 </code></pre><p>This looked like something I could investigate!  I wasn&rsquo;t sure if I could completely fix it or if it was a good first bug, but I decided to see what I could do with it.</p>
 <p>I started by reproducing the issue on a jsfiddle:</p>
-<!-- raw HTML omitted -->
+<script async src="//jsfiddle.net/efe9L98p/1/embed/"></script>
 <p>If you click on Result and check your console, you&rsquo;ll see the TypeError.  This was good to confirm that the error existed.  I next confirmed the error appeared for <code>relativeTime()</code> and for <code>week()</code>.  Both of those appeared as well, so I was confident the error was real.  I also checked the linked Moment docs and confirmed that the method signatures at that link were indeed <code>localeData.longDateFormat()</code>, <code>localeData.relativeTime()</code>, and <code>localeData.week()</code>.</p>
 <p>(At this point, how would you debug further?  I missed a few things here that seem obvious in retrospect and went on a longer route, and I&rsquo;ll review the different paths towards the end.)</p>
 <p>I then forked and cloned the Moment repository so that I could have a local copy.  This let me dig around in the code and search for specific things.</p>
@@ -319,7 +319,7 @@ export function weekOfYear(mom, dow, doy) {
 ...
 </code></pre><p>So here, we see that the <code>mom</code> being passed in is used in the first line, where it is accessed with <code>mom.year()</code>. This means that when we call <code>localeData.week()</code> without an argument, <code>week</code>'s <code>mom</code> parameter is undefined, so that when it passes it to <code>weekOfYear</code>, <code>weekOfYear</code> calls <code>mom.year()</code>, which is really <code>(undefined).year()</code>, which causes the <code>Uncaught TypeError: Cannot read property 'year' of undefined</code>.  This makes sense!  We&rsquo;re missing the argument in <code>week()</code>.</p>
 <p>It took me longer than it should have to realize that <code>mom</code> meant a Moment object.  I confirmed this in the jsfiddle:</p>
-<!-- raw HTML omitted -->
+<script async src="//jsfiddle.net/efe9L98p/2/embed/"></script>
 <p>Clicking on result should successfully alert <code>1</code>, which makes sense.  It&rsquo;s current January 6 for me, and in the default locale, <code>en</code>, this is the first week.  This will change accordingly if you&rsquo;re reading this in a later week of the year.</p>
 <p>I investigated <code>longDateFormat()</code> and <code>relativeTime()</code> in a similar way (left as an exercise for the reader), and I found that <code>longDateFormat</code> should have a date format string passed to it (like <code>longDateFormat(String)</code>), and <code>relativeTime</code> should be called with a number, a withoutSuffix boolean, a key string, and an isFuture boolean (like <code>relativeTime(Number, Boolean, String, Boolean)</code>).</p>
 <p>Armed with this new knowledge, I returned to the GitHub issue and wrote up a response detailing that it was an error in the docs, not an error in the code, and that I would be more than happy to update the docs.  Right before I hit submit, I checked the docs one more time.  To my dismay, I noticed the following information a couple of mouse scrolls below the method signatures:</p>

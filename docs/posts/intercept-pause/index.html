@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     Oct 24, 2019
-                    · 85 words
+                    · 154 words
                     · 1 minute read
                       <span class="tags">
                             <a href="https://alexanderell.is/tags/ux">UX</a>, <a href="https://alexanderell.is/tags/design-in-the-wild">Design in the wild</a>
@@ -62,12 +62,22 @@
                 <section id="post-body">
                     <p>I recently saw a common <a href="https://en.wikipedia.org/wiki/Clickjacking">clickjacking</a> dark pattern when trying to pause a video the other day.</p>
 <p>On a Bloomberg news autoplaying video, the sound is initially muted.</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<br>
+<p><img src="autoplay-video.png" alt="Screenshot of autoplaying Bloomberg video"></p>
+<br>
+Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that's probably what we have here:
+<br>
+<p><img src="overlay.png" alt="Screenshot of devtools focusing on video overlay element"></p>
+<br>
+What's interesting is that the control panel (pause, play, scrubbing, etc.) at the bottom of the video is initially shown for a few seconds. This makes it look like you can click it.
 <p>If you try to click pause, your click will instead be intercepted by that covering layer and unmute the video. Only then is the control panel clickable.</p>
-<!-- raw HTML omitted -->
+<br>
+<p><video autoplay loop muted playsinline>
+  <source src="hidden-pause.webm"  type="video/webm">
+  <source src="hidden-pause.mp4"  type="video/mp4">
+</video>
+
+<br></p>
 <ul>
 <li><strong>User action</strong>: mouse click on pause button</li>
 <li><strong>Expected result</strong>: pause video</li>

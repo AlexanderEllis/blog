@@ -10,12 +10,14 @@ I recently saw a common [clickjacking](https://en.wikipedia.org/wiki/Clickjackin
 On a Bloomberg news autoplaying video, the sound is initially muted.
 
 <br>
+
 ![Screenshot of autoplaying Bloomberg video](autoplay-video.png)
 
 <br>
 Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that's probably what we have here:
 
 <br>
+
 ![Screenshot of devtools focusing on video overlay element](overlay.png)
 
 <br>
@@ -24,7 +26,8 @@ What's interesting is that the control panel (pause, play, scrubbing, etc.) at t
 If you try to click pause, your click will instead be intercepted by that covering layer and unmute the video. Only then is the control panel clickable.
 
 <br>
-![Video of Bloomberg site clickjacking pause button](hidden-pause.gif)
+
+{{< video webmSrc="hidden-pause.webm" mp4Src="hidden-pause.mp4" >}}
 <br>
 
 - **User action**: mouse click on pause button

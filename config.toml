@@ -69,3 +69,7 @@ publishDir = "docs"
   github-square = "https://github.com/alexanderellis"
   twitter-square = "https://twitter.com/lxmkls"
   home = "https://alexanderell.is"
+
+  [markup.goldmark.renderer]
+  unsafe= true
+
