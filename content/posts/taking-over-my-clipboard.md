@@ -76,7 +76,7 @@ It then adds this function as a listener on the copy event, so every time the br
 
 Now that I know how it's done, another unusual thing makes sense—when I highlight text and hit copy, the highlight goes away. This is because the focus and selection has shifted to that other div.
 
-![GIF of text highlighting going away after I hit copy](highlight-disappears.gif)
+{{< video webmSrc="highlight-disappears.webm" mp4Src="highlight-disappears.mp4" >}}
 
 Interestingly, this function must run before the copy event is fully bubbled up. This means that it's intercepting the copy event, modifying the text that's selected, and passing it on, like a man-in-the-middle attack against your clipboard.
 

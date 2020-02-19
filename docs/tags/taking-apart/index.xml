@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Taking Apart on Caffeinspiration</title>
+    <title>taking apart on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/taking-apart/</link>
-    <description>Recent content in Taking Apart on Caffeinspiration</description>
+    <description>Recent content in taking apart on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 08 Jun 2018 10:27:44 -0400</lastBuildDate>
@@ -18,8 +18,7 @@
       
       <guid>https://alexanderell.is/posts/check-valve/</guid>
       <description>Exploring a simple machine I took apart a simple spray bottle to see how it kept fluid flowing only in one direction from the reservoir to the nozzle. It does so with simple check valves made of two pieces of plastic, a spring, and a small sphere. It&amp;rsquo;s a simple way to solve a tricky problem.
- A simple spray bottle 
-One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.</description>
+One way flow It&amp;rsquo;s often useful to restrict flow to only one direction. One simple use case is in a spray bottle.</description>
     </item>
     
   </channel>

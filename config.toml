@@ -62,7 +62,7 @@ publishDir = "docs"
   socialIconStyle = ""
 
   # This makes absolute links open in new tabs
-  [blackfriday] hrefTargetBlank = true
+  hrefTargetBlank = true
 
 # Add additional social link entries underneath
 [social]

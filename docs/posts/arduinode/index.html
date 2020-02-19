@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.47.1" />
+		<meta name="generator" content="Hugo 0.64.1" />
 		<title>Connecting Arduino with a Node Server &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -60,23 +60,14 @@
                 </header>
                 
                 <section id="post-body">
-                    
-
-<h3 id="arduinode">Arduinode</h3>
-
+                    <h3 id="arduinode">Arduinode</h3>
 <p>I&rsquo;ve been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet.  Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.</p>
-
 <p>Since I&rsquo;m most comfortable with JavaScript, I decided to create a simple connection between the Arduino and a Node server.  Since a classic <code>Hello, World</code> Arduino project is to light up an LED, I decided I would make a very basic program that would send a button press from the Arduino to the server, which would then send an action response back to the Arduino to turn an LED on or off.</p>
-
 <p>Here&rsquo;s what the schematic looks like:
-<img src="schematic.png" alt="Arduino circuitry" /></p>
-
-<p>After a little research, I came across the <a href="https://github.com/node-serialport/node-serialport" target="_blank">serialport </a>package, which would allow a simple connection between the server and the Arduino.  Easy enough!</p>
-
+<img src="schematic.png" alt="Arduino circuitry"></p>
+<p>After a little research, I came across the <a href="https://github.com/node-serialport/node-serialport">serialport </a>package, which would allow a simple connection between the server and the Arduino.  Easy enough!</p>
 <h4 id="hello-arduino">Hello, Arduino</h4>
-
 <p>My first test was to get an LED shining from a message from the Node server.  I decided to keep it very simple and only send 1 byte at a time, either a <code>1</code> or a <code>0</code>.  For now, the server would send a <code>1</code>, and the Arduino would turn the LED on.  I started with very basic Arduino code:</p>
-
 <pre><code>/*
   project.ino
 */
@@ -104,10 +95,7 @@ void loop() {
     }
   }
 }
-</code></pre>
-
-<p>Not too bad!  My server code was similarly simple.  One thing to note is that there&rsquo;s a slight delay between opening the Serial port and being able to send a message.  Apparently <a href="https://github.com/noopkat/avrgirl-arduino/issues/43#issuecomment-166146526" target="_blank">when the port is opened, the Arduino code restarts</a>, leading to a slight delay. I got around this by adding in a 2 second delay before the server sends the <code>1</code>.</p>
-
+</code></pre><p>Not too bad!  My server code was similarly simple.  One thing to note is that there&rsquo;s a slight delay between opening the Serial port and being able to send a message.  Apparently <a href="https://github.com/noopkat/avrgirl-arduino/issues/43#issuecomment-166146526">when the port is opened, the Arduino code restarts</a>, leading to a slight delay. I got around this by adding in a 2 second delay before the server sends the <code>1</code>.</p>
 <pre><code>/*
   server.js
 */
@@ -128,16 +116,10 @@ port.on('open', function() {
     port.write([1]);
   }, 2000);
 });
-</code></pre>
-
-<p>After connecting and uploading the Arduino code, I started the server and the LED turned on!</p>
-
-<hr />
-
+</code></pre><p>After connecting and uploading the Arduino code, I started the server and the LED turned on!</p>
+<hr>
 <h4 id="hello-server">Hello, Server</h4>
-
 <p>The next step was to get the Arduino talking to the server.  Since I had the server to Arduino code already set, I added an event listener to the server that would listen for new data on the Serial port.  I kept it simple, sending a <code>1</code> if it heard a <code>1</code> and a <code>0</code> if it heard a <code>0</code>.</p>
-
 <pre><code>/*
   server.js
 */
@@ -164,10 +146,7 @@ port.on('open', function() {
     }
   });
 });
-</code></pre>
-
-<p>Now, I needed to make the Arduino listen for a button press change.  I kept track of the state of the switch, whether it&rsquo;s open or closed, and the previous state.  This allowed me to only send a message to the server when something new happened, instead of constantly sending messages.  Essentially, pressing the switch down would send one message to the server, instead of many messages while the switch is open and many messages once the button was pressed down. Given how often the Arduino runs its loop, I wanted to keep the flow simple.</p>
-
+</code></pre><p>Now, I needed to make the Arduino listen for a button press change.  I kept track of the state of the switch, whether it&rsquo;s open or closed, and the previous state.  This allowed me to only send a message to the server when something new happened, instead of constantly sending messages.  Essentially, pressing the switch down would send one message to the server, instead of many messages while the switch is open and many messages once the button was pressed down. Given how often the Arduino runs its loop, I wanted to keep the flow simple.</p>
 <pre><code>/*
   project.ino
 */
@@ -212,16 +191,10 @@ void loop() {
     }
   }
 }
-</code></pre>
-
-<p>Now, inside the main loop, the Arduino will check if the button is pressed and if it&rsquo;s different than the last time it checked.  If it is different, it will send either a 1 or a 0 to the server.  The server, seeing that 1 or 0, will respond appropriately, and the Arduino will then turn the LED on or off.</p>
-
+</code></pre><p>Now, inside the main loop, the Arduino will check if the button is pressed and if it&rsquo;s different than the last time it checked.  If it is different, it will send either a 1 or a 0 to the server.  The server, seeing that 1 or 0, will respond appropriately, and the Arduino will then turn the LED on or off.</p>
 <p>This worked!  I then realized that it could be working because the Arduino is reading the byte that it just sent, which would mean that it was really bouncing these messages off of a mirror to turn the light on.  As a sanity check, I stopped the node server, at which point the light stopped turning on or off.  This left me confident that the server was in fact playing its role correctly.</p>
-
-<hr />
-
+<hr>
 <p>All that was left was some refactoring to clean up the code:</p>
-
 <pre><code>/*
   server.js
 */
@@ -248,9 +221,7 @@ port.on('open', function() {
     }
   });
 });
-</code></pre>
-
-<pre><code>/*
+</code></pre><pre><code>/*
   project.ino
 */
 /*
@@ -295,13 +266,9 @@ void loop() {
     digitalWrite(LEDPin, incomingByte);
   }
 }
-</code></pre>
-
-<h4 id="next-steps">Next steps</h4>
-
+</code></pre><h4 id="next-steps">Next steps</h4>
 <p>This project served as a good way to test out the communication between Arduino and computer, and it was an easy way to get something up and running with <code>serialport</code>.  With this project done, it&rsquo;ll be very easy to integrate the Arduino into any future Node project.</p>
-
-<p>You can see the full code on my GitHub page <a href="https://github.com/AlexanderEllis/arduino/tree/master/simple-arduino-node" target="_blank">here</a>.</p>
+<p>You can see the full code on my GitHub page <a href="https://github.com/AlexanderEllis/arduino/tree/master/simple-arduino-node">here</a>.</p>
 
                 </section>
             </article>

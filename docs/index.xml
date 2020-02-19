@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Caffeinspiration</title>
@@ -40,12 +40,8 @@ Letting your mind focus and letting your mind wander The first recommendation I 
       <guid>https://alexanderell.is/posts/intercept-pause/</guid>
       <description>I recently saw a common clickjacking dark pattern when trying to pause a video the other day.
 On a Bloomberg news autoplaying video, the sound is initially muted.
-
-
-Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that&amp;rsquo;s probably what we have here:
-
-
-What&amp;rsquo;s interesting is that the control panel (pause, play, scrubbing, etc.</description>
+If you try to click pause, your click will instead be intercepted by that covering layer and unmute the video. Only then is the control panel clickable.
+ User action: mouse click on pause button Expected result: pause video Actual result: unmute video  Classic misdirection.</description>
     </item>
     
     <item>
@@ -56,7 +52,7 @@ What&amp;rsquo;s interesting is that the control panel (pause, play, scrubbing, 
       <guid>https://alexanderell.is/posts/clickbait-snail-mail/</guid>
       <description>Junk mail is so interesting at its odd intersection between design, advertising, and psychology.
 I usually try to pay attention to the ways that things around me are designed, and recently I&amp;rsquo;ve been saving some junk letters that are particularly interesting in their attention-grabbing efforts. Here are a few of the notable envelopes I&amp;rsquo;ve received in the past few months.
-What if we didn&amp;rsquo;t put any information on it and made it look exotic?</description>
+ What if we didn&amp;rsquo;t put any information on it and made it look exotic?</description>
     </item>
     
     <item>
@@ -86,8 +82,7 @@ There are a number of signs around the reservoir that tell you to not swim in th
       
       <guid>https://alexanderell.is/posts/check-valve/</guid>
       <description>Exploring a simple machine I took apart a simple spray bottle to see how it kept fluid flowing only in one direction from the reservoir to the nozzle. It does so with simple check valves made of two pieces of plastic, a spring, and a small sphere. It&amp;rsquo;s a simple way to solve a tricky problem.
- A simple spray bottle 
-One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.</description>
+One way flow It&amp;rsquo;s often useful to restrict flow to only one direction. One simple use case is in a spray bottle.</description>
     </item>
     
     <item>
@@ -107,7 +102,7 @@ A store I visited recently had bad customer flow, and the signs were there. Ther
       
       <guid>https://alexanderell.is/posts/simple-cache-server-in-python/</guid>
       <description>I&amp;rsquo;m a fan of small toy projects that have the sole purpose of demonstrating a concept. This is a small project that demonstrates how a cache server works.
-I think it&amp;rsquo;s important to balance toy projects with getting exposure to production-level code. While this project has been helpful for understanding the idea, an open source project like Squid-Cache is definitely on my reading list!
+I think it&amp;rsquo;s important to balance toy projects with getting exposure to production-level code. While this project has been helpful for understanding the idea, an open source project like [Squid-Cache] (https://github.com/squid-cache/squid) is definitely on my reading list!
 At the very simplest level, an HTTP server responds to requests.</description>
     </item>
     

@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.47.1" />
+		<meta name="generator" content="Hugo 0.64.1" />
 		<title>Temperature Sensing with Arduino &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -61,17 +61,11 @@
                 
                 <section id="post-body">
                     <p>I worked through the third basic project in the Arduino Starter Kit Projects Book.  I like to write about the projects to reinforce my own understanding.</p>
-
 <p>The third project, the &ldquo;Love-O-Meter&rdquo;, creates a simple circuit with a temperature sensor.  Using the Analog-to-Digital converter, the Arduino reads in the value coming from the temperature sensor, then lights up a combination of 3 LEDs depending on that value.</p>
-
 <p>Here&rsquo;s what my circuit looked like:</p>
-
-<p><img src="circuit.JPG" alt="Circuit Diagram" /></p>
-
+<p><img src="circuit.JPG" alt="Circuit Diagram"></p>
 <p>You can see the temperature sensor in the top right connected to the positive, the analog A0 pin, and the ground.  3 LEDs are each connected to one of the digital ports on the right side of the arduino.</p>
-
 <p>To begin, two constant variables were created for the sensor pin and the baseline temperature.  In the setup function, output pins 2, 3, and 4 were put in output mode and were sent low voltage (keeping the LEDs off).  The serial port was also initialized to send logging information back to the computer.  9600 refers to sending the computer 9600 bits per second.</p>
-
 <pre><code>const int sensorPin = A0;
 const float baselineTemp = 25.0;
 
@@ -82,42 +76,24 @@ void setup() {
     digitalWrite(pinNumber, LOW);
   }
 }
-</code></pre>
-
-<p>The middle wire of the temperature sensor was connected to the A0 analog in-pin.  Inside the main loop, the Arduino receives receives a value between 0-1023 from the sensor through this pin.</p>
-
+</code></pre><p>The middle wire of the temperature sensor was connected to the A0 analog in-pin.  Inside the main loop, the Arduino receives receives a value between 0-1023 from the sensor through this pin.</p>
 <pre><code>const int sensorPin = A0;
 int sensorVal = analogRead(sensorPin);
-</code></pre>
-
-<p>Because the total voltage available to the sensor is 5 volts, the value between 0-1023 can be mapped to a voltage between 0 and 5 volts.</p>
-
+</code></pre><p>Because the total voltage available to the sensor is 5 volts, the value between 0-1023 can be mapped to a voltage between 0 and 5 volts.</p>
 <pre><code>float voltage = (sensorVal / 1024.0) * 5.0;
-</code></pre>
-
-<p>The voltage output can then be used to convert to temperature.  The data sheet for the <a href="http://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf" target="_blank">TMP36 temperature sensor</a> has information about the conversion, and the relevant table is below:</p>
-
-<p><img src="TMP36-output-characteristics.png" alt="TMP36 Output Characteristics" /></p>
-
+</code></pre><p>The voltage output can then be used to convert to temperature.  The data sheet for the <a href="http://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf">TMP36 temperature sensor</a> has information about the conversion, and the relevant table is below:</p>
+<p><img src="TMP36-output-characteristics.png" alt="TMP36 Output Characteristics"></p>
 <p>This means that there is a 0.5 V offset for the readings, and 10 mV (or 0.01 V) corresponds to a 1°C change.  We can confirm this with the output voltage at 25°C.  With an output of 750 mV, we can subtract the offset voltage (0.5 V, or 500 mV), which then gives us 250 mV.  Dividing by 10 mV/°C gives us the correct value of 25°C.</p>
-
 <p>We could also do this conversion in volts (instead of millivolts) by subtracting 0.5 V and dividing by 0.01 V/°C, which is the same as multiplying by 100.  In other words:</p>
-
 <pre><code>float temperature = (voltage - 0.5) * 100;
-</code></pre>
-
-<p>We can send these variables to the computer for logging using Serial.print:</p>
-
+</code></pre><p>We can send these variables to the computer for logging using Serial.print:</p>
 <pre><code>Serial.print(&quot;Sensor Value: &quot;);
 Serial.print(sensorVal);
 Serial.print(&quot;, Volts: &quot;);
 Serial.print(voltage);
 Serial.print(&quot;, degrees C: &quot;);
 Serial.println(temperature);
-</code></pre>
-
-<p>The function can then turn on a combination of the LEDs based on the difference between the temperature reading and the baseline temperature.  By assigning the output voltage to be HIGH, the Arduino sends the high value of voltage (5 V) out of the digital output pin, which then flows through and shines the corresponding LED.</p>
-
+</code></pre><p>The function can then turn on a combination of the LEDs based on the difference between the temperature reading and the baseline temperature.  By assigning the output voltage to be HIGH, the Arduino sends the high value of voltage (5 V) out of the digital output pin, which then flows through and shines the corresponding LED.</p>
 <pre><code>  if (temperature &lt; baselineTemp) {
     digitalWrite(2, LOW);
     digitalWrite(3, LOW);
@@ -135,18 +111,11 @@ Serial.println(temperature);
     digitalWrite(3, HIGH);
     digitalWrite(4, HIGH);
   }
-</code></pre>
-
-<p>At the end of the loop, a very slight delay is included to create a pause in between the analog-to-digital readings to ensure that the Analog-to-Digital Converter (ADC) <a href="https://www.quora.com/Why-is-a-little-delay-needed-after-analogRead-in-Arduino" target="_blank">can reset successfully before the next reading</a>.</p>
-
+</code></pre><p>At the end of the loop, a very slight delay is included to create a pause in between the analog-to-digital readings to ensure that the Analog-to-Digital Converter (ADC) <a href="https://www.quora.com/Why-is-a-little-delay-needed-after-analogRead-in-Arduino">can reset successfully before the next reading</a>.</p>
 <pre><code>  delay(10);
-</code></pre>
-
-<p>Finally, the result:</p>
-
-<p><img src="demo.gif" alt="Result gif" /></p>
-
-<p>You can see the full code <a href="https://gist.github.com/AlexanderEllis/5d25657a4d04ce2848e1747feaf52bfe" target="_blank">here</a>.</p>
+</code></pre><p>Finally, the result:</p>
+<p><img src="demo.gif" alt="Result gif"></p>
+<p>You can see the full code <a href="https://gist.github.com/AlexanderEllis/5d25657a4d04ce2848e1747feaf52bfe">here</a>.</p>
 
                 </section>
             </article>

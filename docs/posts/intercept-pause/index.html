@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.47.1" />
+		<meta name="generator" content="Hugo 0.64.1" />
 		<title>Dark pattern for autoplaying videos: clickjacking pause &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     Oct 24, 2019
-                    · 154 words
+                    · 85 words
                     · 1 minute read
                       <span class="tags">
                             <a href="https://alexanderell.is/tags/ux">UX</a>, <a href="https://alexanderell.is/tags/design-in-the-wild">Design in the wild</a>
@@ -60,34 +60,19 @@
                 </header>
                 
                 <section id="post-body">
-                    <p>I recently saw a common <a href="https://en.wikipedia.org/wiki/Clickjacking" target="_blank">clickjacking</a> dark pattern when trying to pause a video the other day.</p>
-
+                    <p>I recently saw a common <a href="https://en.wikipedia.org/wiki/Clickjacking">clickjacking</a> dark pattern when trying to pause a video the other day.</p>
 <p>On a Bloomberg news autoplaying video, the sound is initially muted.</p>
-
-<p><br>
-<img src="autoplay-video.png" alt="Screenshot of autoplaying Bloomberg video" /></p>
-
-<p><br>
-Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that&rsquo;s probably what we have here:</p>
-
-<p><br>
-<img src="overlay.png" alt="Screenshot of devtools focusing on video overlay element" /></p>
-
-<p><br>
-What&rsquo;s interesting is that the control panel (pause, play, scrubbing, etc.) at the bottom of the video is initially shown for a few seconds. This makes it look like you can click it.</p>
-
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <p>If you try to click pause, your click will instead be intercepted by that covering layer and unmute the video. Only then is the control panel clickable.</p>
-
-<p><br>
-<img src="hidden-pause.gif" alt="Video of Bloomberg site clickjacking pause button" />
-<br></p>
-
+<!-- raw HTML omitted -->
 <ul>
 <li><strong>User action</strong>: mouse click on pause button</li>
 <li><strong>Expected result</strong>: pause video</li>
 <li><strong>Actual result</strong>: unmute video</li>
 </ul>
-
 <p>Classic misdirection.  News websites are notorious for bad UX, and Bloomberg lives up to hype.</p>
 
                 </section>

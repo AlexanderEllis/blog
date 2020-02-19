@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.47.1" />
+		<meta name="generator" content="Hugo 0.64.1" />
 		<title>Investigating JavaScript&#39;s RegExp Lookbehind &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -60,28 +60,17 @@
                 </header>
                 
                 <section id="post-body">
-                    
-
-<blockquote>
+                    <blockquote>
 <p>Some people, when confronted with a problem, think “I know, I&rsquo;ll use regular expressions.”  Now they have two problems.</p>
 </blockquote>
-
-<p><a href="http://regex.info/blog/2006-09-15/247" target="_blank"><em>Jamie Zawinski</em></a></p>
-
+<p><a href="http://regex.info/blog/2006-09-15/247"><em>Jamie Zawinski</em></a></p>
 <h3 id="regular-expression-lookbehinds">Regular Expression Lookbehinds</h3>
-
 <p>I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.</p>
-
 <p>In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it.</p>
-
 <p>Let&rsquo;s say I have the strings <code>'aabbcc'</code> and <code>'bbccdd'</code>.  I might want to be able to locate the substring <code>'cc'</code> only if it occured at some point after the substring <code>'aa'</code>.  This is called a <strong>positive lookbehind</strong>, and this would only match the <code>'cc'</code> in the first string.</p>
-
 <p>On the other hand, if I wanted to match <code>'cc'</code> only if it does not come after <code>'aa'</code>, this would be a <strong>negative lookbehind</strong>.  This would only match the <code>'cc'</code> in the second string.</p>
-
 <h3 id="using-lookbehinds-in-javascript">Using lookbehinds in JavaScript</h3>
-
 <p>If you&rsquo;re using Chrome 62 or higher, Node 6.0.0 or higher (with the <code>--harmony</code> flag), or Node 8.1.10 or higher (see below for finding these details), you can use negative lookbehinds through Google&rsquo;s V8 engine.  Here&rsquo;s how you would do those cases above:</p>
-
 <pre><code>~: $ nvm use 8.10.0
 Now using node v8.10.0 (npm v5.6.0)
 
@@ -102,42 +91,26 @@ null
 // Negative lookbehind checking 'bbccdd' for 'cc' not preceded by 'aa' at some point
 &gt; /(?&lt;!aa.*)cc/.exec('bbccdd')
 [ 'cc', index: 2, input: 'bbccdd' ]
-</code></pre>
-
-<h3 id="looking-into-compability">Looking into compability</h3>
-
+</code></pre><h3 id="looking-into-compability">Looking into compability</h3>
 <p>In my case, I was trying to do a negative lookbehind for my replacement.  I was also attempting to do so with just a regular expression and no additional parsing through a function, as I was passing it to another module.  After a few attempts by hand, I did some searching to see if it was possible.  The results were not encouraging, mostly indicating in older posts that it was not supported but there were many hacks to work around it.</p>
-
-<p>I then came across <a href="http://2ality.com/2017/05/regexp-lookbehind-assertions.html" target="_blank">2ality&rsquo;s blog post on negative lookbehinds</a>, which looked much more promising.</p>
-
+<p>I then came across <a href="http://2ality.com/2017/05/regexp-lookbehind-assertions.html">2ality&rsquo;s blog post on negative lookbehinds</a>, which looked much more promising.</p>
 <blockquote>
 <p>The proposal “RegExp Lookbehind Assertions” by Gorkem Yakin, Nozomu Katō, Daniel Ehrenberg is at stage 4. This blog post explains it.</p>
 </blockquote>
-
-<p>This post featured a great explanation, and of note, an interesting link to a Feb 2016 blog post from the Google V8 team at the bottom: <a href="https://v8project.blogspot.de/2016/02/regexp-lookbehind-assertions.html" target="_blank">V8 JavaScript Engine: RegExp lookbehind assertions</a>.  The gist of that post is that the lookbehind assertions were very valuable, and although the TC39 proposal was in its early stages, it was already being rolled out in V8 version 4.9 and Chrome 49.</p>
-
+<p>This post featured a great explanation, and of note, an interesting link to a Feb 2016 blog post from the Google V8 team at the bottom: <a href="https://v8project.blogspot.de/2016/02/regexp-lookbehind-assertions.html">V8 JavaScript Engine: RegExp lookbehind assertions</a>.  The gist of that post is that the lookbehind assertions were very valuable, and although the TC39 proposal was in its early stages, it was already being rolled out in V8 version 4.9 and Chrome 49.</p>
 <p>At this point, I tried the posted examples in both my local Node (version 6.11.1) and Chrome (66).  They threw an error in Node, but worked in Chrome.  My usecase was part of a Node build script, so although the version was throwing an error, it seemed there was hope for a later version.  At this point, I could have just used the most recent version of Node or used the <code>--harmony</code> flag, but I wanted to confirm versions to ensure that I was able to be exact about the required version for future use.</p>
-
-<p>I then found a more recent <a href="https://v8project.blogspot.com/2017/07/upcoming-regexp-features.html" target="_blank">blog post by the V8 team from July 2017 featuring upcoming features</a>.  In particular:</p>
-
+<p>I then found a more recent <a href="https://v8project.blogspot.com/2017/07/upcoming-regexp-features.html">blog post by the V8 team from July 2017 featuring upcoming features</a>.  In particular:</p>
 <blockquote>
 <p>Lookbehind Assertions</p>
-
 <p>Lookahead assertions have been part of JavaScript’s regular expression syntax from the start. Their counterpart, lookbehind assertions, are finally being introduced. Some of you may remember that this has been part of V8 for quite some time already. We even use lookbehind asserts under the hood to implement the Unicode flag specified in ES2015.</p>
 </blockquote>
-
-<p>Then, an even more <a href="https://v8project.blogspot.com/2017/09/v8-release-62.html" target="_blank">recent V8 release post from September 2017 for V8 6.2</a>:</p>
-
+<p>Then, an even more <a href="https://v8project.blogspot.com/2017/09/v8-release-62.html">recent V8 release post from September 2017 for V8 6.2</a>:</p>
 <blockquote>
 <p>More regular expressions features</p>
-
 <p>&hellip;</p>
-
 <p>Lookbehind assertions, another new regular expression feature, are now available by default.</p>
 </blockquote>
-
-<p>This meant that V8 6.2 had them available, which is why it worked in my Chrome 66.  The next check was to the <a href="https://nodejs.org/en/download/releases/" target="_blank">Node releases page</a>.  Here&rsquo;s the relevant section:</p>
-
+<p>This meant that V8 6.2 had them available, which is why it worked in my Chrome 66.  The next check was to the <a href="https://nodejs.org/en/download/releases/">Node releases page</a>.  Here&rsquo;s the relevant section:</p>
 <table>
 <thead>
 <tr>
@@ -147,7 +120,6 @@ null
 <th>V8</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td></td>
@@ -155,35 +127,30 @@ null
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td>Node.js 8.10.0</td>
 <td>Carbon</td>
 <td>2018-03-06</td>
 <td>6.2.414.50</td>
 </tr>
-
 <tr>
 <td>Node.js 8.9.4</td>
 <td>Carbon</td>
 <td>2018-01-02</td>
 <td>6.1.534.50</td>
 </tr>
-
 <tr>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td>Node.js 6.0.0</td>
 <td></td>
 <td>2016-04-26</td>
 <td>5.0.71.35</td>
 </tr>
-
 <tr>
 <td>Node.js 5.12.0</td>
 <td></td>
@@ -192,7 +159,6 @@ null
 </tr>
 </tbody>
 </table>
-
 <p>This means that V8 version 6.2 made it into Node on March 6, 2018 in version 8.10.0, and V8 version 4.9 (allowing this with the <code>--harmony</code> flag) made it into Node 6.0.0.  After switching to 8.10.0, my negative lookbehinds successfully ran on Node, and I was able to finish the build script.</p>
 
                 </section>

@@ -1,9 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://alexanderell.is/</loc>
+    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderell.is/posts/taking-over-my-clipboard/</loc>
+    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/javascript/</loc>
+    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/posts/</loc>
+    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/</loc>
+    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/ux/</loc>
     <lastmod>2020-02-17T18:01:11-05:00</lastmod>
   </url>
   
@@ -13,12 +38,27 @@
   </url>
   
   <url>
+    <loc>https://alexanderell.is/tags/learning/</loc>
+    <lastmod>2019-11-16T21:43:06-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderell.is/posts/intercept-pause/</loc>
     <lastmod>2019-10-24T20:40:52-04:00</lastmod>
   </url>
   
   <url>
+    <loc>https://alexanderell.is/tags/design-in-the-wild/</loc>
+    <lastmod>2019-10-24T20:40:52-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderell.is/posts/clickbait-snail-mail/</loc>
+    <lastmod>2019-10-19T20:47:19-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/design/</loc>
     <lastmod>2019-10-19T20:47:19-04:00</lastmod>
   </url>
   
@@ -30,6 +70,11 @@
   <url>
     <loc>https://alexanderell.is/posts/reservoir-signs/</loc>
     <lastmod>2018-08-27T23:52:22-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/taking-apart/</loc>
+    <lastmod>2018-06-08T10:27:44-04:00</lastmod>
   </url>
   
   <url>
@@ -48,7 +93,17 @@
   </url>
   
   <url>
+    <loc>https://alexanderell.is/tags/python/</loc>
+    <lastmod>2018-05-26T10:24:05-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderell.is/posts/regex-lookbehind/</loc>
+    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/investigations/</loc>
     <lastmod>2018-04-28T13:22:25-04:00</lastmod>
   </url>
   
@@ -73,7 +128,22 @@
   </url>
   
   <url>
+    <loc>https://alexanderell.is/tags/open-source/</loc>
+    <lastmod>2018-01-06T11:37:37-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/arduino/</loc>
+    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderell.is/posts/arduinode/</loc>
+    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/node/</loc>
     <lastmod>2018-01-01T09:59:52-05:00</lastmod>
   </url>
   
@@ -93,102 +163,17 @@
   </url>
   
   <url>
+    <loc>https://alexanderell.is/tags/ux-analysis/</loc>
+    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://alexanderell.is/about/</loc>
     <lastmod>2015-06-20T14:02:37+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://alexanderell.is/tags/</loc>
-    <lastmod>2015-06-20T14:02:37+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/arduino/</loc>
-    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/</loc>
-    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://alexanderell.is/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/design/</loc>
-    <lastmod>2019-10-19T20:47:19-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/design-in-the-wild/</loc>
-    <lastmod>2019-10-24T20:40:52-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/investigations/</loc>
-    <lastmod>2018-04-28T13:22:25-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/javascript/</loc>
-    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/learning/</loc>
-    <lastmod>2019-11-16T21:43:06-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/node/</loc>
-    <lastmod>2018-01-01T09:59:52-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/open-source/</loc>
-    <lastmod>2018-01-06T11:37:37-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/posts/</loc>
-    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/python/</loc>
-    <lastmod>2018-05-26T10:24:05-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/taking-apart/</loc>
-    <lastmod>2018-06-08T10:27:44-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/ux/</loc>
-    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/ux-analysis/</loc>
-    <lastmod>2017-08-05T21:29:38-04:00</lastmod>
-    <priority>0</priority>
   </url>
   
 </urlset>

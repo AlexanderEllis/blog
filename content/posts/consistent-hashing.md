@@ -3,6 +3,9 @@ title: "Visualizing Consistent Hashing"
 subtitle: "White board drawings, interactive JavaScript, and tail-eating serpents"
 date: 2019-12-08T18:25:50-05:00
 draft: true
+list: false
+_build:
+    list: false
 ---
 
 

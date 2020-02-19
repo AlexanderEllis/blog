@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.47.1" />
+		<meta name="generator" content="Hugo 0.64.1" />
 		<title>JavaScript: Writing your own Array.reduce &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -61,13 +61,9 @@
                 
                 <section id="post-body">
                     <p>I&rsquo;ve found that one of the best ways for me to really understand anything is to implement it myself.  Between the ECMAScript spec and a few lines of JavaScript, you can build a chunk of knowledge for a very specific area of JavaScript.  Doing this often is a great way to gain a deeper understanding of the language, and it&rsquo;s a great exercise in reading the docs, reading code, and creating your own solution.</p>
-
 <p>In this post, I&rsquo;ll walk through <code>Array.reduce</code> and my own implementation.  Although it&rsquo;s easy to read my code, I highly recommend that you go through this process yourself.</p>
-
-<p>Deep knowledge of how <code>Array.reduce</code> works is useful to have in your JavaScript toolkit.  It allows you to succinctly break down an array using a function of your choice.  The idea of reducing, especially when paired with mapping, is a common one that can be found in <a href="https://en.wikipedia.org/wiki/MapReduce" target="_blank">MapReduce</a>, <a href="https://redux.js.org/" target="_blank">Redux</a>, <a href="https://docs.mongodb.com/manual/core/map-reduce/" target="_blank">mongoDB</a>, and many other areas.</p>
-
-<p>Let&rsquo;s start by <a href="https://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.reduce" target="_blank">looking at the spec</a> for <code>Array.reduce</code>:</p>
-
+<p>Deep knowledge of how <code>Array.reduce</code> works is useful to have in your JavaScript toolkit.  It allows you to succinctly break down an array using a function of your choice.  The idea of reducing, especially when paired with mapping, is a common one that can be found in <a href="https://en.wikipedia.org/wiki/MapReduce">MapReduce</a>, <a href="https://redux.js.org/">Redux</a>, <a href="https://docs.mongodb.com/manual/core/map-reduce/">mongoDB</a>, and many other areas.</p>
+<p>Let&rsquo;s start by <a href="https://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.reduce">looking at the spec</a> for <code>Array.reduce</code>:</p>
 <pre><code>22.1.3.18 Array.prototype.reduce ( callbackfn [ , initialValue ] )
 
 NOTE callbackfn should be a function that takes four arguments. reduce calls the callback, as a function, once for each element present in the array, in ascending order.
@@ -108,10 +104,7 @@ When the reduce method is called with one or two arguments, the following steps 
 
 The length property of the reduce method is 1.
 
-</code></pre>
-
-<p>Overall it&rsquo;s not too bad!  Let&rsquo;s write this out in pseudocode:</p>
-
+</code></pre><p>Overall it&rsquo;s not too bad!  Let&rsquo;s write this out in pseudocode:</p>
 <pre><code>1. Keep track of input object with O
 2. If there are any issues doing so, return
 3. Keep track of the length of the input object with variable len
@@ -143,17 +136,11 @@ The length property of the reduce method is 1.
     iv. If there was any problem calling the callback, return
   e. Increase our counter variable by one
 11. We're done! Return the accumulator variable
-</code></pre>
-
-<p>That ended up much longer than it needs to be, in part because the specification is very specific.  Let&rsquo;s put this in broad brush strokes:</p>
-
+</code></pre><p>That ended up much longer than it needs to be, in part because the specification is very specific.  Let&rsquo;s put this in broad brush strokes:</p>
 <pre><code>1. Make sure we have an object with length, a callback function, and a value to start with
 2. Loop through the rest of the values and update the accumulator variable with the result of our callback function called with the accumulator and the value
 3. Return the accumulator variable
-</code></pre>
-
-<p>That doesn&rsquo;t look so bad!  If you&rsquo;re looking for an interesting exercise, try writing your own reduce function.  Here&rsquo;s one way to do it in JavaScript:</p>
-
+</code></pre><p>That doesn&rsquo;t look so bad!  If you&rsquo;re looking for an interesting exercise, try writing your own reduce function.  Here&rsquo;s one way to do it in JavaScript:</p>
 <pre><code>function reduce (input, callback, initialValue) {
   let O = input;
   const inputLength = O.length;
@@ -213,11 +200,8 @@ console.log(reduce([1, 2, 3], (total, current) =&gt; total + current));
 
 console.log(reduce([1, 2, 3], (total, current) =&gt; total + current, 10));
 &gt; 16
-</code></pre>
-
-<p>Success!</p>
-
-<p>If you&rsquo;ve written your own, I highly recommend comparing to both my version and the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce#Polyfill" target="_blank">MDN Polyfill version</a>.  What&rsquo;s different? What choices did you make that are different?</p>
+</code></pre><p>Success!</p>
+<p>If you&rsquo;ve written your own, I highly recommend comparing to both my version and the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce#Polyfill">MDN Polyfill version</a>.  What&rsquo;s different? What choices did you make that are different?</p>
 
                 </section>
             </article>
