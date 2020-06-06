@@ -104,10 +104,14 @@ table {
 
 /* Spacing */
 
-.post h1, h3, h4, h5, p, #post-body ul, #post-list li, #post-body ol, pre {
+.post h1, h3, h4, h5, p, pre {
     margin-bottom: 20px;
 }
 
+/* We don't want sublists to have additional margins. Looks bad when unnested */
+#post-body ul, #post-list li, #post-body ol {
+  margin-bottom: 0px;
+}
 
 /* Base */
 
@@ -267,6 +271,7 @@ a, #post-nav a, #post-list a {
 ul {
     margin: 0;
     padding: 0;
+    padding-left: 1em;
 }
 
 li {
@@ -335,7 +340,7 @@ em, i {
 }
 
 .post h2 {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font: 300 24px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #111;
 }
