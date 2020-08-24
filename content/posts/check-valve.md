@@ -11,7 +11,7 @@ I took apart a simple spray bottle to see how it kept fluid flowing only in one 
 
 ![Spray bottle](spray-bottle.png)
 <center>
-*A simple spray bottle*
+<em>A simple spray bottle</em>
 </center>
 
 #### One way flow
@@ -63,7 +63,7 @@ This also makes sense.  When we relax the trigger, we want it to pull water from
 
 ![Flow Diagram](flow-diagram.JPG)
 <center>
-*Here's a flow diagram with the one way check-valves. The arrows denote the direction of the flow for each valve.*
+<em>Here's a flow diagram with the one way check-valves. The arrows denote the direction of the flow for each valve.</em>
 </center>
 
 With those two check-valves in place, we can now exactly control the flow direction of the fluids, and we can successfully spray our water.
@@ -72,7 +72,7 @@ Here's the check valve from the nozzle of the spray bottle.  The cylinder on the
 
 ![Check valve from spray bottle](ball-check-valve-from-spray.jpg)
 <center>
-*Check valve from the nozzle.  Which way should the ball point?*
+<em>Check valve from the nozzle.  Which way should the ball point?</em>
 </center>
 
 #### Schrader Valves
@@ -80,9 +80,7 @@ Here's the check valve from the nozzle of the spray bottle.  The cylinder on the
 What if we wanted to be able to open the valve manually? This is actually the same principle behind air valves on car and bicycle tires.  Instead of a ball, a specially shaped pin is forced by a spring to form a seal.  Part of that pin extends past the valve so that you can push it from the other side of the valve.  Below is an example of a [Schrader valves](https://en.wikipedia.org/wiki/Schrader_valve), and it works in a very similar manner.  Take a look at the animation; how is it similar to the ball check valve from earlier? How is it different?
 
 ![Schrader Valve](https://upload.wikimedia.org/wikipedia/commons/6/6c/Schrader_valve_opening_and_closing_on_a_tire.gif)
-<center>
-*Thanks to [Staffanlincoln](https://en.wikipedia.org/wiki/File:Schrader_valve_opening_and_closing_on_a_tire.gif) for the Schrader valve GIF*
-</center>
+Thanks to [Staffanlincoln](https://en.wikipedia.org/wiki/File:Schrader_valve_opening_and_closing_on_a_tire.gif) for the Schrader valve GIF.
 
 <br>
 

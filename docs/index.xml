@@ -6,10 +6,19 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 03 Jun 2020 00:07:04 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 23 Aug 2020 23:14:15 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Debugging a launch-blocking issue at 4PM on a Friday</title>
+      <link>https://alexanderell.is/posts/debugging/</link>
+      <pubDate>Sun, 23 Aug 2020 23:14:15 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/debugging/</guid>
+      <description>It was around 4PM a few Fridays ago when I heard that something had gone wrong, and I volunteered (was volunteered?) to help fix it. There was a broken internal configuration that blocked future immediate work for an upcoming launch that same day. I hadn&amp;rsquo;t worked on this particular system, just similar things before, but because I&amp;rsquo;m decent at visualizing and debugging these things, my colleague asked me for help with it.</description>
+    </item>
     
     <item>
       <title>Code Review and Criticism</title>
@@ -90,7 +99,7 @@ There are a number of signs around the reservoir that tell you to not swim in th
       
       <guid>https://alexanderell.is/posts/check-valve/</guid>
       <description>Exploring a simple machine I took apart a simple spray bottle to see how it kept fluid flowing only in one direction from the reservoir to the nozzle. It does so with simple check valves made of two pieces of plastic, a spring, and a small sphere. It&amp;rsquo;s a simple way to solve a tricky problem.
- *A simple spray bottle*  One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.</description>
+ A simple spray bottle  One way flow It&amp;rsquo;s often useful to restrict flow to only one direction.</description>
     </item>
     
     <item>

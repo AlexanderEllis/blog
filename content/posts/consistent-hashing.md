@@ -11,7 +11,7 @@ _build:
 
 <img src="Serpiente_alquimica.jpg" alt="Snake eating its own tail" width="400"/>
 <center>
-*An [Ouroboros](https://en.wikipedia.org/wiki/Ouroboros): a serpent eating its own tail.*
+<em>An [Ouroboros](https://en.wikipedia.org/wiki/Ouroboros): a serpent eating its own tail.</em>
 </center>
 
 In-this post I'll be explaining and drawing consistent hashing. [Feel free to skip to the bottom](#ok-alex-but-i-m-sick-of-whiteboard-pictures-and-i-learn-best-by-pressing-buttons) to try out the visualization at any point as well.
