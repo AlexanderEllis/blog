@@ -1,5 +1,5 @@
 ---
-title: "Debugging a launch-blocking issue at 4PM on a Friday"
+title: "Debugging a launch-blocking issue"
 date: 2020-08-23T23:14:15-04:00
 draft: false
 ---
@@ -17,7 +17,7 @@ To help encourage our blameless culture, after some very light teasing I brought
 
 -----
 
-I've been intentionally vague with the story because it wasn't a software bug at work; it was a lake-side sailboat problem. My cousin had accidentally pulled one end of his sailboat's halyard up through the mast, so the end we needed was stuck at the top of the mast.
+I've been intentionally vague with the story because it wasn't a software bug at work; it was a lake-side sailboat problem. My cousin had accidentally pulled one end of his sailboat's halyard up through the mast while rigging the boat, and the end he needed threaded through at the bottom was instead at the top of the 20 foot mast.
 
 ![Visualization of skied halyard](skied-halyard.png)
 <center>
@@ -25,6 +25,6 @@ I've been intentionally vague with the story because it wasn't a software bug at
 </center>
 <br>
 
-This boat, a 420, had a mast where the halyard went through the middle of the mast, while other 420s he had sailed just had it going up the side. He needed to be able to pull it back through the mast to hoist the sail (blocking his late-afternoon sailboat launch). This was pretty easy to confirm, and after trying my first attempt with a short wire (an issue of scale...) and finding that most of the solutions online were kind of complicated ("tie the end of the rope to a bolt and use a magnet to feed it through"), we found some sturdy long wire we reused to feed the end of the rope through the 20 foot mast. Afterwards, for the failsafe, he tied a few figure 8 knots at the end to ensure it wouldn't get pulled up again.
+This boat, a 420, had a mast where the halyard went through the middle of the mast, while other 420s he had sailed just had it going up the side. He needed to be able to pull it back through the mast to hoist the sail (blocking his late-afternoon sailboat launch). This was pretty easy to confirm, and after trying my first attempt with a short wire (an issue of scale...) and finding that most of the solutions online were kind of complicated ("tie the end of the rope to a bolt and use a magnet to feed it through"), we found some sturdy long wire we reused to feed the end of the rope through the mast. Afterwards, for the failsafe, he tied a few figure 8 knots at the end to ensure it wouldn't get pulled up again.
 
 I've been thinking a lot recently about why fixing problems with physical things is so satisfying to me, and I was thinking through how familiar the debugging experience was between this real-life fix and and most of the software debugging I do. It's really all the same!

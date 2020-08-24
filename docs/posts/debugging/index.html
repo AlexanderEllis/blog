@@ -7,7 +7,7 @@
 		<meta name="author" content="Alex Ellis">
 		
 		<meta name="generator" content="Hugo 0.64.1" />
-		<title>Debugging a launch-blocking issue at 4PM on a Friday &middot; Caffeinspiration</title>
+		<title>Debugging a launch-blocking issue &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
 		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
@@ -44,14 +44,14 @@
             <article class="post">
                 <header>
                     <h1>
-                        Debugging a launch-blocking issue at 4PM on a Friday
+                        Debugging a launch-blocking issue
                     </h1>
                     <h2>
                         
                     </h2>
                     <h2 class="headline">
                     Aug 23, 2020
-                    · 588 words
+                    · 597 words
                     · 3 minutes read
                       <span class="tags">
                             
@@ -66,13 +66,13 @@
 <p>After a little more digging and thinking, it turned out we had some existing tool that we could reuse to fix the incorrect configuration, even though it was designed for a different use (who knows why it was still lying around).  After some paired work on the problem, we were able to go inside the system and correct the configuration, which unblocked my colleague and the subsequent launch.</p>
 <p>To help encourage our blameless culture, after some very light teasing I brought up the fact that anyone could have easily made this mistake &ndash; myself very much included &ndash; and helped ensure that the extra fail-safe was in place for whoever used it next.</p>
 <hr>
-<p>I&rsquo;ve been intentionally vague with the story because it wasn&rsquo;t a software bug at work; it was a lake-side sailboat problem. My cousin had accidentally pulled one end of his sailboat&rsquo;s halyard up through the mast, so the end we needed was stuck at the top of the mast.</p>
+<p>I&rsquo;ve been intentionally vague with the story because it wasn&rsquo;t a software bug at work; it was a lake-side sailboat problem. My cousin had accidentally pulled one end of his sailboat&rsquo;s halyard up through the mast while rigging the boat, and the end he needed threaded through at the bottom was instead at the top of the 20 foot mast.</p>
 <p><img src="skied-halyard.png" alt="Visualization of skied halyard"></p>
 <center>
 <em>Visualization of what went wrong (but not to scale)</em>
 </center>
 <br>
-<p>This boat, a 420, had a mast where the halyard went through the middle of the mast, while other 420s he had sailed just had it going up the side. He needed to be able to pull it back through the mast to hoist the sail (blocking his late-afternoon sailboat launch). This was pretty easy to confirm, and after trying my first attempt with a short wire (an issue of scale&hellip;) and finding that most of the solutions online were kind of complicated (&ldquo;tie the end of the rope to a bolt and use a magnet to feed it through&rdquo;), we found some sturdy long wire we reused to feed the end of the rope through the 20 foot mast. Afterwards, for the failsafe, he tied a few figure 8 knots at the end to ensure it wouldn&rsquo;t get pulled up again.</p>
+<p>This boat, a 420, had a mast where the halyard went through the middle of the mast, while other 420s he had sailed just had it going up the side. He needed to be able to pull it back through the mast to hoist the sail (blocking his late-afternoon sailboat launch). This was pretty easy to confirm, and after trying my first attempt with a short wire (an issue of scale&hellip;) and finding that most of the solutions online were kind of complicated (&ldquo;tie the end of the rope to a bolt and use a magnet to feed it through&rdquo;), we found some sturdy long wire we reused to feed the end of the rope through the mast. Afterwards, for the failsafe, he tied a few figure 8 knots at the end to ensure it wouldn&rsquo;t get pulled up again.</p>
 <p>I&rsquo;ve been thinking a lot recently about why fixing problems with physical things is so satisfying to me, and I was thinking through how familiar the debugging experience was between this real-life fix and and most of the software debugging I do. It&rsquo;s really all the same!</p>
 
                 </section>
