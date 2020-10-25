@@ -368,7 +368,6 @@ em, i {
 #post-list h2 {
     font: normal 17px/1.5em "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
-    max-width: 400px;
     margin-top: 2px;
 }
 
@@ -488,14 +487,13 @@ Post List
 
 #post-list li, #archive-list li {
     list-style-type: none;
+    border: 1px solid #333;
+    padding: 10px;
+    margin: 10px 0;
 }
 
 #post-list li:last-child {
     margin-bottom: 0;
-}
-
-#post-list li+li {
-    padding-top: 20px;
 }
 
 #post-list a {

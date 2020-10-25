@@ -8,7 +8,7 @@ tags: ['Raspberry Pi', 'Distributed systems', 'Homelab']
 
 I've recently been getting more interested in distributed systems, and I wanted to get experience building some of the concepts I've read about.
 
-My interest lies more on the software and system design side -- more "how would we design and build an example of a distributed file system across four computers?" than "how do I make a reliable home server to play media?" -- which is why my focus is on futzing around with some toy software problems instead of worrying about what a real production hardware setup would look like. As with anything, it's almost too easy to get caught up in the minor details instead of what you meant to work on, and I feel like I could spend days agonizing over hardware choices.
+My interest lies more on the software and system design side -- more "how would we design and build an example of a distributed file system across four computers?" than "how do I make a reliable home server to play media?" -- which is why my focus is on playing around with some toy software problems instead of worrying about what a real production hardware setup would look like. As with anything, it's almost too easy to get caught up in the minor details instead of what you meant to work on, and I feel like I could spend days agonizing over hardware choices.
 
 That being said, I did want to work with real hardware, which makes it more interesting than running VMs. There's something about physically disconnecting ethernet switches to see the effect on the software that's intriguing, and doubly so if the software can handle it gracefully.
 
