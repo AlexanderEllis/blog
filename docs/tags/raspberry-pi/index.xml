@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Raspberry Pi on Caffeinspiration</title>
+    <link>https://alexanderell.is/tags/raspberry-pi/</link>
+    <description>Recent content in Raspberry Pi on Caffeinspiration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 24 Oct 2020 20:48:06 -0400</lastBuildDate>
+    
+	<atom:link href="https://alexanderell.is/tags/raspberry-pi/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Building a Raspberry Pi Cluster for Building Toy Distributed Systems</title>
+      <link>https://alexanderell.is/posts/pi-cluster/</link>
+      <pubDate>Sat, 24 Oct 2020 20:48:06 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/pi-cluster/</guid>
+      <description>I&amp;rsquo;ve recently been getting more interested in distributed systems, and I wanted to get experience building some of the concepts I&amp;rsquo;ve read about.
+My interest lies more on the software and system design side &amp;ndash; more &amp;ldquo;how would we design and build an example of a distributed file system across four computers?&amp;rdquo; than &amp;ldquo;how do I make a reliable home server to play media?&amp;rdquo; &amp;ndash; which is why my focus is on futzing around with some toy software problems instead of worrying about what a real production hardware setup would look like.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -3,17 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://alexanderell.is/</loc>
-    <lastmod>2020-08-23T23:14:15-04:00</lastmod>
+    <loc>https://alexanderell.is/posts/pi-cluster/</loc>
+    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
   </url>
   
   <url>
-    <loc>https://alexanderell.is/posts/debugging/</loc>
-    <lastmod>2020-08-23T23:14:15-04:00</lastmod>
+    <loc>https://alexanderell.is/</loc>
+    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/distributed-systems/</loc>
+    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/homelab/</loc>
+    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
   </url>
   
   <url>
     <loc>https://alexanderell.is/posts/</loc>
+    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/raspberry-pi/</loc>
+    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/tags/</loc>
+    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/posts/debugging/</loc>
     <lastmod>2020-08-23T23:14:15-04:00</lastmod>
   </url>
   
@@ -29,11 +54,6 @@
   
   <url>
     <loc>https://alexanderell.is/tags/javascript/</loc>
-    <lastmod>2020-02-17T18:01:11-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/</loc>
     <lastmod>2020-02-17T18:01:11-05:00</lastmod>
   </url>
   

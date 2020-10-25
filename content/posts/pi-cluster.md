@@ -1,6 +1,6 @@
 ---
 title: "Building a Raspberry Pi Cluster for Building Toy Distributed Systems"
-date: 2020-10-25T20:48:06-04:00
+date: 2020-10-24T20:48:06-04:00
 draft: false
 tags: ['Raspberry Pi', 'Distributed systems', 'Homelab']
 ---
