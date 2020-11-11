@@ -3,12 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://alexanderell.is/posts/pi-cluster/</loc>
-    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
+    <loc>https://alexanderell.is/</loc>
+    <lastmod>2020-11-10T20:48:00-04:00</lastmod>
   </url>
   
   <url>
-    <loc>https://alexanderell.is/</loc>
+    <loc>https://alexanderell.is/posts/pi-cluster-monitoring/</loc>
+    <lastmod>2020-11-10T20:48:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/posts/</loc>
+    <lastmod>2020-11-10T20:48:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/posts/pi-cluster/</loc>
     <lastmod>2020-10-24T20:48:06-04:00</lastmod>
   </url>
   
@@ -19,11 +29,6 @@
   
   <url>
     <loc>https://alexanderell.is/tags/homelab/</loc>
-    <lastmod>2020-10-24T20:48:06-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/posts/</loc>
     <lastmod>2020-10-24T20:48:06-04:00</lastmod>
   </url>
   
