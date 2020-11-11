@@ -6,10 +6,20 @@
     <description>Recent content in Raspberry Pi on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 24 Oct 2020 20:48:06 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 10 Nov 2020 20:48:00 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/tags/raspberry-pi/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Checking if the Pi is done</title>
+      <link>https://alexanderell.is/posts/pi-cluster-monitoring/</link>
+      <pubDate>Tue, 10 Nov 2020 20:48:00 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/pi-cluster-monitoring/</guid>
+      <description>I recently put together a Raspberry Pi cluster to try out some toy distributed systems projects, and I wanted to start with a basic monitoring program to get my feet wet and work out the following:
+ Getting each node running and set up with software Running Go on each machine Deploying code to each machine Nodes listening &amp;amp; responding to RPCs Sending/receiving RPCs between laptop and nodes  As I&amp;rsquo;ve previously mentioned, this isn&amp;rsquo;t meant to be production grade, since I would just grab one off the shelf if that was the goal.</description>
+    </item>
     
     <item>
       <title>Building a Raspberry Pi Cluster for Building Toy Distributed Systems</title>

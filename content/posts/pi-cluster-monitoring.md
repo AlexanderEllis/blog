@@ -3,6 +3,7 @@ title: "Checking if the Pi is done"
 subtitle: "Basic monitoring for a Raspberry Pi cluster"
 date: 2020-11-10T20:48:00-04:00
 draft: false
+tags: ['Raspberry Pi', 'Distributed systems', 'Homelab']
 ---
 
 
