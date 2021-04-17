@@ -4,7 +4,17 @@
   
   <url>
     <loc>https://alexanderell.is/</loc>
-    <lastmod>2020-11-10T20:48:00-04:00</lastmod>
+    <lastmod>2021-04-16T19:39:25-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/posts/</loc>
+    <lastmod>2021-04-16T19:39:25-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alexanderell.is/posts/youre-reading-this-in-the-future/</loc>
+    <lastmod>2021-04-16T19:39:25-04:00</lastmod>
   </url>
   
   <url>
@@ -19,11 +29,6 @@
   
   <url>
     <loc>https://alexanderell.is/tags/homelab/</loc>
-    <lastmod>2020-11-10T20:48:00-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/posts/</loc>
     <lastmod>2020-11-10T20:48:00-04:00</lastmod>
   </url>
   

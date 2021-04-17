@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 10 Nov 2020 20:48:00 -0400</lastBuildDate>
+    <lastBuildDate>Fri, 16 Apr 2021 19:39:25 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>You&#39;re Reading This in the Future</title>
+      <link>https://alexanderell.is/posts/youre-reading-this-in-the-future/</link>
+      <pubDate>Fri, 16 Apr 2021 19:39:25 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/youre-reading-this-in-the-future/</guid>
+      <description>You&amp;rsquo;re reading this in the future. Isn&amp;rsquo;t that weird?
+Even I&amp;rsquo;m reading this in the future. Let&amp;rsquo;s say I write the last &amp;ldquo;C&amp;rdquo; in this sentence at 7:41:50 EDT in the evening of Friday April 16, 2021, or exactly 1618616510 seconds since January 1, 1970, UTC. Even as I started typing this next sentence, let alone editing this and pushing this to my blog, that time has passed, and we&amp;rsquo;ve all moved on.</description>
+    </item>
     
     <item>
       <title>Checking if the Pi is done</title>
