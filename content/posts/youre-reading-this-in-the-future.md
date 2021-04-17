@@ -37,6 +37,6 @@ I hope your future is going well.
 
 
 [^1]: [Every *What's My Line* episode on YouTube](https://www.youtube.com/channel/UChPE75Fvvl1HmdAsO7Nzb8w)
-[^2]: [Fred Allen's *Much Ado about Me*](https://www.goodreads.com/book/show/420790.Much_Ado_About_Me)
+[^2]: [Fred Allen's *Much Ado About Me*](https://www.goodreads.com/book/show/420790.Much_Ado_About_Me)
 [^3]: [Scollay Square](https://en.wikipedia.org/wiki/Scollay_Square)
 [^4]: [Interview with Gordon Bell, Creative Computing Magazine (April 1980)](https://archive.org/details/creativecomputing-1980-04/page/n91/mode/2up)
