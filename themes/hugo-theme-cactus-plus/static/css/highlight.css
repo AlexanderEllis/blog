@@ -17,8 +17,7 @@ pre code {
     word-wrap: break-word;
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: auto;
-    padding: 16px;
-    padding-bottom: 14px;
+    padding: 0 16px;
     display: block;
     color: #222;
     background: #fff;

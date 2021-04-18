@@ -471,6 +471,12 @@ img {
     margin: 0 auto;
 }
 
+video {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
 
 /* Made with Cactus Badge */
 
