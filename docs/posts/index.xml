@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 16 Apr 2021 19:39:25 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 18 Apr 2021 13:15:13 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Writing an RPC From Scratch</title>
+      <link>https://alexanderell.is/posts/rpc-from-scratch/</link>
+      <pubDate>Sun, 18 Apr 2021 13:15:13 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/rpc-from-scratch/</guid>
+      <description>There are many ways for computers to talk to other computers. A commonly used approach is a Remote Procedure Call, or an RPC. An RPC allows for the abstraction of calling another computer&amp;rsquo;s procedure as if it were a local one with all of the transmission and communication taken care of.
+Let&amp;rsquo;s say we&amp;rsquo;re writing some math program on a single computer and we have some procedure or function that handles checking if a number is prime.</description>
+    </item>
     
     <item>
       <title>You&#39;re Reading This in the Future</title>

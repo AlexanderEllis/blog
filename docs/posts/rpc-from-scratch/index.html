@@ -1,0 +1,645 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.64.1" />
+		<title>Writing an RPC From Scratch &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Writing an RPC From Scratch
+                    </h1>
+                    <h2>
+                        ...so you can appreciate the libraries that do it for you
+                    </h2>
+                    <h2 class="headline">
+                    Apr 18, 2021
+                    · 3096 words
+                    · 15 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>There are many ways for computers to talk to other computers. A commonly used approach is a Remote Procedure Call, or an RPC. An RPC allows for the abstraction of calling another computer&rsquo;s procedure as if it were a local one with all of the transmission and communication taken care of.</p>
+<p>Let&rsquo;s say we&rsquo;re writing some math program on a single computer and we have some procedure or function that handles checking if a number is prime. We can use this function as we&rsquo;d like, passing it numbers and getting an answer, and it can live in our computer.</p>
+<p><img src="is-prime-as-library.png" alt="The is_prime function as a library"></p>
+<p>This is fine, and for doing many things, it&rsquo;s very helpful to keep things nearby. It&rsquo;s easy to call, and since it&rsquo;s right alongside the rest of our code, there&rsquo;s nearly no delay when we have to send it numbers.</p>
+<p>But, there are cases when it isn&rsquo;t as helpful to keep it local. Maybe we want to have it run on a really powerful computer with many cores and lots of memory so it can check really, really big numbers. Well, that&rsquo;s not so bad. We can run our main program on this big computer as well, so even though the rest of the program might not need it, the prime finder can use as much of the computer as it can.  What if we want to let other programs reuse the prime finder? We could make it a library that we can share between programs, but we might need a lot of memory resources for every computer that runs the prime finding library.</p>
+<p>What if we just ran the prime function on a separate computer, then talked to that computer when we needed to check a number? That way, we can beef up this prime finder computer, and we can share it with other programs running on other computers.</p>
+<p><img src="is-prime-on-big-computer.png" alt="The is_prime function living on a powerful computer as part of a distributed network "></p>
+<p>The downside here is more complexity. Computers fail, networks are unreliable, and we have to worry about sending the answer back and forth. If you&rsquo;re just writing a math program, you may not want to worry about network details, resending lost packets, or even how to find the computer that&rsquo;s running the prime finder. If your job is writing the best prime-finding program, you may not want to worry about how to listen for requests or check for closed sockets.</p>
+<p>This is where remote procedure calls come into play. We can wrap the complexity of inter-computer communication in the center, and we can surface a simple interface, called a <em>stub</em>, to either side of the conversation. To the math-program writer, we can make it look like you&rsquo;re just calling the function that lives on the other computer. To the prime-finding program writer, we can just make it look like your function is being called. If we abstract away the middle, each side can focus on their respective details while still being able to enjoy the benefit of splitting this computation across multiple computers.</p>
+<p><img src="is-prime-distributed-with-stubs.png" alt="The is_prime function living on a powerful computer as part of a distributed network "></p>
+<p>The main job of an RPC call is to handle this middle section. Part of it has to live on the math program computer, where it has to take the arguments, package them, and send them to the other computer. When it gets a response, it has to unpackage it and pass it back. The part that lives on the prime finder computer has to wait for requests, unpackage the arguments, pass them to the function, get the result, package it, and send it back to whoever asked for it. Importantly, both the math program and the prime finder program have a clean interface between them and their respective stubs that allows for this abstraction.</p>
+<p><img src="RPC-diagram.png" alt="RPC components."></p>
+<center>
+<em>Diagram from Implementing Remote Procedure Calls, Birrell & Nelson, 1981</em>
+</center>
+<br>
+<p>For more details, I&rsquo;d highly recommend the 1981 paper <em>Implementing Remote Procedure Calls</em> by Andrew D. Birrell and Bruce Jay Nelson<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, where they walk through the use of RPCs at Xerox PARC.</p>
+<br>
+<h3 id="writing-an-rpc-from-scratch">Writing an RPC from scratch&hellip;</h3>
+<p>What would this look like if we tried to write it?</p>
+<p>(With a big old caveat that I&rsquo;m far from an expert in C, but I can scratch enough down with a toy problem to (hopefully) get a concept across. Imagine a big asterisk after nearly every line that says &ldquo;would be different for production code&rdquo;. These examples are very much inspired by Beej&rsquo;s Guide to Network Programming<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.)</p>
+<p>We can start with our basic math program. Maybe for the sake of simplicity, it&rsquo;s a command line tool that takes some input and checks whether or not it&rsquo;s prime. It has a separate method, <code>is_prime</code>, for the actual checking.</p>
+<pre><code>
+// basic_math_program.c
+#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+// Basic prime checker. This uses the 6k&#43;-1 optimization
+// (see https://en.wikipedia.org/wiki/Primality_test)
+bool is_prime(int number) {
+  // Check first for 2 or 3
+  if (number == 2 || number == 3) {
+    return true;
+  }
+  // Check for 1 or easy modulos
+  if (number == 1 || number % 2 == 0 || number % 3 == 0) {
+    return false;
+  }
+  // Now check all the numbers up to sqrt(number)
+  int i = 5;
+  while (i * i &lt;= number) {
+    // If we&#39;ve found something (or something &#43; 2) that divides it evenly, it&#39;s not
+    // prime.
+    if (number % i == 0 || number % (i &#43; 2) == 0) {
+      return false;
+    }
+    i &#43;= 6;
+  }
+  return true;
+}
+
+int main(void) {
+  // Prompt the user to enter a number.
+  printf(&#34;Please enter a number: &#34;);
+  // Read the user&#39;s number. Assume they&#39;re entering a valid number.
+  int input_number;
+  scanf(&#34;%d&#34;, &amp;input_number);
+
+  // Check if it&#39;s prime
+  if (is_prime(input_number)) {
+    printf(&#34;%d is prime\n&#34;, input_number);
+  } else {
+    printf(&#34;%d is not prime\n&#34;, input_number);
+  }
+
+  return 0;
+}
+
+</code></pre>
+
+
+<p>OK, some potential issues there, and the author clearly didn&rsquo;t handle all edge cases, but maybe they had some pressing deadlines. Either way, it&rsquo;s using this function, and it looks like it&rsquo;s working pretty well:</p>
+<p><img src="basic-math-program.png" alt="Running basic_math_program.c; says 31 is prime"></p>
+<p>So far so good. Maybe we want to split this up into different files, so <code>is_prime</code> would be reusable between programs on the same computer. That&rsquo;s easy enough. Let&rsquo;s start by making a separate library for <code>is_prime</code>:</p>
+<p><pre><code>
+// is_prime.h
+#ifndef IS_PRIME_H
+#define IS_PRIME_H
+
+#include &lt;stdbool.h&gt;
+
+bool is_prime(int number);
+
+#endif
+</code></pre>
+
+
+<pre><code>
+// is_prime.c
+#include &#34;is_prime.h&#34;
+
+// Basic prime checker. This uses the 6k&#43;-1 optimization
+// (see https://en.wikipedia.org/wiki/Primality_test)
+bool is_prime(int number) {
+  // Check first for 2 or 3
+  if (number == 2 || number == 3) {
+    return true;
+  }
+  // Check for 1 or easy modulos
+  if (number == 1 || number % 2 == 0 || number % 3 == 0) {
+    return false;
+  }
+  // Now check all the numbers up to sqrt(number)
+  int i = 5;
+  while (i * i &lt;= number) {
+    // If we&#39;ve found something (or something &#43; 2) that divides it evenly, it&#39;s not
+    // prime.
+    if (number % i == 0 || number % (i &#43; 2) == 0) {
+      return false;
+    }
+    i &#43;= 6;
+  }
+  return true;
+}
+
+</code></pre>
+
+</p>
+<p>We can now include it and call it from our main program:</p>
+<pre><code>
+// basic_math_program_refactored.c
+#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+#include &#34;is_prime.h&#34;
+
+int main(void) {
+  // Prompt the user to enter a number.
+  printf(&#34;Please enter a number: &#34;);
+  // Read the user&#39;s number. Assume they&#39;re entering a valid number.
+  int input_number;
+  scanf(&#34;%d&#34;, &amp;input_number);
+
+  // Check if it&#39;s prime
+  if (is_prime(input_number)) {
+    printf(&#34;%d is prime\n&#34;, input_number);
+  } else {
+    printf(&#34;%d is not prime\n&#34;, input_number);
+  }
+
+  return 0;
+}
+
+</code></pre>
+
+
+<p>Trying it again, it looks like it still works! Though it would have been nice if the original author had written some tests&hellip;</p>
+<p><img src="basic-math-program-refactored.png" alt="Running basic_math_program_refactored.c; still says 31 is prime"></p>
+<p>This is OK so far, but now we&rsquo;ve come to that junction we mentioned earlier, where we want to distribute this across computers. We need to write the following:</p>
+<ul>
+<li>Caller stub, which has to&hellip;
+<ul>
+<li>Pack the argument</li>
+<li>Transmit argument</li>
+<li>Receive the result</li>
+<li>Unpack the result</li>
+</ul>
+</li>
+<li>Callee stub, which has to&hellip;
+<ul>
+<li>Receive the argument</li>
+<li>Unpack argument</li>
+<li>Call the function</li>
+<li>Pack the result</li>
+<li>Transmit the result</li>
+</ul>
+</li>
+</ul>
+<br>
+<p>Our example is a pretty simple one, since we&rsquo;re just packing and sending a single <code>int</code> as the argument and receiving a single byte as a result. For the caller library, we can pack the data, create a socket, connect to a host (let&rsquo;s assume localhost for now), send the data, wait to receive, unpack, and then return. Here&rsquo;s what the header file looks like for the caller library:</p>
+<pre><code>
+// client/is_prime_rpc_client.h
+#ifndef IS_PRIME_RPC_CLIENT_H
+#define IS_PRIME_RPC_CLIENT_H
+
+#include &lt;stdbool.h&gt;
+
+bool is_prime_rpc(int number);
+
+#endif
+</code></pre>
+
+
+<p>The astute (or just conscious) reader will notice that the interface is actually the exact same as when it was just the library, and this is the point! The caller doesn&rsquo;t have to worry about anything other than the business logic it&rsquo;s trying to send (but see caveats below). The implementation, on the other hand, is a little more complex:</p>
+<pre><code>
+// client/is_prime_rpc_client.c
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;netdb.h&gt;
+
+#define SERVERPORT &#34;5005&#34;  // The port the server will be listening on.
+#define SERVER &#34;localhost&#34;  // Assume localhost for now
+
+#include &#34;is_prime_rpc_client.h&#34;
+
+// Packs an int. We need to convert it from host order to network order.
+int pack(int input) {
+  return htons(input);
+}
+
+// Gets the IPv4 or IPv6 sockaddr.
+void *get_in_addr(struct sockaddr *sa) {
+  if (sa-&gt;sa_family == AF_INET) {
+    return &amp;(((struct sockaddr_in*)sa)-&gt;sin_addr);
+  } else {
+    return &amp;(((struct sockaddr_in6*)sa)-&gt;sin6_addr);
+  }
+}
+
+// Gets a socket to connect with.
+int get_socket() {
+  int sockfd;
+  struct addrinfo hints, *server_info, *p;
+  int number_of_bytes;
+
+  memset(&amp;hints, 0, sizeof hints);
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = SOCK_STREAM;  // We want to use TCP to ensure it gets there
+  int return_value = getaddrinfo(SERVER, SERVERPORT, &amp;hints, &amp;server_info);
+  if (return_value != 0) {
+    fprintf(stderr, &#34;getaddrinfo: %s\n&#34;, gai_strerror(return_value));
+    exit(1);
+  }
+
+  // We end up with a linked-list of addresses, and we want to connect to the
+  // first one we can
+  for (p = server_info; p != NULL; p = p-&gt;ai_next) {
+    // Try to make a socket with this one.
+    if ((sockfd = socket(p-&gt;ai_family, p-&gt;ai_socktype, p-&gt;ai_protocol)) == -1) {
+      // Something went wrong getting this socket, so we can try the next one.
+      perror(&#34;client: socket&#34;);
+      continue;
+    }
+    // Try to connect to that socket.
+    if (connect(sockfd, p-&gt;ai_addr, p-&gt;ai_addrlen) == -1) {
+      // If something went wrong connecting to this socket, we can close it and
+      // move on to the next one.
+      close(sockfd);
+      perror(&#34;client: connect&#34;);
+      continue;
+    }
+
+    // If we&#39;ve made it this far, we have a valid socket and can stop iterating
+    // through.
+    break;
+  }
+
+  // If we haven&#39;t gotten a valid sockaddr here, that means we can&#39;t connect.
+  if (p == NULL) {
+    fprintf(stderr, &#34;client: failed to connect\n&#34;);
+    exit(2);
+  }
+
+  // Otherwise, we&#39;re good.
+  return sockfd;
+}
+
+// Client side library for the is_prime RPC.
+bool is_prime_rpc(int number) {
+
+  // First, we need to pack the data, ensuring that it&#39;s sent across the
+  // network in the right format.
+  int packed_number = pack(number);
+
+  // Now, we can grab a socket we can use to connect see how we can connect
+  int sockfd = get_socket();
+
+  // Send just the packed number.
+  if (send(sockfd, &amp;packed_number, sizeof packed_number, 0) == -1) {
+    perror(&#34;send&#34;);
+    close(sockfd);
+    exit(0);
+  }
+
+  // Now, wait to receive the answer.
+  int buf[1];  // Just receiving a single byte back that represents a boolean.
+  int bytes_received = recv(sockfd, &amp;buf, 1, 0);
+  if (bytes_received == -1) {
+    perror(&#34;recv&#34;);
+    exit(1);
+  }
+
+  // Since we just have the one byte, we don&#39;t really need to do anything while
+  // unpacking it, since one byte in reverse order is still just a byte.
+  bool result = buf[0];
+
+  // All done! Close the socket and return the result.
+  close(sockfd);
+  return result;
+}
+
+</code></pre>
+
+
+<p>As mentioned earlier, this client code needs to pack the argument, connect to the server, send the data, receive the data, unpack it, and return it. This is relatively simple for our example, since we just need to ensure the byte order of the number is in the network order.</p>
+<p>Next, we need to run the callee library on the server. It will call the <code>is_prime</code> library we wrote earlier, which now lives entirely on the server.</p>
+<pre><code>
+// server/is_prime_rpc_server.c
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;netdb.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;signal.h&gt;
+
+#include &#34;is_prime.h&#34;
+
+#define SERVERPORT &#34;5005&#34;  // The port the server will be listening on.
+
+// Gets the IPv4 or IPv6 sockaddr.
+void *get_in_addr(struct sockaddr *sa) {
+  if (sa-&gt;sa_family == AF_INET) {
+    return &amp;(((struct sockaddr_in*)sa)-&gt;sin_addr);
+  } else {
+    return &amp;(((struct sockaddr_in6*)sa)-&gt;sin6_addr);
+  }
+}
+
+// Unpacks an int. We need to convert it from network order to our host order.
+int unpack(int packed_input) {
+  return ntohs(packed_input);
+}
+
+// Gets a socket to listen with.
+int get_and_bind_socket() {
+  int sockfd;
+  struct addrinfo hints, *server_info, *p;
+  int number_of_bytes;
+
+  memset(&amp;hints, 0, sizeof hints);
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = SOCK_STREAM;  // We want to use TCP to ensure it gets there
+  hints.ai_flags = AI_PASSIVE;  // Just use the server&#39;s IP.
+  int return_value = getaddrinfo(NULL, SERVERPORT, &amp;hints, &amp;server_info);
+  if (return_value != 0) {
+    fprintf(stderr, &#34;getaddrinfo: %s\n&#34;, gai_strerror(return_value));
+    exit(1);
+  }
+
+  // We end up with a linked-list of addresses, and we want to connect to the
+  // first one we can
+  for (p = server_info; p != NULL; p = p-&gt;ai_next) {
+    // Try to make a socket with this one.
+    if ((sockfd = socket(p-&gt;ai_family, p-&gt;ai_socktype, p-&gt;ai_protocol)) == -1) {
+      // Something went wrong getting this socket, so we can try the next one.
+      perror(&#34;server: socket&#34;);
+      continue;
+    }
+    // We want to be able to reuse this, so we can set the socket option.
+    int yes = 1;
+    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &amp;yes, sizeof(int)) == -1) {
+      perror(&#34;setsockopt&#34;);
+      exit(1);
+    }
+    // Try to bind that socket.
+    if (bind(sockfd, p-&gt;ai_addr, p-&gt;ai_addrlen) == -1) {
+      // If something went wrong binding this socket, we can close it and
+      // move on to the next one.
+      close(sockfd);
+      perror(&#34;server: bind&#34;);
+      continue;
+    }
+
+    // If we&#39;ve made it this far, we have a valid socket and can stop iterating
+    // through.
+    break;
+  }
+
+  // If we haven&#39;t gotten a valid sockaddr here, that means we can&#39;t connect.
+  if (p == NULL) {
+    fprintf(stderr, &#34;server: failed to bind\n&#34;);
+    exit(2);
+  }
+
+  // Otherwise, we&#39;re good.
+  return sockfd;
+}
+
+int main(void) {
+
+  int sockfd = get_and_bind_socket();
+
+  // We want to listen forever on this socket
+  if (listen(sockfd, /*backlog=*/1) == -1) {
+    perror(&#34;listen&#34;);
+    exit(1);
+  }
+  printf(&#34;Server waiting for connections.\n&#34;);
+
+  struct sockaddr their_addr;  // Address information of the client
+  socklen_t sin_size;
+  int new_fd;
+  while(1) {
+
+    sin_size = sizeof their_addr;
+    new_fd = accept(sockfd, (struct sockaddr *)&amp;their_addr, &amp;sin_size);
+    if (new_fd == -1) {
+      perror(&#34;accept&#34;);
+      continue;
+    }
+
+    // Once we&#39;ve accepted an incoming request, we can read from it into a buffer.
+    int buffer;
+    int bytes_received = recv(new_fd, &amp;buffer, sizeof buffer, 0);
+    if (bytes_received == -1) {
+      perror(&#34;recv&#34;);
+      continue;
+    }
+
+    // We need to unpack the received data.
+    int number = unpack(buffer);
+    printf(&#34;Received a request: is %d prime?\n&#34;, number);
+
+    // Now, we can finally call the is_prime library!
+    bool number_is_prime = is_prime(number);
+    printf(&#34;Sending response: %s\n&#34;, number_is_prime ? &#34;true&#34; : &#34;false&#34;);
+
+    // Note that we don&#39;t have to pack a single byte.
+
+    // We can now send it back.
+    if (send(new_fd, &amp;number_is_prime, sizeof number_is_prime, 0) == -1) {
+      perror(&#34;send&#34;);
+    }
+    close(new_fd);
+  }
+
+}
+</code></pre>
+
+
+<p>Finally, we can update our main function that runs on the client to use the new RPC library call:</p>
+<pre><code>
+// client/basic_math_program_distributed.c
+#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+#include &#34;is_prime_rpc_client.h&#34;
+
+int main(void) {
+  // Prompt the user to enter a number.
+  printf(&#34;Please enter a number: &#34;);
+  // Read the user&#39;s number. Assume they&#39;re entering a valid number.
+  int input_number;
+  scanf(&#34;%d&#34;, &amp;input_number);
+
+  // Check if it&#39;s prime, but now via the RPC library
+  if (is_prime_rpc(input_number)) {
+    printf(&#34;%d is prime\n&#34;, input_number);
+  } else {
+    printf(&#34;%d is not prime\n&#34;, input_number);
+  }
+
+  return 0;
+}
+
+</code></pre>
+
+
+<p>The RPC in action:</p>
+<video autoplay loop muted playsinline>
+  <source src="basic-math-distributed-animated.webm"  type="video/webm">
+  <source src="basic-math-distributed-animated.mp4"  type="video/mp4">
+</video>
+
+<br>
+<p>If we run the server, we can run the client to distribute our prime check! Now, when the program is calling <code>is_prime_rpc</code>, all network business happens in the background. We&rsquo;ve successfully distributed the computation, and the client really is calling a remote procedure.</p>
+<br>
+<h3 id="so-you-can-appreciate-the-libraries">&hellip;so you can appreciate the libraries</h3>
+<p>This is a toy example, and although it shows some of the ideas, it&rsquo;s really only a toy. Real frameworks (such as gRPC<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>) are understandably much more complex. Our implementation could use (at least) the following improvements:</p>
+<ul>
+<li><strong>Discoverability</strong>: in the toy example above, we assumed the server was running on <code>localhost</code>. How would the RPC library know where to send the RPC? We would need some way to discover where the servers that can handle this RPC call live.</li>
+<li><strong>RPC type</strong>: we&rsquo;re dealing with a very simple server for a single RPC call. What if we wanted our server to serve two different RPCs, e.g. <code>is_prime</code> and <code>get_factors</code>? We would need a way to differentiate between the two in the requests that we&rsquo;re sending to the server.</li>
+<li><strong>Packing</strong>: Packing an integer is easy, and packing a single byte is even easier. What if we had a complicated data structure we wanted to send across the wire? What if we wanted to compress the data to save some bandwidth?</li>
+<li><strong>Generating code automatically</strong>: we don&rsquo;t want to hand write all of the packing and networking code every time we write a new RPC. It would be great if we could just define our interface once and let the computer do the work for us, giving us just the stub to work with. This is where something like protocol buffers<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> come into play.</li>
+<li><strong>Multiple languages</strong>: along the previous lines, if we&rsquo;re automatically generating the stubs, we might as well let it generate it in multiple languages, so cross-service and cross-language communication is still as easy as calling a function.</li>
+<li><strong>Error &amp; timeout handling</strong>: what happens if the RPC fails? What if the network goes down, the server stops, the wifi drops&hellip; What if we want to have a timeout to ensure we&rsquo;re not waiting all day?</li>
+<li><strong>Versioning</strong>: let&rsquo;s say you have all of the above, but you want to make a change to an RPC call that already has code generated and is running on multiple computers. How do you do it safely?</li>
+<li><strong>All of the other caveats that go along with running servers</strong>: threading, blocking, multiplexing, security, encryption, authorization&hellip;</li>
+</ul>
+<br>
+<p>Computer science is the business of standing on the shoulders of those that have come before us. It&rsquo;s things like this that make you appreciate the libraries that do a lot of work for us already.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><a href="http://web.eecs.umich.edu/~mosharaf/Readings/RPC.pdf"><em>Implementing Remote Procedure Calls</em>, Andrew D. Birrell and Bruce Jay Nelson</a> <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p><a href="https://beej.us/guide/bgnet/">Beej&rsquo;s Guide to Network Programming</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://grpc.io/">gRPC: &ldquo;a modern open source high performance Remote Procedure Call (RPC) framework&rdquo;</a> <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p><a href="https://developers.google.com/protocol-buffers">Protocol Buffers</a> <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2021
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116211054-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+    </body>
+</html>
