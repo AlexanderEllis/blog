@@ -494,6 +494,7 @@ Post List
 =========================================== */
 
 #post-list, #archive-list {
+    padding-left: 0px;
 }
 
 #post-list li, #archive-list li {

@@ -4,6 +4,10 @@
 
     {{ partial "profile.html" . }}
 
+    <!-- <section id="wrapper" class="home">
+        Maybe add this in the future if you want.
+        {{ with .Site.Params.summary }}<p>{{ . | markdownify }}</p>{{ end }}
+    </section> -->
     <section id="wrapper" class="home">
         {{ partial "post-list.html"  . }}
         {{ partial "pagination.html" . }}

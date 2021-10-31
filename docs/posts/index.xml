@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Apr 2021 13:15:13 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 31 Oct 2021 00:10:11 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Strange Path of Accepting How Your Brain Works</title>
+      <link>https://alexanderell.is/posts/limitations/</link>
+      <pubDate>Sun, 31 Oct 2021 00:10:11 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/limitations/</guid>
+      <description>I recently read Turing&amp;rsquo;s Cathedral, a book about the early history of computers, and it largely focused on the life and brilliant times of John von Neumann, who was, to put it simply, a genius. It is both fascinating and disappointing to learn about a brain that works so much better than your own.
+Fascinating because the wide spectrum of human ability has led to a brain so capable. That we (in the general, humanity sense of &amp;ldquo;we&amp;rdquo;) are able to perform such feats is incredible.</description>
+    </item>
     
     <item>
       <title>Writing an RPC From Scratch</title>

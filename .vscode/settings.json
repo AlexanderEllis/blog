@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.ml": "ocaml",
+    "*.mli": "ocaml",
+    "is_prime.h": "c",
+    "stdbool.h": "c"
+  }
+}

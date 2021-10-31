@@ -12,7 +12,8 @@ publishDir = "docs"
 [params]
   name = "Alex Ellis"
   description = ""
-  bio = "I work with computers"
+  bio = ""
+  summary = "Welcome to my personal site, where I write about various topics, including computers, tech, and learning."
   # Enter optionally your twitter account
   twitter = "lxmkls"
   enableRSS = true
