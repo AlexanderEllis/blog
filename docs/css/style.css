@@ -146,7 +146,7 @@ h2 {
 }
 
 .profile #header {
-    margin-bottom: 60px;
+    margin-bottom: 20px;
     text-align: center;
     position: relative;
 }
@@ -511,13 +511,10 @@ Post List
 #post-list a {
     color: #333;
     display: block;
-    font: bold 19px/1.7 "Helvetica Neue", helvetica, Arial, sans-serif;
+    font: bold 19px/1.0 "Helvetica Neue", helvetica, Arial, sans-serif;
 }
 
 #post-list .dates {
-    float: right;
-    position: relative;
-    top: 1px;
     font: 300 17px/1.8 "Helvetica Neue", helvetica, Arial, sans-serif;
     color: #222;
 }
@@ -778,7 +775,6 @@ h2.month {
         font-size: 17px;
     }
     #post-list .dates {
-        display: none;
     }
     #post-list-footer {
         margin-top: 20px;
