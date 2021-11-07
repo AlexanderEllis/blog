@@ -14,7 +14,7 @@ I live with my wife and dog in the Boston area where I work as a software engine
 
 I used to work at [Giant Otter Technologies](https://www.giantotter.com), a very small AI startup that got acquired by [Drift](https://www.drift.com/).
 
-I'm on [GitHub](https://github.com/AlexanderEllis), twitter (infrequently) [@lxmkls](https://twitter.com/lxmkls), and [Hacker News](https://news.ycombinator.com/user?id=otras).
+Want to get in touch? Feel free to reach out! I'm on [GitHub](https://github.com/AlexanderEllis), [Twitter](https://twitter.com/lxmkls) (infrequently), [LinkedIn](https://www.linkedin.com/in/alexander-ellis/) (minimally), and [Hacker News](https://news.ycombinator.com/user?id=otras).
 
 This blog is powered by [Hugo](http://www.gohugo.io/) and runs on GitHub pages ([repo](https://github.com/AlexanderEllis/blog)). Theme is a modified version of Cactus Plus by [nodejh](https://github.com/nodejh/hugo-theme-cactus-plus).
 
