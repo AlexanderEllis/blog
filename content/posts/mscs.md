@@ -4,7 +4,7 @@ date: 2022-01-08T17:33:34-05:00
 draft: false
 ---
 
-> *"I'm going to be 29 anyways, so I might as well be 29 with a Master's."*.
+> *"I'm going to be 29 anyways, so I might as well be 29 with a Master's."*
 >
 > *— me 5 years ago debating whether I should take classes*
 
