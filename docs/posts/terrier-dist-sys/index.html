@@ -1,0 +1,222 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.64.1" />
+		<title>A Children&#39;s Book Story About Distributed Systems &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        A Children&#39;s Book Story About Distributed Systems
+                    </h1>
+                    <h2>
+                        RPCs, GFS, and MapReduce, as understood by a small dog
+                    </h2>
+                    <h2 class="headline">
+                    Jan 12, 2022
+                    · 1985 words
+                    · 10 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p><em>Editor&rsquo;s note: the following document was found in a collection of papers and assignments, apparently dating from late 2020 when the author was stuck inside studying distributed systems. An additional note, written in green and red Crayon on the back of a CVS receipt, was found stapled to the document: &ldquo;it is now winter . this work features only approximate explanations. it favors silliness over accuracy in some sections. it should be taken with a light hearted grain of salt&rdquo; [sic].</em></p>
+<p><em>The following is a verbatim reproduction.</em></p>
+<h1 id="karl-and-the-three-dilemmas">Karl and the Three Dilemmas</h1>
+<h2 id="karl-sends-a-letter">Karl sends a letter</h2>
+<p>Karl is a small terrier who lives in Cambridge, Massachusetts. One wintery day in Cambridge, Karl was looking for something to do. He had already eaten a snack, gone for a walk, chewed a toy, played fetch, and taken a nap, but it was only 2:00PM! He was very bored.</p>
+<p><img src="karl.png" alt="A drawing of a small terrier." /></p>
+<p>As he was day-dreaming about great snacks he had in the past, he remembered his good friend, Jake, who he hadn&rsquo;t seen in a while. &ldquo;I know!&rdquo; exclaimed Karl. &ldquo;I&rsquo;ll see how Jake is doing!&rdquo;</p>
+<p>Unfortunately, Karl didn&rsquo;t remember Jake&rsquo;s phone number, but he did remember where he lived, since he would always meet him outside to go for walks together. How would he get in touch with Jake?</p>
+<p>Karl remembered another friend, Andrew Birrell, who was <a href="http://web.eecs.umich.edu/~mosharaf/Readings/RPC.pdf">great at talking to friends, even when they were far apart</a>. Karl called Andrew to see if he had any ideas.</p>
+<p><img src="karl-is-calling.png" alt="A picture of an iPhone with an incoming call from Karl in Cambridge." /></p>
+<p>&ldquo;Hello?&rdquo;</p>
+<p>&ldquo;Hi Andrew, it&rsquo;s Karl!&rdquo;</p>
+<p>&ldquo;Hi Karl, how are you?&rdquo;</p>
+<p>&ldquo;I&rsquo;m doing well! I had a question for you: I want to ask my friend Jake how he&rsquo;s doing, but I don&rsquo;t remember his telephone number. I only have his address. Do you have any ideas for how to get in touch?&rdquo;</p>
+<p>&ldquo;Sure, Karl, it&rsquo;s easy! First, you&rsquo;ll want to figure out what question you want to ask, and write that down on a piece of paper. That way, Jake will know what you want to know. After that, you&rsquo;ll want to give the letter to your mom, who will put your letter in an envelope and write Jake&rsquo;s address on it and your address smaller. Don&rsquo;t forget to put a stamp on it!&rdquo;</p>
+<p>&ldquo;I won&rsquo;t!&quot;, said Karl.</p>
+<p>&ldquo;Next,&rdquo; said Andrew, &ldquo;you&rsquo;ll want to go put it in a mailbox. A postal worker will come get it, then it&rsquo;ll get sent across the state to different warehouses and finally to Jake&rsquo;s house. Once it gets to Jake&rsquo;s house, his mom will open the letter and give it to Jake, who will read your question, respond, and send it right back the same way. It&rsquo;ll almost be as if you&rsquo;re passing notes to Jake in the same room!&rdquo;</p>
+<p><img src="mail-system.png" alt="A drawing of a letter going from Karl, to his Mom, into an envelope, into a mailbox, into a USPS truck, into another mailbox, out of an Envelope, to Jake's Mom, and finally to Jake, a black lab." /></p>
+<p>&ldquo;That sounds so easy!&rdquo; said Karl. &ldquo;So we don&rsquo;t have to worry about how it gets to Jake?&rdquo;</p>
+<p>&ldquo;Nope!&rdquo; replied Andrew. &ldquo;You just have to write your question, then your mom will take care of writing Jake&rsquo;s address and getting it to the post office! It&rsquo;s really handy to have the post office, since they do the mail delivery for everyone. Otherwise, every time you wanted to write a letter to a friend, you&rsquo;d have to worry about how to get it there yourself!&rdquo;</p>
+<p>&ldquo;That sounds great! Thank you so much Andrew!&rdquo;</p>
+<p>&ldquo;You&rsquo;re welcome Karl!&rdquo;</p>
+<p>So Karl went and got a piece of paper, wrote his question, handed it to his mom who then got an envelope and a stamp, put the letter the envelope, wrote Jake&rsquo;s address on the envelope, wrote his own address smaller in the top left, put the stamp on, and dropped it off at the post office.</p>
+<p>A week later, a letter came for Karl!</p>
+<p>&ldquo;Dear Karl, thank you for writing! I was really happy to get your letter. I am doing very well! My mom knit me a sweater for Christmas. Hope you&rsquo;re doing well too! Your friend, Jake.&rdquo;</p>
+<p><img src="hi.png" alt="A drawing of Karl, a terrier, saying 'Hi!' to Jake, a black lab." /></p>
+<p>It was just like they were in the same room together!</p>
+<br>
+<br>
+<h2 id="karl-borrows-a-book-from-the-library">Karl borrows a book from the library</h2>
+<p>One day on his holiday break from puppy-school, Karl decided he wanted to read a book, but he had already read all of the books in his house. He had heard about a new book, <em>Go, Dog. Go!</em>, from his friend Shiro, and he asked his mom if they had a copy.</p>
+<p>&ldquo;I don&rsquo;t think so, Karl. Why don&rsquo;t you see if you can rent it from the library?&rdquo; asked his mom.</p>
+<p><img src="library.png" alt="A drawing of a public library." /></p>
+<p>The library! Karl had walked past it before, but he had never been inside. Since his mom was busy, Karl decided to ask his friend Sanjay about renting books from the library, since <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf">he knew a lot about libraries, filing, and how to organize things</a>. Karl gave Sanjay a call.</p>
+<p>&ldquo;Hello?&rdquo;</p>
+<p>&ldquo;Hi Sanjay, it&rsquo;s Karl!&rdquo;</p>
+<p>&ldquo;Hi Karl! How are you?&rdquo;</p>
+<p>&ldquo;I&rsquo;m good, thank you very much! I had a question for you: how do you rent a book from the library?&rdquo;</p>
+<p>&ldquo;That&rsquo;s a good question Karl. It&rsquo;s great to borrow a book from your local library. You used to be able to go to the library and pick a book in person, but it&rsquo;s a little different these days.&rdquo;</p>
+<p>&ldquo;Oh yeah?&rdquo; asked Karl.</p>
+<p>&ldquo;Yeah,&rdquo; replied Sanjay. &ldquo;Now, you have to write a letter to the head librarian and ask if you can check out the book. They will look up your library card information to see if you can borrow the book, and if you can, they will write back with the address of the library branch that has that book. You can then write a letter to that library asking for the book, and they&rsquo;ll send it to you.&rdquo;</p>
+<p><img src="library-to-dog.png" alt="A drawing two libraries and a dog house. There are letters going between the libraries and the dog house." /></p>
+<p>&ldquo;That sounds pretty easy,&rdquo; said Karl.</p>
+<p>&ldquo;It definitely works!&rdquo; said Sanjay. &ldquo;Then, if you ever want to borrow the same book again after you return it, you can write another letter directly to the library branch that has it. I&rsquo;ve rented the same book many times.&rdquo;</p>
+<p>&ldquo;That&rsquo;s great!&rdquo; said Karl. &ldquo;I&rsquo;ve heard really good things about <em>Go, Dog. Go!</em>, and I may want to read it a lot. I am curious though: how would the libraries get new books?&rdquo;</p>
+<p>&ldquo;That&rsquo;s a good question, Karl,&rdquo; said Sanjay. &ldquo;If someone wanted to give the library copies of a new book, they&rsquo;d write a letter to the head librarian. If the library can accept the books, the librarian will send back the address of a branch library to send the books to. Once the library gets the books, it can forward on a copy to a few different branches, and those libraries will let the librarian know they have a copy. That way, if anyone else wants to borrow the book, the librarian can send them the address of the closest library with a copy in stock.&rdquo;</p>
+<p><img src="inter-library.png" alt="A drawing of three libraries exchanging letters and packages." /></p>
+<p>&ldquo;That&rsquo;s pretty neat!&rdquo; said Karl. &ldquo;That sounds like a lot of letters back and forth, and I&rsquo;m really glad the post office knows how to deliver all of those letters. Now that I think about it, it&rsquo;s really not that different from borrowing a book from one library through the mail, is it?&rdquo;</p>
+<p>&ldquo;That&rsquo;s exactly right!&rdquo; responded Sanjay. &ldquo;Just like writing a letter to your friend is like passing them a note, it&rsquo;s like we&rsquo;re borrowing a book from one big library, even though it&rsquo;s actually a bunch of small libraries working together with the head librarian.&rdquo;</p>
+<p>&ldquo;That makes sense!  I think I&rsquo;m going to go write the librarian a message now. Thanks Sanjay!&rdquo;</p>
+<p>&ldquo;No problem Karl!&rdquo;</p>
+<p>So Karl went and wrote the librarian a letter asking if he could borrow <em>Go, Dog. Go!</em>.</p>
+<p><img src="karl-writing.png" alt="A drawing of Karl, a small terrier, writing a letter." /></p>
+<p>A little later, the librarian responded saying he could borrow it, and that he should write a letter to the Central Square branch of the Cambridge Public Library. He wrote them a letter, and they sent him the book.</p>
+<p>He read it the same day, and he decided it was his new favorite book.</p>
+<p><img src="books.png" alt="A drawing of two stacked books." /></p>
+<br>
+<br>
+<h2 id="karl-makes-an-advent-calendar">Karl makes an advent calendar</h2>
+<p>One day in late November, Karl wrote a letter to his local library to borrow <em>Go, Dog. Go!</em> again, since it was his favorite book. This time, when the book came, a note came with it:</p>
+<p>&ldquo;Have a good idea for an advent calendar of pictures? Send in a quarter and 25 things to draw, and we&rsquo;ll send you a hand drawn calendar.&rdquo;</p>
+<p>An advent calendar of pictures, how exciting! Karl liked to draw, but every drawing took him a long time since he had trouble holding the pencil.</p>
+<p><img src="karl-drawing.png" alt="A drawing of a dog's paw holding a pencil, drawing a basic stick figure dog." /></p>
+<p>But he had a ton of good ideas for drawings!  &ldquo;I wonder what this library advent calendar is all about?&rdquo; wondered Karl. He then remembered that his friends Jeff and Sanjay were really <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf">good at working together and splitting up work</a>, so he decided to give them a call to see if they knew anything about it.</p>
+<p>&ldquo;Hello?&rdquo;</p>
+<p>&ldquo;Hi Jeff, it&rsquo;s Karl! How are you?&rdquo;</p>
+<p>&ldquo;Hi Karl, I&rsquo;m great! Just working on a problem with Sanjay.&rdquo;</p>
+<p>&ldquo;Hi Karl!&quot;, said Sanjay.</p>
+<p>&ldquo;Hi Sanjay!&quot;, said Karl. &ldquo;I had a question for you two. I saw that the local library will make you a calendar if you send in things to draw. Do you two know how it works?&rdquo;</p>
+<p>&ldquo;Sure!&quot;, said Jeff. &ldquo;It&rsquo;s actually very simple. You can send them a list of things to draw, one for each day, and then they&rsquo;ll have people draw them and send you back a calendar made up of the drawings.&rdquo;</p>
+<p>&ldquo;That&rsquo;s so fun!&rdquo; said Karl. &ldquo;So one of the assistant librarians draws all of the pictures for me?&rdquo;</p>
+<p><img src="sequential-drawing.png" alt="A drawing of a series of prompts with drawings of the prompts. The arrows connect them in order: Dec. 1 Cat, drawing of a cat, Dec. 2 Dog, drawing of a dog, and so on." /></p>
+<p>&ldquo;Not quite!&quot;, said Sanjay. &ldquo;If one librarian does all of the drawing, they&rsquo;ll have a lot of work to do by themself, even if they&rsquo;re fast at drawing. Instead, they send out the ideas to a lot of different librarians at different branches! That way, each librarian only has to draw one picture, and they can do them all at the same time.&rdquo;</p>
+<p>&ldquo;It&rsquo;s a great idea!&rdquo; said Jeff. &ldquo;That way, the assistant librarian can send out a letter with the day and something to draw to each librarian, who can draw it and send it back. Once the assistant librarian has gotten all of the drawings back from the other branches, they put them in order for the calendar. Once they&rsquo;re in the right order, they paste it all together, put a cover on it, and send it right back to you.&rdquo;</p>
+<p>&ldquo;That&rsquo;s fun!&rdquo; exclaimed Karl. &ldquo;That sounds like it will be much better than drawing every picture one after another, and I just happened to learn the other day how to send a letter from my friend Andrew, which means it&rsquo;ll be very easy to write to the librarian.&rdquo;</p>
+<p>&ldquo;That&rsquo;s right,&rdquo; said Sanjay.  &ldquo;And since all of the libraries are talking to each other to keep track of which library books are where, it&rsquo;s easy for them to keep track of all of the different drawings. It&rsquo;s like your drawings are the books, and they&rsquo;re asking each other for them. That way, the assistant librarian handles all of the coordination between all of the other branches, and you just have to tell them what to do for each day!&rdquo;</p>
+<p><img src="distributed-drawing.png" alt="A drawing of a house and three libraries, now with each library being sent a prompt and each library sending back a drawing that matches the prompt." /></p>
+<p>&ldquo;That makes sense!&rdquo; said Karl. &ldquo;Thanks so much!&rdquo;</p>
+<p>&ldquo;No problem Karl! Bye!&rdquo; said Jeff and Sanjay.</p>
+<p>Karl then made a list of 25 things to draw. With his mom&rsquo;s help, he sent out the list (and a quarter) to the assistant librarian. A week later, he got the full calendar! The assistant librarian even included a note apologizing for the delay, explaining that they had to wait a little for the very last one, since the librarian at the Brighton branch draws very slowly.</p>
+<p>Karl sent a picture of the calendar to Jeff and Sanjay.  &ldquo;Looks good to me!&quot;, they said.</p>
+<p>Karl put the calendar right next to his bed so he could see it when he went to sleep.</p>
+<p><img src="karl-sleeping.png" alt="A drawing of Karl sleeping next to his advent calendar." /></p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<p><em>Editor&rsquo;s note: <a href="real-karl.jpg">this photo was also found with the document</a> with a sticky note attached that said &ldquo;dog tax&rdquo;.</em></p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116211054-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+    </body>
+</html>

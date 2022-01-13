@@ -6,10 +6,19 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 08 Jan 2022 17:33:34 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 12 Jan 2022 20:07:04 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>A Children&#39;s Book Story About Distributed Systems</title>
+      <link>https://alexanderell.is/posts/terrier-dist-sys/</link>
+      <pubDate>Wed, 12 Jan 2022 20:07:04 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/terrier-dist-sys/</guid>
+      <description>Editor&amp;rsquo;s note: the following document was found in a collection of papers and assignments, apparently dating from late 2020 when the author was stuck inside studying distributed systems. An additional note, written in green and red Crayon on the back of a CVS receipt, was found stapled to the document: &amp;ldquo;it is now winter . this work features only approximate explanations. it favors silliness over accuracy in some sections. it should be taken with a light hearted grain of salt&amp;rdquo; [sic].</description>
+    </item>
     
     <item>
       <title>Completing a Part-Time Master&#39;s in Computer Science While Working</title>
