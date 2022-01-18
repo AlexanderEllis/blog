@@ -10,7 +10,7 @@ hidden = true
 
 Recommended viewing: https://www.youtube.com/watch?v=8d4RtvMQp10
 
-I live with my wife and dog in the Boston area where I work as a software engineer at Google.  I studied physics and French during my undergrad at Washington University in St. Louis and more recently computer science at Tufts. I love to write and teach, and I've found that explaining things is the best way to learn.
+I live with my wife and dog in the Boston area where I work as a software engineer at Google.  I studied physics and French during my undergrad at Washington University in St. Louis, and I more recently [studied computer science part-time at Tufts while working](/posts/mscs). I love to write and teach, and I've found that explaining things is the best way to learn.
 
 I used to work at [Giant Otter Technologies](https://www.giantotter.com), a very small AI startup that got acquired by [Drift](https://www.drift.com/).
 
