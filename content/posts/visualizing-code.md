@@ -149,6 +149,11 @@ I'm not very familiar with this area of data visualization (nor the rest of data
 - [Code Park: A New 3D Code Visualization Tool](https://arxiv.org/pdf/1708.02174.pdf) (2017), a *"novel tool for visualizing codebases in a 3D game-like environment"* with code represented as *"code rooms"* with code on the walls (sounds very similar now that I read this).
 - [Code Structure Visualization Using 3D-Flythrough](https://opus-htw-aalen.bsz-bw.de/frontdoor/deliver/index/docId/658/file/ICCSE16-SEE.pdf) (2016), with spatial metaphors and first-person exploration of code.
 - [Primitive](https://primitive.io/), a VR collaboration startup with a Matrix-looking *"Immersive Development Environment"* with *"new tools for visually analyzing software in 3D"*.
+
+<br>
+
+*Edit: here are a few more that readers have pointed out:*
+
 - [AppMap](https://appland.com/docs/how-to-use-appmap-diagrams.html), an automated code analysis tool that includes dependency maps and trace views.
 - [plurid](https://github.com/plurid/plurid), a framework for visualizing and debugging code in a 3D explorable structure.
 - [fsn (file manager)](https://en.wikipedia.org/wiki/Fsn_(file_manager)), an experimental application to view a file system in 3D (featured in *Jurassic Park*).
