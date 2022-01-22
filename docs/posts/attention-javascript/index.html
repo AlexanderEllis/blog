@@ -1,0 +1,442 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.64.1" />
+		<title>(1) New Message: Playing with your attention in JavaScript &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        (1) New Message: Playing with your attention in JavaScript
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    Jan 22, 2022
+                    · 1950 words
+                    · 10 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>There are many good things about JavaScript. There are also bad things about JavaScript.</p>
+<p>There are many cases of well-intentioned features in JavaScript being used for unhelpful purposes. These features can help support rich web applications with impressive features and capabilities, but they can often be used antagonistically, in the sense that they aren&rsquo;t helpful for the user (<a href="/posts/taking-over-my-clipboard">like intercepting your clipboard commands</a>). I find these cases interesting, and I wanted to explore a few of these attention-grabbing examples.</p>
+<p><em>Note: these were all tested on desktop in Chrome, Firefox, and Safari. If you&rsquo;re on mobile or an unsupported browser, I apologize that you won&rsquo;t get to see the weirdness, and I&rsquo;ve included screenshots and screencasts for your enjoyment.</em></p>
+<h2 id="1-new-message">(1) New Message</h2>
+<p>One of the things you have probably seen is how pages play with the page&rsquo;s title, like prepending &ldquo;(1) New Message&rdquo; to the title. There are some valid and helpful use cases for this, such as an online chat app or an email inbox showing the number of unread messages.</p>
+<p><img src="inbox-1.png" alt="Screenshot of gmail tab with &ldquo;(1)&rdquo; prepended to title"></p>
+<p>Where this gets a little fuzzier is when the page updates it in a way to catch your eye with movement. This is doubly dubious when the message is something eye-catching that you didn&rsquo;t opt in to, such as an unprompted sales message from a chat bot. At that point, it feels like a blinking advertisement desperate to get your attention. As the developer, if you want to be extra sneaky, you can even make it only happen when the user tabs away from the page, creating an extra little push to get them back to your site.</p>
+<p>Give it a shot with the radio button below: turn it on, then open a new tab!</p>
+<p><b>Blinking the title when hidden:</b>
+<input type="radio" name="title-blink" id="title-blink-off" checked><label for="title-blink-off">Off</label></input>
+<input type="radio" name="title-blink" id="title-blink-on"><label for="title-blink-on">On</label></input></p>
+<script>
+  var titleBlinkOff = document.querySelector("#title-blink-off");
+  var titleBlinkOn = document.querySelector("#title-blink-on");
+  var originalTitle = document.title;
+  var newTitle = "HELP I'M TRAPPED IN A WEBSITE";
+
+  var titleBlinkInterval;
+  titleBlinkOff.onclick = () => {
+    document.title = originalTitle;
+    clearInterval(titleBlinkInterval);
+  }
+  titleBlinkOn.onclick = () => {
+    // Change the title every second
+    titleBlinkInterval = setInterval(() => {
+      if (document.hidden) {
+        document.title = document.title == originalTitle? newTitle : originalTitle;
+      }
+    }, 1000);
+  }
+  // If you click back in, go back to original title.
+  document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) {
+      document.title = originalTitle;
+    }
+  })
+</script>
+<details>
+  <summary>Spoiler: Blinking the title when hidden</summary>
+  <video autoplay loop muted playsinline>
+  <source src="blinking-title.webm"  type="video/webm">
+  <source src="blinking-title.mp4"  type="video/mp4">
+</video>
+</details>
+<br>
+<p>When I was playing around with this with other values for the title, I even fooled myself — I had tabbed away from my draft blog post for a minute, and my eye was immediately grabbed by the &ldquo;(1)&rdquo; in the title! Funny to see how quickly your conditioned mind gets fooled.</p>
+<h4 id="how-does-this-work">How does this work?</h4>
+<p>The main reason this works is because the page&rsquo;s title is accessible through the <code>document</code> element via <code>document.title</code>. Because you can assign directly to it, like <code>document.title = &quot;foo&quot;;</code>, you can easily put it in a continuously running interval with two options, the default title and a new title. Page visibility is also accessible in JavaScript via the <code>document</code> element. In this case, you can perform a check on <code>document.hidden</code> to see whether or not the page is currently hidden. If it is, you can go ahead with the title update; if not, you can lay low for now.</p>
+<details>
+  <summary>Click to view code</summary>
+  <pre><code>
+  var titleBlinkOff = document.querySelector(&quot;#title-blink-off&quot;);
+  var titleBlinkOn = document.querySelector(&quot;#title-blink-on&quot;);
+  var originalTitle = document.title;
+  var newTitle = &quot;HELP I'M TRAPPED IN A WEBSITE&quot;;
+
+  var titleBlinkInterval;
+  titleBlinkOff.onclick = () =&gt; {
+    document.title = originalTitle;
+    clearInterval(titleBlinkInterval);
+  }
+  titleBlinkOn.onclick = () =&gt; {
+    // Change the title every second
+    titleBlinkInterval = setInterval(() =&gt; {
+      if (document.hidden) {
+        document.title = document.title == originalTitle? newTitle : originalTitle;
+      }
+    }, 1000);
+  }
+  // If you click back in, go back to original title.
+  document.addEventListener(&quot;visibilitychange&quot;, function() {
+    if (!document.hidden) {
+      document.title = originalTitle;
+    }
+  })
+</code></pre>
+</details>
+<br>
+<p>More reading: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/title"><code>document.title</code> MDN page</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/hidden"><code>document.hidden</code> MDN page</a>.</p>
+<h3 id="what-about-the-favicon">What about the favicon?</h3>
+<p>Another thing you can do, though this is a little more cursed, is changing the page&rsquo;s favicon. I don&rsquo;t think I&rsquo;ve seen this in the wild, thankfully, but depending on your browser (should work in Chrome and Firefox), it may be possible. Give the following a try!</p>
+<p><b>Blinking the favicon:</b>
+<input type="radio" name="favicon-blink" id="favicon-blink-off" checked>
+<label for="favicon-blink-off">Off</label>
+</input>
+<input type="radio" name="favicon-blink" id="favicon-blink-on">
+<label for="favicon-blink-on">On</label>
+</input></p>
+<script>
+  // This is so dumb, I'm sorry
+  // Used some of https://stackoverflow.com/questions/260857/changing-website-favicon-dynamically to create favicon.
+  var faviconBlinkOff = document.querySelector("#favicon-blink-off");
+  var faviconBlinkOn = document.querySelector("#favicon-blink-on");
+  var headElement = document.getElementsByTagName("head")[0];
+
+  var childAppended = false;
+  var blankFaviconHref = "blank-favicon.ico";
+  var originalFaviconHref = "/images/favicon.ico";
+  var getNewFavicon = (blank) => {
+    var newFavicon = document.createElement("link");
+    newFavicon.rel = "icon";
+    newFavicon.href = blank ? blankFaviconHref : originalFaviconHref;
+    return newFavicon;
+  }
+  var faviconBlinkInterval;
+  var blankFavicon;
+  var originalFavicon;
+  var resetFavicon = () => {
+    if (blankFavicon && headElement.lastChild == blankFavicon) {
+      headElement.removeChild(blankFavicon);
+    }
+    originalFavicon = getNewFavicon(false);
+    headElement.appendChild(originalFavicon);
+  }
+  var addNewFavicon = () => {
+    if (originalFavicon) {
+      headElement.removeChild(originalFavicon);
+    }
+    blankFavicon = getNewFavicon(true);
+    headElement.appendChild(blankFavicon);
+  }
+  faviconBlinkOff.onclick = () => {
+    clearInterval(faviconBlinkInterval);
+    resetFavicon();
+  };
+  faviconBlinkOn.onclick = () => {
+    faviconBlinkInterval = setInterval(() => {
+      if (childAppended) {
+        childAppended = false;
+        resetFavicon();
+      } else {
+        childAppended = true;
+        addNewFavicon();
+      }
+    }, 1000);
+  };
+</script>
+<details>
+  <summary>Spoiler: Blinking the favicon</summary>
+  <video autoplay loop muted playsinline>
+  <source src="blinking-favicon.webm"  type="video/webm">
+  <source src="blinking-favicon.mp4"  type="video/mp4">
+</video>
+</details>
+<br>
+<h4 id="how-does-this-work-1">How does this work?</h4>
+<p>This one is a little weirder. As far as I can tell, because of the way the browsers parse favicon icons, the last icon element in the HTML <code>head</code> that hasn&rsquo;t already been parsed is used. You can easily create a new <code>link</code> element, give it an <code>icon</code> <code>ref</code> and an appropriate <code>href</code>, and add it to the page&rsquo;s <code>head</code>. This works for changing from the default icon to a new icon, but I ran into an issue when trying to go back to the default, where 1) I couldn&rsquo;t just delete the new one, as the browser wouldn&rsquo;t go back to parse the original and 2) I couldn&rsquo;t just append a new version of the old one. Instead, I&rsquo;m doing a weird trick where I&rsquo;m recreating and removing the favicon icon links accordingly to re-parse them; this ends up looking as if it&rsquo;s switching between the two. You can see that in the debug HTML:</p>
+<video autoplay loop muted playsinline>
+  <source src="html-view.webm"  type="video/webm">
+  <source src="html-view.mp4"  type="video/mp4">
+</video>
+
+<br>
+<p>As I mentioned earlier, definitely a little more cursed!</p>
+<details>
+  <summary>Click to view code</summary>
+  <pre><code>
+  // This is so dumb, I'm sorry
+  // Used some of https://stackoverflow.com/questions/260857/changing-website-favicon-dynamically to create favicon.
+  var faviconBlinkOff = document.querySelector(&quot;#favicon-blink-off&quot;);
+  var faviconBlinkOn = document.querySelector(&quot;#favicon-blink-on&quot;);
+  var headElement = document.getElementsByTagName(&quot;head&quot;)[0];
+
+  var childAppended = false;
+  var blankFaviconHref = &quot;blank-favicon.ico&quot;;
+  var originalFaviconHref = &quot;/images/favicon.ico&quot;;
+  var getNewFavicon = (blank) =&gt; {
+    var newFavicon = document.createElement(&quot;link&quot;);
+    newFavicon.rel = &quot;icon&quot;;
+    newFavicon.href = blank ? blankFaviconHref : originalFaviconHref;
+    return newFavicon;
+  }
+  var faviconBlinkInterval;
+  var blankFavicon;
+  var originalFavicon;
+  var resetFavicon = () =&gt; {
+    if (blankFavicon &amp;&amp; headElement.lastChild == blankFavicon) {
+      headElement.removeChild(blankFavicon);
+    }
+    originalFavicon = getNewFavicon(false);
+    headElement.appendChild(originalFavicon);
+  }
+  var addNewFavicon = () =&gt; {
+    if (originalFavicon) {
+      headElement.removeChild(originalFavicon);
+    }
+    blankFavicon = getNewFavicon(true);
+    headElement.appendChild(blankFavicon);
+  }
+  faviconBlinkOff.onclick = () =&gt; {
+    clearInterval(faviconBlinkInterval);
+    resetFavicon();
+  };
+  faviconBlinkOn.onclick = () =&gt; {
+    faviconBlinkInterval = setInterval(() =&gt; {
+      if (childAppended) {
+        childAppended = false;
+        resetFavicon();
+      } else {
+        childAppended = true;
+        addNewFavicon();
+      }
+    }, 1000);
+  };
+</code></pre>
+</details>
+<br>
+<p>Further reading: <a href="https://en.wikipedia.org/wiki/Favicon">Wikipedia article on favicons</a>.</p>
+<h2 id="are-you-sure-you-want-to-leave">Are you sure you want to leave?</h2>
+<p>Sometimes when you try to navigate away from a page, you&rsquo;ll get a popup asking you if you&rsquo;re sure you want to go. There are some cases where this can be helpful. Maybe you&rsquo;re halfway through a long comment on your favorite social media site and you accidentally hit control-w. Rather than lose your unsaved progress, that helpful intermediate step can let you cancel the action and get back to your typing.</p>
+<p><img src="are-you-sure.png" alt="Screenshot of the &ldquo;Leave site?&rdquo; alert"></p>
+<p>The downside is that like everything else, there&rsquo;s nothing stopping pages from doing this when it isn&rsquo;t helpful. For example, maybe I want to do everything I can to keep people from leaving my blog (note: I don&rsquo;t — please leave at your leisure!). Try turning on the following radio option and closing this tab.</p>
+<p><b>Confirm before leaving:</b>
+<input type="radio" name="leave-confirmation" id="leave-confirmation-off" checked>
+<label for="leave-confirmation-off">Off</label>
+</input>
+<input type="radio" name="leave-confirmation" id="leave-confirmation-on">
+<label for="leave-confirmation-on">On</label>
+</input></p>
+<script>
+  // Shout out to https://stackoverflow.com/questions/1119289/how-to-show-the-are-you-sure-you-want-to-navigate-away-from-this-page-when-ch
+  var leaveConfirmationOff = document.querySelector("#leave-confirmation-off");
+  var leaveConfirmationOn = document.querySelector("#leave-confirmation-on");
+
+  leaveConfirmationOff.onclick = () => {
+    window.onbeforeunload = null;
+  }
+
+  leaveConfirmationOn.onclick = () => {
+    window.onbeforeunload = function() {
+      return true;
+    };
+  }
+</script>
+<h4 id="how-does-this-work-2">How does this work?</h4>
+<p>This one is much more straightforward. By adding a function that fires for the <code>beforeunload</code> event, we can ask the browser to check with the user before they leave the page. Browsers frequently require you to first interact with the page, but if you clicked the radio button above, you would have already done so. We can mess with this event easily by setting the <code>window.onbeforeunload</code> function to do a simple <code>return true;</code>.</p>
+<details>
+  <summary>Click to view code</summary>
+  <pre><code>  // Shout out to https://stackoverflow.com/questions/1119289/how-to-show-the-are-you-sure-you-want-to-navigate-away-from-this-page-when-ch
+  var leaveConfirmationOff = document.querySelector(&quot;#leave-confirmation-off&quot;);
+  var leaveConfirmationOn = document.querySelector(&quot;#leave-confirmation-on&quot;);
+
+  leaveConfirmationOff.onclick = () =&gt; {
+    window.onbeforeunload = null;
+  }
+
+  leaveConfirmationOn.onclick = () =&gt; {
+    window.onbeforeunload = function() {
+      return true;
+    };
+  }
+</code></pre>
+</details>
+<br>
+<p>Further reading: <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload">MDN page on <code>WindowEventHandlers.onbeforeunload</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event">beforeunload event</a>.</p>
+<h2 id="what-can-we-do-with-the-user-agent">What can we do with the user agent?</h2>
+<p>Sometimes when you&rsquo;re on a website, you can see what looks like an alert from your computer. For example, if you&rsquo;re surfing the web on a Mac, you may see what looks like a Mac alert about software being out of date on your computer:</p>
+<p><img src="full-screen-phish.png" alt="Phishing screenshot showing what looks like a Mac system alert about software being out of date">
+<em>Screenshot from the <a href="https://community.adobe.com/t5/flash-player-discussions/beware-of-fake-flash-player-update-on-osx/td-p/9826832">Adobe Support Forums</a>.</em></p>
+<p>To an unknowing user, it looks like your Mac is telling you that your software is out of date. In fact, it actually looks like my &ldquo;Leave site?&rdquo; alert above, which came from my trusted computer&rsquo;s Chrome. Unlike most websites, your Mac is generally a trustable friend that frequently warns you about risks and tries to keep you safe.</p>
+<p>What&rsquo;s probably actually happening is that the website has checked what operating system you&rsquo;re on (either in the server or in client code) and shown an alert with custom styles that look like that system&rsquo;s alerts. You could do that a number of ways, but an easy way would be with JavaScript if you wanted to do it with a dynamic pop up. Click the button below; I&rsquo;m just doing an alert, but you could imagine I could easily add an HTML element with the appropriate CSS classes to mimic your system.</p>
+<p><button id="show-user-agent">Show user agent</button></p>
+<script>
+  var userAgentButton = document.querySelector("#show-user-agent");
+  var userAgents = [
+    "iPhone",
+    "iPad",
+    "Mac",
+    "Android",
+    "Linux",
+    "Windows",
+  ]
+  userAgentButton.onclick = () => {
+    for (const userAgent of userAgents) {
+      if (navigator.userAgent.indexOf(userAgent) !== -1) {
+        alert("This is when I'd add a popup HTML element with " + userAgent + " styles.");
+        return;
+      }
+    }
+    alert("Sorry, I wasn't checking for your userAgent. You're safe today!" );
+  }
+</script>
+<h4 id="how-does-this-work-3">How does this work?</h4>
+<p>This one is also not as exciting. The userAgent is easily available via <code>navigator.userAgent</code>, and we can check a few values to see what would match. For instance, we could look for the string <code>&quot;Mac&quot;</code> in the userAgent, and if it&rsquo;s there, we could add an element with Mac styles. The trick here would be in the CSS, since we&rsquo;d (presumably) want to make it match the system and not be too out of date.</p>
+<details>
+  <summary>Click to view code</summary>
+  <pre><code>  var userAgentButton = document.querySelector(&quot;#show-user-agent&quot;);
+  var userAgents = [
+    &quot;iPhone&quot;,
+    &quot;iPad&quot;,
+    &quot;Mac&quot;,
+    &quot;Android&quot;,
+    &quot;Linux&quot;,
+    &quot;Windows&quot;,
+  ]
+  userAgentButton.onclick = () =&gt; {
+    for (const userAgent of userAgents) {
+      if (navigator.userAgent.indexOf(userAgent) !== -1) {
+        alert(&quot;This is when I'd add a popup HTML element with &quot; + userAgent + &quot; styles.&quot;);
+        return;
+      }
+    }
+    alert(&quot;Sorry, I wasn't checking for your userAgent. You're safe today!&quot; );
+  }
+</code></pre>
+</details>
+<br>
+<p>Further reading: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/userAgent">MDN page on <code>Navigator.userAgent</code></a>.</p>
+<h2 id="be-aware">Be aware</h2>
+<p>I&rsquo;ve seen most of these out in the wild, and I&rsquo;m sure you have too. Like many things, JavaScript can be used for good or for bad. These capabilities allow for a powerful and feature filled web, but they also leave room for abuse. It&rsquo;s already hard to protect your attention, but it&rsquo;s helpful to think about how people try to pry at yours even more.</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116211054-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+    </body>
+</html>
