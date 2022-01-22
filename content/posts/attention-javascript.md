@@ -1,5 +1,5 @@
 ---
-title: "(1) New Message: Playing with your attention in JavaScript"
+title: "(1) New Message: How websites catch your attention with JavaScript"
 date: 2022-01-22T11:59:21-05:00
 draft: false
 ---
