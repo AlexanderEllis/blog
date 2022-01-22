@@ -97,7 +97,7 @@ More reading: [`document.title` MDN page](https://developer.mozilla.org/en-US/do
 
 ### What about the favicon?
 
-Another thing you can do, though this is a little more cursed, is changing the page's favicon. I don't think I've seen this in the wild, thankfully, but depending on your browser (should work in Chrome and Firefox), it may be possible. Give the following a try!
+Another thing you can do, though this is a little more cursed, is changing the page's favicon. I don't think I've seen this in the wild, thankfully, but depending on your browser (should work in Chrome and Firefox), it may be possible (though you may need an incognito window if your browser has already cached my favicon?). Give the following a try!
 
 <b>Blinking the favicon:</b>
 <input type="radio" name="favicon-blink" id="favicon-blink-off" checked>
