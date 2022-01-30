@@ -1,0 +1,252 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.64.1" />
+		<title>Writing a toy traceroute from scratch &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Writing a toy traceroute from scratch
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    Jan 30, 2022
+                    · 1159 words
+                    · 6 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p><code>traceroute</code> is a tool you can use to trace the route of packets from your computer to another computer. It lets you see each step that your packets take along the way.</p>
+<p>For example, the following is the result of running <code>traceroute</code> from my computer in Massachusetts to &ldquo;example.com&rdquo;:</p>
+<p><img src="traceroute.png" alt="Screenshot of running traceroute example.com."></p>
+<p>You can see that it took 8 hops to get from my computer to the destination IP (<code>93.184.216.34</code>), and you can see the associated timing for three different attempts for each step. If we wanted to, we could map out these IPs to see the rough physical path of our packets too; from a quick <code>whois</code>, it looks like <code>example.com</code>'s server is based in Los Angeles, and there are quite a few ways to get there!</p>
+<p><code>traceroute</code> is made possible by a side effect of features in the Internet Protocol (IP). Every <a href="https://en.wikipedia.org/wiki/IPv4#Header">IPv4 packet header</a> includes a number of fields:</p>
+<p><img src="header.png" alt="Diagram of IPv4 header"></p>
+<p>One of the fields in the header is a &ldquo;Time To Live&rdquo; value, or TTL. The <a href="https://datatracker.ietf.org/doc/html/rfc791#section-1.4">original DARPA RFC defined Time to Live in 1981 as follows</a>:</p>
+<p><em>The Time to Live is an indication of an upper bound on the lifetime of an internet datagram.  It is set by the sender of the datagram and reduced at the points along the route where it is processed.  If the time to live reaches zero before the internet datagram reaches its destination, the internet datagram is destroyed.  The time to live can be thought of as a self destruct time limit.</em></p>
+<p>In theory, this would be measured in seconds, representing a true self-destruct timer, but in practice, the TTL actually reflects the number of hops that the packet can still take on its way to the destination. At each router along the packet&rsquo;s path, this value is decremented, and if it hits zero, the packet goes no further and an ICMP error message is returned to the sender. This helps prevent unintended behavior in a complicated network, such as infinite looping. Without the TTL, you could imagine orphaned and lost packets being forwarded indefinitely.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol#Time_exceeded">ICMP &ldquo;Time exceeded&rdquo; message</a> that is sent back to the original sender includes some basic information, and with the message, the address of the router that sent it is also visible.</p>
+<h3 id="traceroute">traceroute</h3>
+<p><code>traceroute</code> leverages this decrementing TTL functionality in a clever way to explore the network. Let&rsquo;s say we&rsquo;re trying to trace the route to <code>C</code> in the following network:</p>
+<p><img src="network.png" alt="Diagram of a simple network consisting of my laptop and three other nodes: A, B, and C."></p>
+<p><code>traceroute</code> relies on artificially manipulating the TTL of outgoing packets, incrementally sending packets with incrementing TTL values. It starts with a TTL of 1; when that packet gets to the first router, the TTL will be decremented to 0, and the router will send back an ICMP message.</p>
+<p><img src="first-hop.png" alt="Diagram of a packet being sent from my laptop to A, destined for C with a TTL of 1. A sends back an ICMP message, and I can write down that the first hop is A."></p>
+<p><code>traceroute</code> can then send a packet to the destination with a TTL of 2, and this packet will make it to the second router along the path before an ICMP is sent back.</p>
+<p><img src="second-hop.png" alt="Diagram of a packet being sent from my laptop to A, destined for C with a TTL of 2. A sends it to B with a TTL of 1. B then sends back an ICMP message, and I can write down that the second hop is B."></p>
+<p>Each packet will go one hop further than the last, and by plumbing the router at each hop depth and keeping track of the routers it receives messages from along the way, it can reconstruct a rough path to the destination host.</p>
+<p><img src="third-hop.png" alt="Diagram of a packet being sent from my laptop to A, destined for C with a TTL of 3. A sends it to B with a TTL of 2. B then sends it to C with a TTL of 3, and C sends back an ICMP message. I can write down that the third hop is C."></p>
+<h3 id="what-would-a-basic-implementation-look-like">What would a basic implementation look like?</h3>
+<p>In order to recreate this, we&rsquo;ll want to write some code that does the following:</p>
+<ul>
+<li>Gets the destination IP of the example destination, say &ldquo;example.com&rdquo;</li>
+<li>Creates a socket that allows it to send UDP packets</li>
+<li>Creates a socket on which it&rsquo;ll listen for ICMP messages</li>
+<li>Initializes loop variables for keeping track of the current hop</li>
+<li>Inside a loop while we haven&rsquo;t reached the destination:
+<ul>
+<li>Sends a packet with an incrementing TTL</li>
+<li>Receives an incoming ICMP packet</li>
+<li>Keeps track of the current hop and the address of the received ICMP message</li>
+</ul>
+</li>
+</ul>
+<br>
+<p>That doesn&rsquo;t sound too bad! This is all pretty approachable, and in Python, it may look something like this:</p>
+<pre><code>
+import socket
+
+DESTINATION = &#39;example.com&#39;
+DESTINATION_PORT = 33434
+MESSAGE = &#39;foo&#39;
+
+
+def main():
+    # Get the destination ip address.
+    destination_ip = socket.gethostbyname(DESTINATION)
+    print(&#39;Tracing the route to {0}&#39;.format(destination_ip))
+
+    # Prepare a socket to send UDP packets.
+    sending_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sending_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+    # Prepare a socket to listen for ICMP messages.
+    # Note: the middle argument _may_ be SOCK_RAW, but since I&#39;m running this
+    # on a mac, I had to use SOCK_DGRAM to avoid needing root privileges.
+    # See https://apple.stackexchange.com/questions/312857/how-does-macos-allow-standard-users-to-ping.
+    receiving_socket = socket.socket(
+        socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_ICMP)
+
+    # Show the ICMP header, since that&#39;s where the router address is.
+    receiving_socket.setsockopt(socket.SOL_IP, socket.IP_HDRINCL, 1)
+
+    # Initialize the variables we&#39;ll use for seeing if we&#39;re done and keeping
+    # track of the current hop.
+    received_ip = None
+    current_hop = 1
+    while received_ip != destination_ip:
+        # Set the socket&#39;s TTL to the current hop so that the packet just
+        # reaches it before being stopped.
+        sending_socket.setsockopt(
+            socket.IPPROTO_IP, socket.IP_TTL, current_hop)
+
+        # Attempt to send a UDP packet to the destination ip.
+        sending_socket.sendto(bytes(MESSAGE, &#39;utf-8&#39;),
+                              (destination_ip, DESTINATION_PORT))
+
+        # Receive any incoming ICMP packet. We can ignore the first return
+        # value from recvfrom, which would be the included data.
+        _, addr = receiving_socket.recvfrom(1500)
+        received_ip = addr[0]
+        print(&#39;Current hop {0}: ICMP message received from {1}&#39;.format(
+            current_hop, received_ip))
+        current_hop = current_hop &#43; 1
+
+
+if __name__ == &#39;__main__&#39;:
+    main()
+
+</code></pre>
+
+
+<p>There we go! If I go ahead and run this, I get the following:</p>
+<pre><code>blog: $ python3 content/posts/toy-traceroute/toy_traceroute.py
+Tracing the route to 93.184.216.34
+Current hop 1: ICMP message received from 10.1.10.1
+Current hop 2: ICMP message received from 96.120.66.197
+Current hop 3: ICMP message received from 24.124.212.221
+Current hop 4: ICMP message received from 96.108.45.74
+Current hop 5: ICMP message received from 96.110.22.85
+Current hop 6: ICMP message received from 69.241.119.54
+Current hop 7: ICMP message received from 152.195.232.129
+Current hop 8: ICMP message received from 93.184.216.34
+blog: $
+</code></pre><p>This matches exactly the path that <code>traceroute</code> uncovered earlier, which is very heartening! We&rsquo;ve successfully plumbed the route in between my computer and the destination host.</p>
+<h3 id="complications-that-make-it-interesting">Complications that make it interesting</h3>
+<p>There are many ways to improve this basic program, including at least the following:</p>
+<ul>
+<li>Timing: how long did each hop take?</li>
+<li>What if we sent multiple tries to have more timing samples?</li>
+<li>What do we do if a hop doesn&rsquo;t respond?</li>
+</ul>
+<br>
+<p><code>traceroute</code> handles these, but it&rsquo;s always interesting to think about how you&rsquo;d solve the problem yourself.</p>
+<p>There are also a few interesting cases about tracing the route in general:</p>
+<ul>
+<li>What if a router drops UDP packets? What if it doesn&rsquo;t send ICMP packets?</li>
+<li>What if two subsequent requests take a different path through the network? Would the path we&rsquo;re tracing really exist?</li>
+</ul>
+<br>
+<h3 id="seeing-how-things-work-through-a-toy-problem">Seeing how things work through a toy problem</h3>
+<p><code>traceroute</code> is a simple but clever use case of a built-in feature of the internet, and it&rsquo;s fun to see how it works through a basic example.</p>
+<br>
+<hr>
+<p>Misc. recommended reading:</p>
+<ul>
+<li><code>traceroute</code> <a href="https://en.wikipedia.org/wiki/Traceroute">Wikipedia article</a>
+<ul>
+<li><code>traceroute</code> is also turning 35 this year!</li>
+</ul>
+</li>
+<li><a href="https://github.com/openbsd/src/blob/master/usr.sbin/traceroute/traceroute.c">traceroute source code</a></li>
+<li><a href="https://www.cloudflare.com/learning/network-layer/internet-protocol/">Cloudfare&rsquo;s blog: What is the Internet Protocol?</a></li>
+<li><a href="https://www.measurementlab.net/publications/repair-persistent-route-failures.pdf"><em>LIFEGUARD: Practical Repair of Persistent Route Failures</em>, another clever reuse of functionality with BGP to avoid route failures</a></li>
+</ul>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

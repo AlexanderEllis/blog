@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 22 Jan 2022 11:59:21 -0500</lastBuildDate>
+    <lastBuildDate>Sun, 30 Jan 2022 10:59:16 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Writing a toy traceroute from scratch</title>
+      <link>https://alexanderell.is/posts/toy-traceroute/</link>
+      <pubDate>Sun, 30 Jan 2022 10:59:16 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/toy-traceroute/</guid>
+      <description>traceroute is a tool you can use to trace the route of packets from your computer to another computer. It lets you see each step that your packets take along the way.
+For example, the following is the result of running traceroute from my computer in Massachusetts to &amp;ldquo;example.com&amp;rdquo;:
+You can see that it took 8 hops to get from my computer to the destination IP (93.184.216.34), and you can see the associated timing for three different attempts for each step.</description>
+    </item>
     
     <item>
       <title>(1) New Message: How websites catch your attention with JavaScript</title>
