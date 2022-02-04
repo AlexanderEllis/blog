@@ -1,11 +1,11 @@
 
 const FREQUENCY = 440;
 
-const DOT_TIME = 300;
-const DASH_TIME = DOT_TIME * 3;
-const SYMBOL_BREAK = DOT_TIME;
-const LETTER_BREAK = DOT_TIME * 3 * 1.5;
-const WORD_BREAK = DOT_TIME * 7;
+var DOT_TIME = 300;
+var DASH_TIME = DOT_TIME * 3;
+var SYMBOL_BREAK = DOT_TIME;
+var LETTER_BREAK = DOT_TIME * 3;
+var WORD_BREAK = DOT_TIME * 7;
 
 
 let note_context;
@@ -133,6 +133,26 @@ function getRandomSentence() {
   return "I have not done this yet."
 }
 
+function updateSpeed() {
+  // Get the difficulty and update the constants.
+  const difficulty = document.querySelector('input[name="speed"]:checked').value
+  switch (difficulty) {
+    case 'easy':
+      DOT_TIME = 300;
+      break;
+    case 'medium':
+      DOT_TIME = 200;
+      break;
+    default:
+      DOT_TIME = 100;
+      break;
+  }
+  DASH_TIME = DOT_TIME * 3;
+  SYMBOL_BREAK = DOT_TIME;
+  LETTER_BREAK = DOT_TIME * 3;
+  WORD_BREAK = DOT_TIME * 7;
+}
+
 function getTarget() {
   let target;
   // Get the difficulty and assign a random target.
@@ -159,7 +179,7 @@ var startButton = document.getElementById('playGame');
 // }
 
 class ListeningGame {
-  constructor(wordInput, statusElement, submitButton) {
+  constructor(wordInput, statusElement, submitButton, resetButton) {
     this.stopped = false;
     this.messageFound = false;
 
@@ -167,14 +187,20 @@ class ListeningGame {
     this.wordInput = wordInput;
     this.statusElement = statusElement;
     this.submitButton = submitButton;
+    this.resetButton = resetButton;
 
     // Bind listeners to `this`.
     this.inputListener = this.inputListener.bind(this);
     this.submit = this.submit.bind(this);
+    this.resetButtonListener = this.resetButtonListener.bind(this);
 
     // Initialize listeners
     this.wordInput.addEventListener('keyup', this.inputListener);
     this.submitButton.addEventListener('click', this.submit);
+    this.resetButton.addEventListener('click', this.resetButtonListener);
+    this.wordInput.removeAttribute('disabled');
+    this.submitButton.removeAttribute('disabled');
+    this.resetButton.removeAttribute('disabled');
 
     this.target = '';
   }
@@ -182,6 +208,8 @@ class ListeningGame {
   startNewGame() {
     // Focus on the word input box.
     this.wordInput.focus();
+    // Update speed based on difficulty.
+    updateSpeed();
     // Get a new target
     this.target = getTarget();
     console.log('target: ', this.target);
@@ -214,15 +242,24 @@ class ListeningGame {
     }
   }
 
+  reset() {
+    // Reset the input, stop the current playing, and play the target again.
+    this.wordInput.value = '';
+    STOPPED = true;
+    this.playTarget();
+  }
+
+  resetButtonListener(event) {
+    event.preventDefault();
+    this.reset();
+  }
+
   inputListener(event) {
     if (event.key == 'Control') {
       if (this.messageFound) {
         return;
       }
-      // Reset the input, stop the current playing, and play the target again.
-      this.wordInput.value = '';
-      STOPPED = true;
-      this.playTarget();
+      this.reset();
     } else if (event.key == 'Enter') {
       this.submit(event);
     }
@@ -237,9 +274,13 @@ class ListeningGame {
     // Reset
     STOPPED = true;
     this.wordInput.value = '';
-    this.statusElement.textContent = '';
+    this.statusElement.textContent = 'Press Start to begin.';
     this.wordInput.removeEventListener('keyup', this.inputListener);
     this.submitButton.removeEventListener('click', this.submit);
+    this.resetButton.removeEventListener('click', this.resetButtonListener);
+    this.wordInput.setAttribute('disabled', 'disabled');
+    this.submitButton.setAttribute('disabled', 'disabled');
+    this.resetButton.setAttribute('disabled', 'disabled');
   }
 }
 
@@ -256,8 +297,9 @@ async function playListeningGame() {
   const wordInput = document.getElementById('wordInput');
   const status = document.getElementById('status');
   const submitButton = document.getElementById('submitButton');
+  const resetButton = document.getElementById('resetButton');
 
-  currentGame = new ListeningGame(wordInput, status, submitButton);
+  currentGame = new ListeningGame(wordInput, status, submitButton, resetButton);
 
   currentGame.startNewGame();
 
@@ -278,3 +320,262 @@ async function stopListeningGame() {
 }
 
 playListeningGameButton.addEventListener('click', playListeningGame);
+
+class InputGame {
+  constructor(signalButton, startOverButton, targetDisplay, inputDisplay) {
+    this.signalButton = signalButton;
+    this.startOverButton = startOverButton;
+    this.targetDisplay = targetDisplay;
+    this.inputDisplay = inputDisplay;
+
+    this.target = '';
+
+    // Stack for keeping track of dots and dashes that make up letter
+    this.dotAndDashStack = [];
+    // Stack for keeping track of letters that make up word
+    this.letterStack = [];
+
+    this.lastKeyDownTime = 0;
+    this.lastKeyUpTime = 0;
+    this.letterTimeout = null;
+    this.spaceTimeout = null;
+
+    this.matchFound = false;
+
+    // Keep track of where the spacebar is to prevent duplicate keydowns when you hold it down.
+    this.spacebarDown = false;
+
+    this.documentKeydownListener = this.documentKeydownListener.bind(this);
+    this.documentKeyupListener = this.documentKeyupListener.bind(this);
+    this.buttonMousedownListener = this.buttonMousedownListener.bind(this);
+    this.buttonMouseupListener = this.buttonMouseupListener.bind(this);
+    this.startOver = this.startOver.bind(this);
+    this.handleLetterTimeout = this.handleLetterTimeout.bind(this);
+    this.handleSpaceTimeout = this.handleSpaceTimeout.bind(this);
+
+    document.addEventListener('keydown', this.documentKeydownListener);
+    document.addEventListener('keyup', this.documentKeyupListener);
+    this.signalButton.addEventListener('mousedown', this.buttonMousedownListener);
+    this.signalButton.addEventListener('mouseup', this.buttonMouseupListener);
+    this.signalButton.addEventListener('touchstart', this.buttonMousedownListener);
+    this.signalButton.addEventListener('touchend', this.buttonMouseupListener);
+    this.startOverButton.addEventListener('click', this.startOver);
+  }
+
+  startNewGame()  {
+    this.startOver();
+    this.matchFound = false;
+    // Update speed based on difficulty.
+    updateSpeed();
+    // Get target word
+    this.target = getTarget();
+    console.log('target: ', this.target);
+    // Update target display with the new target
+    this.targetDisplay.textContent = this.target;
+    this.inputDisplay.textContent = '';
+
+    this.signalButton.removeAttribute('disabled');
+    this.startOverButton.removeAttribute('disabled');
+    // Focus on the tap button
+    this.signalButton.focus();
+
+    // Start listening
+    if (!audioContextInitialized) {
+      initializeAudioContext();
+    }
+  }
+
+  keyDown() {
+    console.log('keydown!');
+    startNotePlaying();
+    const currentTime = Date.now();
+    // Update the marker for the last signal ending
+    this.lastKeyDownTime = currentTime;
+    // Get the total silence time since we last had a signal
+    const silenceDelta = currentTime - this.lastKeyUpTime;
+    this.handleSilence(silenceDelta);
+    // We also want to clear any pending intervals so we don't duplicate them.
+    clearTimeout(this.letterTimeout);
+    clearTimeout(this.spaceTimeout);
+  }
+
+  keyUp() {
+    console.log('keyup!');
+    stopNotePlaying();
+    const currentTime = Date.now();
+    // Update the marker for the last silence ending
+    this.lastKeyUpTime = currentTime;
+    // Get the total signal time since we last had silence
+    const signalDelta = currentTime - this.lastKeyDownTime;
+    this.handleSignal(signalDelta);
+
+    // TODO: start timer
+    this.letterTimeout = setTimeout(this.handleLetterTimeout, LETTER_BREAK);
+    this.spaceTimeout = setTimeout(this.handleSpaceTimeout, WORD_BREAK);
+  }
+
+  handleLetterTimeout() {
+    this.handleSilence(LETTER_BREAK);
+  }
+
+  handleSpaceTimeout() {
+    this.handleSilence(WORD_BREAK)
+  }
+
+  handleSignal(signalDelta) {
+    console.log('signalDelta: ', signalDelta)
+    // See if it's a dot or a dash
+    if (signalDelta < DASH_TIME)  {
+      this.dotAndDashStack.push('.');
+    } else {
+      this.dotAndDashStack.push('-');
+    }
+  }
+
+  handleSilence(silenceDelta) {
+    // If there's no input yet, don't do anything
+    if (this.dotAndDashStack.length == 0 && this.letterStack.length == 0) {
+      return;
+    }
+    console.log('silenceDelta: ', silenceDelta, 'LETTER_BREAK: ', LETTER_BREAK);
+    // If we have at least a letter break, try to add a new character if we have any dots or dashes
+    if (silenceDelta >= LETTER_BREAK && this.dotAndDashStack.length != 0) {
+      // TODO: handle letter being done.
+      const currentLetterCombo = this.dotAndDashStack.join('');
+      if (currentLetterCombo in REVERSE_MORSE_MAP) {
+        this.letterStack.push(REVERSE_MORSE_MAP[currentLetterCombo]);
+      } else {
+        // Push a question mark
+        this.letterStack.push('?');
+      }
+      // Clear current stack.
+      this.dotAndDashStack = [];
+    }
+    // If we have more than a word break, we may also want to add a space after doing the above.
+    // We may want to do this without dots and dashes (e.g. the timeout), but only if the last char
+    // isn't a space
+    if (silenceDelta >= WORD_BREAK &&
+        this.letterStack.length != 0 &&
+        this.letterStack[this.letterStack.length - 1] != ' ') {
+      this.letterStack.push(' ');
+    }
+    // Update the display.
+    this.inputDisplay.textContent = this.letterStack.join('');
+    this.checkForMatch();
+  }
+
+  documentKeydownListener(event) {
+    event.preventDefault();
+    // console.log('document keydown');
+    if (event.key == ' ' && !this.spacebarDown) {
+      console.log('sending keydown');
+      this.spacebarDown = true;
+      this.keyDown();
+    } else if (event.key == 'Control') {
+      this.startOver();
+    } else if (event.key == 'Enter' && this.matchFound) {
+      this.startNewGame();
+    }
+  }
+
+  documentKeyupListener(event) {
+    event.preventDefault();
+    // console.log('document keyup');
+    // console.log(this);
+    if (event.key == ' ') {
+      this.spacebarDown = false;
+      this.keyUp();
+    }
+  }
+
+  buttonMousedownListener(event) {
+    event.preventDefault();
+    // console.log('button mousedown');
+    // console.log(this);
+    this.keyDown();
+  }
+
+  buttonMouseupListener(event) {
+    event.preventDefault();
+    // console.log('button mouseup');
+    // console.log(this);
+    this.keyUp();
+  }
+
+  startOver(event) {
+    this.inputDisplay.textContent = '';
+    this.dotAndDashStack = [];
+    this.letterStack = [];
+    this.lastKeyDownTime = 0;
+    this.lastKeyUpTime = 0;
+
+    clearTimeout(this.letterTimeout);
+    clearTimeout(this.spaceTimeout);
+  }
+
+  checkForMatch() {
+    console.log('checking for match');
+    console.log('target: \'' + this.target + '\'');
+    console.log('this.letterStack.join(\'\'): \'' + this.letterStack.join('') + '\'');
+    console.log(this.letterStack.join('') == this.target);
+    if (this.letterStack.join('') == this.target) {
+      console.log('match!');
+      // Clear intervals
+      clearTimeout(this.letterTimeout);
+      clearTimeout(this.spaceTimeout);
+
+      // Show message
+      this.targetDisplay.textContent = this.targetDisplay.textContent + '- You got it! Press Enter or \'Start over\' to start a new round.';
+      this.matchFound = true;
+    }
+  }
+
+  stopGame() {
+    this.startOver();
+    this.targetDisplay.textContent = 'Press Start to begin.';
+    document.removeEventListener('keydown', this.documentKeydownListener);
+    document.removeEventListener('keyup', this.documentKeyupListener);
+    this.signalButton.removeEventListener('mousedown', this.buttonMousedownListener);
+    this.signalButton.removeEventListener('mouseup', this.buttonMouseupListener);
+    this.signalButton.removeEventListener('touchstart', this.buttonMousedownListener);
+    this.signalButton.removeEventListener('touchend', this.buttonMouseupListener);
+    this.startOverButton.removeEventListener('click', this.startOver);
+    this.signalButton.setAttribute('disabled', 'disabled');
+    this.startOverButton.setAttribute('disabled', 'disabled');
+  }
+}
+
+var playInputGameButton = document.getElementById("playInputGame");
+
+async function playInputGame() {
+  // TODO: check if there's a currentGame already. If there is, stop it!
+  if (currentGame) {
+    currentGame.stopGame();
+  }
+
+  const signalButton = document.getElementById('signalButton');
+  const startOverButton = document.getElementById('startOverButton');
+  const targetDisplay = document.getElementById('targetDisplay');
+  const inputDisplay = document.getElementById('inputDisplay');
+
+  currentGame = new InputGame(signalButton, startOverButton, targetDisplay, inputDisplay);
+
+  currentGame.startNewGame();
+
+  playInputGameButton.removeEventListener('click', playInputGame);
+  playInputGameButton.addEventListener('click', stopInputGame);
+  playInputGameButton.textContent = 'Stop';
+}
+
+async function stopInputGame() {
+  if (currentGame) {
+    // Stop current game
+    currentGame.stopGame();
+  }
+
+  playInputGameButton.removeEventListener('click', stopInputGame);
+  playInputGameButton.addEventListener('click', playInputGame);
+  playInputGameButton.textContent = 'Start';
+}
+
+playInputGameButton.addEventListener('click', playInputGame);
