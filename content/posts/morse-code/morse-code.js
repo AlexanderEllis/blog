@@ -8,68 +8,6 @@ const LETTER_BREAK = DOT_TIME * 3 * 1.5;
 const WORD_BREAK = DOT_TIME * 7;
 
 
-const MORSE_MAP = {
-  'a': '.-',
-  'b': '-...',
-  'c': '-.-.',
-  'd': '-..',
-  'e': '.',
-  'f': '..-.',
-  'g': '--.',
-  'h': '....',
-  'i': '..',
-  'j': '.---',
-  'k': '-.-',
-  'l': '.-..',
-  'm': '--',
-  'n': '-.',
-  'o': '---',
-  'p': '.--.',
-  'q': '--.-',
-  'r': '.-.',
-  's': '...',
-  't': '-',
-  'u': '..-',
-  'v': '...-',
-  'w': '.--',
-  'x': '-..-',
-  'y': '-.--',
-  'z': '--..',
-  // '1': '.----',
-  // '2': '..---',
-  // '3': '...--',
-  // '4': '....-',
-  // '5': '.....',
-  // '6': '-....',
-  // '7': '--...',
-  // '8': '---..',
-  // '9': '----.',
-  // '0': '-----'
-};
-
-
-const RANDOM_WORDS = [
-  'the',
-  'he',
-  'train',
-  'oh',
-  'arrive',
-  'nine',
-  'PM',
-  'AM',
-  'code',
-  'morse',
-  'tomato',
-  'key',
-  'shipment',
-  'tractor',
-  'grain',
-  'error',
-  'send',
-  'emergency'
-];
-
-
 let note_context;
 let note_node;
 let gain_node;
@@ -98,32 +36,14 @@ function stopNotePlaying() {
   gain_node.gain.setTargetAtTime(0, 0, 0.001)
 }
 
-document.addEventListener('keydown', event => {
-  if (event.repeat || event.keyCode != 32) {
-    return;
-  }
-
-  if (event.keyCode == 32 /* space */) {
-    if (!audioContextInitialized) {
-      initializeAudioContext();
-    }
-    console.log('we got a space down');
-    startNotePlaying();
-  }
-});
-
-document.addEventListener('keyup', event => {
-  if (event.keyCode == 32 /* space */) {
-    console.log('we got a space up');
-    console.log(note_context.currentTime);
-    stopNotePlaying();
-  }
-});
 
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+// Global variable to stop the playing. Not the most elegant, but whatever.
+var STOPPED = false;
 
 async function playDash() {
   if (STOPPED) { return; }
@@ -167,8 +87,6 @@ async function playWord(word) {
   }
 }
 
-var STOPPED = false;
-
 // Sentence is an array of words.
 // Ex. "dog is good" -> [['-..', '---', '--.'], ['..', '...'], ['--.', '---', '---', '-..']]
 async function playSentence(sentence) {
@@ -176,6 +94,7 @@ async function playSentence(sentence) {
   // Slight pause before it starts
   await sleep(DASH_TIME);
   for (let i = 0; i < sentence.length; i++) {
+    if (STOPPED) { return; }
     await playWord(sentence[i]);
     await sleep(WORD_BREAK);
   }
@@ -206,8 +125,8 @@ function getRandomLetter() {
 }
 
 function getRandomWord() {
-  const randomIndex = Math.floor(Math.random() * RANDOM_WORDS.length);
-  return RANDOM_WORDS[randomIndex];
+  const randomIndex = Math.floor(Math.random() * EASY_WORDS.length);
+  return EASY_WORDS[randomIndex];
 }
 
 function getRandomSentence() {
@@ -249,9 +168,13 @@ class ListeningGame {
     this.statusElement = statusElement;
     this.submitButton = submitButton;
 
+    // Bind listeners to `this`.
+    this.inputListener = this.inputListener.bind(this);
+    this.submit = this.submit.bind(this);
+
     // Initialize listeners
-    wordInput.addEventListener('keyup', (event) => this.inputListener(event));
-    submitButton.addEventListener('click', (event) => this.submit(event));
+    this.wordInput.addEventListener('keyup', this.inputListener);
+    this.submitButton.addEventListener('click', this.submit);
 
     this.target = '';
   }
@@ -261,6 +184,7 @@ class ListeningGame {
     this.wordInput.focus();
     // Get a new target
     this.target = getTarget();
+    console.log('target: ', this.target);
     // Reset
     this.messageFound = false;
     this.wordInput.value = '';
@@ -274,14 +198,15 @@ class ListeningGame {
       // If we found it already, get a new target and play it.
       this.startNewGame();
     } else {
-      const enteredWord = wordInput.value;
+      const enteredWord = this.wordInput.value;
+      console.log('enteredWord: ', enteredWord, 'target: ', this.target);
       if (enteredWord.toLowerCase() == this.target) {
         // If they got the word, show message and switch event listener.
-        this.statusElement.textContent = 'Correct! Press enter to play a new round.'
+        this.statusElement.textContent = 'Correct! Press enter to play a new round.';
         this.messageFound = true;
       } else {
         // If they didn't, clear the text box and let them try again.
-        this.statusElement.textContent = 'Not quite! Try again.'
+        this.statusElement.textContent = 'Not quite! Try again.';
         // Play message.
         this.wordInput.value = '';
         this.playTarget();
@@ -291,9 +216,11 @@ class ListeningGame {
 
   inputListener(event) {
     if (event.key == 'Control') {
-      // Reset
-      // this.startNewGame();
-      wordInput.value = '';
+      if (this.messageFound) {
+        return;
+      }
+      // Reset the input, stop the current playing, and play the target again.
+      this.wordInput.value = '';
       STOPPED = true;
       this.playTarget();
     } else if (event.key == 'Enter') {
@@ -304,12 +231,27 @@ class ListeningGame {
   playTarget() {
     playSentence(convertAsciiSentenceToMorse(this.target));
   }
+
+  stopGame() {
+    console.log('stopping');
+    // Reset
+    STOPPED = true;
+    this.wordInput.value = '';
+    this.statusElement.textContent = '';
+    this.wordInput.removeEventListener('keyup', this.inputListener);
+    this.submitButton.removeEventListener('click', this.submit);
+  }
 }
 
 var currentGame;
 
+var playListeningGameButton = document.getElementById("playListeningGame");
+
 async function playListeningGame() {
-  // TODO: check if there's a currentGame already. If there is, stop it!
+  // Check if there's a currentGame already. If there is, stop it!
+  if (currentGame) {
+    currentGame.stopGame();
+  }
 
   const wordInput = document.getElementById('wordInput');
   const status = document.getElementById('status');
@@ -318,6 +260,21 @@ async function playListeningGame() {
   currentGame = new ListeningGame(wordInput, status, submitButton);
 
   currentGame.startNewGame();
+
+  playListeningGameButton.removeEventListener('click', playListeningGame);
+  playListeningGameButton.addEventListener('click', stopListeningGame);
+  playListeningGameButton.textContent = 'Stop';
 }
 
-document.getElementById("playGame").addEventListener('click', playListeningGame);
+async function stopListeningGame() {
+  if (currentGame) {
+    // Stop current game
+    currentGame.stopGame();
+  }
+
+  playListeningGameButton.removeEventListener('click', stopListeningGame);
+  playListeningGameButton.addEventListener('click', playListeningGame);
+  playListeningGameButton.textContent = 'Start';
+}
+
+playListeningGameButton.addEventListener('click', playListeningGame);

@@ -34,7 +34,7 @@ TODO:
 <br>
 <br>
 
-<h3>Matching Game</h3>
+## Morse Code Listening Game
 
 <p>It will play a word, and you have to enter it right.</p>
 <p>Press Enter to see if you got it.</p>
@@ -51,13 +51,29 @@ TODO:
   <label for="difficultyHard">Hard (sentences)</label>
 </div>
 
-<button id="playGame">Start</button>
+<button id="playListeningGame">Start</button>
 
 <div id="matchingGame">
   <p id="status"></p>
-  <input type="text" id="wordInput" placeholder="Enter message">
+  <input type="text" id="wordInput" placeholder="Enter message" autocomplete="off">
   <br>
   <button id="submitButton">Submit</buton>
 </div>
 
+## Morse Code Input Game
+
+For the input game, it will show a word, and you'll have to input it. You can use your spacebar on desktop or the button on mobile.
+
+<div id="inputGame">
+  <p id="targetDisplay"></p>
+  <p id="inputDisplay"></p>
+  <br>
+  <button id="signalButton">Tap</buton>
+  <br>
+  <button id="resetButton">Reset</buton>
+</div>
+
+<button id="playInputGame">Start</button>
+
+<script src="constants.js"></script>
 <script src="morse-code.js"></script>
