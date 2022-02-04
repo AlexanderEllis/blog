@@ -239,58 +239,85 @@ var startButton = document.getElementById('playGame');
 //   document.getElementById('playGame').textContent = 'Start';
 // }
 
-async function playGame() {
-  let target = getTarget();
+class ListeningGame {
+  constructor(wordInput, statusElement, submitButton) {
+    this.stopped = false;
+    this.messageFound = false;
 
-  // Update the button text
-  // document.getElementById('playGame').textContent = 'Stop';
+    // DOM elements we'll interact with
+    this.wordInput = wordInput;
+    this.statusElement = statusElement;
+    this.submitButton = submitButton;
 
-  // Status we'll soon update.
-  const status = document.getElementById('status');
-  status.value = 'Waiting...';
-  // Word input we'll be checking
-  const wordInput = document.getElementById('wordInput');
-  wordInput.focus();
+    // Initialize listeners
+    wordInput.addEventListener('keyup', (event) => this.inputListener(event));
+    submitButton.addEventListener('click', (event) => this.submit(event));
 
-  // Async call to play the message.
-  playSentence(convertAsciiSentenceToMorse(target));
+    this.target = '';
+  }
 
-  let messageFound = false;
+  startNewGame() {
+    // Focus on the word input box.
+    this.wordInput.focus();
+    // Get a new target
+    this.target = getTarget();
+    // Reset
+    this.messageFound = false;
+    this.wordInput.value = '';
+    this.statusElement.textContent = 'Waiting...';
+    this.playTarget();
+  }
 
-  wordInput.addEventListener('keyup', event => {
-    if (event.key == 'Control') {
-      wordInput.value = '';
-      STOPPED = true;
-      playSentence(convertAsciiSentenceToMorse(target));
-    }
-  });
-
-  // When the submitted button is clicked, we want to check if it's the target.
-  document.getElementById('submitMessage').addEventListener('click', event => {
+  submit(event) {
     event.preventDefault();
-    if (messageFound) {
+    if (this.messageFound) {
       // If we found it already, get a new target and play it.
-      messageFound = false;
-      wordInput.value = '';
-      status.textContent = 'Waiting...';
-      target = getTarget();
-      playSentence(convertAsciiSentenceToMorse(target));
+      this.startNewGame();
     } else {
       const enteredWord = wordInput.value;
-      if (enteredWord.toLowerCase() == target) {
+      if (enteredWord.toLowerCase() == this.target) {
         // If they got the word, show message and switch event listener.
-        status.textContent = 'Correct! Press enter to play a new round.'
-        messageFound = true;
+        this.statusElement.textContent = 'Correct! Press enter to play a new round.'
+        this.messageFound = true;
       } else {
         // If they didn't, clear the text box and let them try again.
-        status.textContent = 'Not quite! Try again.'
+        this.statusElement.textContent = 'Not quite! Try again.'
         // Play message.
-        wordInput.value = '';
-        playSentence(convertAsciiSentenceToMorse(target));
+        this.wordInput.value = '';
+        this.playTarget();
       }
-
     }
-  })
+  }
+
+  inputListener(event) {
+    if (event.key == 'Control') {
+      // Reset
+      // this.startNewGame();
+      wordInput.value = '';
+      STOPPED = true;
+      this.playTarget();
+    } else if (event.key == 'Enter') {
+      this.submit(event);
+    }
+  }
+
+  playTarget() {
+    playSentence(convertAsciiSentenceToMorse(this.target));
+  }
 }
 
-document.getElementById("playGame").addEventListener('click', playGame);
+var currentGame;
+
+async function playListeningGame() {
+  // TODO: check if there's a currentGame already. If there is, stop it!
+
+  const wordInput = document.getElementById('wordInput');
+  const status = document.getElementById('status');
+  const submitButton = document.getElementById('submitButton');
+
+  currentGame = new ListeningGame(wordInput, status, submitButton);
+
+  currentGame.startNewGame();
+}
+
+document.getElementById("playGame").addEventListener('click', playListeningGame);

@@ -53,13 +53,11 @@ TODO:
 
 <button id="playGame">Start</button>
 
-<form>
 <div id="matchingGame">
   <p id="status"></p>
   <input type="text" id="wordInput" placeholder="Enter message">
   <br>
-  <button id="submitMessage">Submit</buton>
+  <button id="submitButton">Submit</buton>
 </div>
-</form>
 
 <script src="morse-code.js"></script>
