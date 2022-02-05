@@ -16,8 +16,9 @@ let audioContextInitialized = false;
 
 var AudioContext = AudioContext || webkitAudioContext;
 
-function initializeAudioContext() {
+async function initializeAudioContext() {
   note_context = new AudioContext();
+  await note_context.resume();
   note_node = note_context.createOscillator();
   gain_node = note_context.createGain();
   note_node.frequency.value = FREQUENCY.toFixed(2);
