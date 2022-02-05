@@ -14,8 +14,6 @@ let gain_node;
 
 let audioContextInitialized = false;
 
-var AudioContext = AudioContext || webkitAudioContext;
-
 async function initializeAudioContext() {
   note_context = new AudioContext();
   await note_context.resume();
@@ -636,3 +634,10 @@ async function stopInputGame() {
 }
 
 playInputGameButton.addEventListener('click', playInputGame);
+
+// For iOS, you need a touch event before you can play audio!
+var initializeAudioOnTouch = function() {
+  initializeAudioContext();
+  document.removeEventListener('touchend', initializeAudioOnTouch);
+}
+document.addEventListener('touchend', initializeAudioOnTouch);

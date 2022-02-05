@@ -152,8 +152,5 @@ Sorry, it was easiest to be super strict about the timing when making it. Try sl
 
 You can see the source code [here](morse-code.js) and [here](constants.js), though it's very unpolished. I'll follow this up with a blog post describing it as well.
 
-
-Version: 1.0.2
-
 <script src="constants.js"></script>
 <script src="morse-code.js"></script>
