@@ -1,5 +1,5 @@
 ---
-title: "Little games to learn Morse Code in your browser"
+title: "Little games to play with Morse Code in your browser"
 date: 2022-02-04T22:32:54-05:00
 draft: false
 ---
@@ -156,6 +156,15 @@ Sorry, it was easiest to be super strict about the timing when making it. Try sl
 #### *How does it work?*
 
 You can see the source code [here](morse-code.js) and [here](constants.js), though it's very unpolished. I'll follow this up with a blog post describing it as well.
+
+#### *Any recommendations for learning Morse Code for real?*
+
+I'm far from an expert, but so far I've seen a few recommendations (thanks to curiousfab and SaberTail on HN):
+
+- https://morsecode.world/international/trainer/trainer.html
+- https://lcwo.net/
+- http://www.elkins.org/
+
 
 <script src="constants.js"></script>
 <script src="morse-code.js"></script>
