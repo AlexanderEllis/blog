@@ -1,6 +1,6 @@
 ---
 title: "Little games to learn Morse Code in your browser"
-date: 2022-01-31T21:50:54-05:00
+date: 2022-02-03T09:32:54-05:00
 draft: false
 ---
 
@@ -24,7 +24,7 @@ In this game, it will play a word in Morse Code and you have to enter it right.
   <p id="status" class="display-message">Press Start to begin.</p>
   <input type="text" id="wordInput" class="input" placeholder="Enter message" autocomplete="off" disabled>
   <br>
-  <div>
+  <div class="button-container">
     <button id="submitButton" class="interaction-button" disabled>Enter</buton>
     <button id="resetButton" class="interaction-button" disabled>Try again</buton>
   </div>
@@ -56,7 +56,7 @@ For the speaking game, it will show a word, and you'll have to enter it in Morse
   <p id="inputStatus" class="display-message"></p>
   <p id="targetDisplay" class="display-message">Press Start to begin.</p>
   <p id="inputDisplay" class="display-message morse-input"></p>
-  <div>
+  <div class="button-container">
   <button id="signalButton" class="interaction-button" disabled>Tap</buton>
   <button id="startOverButton" class="interaction-button" disabled>Try Again</buton>
   </div>
@@ -71,7 +71,7 @@ Press start to reveal the target. Enter Morse Code with your spacebar or the Tap
 
 The game will assume you're done with a letter after the letter gap interval (see options below), and it will automatically insert a space for you after the word interval; be careful you don't take too long in between dits!
 
-For doing Morse->letter lookups, I find it helpful to look at a tree-shaped diagram, where you can follow from one node to the next based on whether it's a dit or a dah.
+For doing letter to Morse lookups, I find it helpful to look at an alphabetical list with the matching representation. This makes looking up a letter faster.
 ![Alphabetical list of letters and their corresponding Morse Code representation](https://upload.wikimedia.org/wikipedia/commons/b/b5/International_Morse_Code.svg)
 [From here](https://en.wikipedia.org/wiki/File:International_Morse_Code.svg)
 
@@ -124,7 +124,7 @@ The speeds match the following from Wikipedia:
 
 *The duration of a dah is three times the duration of a dit. Each dit or dah within an encoded character is followed by a period of signal absence, called a space, equal to the dit duration. The letters of a word are separated by a space of duration equal to three dits, and words are separated by a space equal to seven dits.*
 
-<div>
+<div id="speed-table">
 
 | Speed  | Dit (ms) | Dash (ms) | Letter gap (ms) | Word gap (ms) |
 |--------|---------------|----------------|-----------------|---------------|

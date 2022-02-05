@@ -47,3 +47,13 @@
     border-radius: 4px;
     min-height: calc(1.7em + 1px);
   }
+
+  .button-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+
+  #speed-table {
+    overflow: scroll;
+  }

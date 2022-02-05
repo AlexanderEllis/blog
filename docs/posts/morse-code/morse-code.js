@@ -14,6 +14,8 @@ let gain_node;
 
 let audioContextInitialized = false;
 
+var AudioContext = AudioContext || webkitAudioContext;
+
 function initializeAudioContext() {
   note_context = new AudioContext();
   note_node = note_context.createOscillator();
