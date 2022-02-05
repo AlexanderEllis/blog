@@ -4,7 +4,7 @@ date: 2022-02-04T22:32:54-05:00
 draft: false
 ---
 
-This is a pair of games for playing with Morse Code. Game options are available towards the bottom of the page.
+This is a pair of games for playing with Morse Code. Since the games play the signals as sound, I recommend headphones (wired if possible for the latency) and a low volume. Game options are available towards the bottom.
 
 <link rel="stylesheet" href="styles.css">
 <noscript>
