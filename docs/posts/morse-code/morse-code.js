@@ -230,6 +230,10 @@ class ListeningGame {
   }
 
   startNewGame() {
+    // Start listening
+    if (!audioContextInitialized) {
+      initializeAudioContext();
+    }
     // Focus on the word input box.
     this.wordInput.focus();
     // Update speed based on difficulty.
@@ -422,7 +426,7 @@ class InputGame {
 
   keyDown() {
     if (this.matchFound) {
-      console.log('match found! doing nothing on keydown')
+      // console.log('match found! doing nothing on keydown')
       return;
     }
     startNotePlaying();
@@ -637,7 +641,9 @@ playInputGameButton.addEventListener('click', playInputGame);
 
 // For iOS, you need a touch event before you can play audio!
 var initializeAudioOnTouch = function() {
-  initializeAudioContext();
+  if (!audioContextInitialized) {
+    initializeAudioContext();
+  }
   document.removeEventListener('touchend', initializeAudioOnTouch);
 }
 document.addEventListener('touchend', initializeAudioOnTouch);

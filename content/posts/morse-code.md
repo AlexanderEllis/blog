@@ -4,9 +4,7 @@ date: 2022-02-04T22:32:54-05:00
 draft: false
 ---
 
-This is a pair of games for playing with Morse Code. Before you begin, I'd recommend headphones (wired for lower latency) and turning your volume down just in case. If you're on mobile, you may need to unsilence your phone if you aren't using headphones.
-
-Game options are available towards the bottom of the page.
+This is a pair of games for playing with Morse Code. Game options are available towards the bottom of the page.
 
 <link rel="stylesheet" href="styles.css">
 <noscript>
@@ -15,7 +13,7 @@ Game options are available towards the bottom of the page.
 
 # Morse Code Listening Game
 
-In this game, it will play a word in Morse Code and you have to enter it right.
+In this game, it will play a word in Morse Code, and you have to type in the word.
 
 <br>
 <div class="game-container">
