@@ -6,7 +6,7 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 03 Feb 2022 09:32:54 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 04 Feb 2022 22:32:54 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,10 +14,10 @@
     <item>
       <title>Little games to learn Morse Code in your browser</title>
       <link>https://alexanderell.is/posts/morse-code/</link>
-      <pubDate>Thu, 03 Feb 2022 09:32:54 -0500</pubDate>
+      <pubDate>Fri, 04 Feb 2022 22:32:54 -0500</pubDate>
       
       <guid>https://alexanderell.is/posts/morse-code/</guid>
-      <description>This is a pair of games for playing with Morse Code. Before you begin, I&amp;rsquo;d recommend headphones and turning your volume down just in case.
+      <description>This is a pair of games for playing with Morse Code. Before you begin, I&amp;rsquo;d recommend headphones (wired for lower latency) and turning your volume down just in case.
 Game options available at the bottom of the page.
  Unfortunately, JavaScript is needed to run these games. The only JS running on my site is for the games (no tracking, etc) if you want to enable it. The good news is that if you&#39;re disabling JavaScript, you probably already know some Morse Code :)  Morse Code Listening Game In this game, it will play a word in Morse Code and you have to enter it right.</description>
     </item>

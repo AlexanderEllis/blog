@@ -1,10 +1,10 @@
 ---
 title: "Little games to learn Morse Code in your browser"
-date: 2022-02-03T09:32:54-05:00
+date: 2022-02-04T22:32:54-05:00
 draft: false
 ---
 
-This is a pair of games for playing with Morse Code. Before you begin, I'd recommend headphones and turning your volume down just in case.
+This is a pair of games for playing with Morse Code. Before you begin, I'd recommend headphones (wired for lower latency) and turning your volume down just in case.
 
 Game options available at the bottom of the page.
 
@@ -25,8 +25,8 @@ In this game, it will play a word in Morse Code and you have to enter it right.
   <input type="text" id="wordInput" class="input" placeholder="Enter message" autocomplete="off" disabled>
   <br>
   <div class="button-container">
-    <button id="submitButton" class="interaction-button" disabled>Enter</buton>
-    <button id="resetButton" class="interaction-button" disabled>Try again</buton>
+    <button id="submitButton" class="interaction-button" disabled>Enter</button>
+    <button id="resetButton" class="interaction-button" disabled>Try again</button>
   </div>
 </div>
 
@@ -43,7 +43,7 @@ For doing Morse to letter lookups, I find it helpful to look at a tree-shaped di
 <a href="https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg" target="blank_">
   ![Binary Tree-shaped diagram of letters and their corresponding Morse Code representation.](https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg)
 </a>
-[From here](https://commons.wikimedia.org/wiki/File:Morse-code-tree.svg)
+[Source](https://commons.wikimedia.org/wiki/File:Morse-code-tree.svg)
 
 {{< /detail-tag >}}
 
@@ -57,8 +57,8 @@ For the speaking game, it will show a word, and you'll have to enter it in Morse
   <p id="targetDisplay" class="display-message">Press Start to begin.</p>
   <p id="inputDisplay" class="display-message morse-input"></p>
   <div class="button-container">
-  <button id="signalButton" class="interaction-button" disabled>Tap</buton>
-  <button id="startOverButton" class="interaction-button" disabled>Try Again</buton>
+  <button id="signalButton" class="interaction-button" disabled>Tap</button>
+  <button id="startOverButton" class="interaction-button" disabled>Try Again</button>
   </div>
 </div>
 
@@ -72,8 +72,11 @@ Press start to reveal the target. Enter Morse Code with your spacebar or the Tap
 The game will assume you're done with a letter after the letter gap interval (see options below), and it will automatically insert a space for you after the word interval; be careful you don't take too long in between dits!
 
 For doing letter to Morse lookups, I find it helpful to look at an alphabetical list with the matching representation. This makes looking up a letter faster.
-![Alphabetical list of letters and their corresponding Morse Code representation](https://upload.wikimedia.org/wikipedia/commons/b/b5/International_Morse_Code.svg)
-[From here](https://en.wikipedia.org/wiki/File:International_Morse_Code.svg)
+<a href="https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg" target="blank_">
+  ![Alphabetical list of letters and their corresponding Morse Code representation](https://upload.wikimedia.org/wikipedia/commons/b/b5/International_Morse_Code.svg)
+</a>
+[Source](https://en.wikipedia.org/wiki/File:International_Morse_Code.svg)
+
 
 {{< /detail-tag >}}
 
@@ -138,11 +141,15 @@ All times are in milliseconds. I recommend starting with slow and giving yoursel
 
 <br>
 
-## Other details
+## Issues/questions
 
 #### *Something went wrong?*
 
 You may need to refresh — it's a little rough around the edges.
+
+#### *Something went wrong on iOS?*
+
+You may need to tap Start and Stop a few times, refresh, or start with the "speaking" game. I ran into an issue with initializing the AudioContext, and although I think I got it right, I'm sorry if it's giving you trouble.
 
 #### *Why is it so quick with the spaces when listening?*
 

@@ -50,8 +50,8 @@
                         
                     </h2>
                     <h2 class="headline">
-                    Feb 3, 2022
-                    · 579 words
+                    Feb 4, 2022
+                    · 627 words
                     · 3 minutes read
                       <span class="tags">
                             
@@ -60,7 +60,7 @@
                 </header>
                 
                 <section id="post-body">
-                    <p>This is a pair of games for playing with Morse Code. Before you begin, I&rsquo;d recommend headphones and turning your volume down just in case.</p>
+                    <p>This is a pair of games for playing with Morse Code. Before you begin, I&rsquo;d recommend headphones (wired for lower latency) and turning your volume down just in case.</p>
 <p>Game options available at the bottom of the page.</p>
 <link rel="stylesheet" href="styles.css">
 <noscript>
@@ -76,8 +76,8 @@
   <input type="text" id="wordInput" class="input" placeholder="Enter message" autocomplete="off" disabled>
   <br>
   <div class="button-container">
-    <button id="submitButton" class="interaction-button" disabled>Enter</buton>
-    <button id="resetButton" class="interaction-button" disabled>Try again</buton>
+    <button id="submitButton" class="interaction-button" disabled>Enter</button>
+    <button id="resetButton" class="interaction-button" disabled>Try again</button>
   </div>
 </div>
 <br>
@@ -90,7 +90,7 @@
 <a href="https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg" target="blank_">
 <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg" alt="Binary Tree-shaped diagram of letters and their corresponding Morse Code representation.">
 </a>
-<a href="https://commons.wikimedia.org/wiki/File:Morse-code-tree.svg">From here</a></p>
+<a href="https://commons.wikimedia.org/wiki/File:Morse-code-tree.svg">Source</a></p>
 
 </details>
 <br>
@@ -102,8 +102,8 @@
   <p id="targetDisplay" class="display-message">Press Start to begin.</p>
   <p id="inputDisplay" class="display-message morse-input"></p>
   <div class="button-container">
-  <button id="signalButton" class="interaction-button" disabled>Tap</buton>
-  <button id="startOverButton" class="interaction-button" disabled>Try Again</buton>
+  <button id="signalButton" class="interaction-button" disabled>Tap</button>
+  <button id="startOverButton" class="interaction-button" disabled>Try Again</button>
   </div>
 </div>
 <br>
@@ -113,8 +113,10 @@
   <p>Press start to reveal the target. Enter Morse Code with your spacebar or the Tap button. Press Control or the Try Again button to clear your input and start over.</p>
 <p>The game will assume you&rsquo;re done with a letter after the letter gap interval (see options below), and it will automatically insert a space for you after the word interval; be careful you don&rsquo;t take too long in between dits!</p>
 <p>For doing letter to Morse lookups, I find it helpful to look at an alphabetical list with the matching representation. This makes looking up a letter faster.
+<a href="https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg" target="blank_">
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/International_Morse_Code.svg" alt="Alphabetical list of letters and their corresponding Morse Code representation">
-<a href="https://en.wikipedia.org/wiki/File:International_Morse_Code.svg">From here</a></p>
+</a>
+<a href="https://en.wikipedia.org/wiki/File:International_Morse_Code.svg">Source</a></p>
 
 </details>
 <br>
@@ -192,9 +194,11 @@
 </div>
 <p>All times are in milliseconds. I recommend starting with slow and giving yourself plenty of time for the dahs, then increasing the speed as you go!</p>
 <br>
-<h2 id="other-details">Other details</h2>
+<h2 id="issuesquestions">Issues/questions</h2>
 <h4 id="something-went-wrong"><em>Something went wrong?</em></h4>
 <p>You may need to refresh — it&rsquo;s a little rough around the edges.</p>
+<h4 id="something-went-wrong-on-ios"><em>Something went wrong on iOS?</em></h4>
+<p>You may need to tap Start and Stop a few times, refresh, or start with the &ldquo;speaking&rdquo; game. I ran into an issue with initializing the AudioContext, and although I think I got it right, I&rsquo;m sorry if it&rsquo;s giving you trouble.</p>
 <h4 id="why-is-it-so-quick-with-the-spaces-when-listening"><em>Why is it so quick with the spaces when listening?</em></h4>
 <p>Sorry, it was easiest to be super strict about the timing when making it. Try slowing the speed down or practicing to go faster!</p>
 <h4 id="how-does-it-work"><em>How does it work?</em></h4>
