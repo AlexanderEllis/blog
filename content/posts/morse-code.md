@@ -4,9 +4,9 @@ date: 2022-02-04T22:32:54-05:00
 draft: false
 ---
 
-This is a pair of games for playing with Morse Code. Before you begin, I'd recommend headphones (wired for lower latency) and turning your volume down just in case.
+This is a pair of games for playing with Morse Code. Before you begin, I'd recommend headphones (wired for lower latency) and turning your volume down just in case. If you're on mobile, you may need to unsilence your phone if you aren't using headphones.
 
-Game options available at the bottom of the page.
+Game options are available towards the bottom of the page.
 
 <link rel="stylesheet" href="styles.css">
 <noscript>
@@ -149,7 +149,7 @@ You may need to refresh — it's a little rough around the edges.
 
 #### *Something went wrong on iOS?*
 
-You may need to tap Start and Stop a few times, refresh, or start with the "speaking" game. I ran into an issue with initializing the AudioContext, and although I think I got it right, I'm sorry if it's giving you trouble.
+First, make sure your phone is unsilenced (turns out a silenced phone blocks the web audio APIs). You also may need to tap Start and Stop a few times, refresh, or start with the "speaking" game. I ran into an issue with initializing the AudioContext, and although I think I got it right, I'm sorry if it's giving you trouble.
 
 #### *Why is it so quick with the spaces when listening?*
 
