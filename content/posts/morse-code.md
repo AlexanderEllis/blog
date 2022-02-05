@@ -124,6 +124,19 @@ After changing settings, you have to stop and restart the above games.
 
 <br>
 
+
+<legend>Use the Farnsworth method?</legend>
+<div>
+  <input type="radio" id="yesFarnsworth" name="farnsworth" value="yes" checked>
+  <label for="yesFarnsworth">Yes</label>
+  <br>
+  <input type="radio" id="noFarnsworth"
+    name="farnsworth" value="no">
+  <label for="noFarnsworth">No</label>
+</div>
+
+<br>
+
 The speeds match the following from Wikipedia:
 
 *The duration of a dah is three times the duration of a dit. Each dit or dah within an encoded character is followed by a period of signal absence, called a space, equal to the dit duration. The letters of a word are separated by a space of duration equal to three dits, and words are separated by a space equal to seven dits.*
@@ -135,9 +148,12 @@ The speeds match the following from Wikipedia:
 | Slow   |           300 |            900 |             900 |          2100 |
 | Medium |           200 |            600 |             600 |          1400 |
 | Fast   |           100 |            300 |             300 |           700 |
-| Very Fast   |            50 |            150 |             150 |           350 |
+| Very Fast   |            60 |            180 |             180 |           420 |
 
 </div>
+
+
+But, that being said, the [Farnsworth method](https://www.google.com/search?q=Farnsworth+method) varies the intervals between the letters and the word gap instead of varying the length of the dits, dashes, or character gaps. It is more helpful for learning the sounds of each letter at a real speed you would hear it.
 
 All times are in milliseconds. I recommend starting with slow and giving yourself plenty of time for the dahs, then increasing the speed as you go!
 

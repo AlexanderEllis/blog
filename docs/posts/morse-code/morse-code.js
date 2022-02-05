@@ -155,26 +155,50 @@ function getRandomWords() {
 }
 
 function updateSpeed() {
+  const useFarnsworth = document.querySelector('input[name="farnsworth"]:checked').value == 'yes';
   // Get the difficulty and update the constants.
   const difficulty = document.querySelector('input[name="speed"]:checked').value
-  switch (difficulty) {
-    case 'easy':
-      DOT_TIME = 300;
-      break;
-    case 'medium':
-      DOT_TIME = 200;
-      break;
-    case 'hard':
-      DOT_TIME = 100;
-      break;
-    default:
-      DOT_TIME = 50;
-      break;
+  if (useFarnsworth) {
+    DOT_TIME = 60;
+    DASH_TIME = DOT_TIME * 3;
+    SYMBOL_BREAK = DOT_TIME;
+    let letterBreakMultiplier;
+    switch (difficulty) {
+      case 'easy':
+        letterBreakMultiplier = 18;
+        break;
+      case 'medium':
+        letterBreakMultiplier = 9;
+        break;
+      case 'hard':
+        letterBreakMultiplier = 6;
+        break;
+      default:
+        letterBreakMultiplier = 3;
+        break;
+    }
+    LETTER_BREAK = DOT_TIME * letterBreakMultiplier;
+    WORD_BREAK = DOT_TIME * (letterBreakMultiplier * 2.5);
+  } else {
+    switch (difficulty) {
+      case 'easy':
+        DOT_TIME = 300;
+        break;
+      case 'medium':
+        DOT_TIME = 200;
+        break;
+      case 'hard':
+        DOT_TIME = 100;
+        break;
+      default:
+        DOT_TIME = 60;
+        break;
+    }
+    DASH_TIME = DOT_TIME * 3;
+    SYMBOL_BREAK = DOT_TIME;
+    LETTER_BREAK = DOT_TIME * 3;
+    WORD_BREAK = DOT_TIME * 7;
   }
-  DASH_TIME = DOT_TIME * 3;
-  SYMBOL_BREAK = DOT_TIME;
-  LETTER_BREAK = DOT_TIME * 3;
-  WORD_BREAK = DOT_TIME * 7;
 }
 
 function getTarget() {
