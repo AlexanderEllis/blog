@@ -1,47 +1,86 @@
 ---
-title: "Morse Code Game"
+title: "Little games to learn Morse Code in your browser"
 date: 2022-01-31T21:50:54-05:00
-draft: true
+draft: false
 ---
+
+This is a pair of games for playing with Morse Code. Before you begin, I'd recommend headphones and turning your volume down just in case.
+
+Game options available at the bottom of the page.
+
+<link rel="stylesheet" href="styles.css">
+<noscript>
+  Unfortunately, JavaScript is needed to run these games. The only JS running on my site is for the games (no tracking, etc) if you want to enable it. The good news is that if you're disabling JavaScript, you probably already know some Morse Code :)
+</noscript>
+
+# Morse Code Listening Game
+
+In this game, it will play a word in Morse Code and you have to enter it right.
+
+<br>
+<div class="game-container">
+  <button id="playListeningGame" class="start-button">Start</button>
+  <br>
+  <p id="status" class="display-message">Press Start to begin.</p>
+  <input type="text" id="wordInput" class="input" placeholder="Enter message" autocomplete="off" disabled>
+  <br>
+  <div>
+    <button id="submitButton" class="interaction-button" disabled>Enter</buton>
+    <button id="resetButton" class="interaction-button" disabled>Try again</buton>
+  </div>
+</div>
+
+<br>
+<br>
+
+{{< detail-tag "How to play the listening game" >}}
+
+<br>
+
+As you hear the Morse Code, enter the letters (or words!) that you hear. Press Enter (either the button or on your keyboard) to see if you got it, and press Try Again (or Control on your keyboard) to reset your input and hear it again.
+
+For doing Morse to letter lookups, I find it helpful to look at a tree-shaped diagram, where you can follow from one node to the next based on whether it's a dit or a dah.
+<a href="https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg" target="blank_">
+  ![Binary Tree-shaped diagram of letters and their corresponding Morse Code representation.](https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg)
+</a>
+[From here](https://commons.wikimedia.org/wiki/File:Morse-code-tree.svg)
+
+{{< /detail-tag >}}
+
+# Morse Code "Speaking" Game
+
+For the speaking game, it will show a word, and you'll have to enter it in Morse Code.
+
+<div class="game-container">
+  <button id="playInputGame" class="start-button">Start</button>
+  <p id="inputStatus" class="display-message"></p>
+  <p id="targetDisplay" class="display-message">Press Start to begin.</p>
+  <p id="inputDisplay" class="display-message morse-input"></p>
+  <div>
+  <button id="signalButton" class="interaction-button" disabled>Tap</buton>
+  <button id="startOverButton" class="interaction-button" disabled>Try Again</buton>
+  </div>
+</div>
+
+<br>
+<br>
+
+{{< detail-tag "How to play the speaking game" >}}
+
+Press start to reveal the target. Enter Morse Code with your spacebar or the Tap button. Press Control or the Try Again button to clear your input and start over.
+
+The game will assume you're done with a letter after the letter gap interval (see options below), and it will automatically insert a space for you after the word interval; be careful you don't take too long in between dits!
+
+For doing Morse->letter lookups, I find it helpful to look at a tree-shaped diagram, where you can follow from one node to the next based on whether it's a dit or a dah.
+![Alphabetical list of letters and their corresponding Morse Code representation](https://upload.wikimedia.org/wikipedia/commons/b/b5/International_Morse_Code.svg)
+[From here](https://en.wikipedia.org/wiki/File:International_Morse_Code.svg)
+
+{{< /detail-tag >}}
 
 
 ## Game options
 
-If you're not
-
-
-For doing letter->Morse lookups, I like an alphabetized chart like this:
-
-For doing Morse->letter lookups, I find it helpful to look at a tree-shaped diagram, where you can follow from one node to the next based on whether it's a dit or a dah.
-![hey](https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg)
-[From here](https://commons.wikimedia.org/wiki/File:Morse-code-tree.svg)
-
-
-### Speed
-
-
-From Wikipedia:
-
-*The duration of a dah is three times the duration of a dit. Each dit or dah within an encoded character is followed by a period of signal absence, called a space, equal to the dit duration. The letters of a word are separated by a space of duration equal to three dits, and words are separated by a space equal to seven dits.*
-
-| Speed  | Dit time (ms) | Dash time (ms) | Letter gap (ms) | Word gap (ms) |
-|--------|---------------|----------------|-----------------|---------------|
-| Slow   |           300 |            900 |             900 |          2100 |
-| Medium |           200 |            600 |             600 |          1400 |
-| Fast   |           100 |            300 |             300 |           700 |
-
-All times are in milliseconds. I recommend starting with slow and giving yourself plenty of time for the dahs, then increasing the speed as you go!
-
-<legend>Please select your preferred speed:</legend>
-<div>
-  <input type="radio" id="speedEasy"
-    name="speed" value="easy" checked>
-  <label for="speedEasy">Slow</label>
-  <input type="radio" id="speedMedium" name="speed" value="medium" >
-  <label for="speedMedium">Medium</label>
-  <input type="radio" id="speedHard" name="speed" value="hard">
-  <label for="speedHard">Fast</label>
-</div>
+After changing settings, you have to stop and restart the above games.
 
 ### Difficulty
 
@@ -50,53 +89,68 @@ All times are in milliseconds. I recommend starting with slow and giving yoursel
   <input type="radio" id="difficultyEasy"
     name="difficulty" value="easy" checked>
   <label for="difficultyEasy">Easy (letters)</label>
+  <br>
   <input type="radio" id="difficultyMedium" name="difficulty" value="medium" >
-  <label for="difficultyMedium">Medium (words)</label>
+  <label for="difficultyMedium">Medium (short words)</label>
+  <br>
   <input type="radio" id="difficultyHard" name="difficulty" value="hard">
-  <label for="difficultyHard">Hard (sentences)</label>
+  <label for="difficultyHard">Hard (multiple short words)</label>
+  <br>
+  <input type="radio" id="difficultyVeryHard" name="difficulty" value="really-hard">
+  <label for="difficultyVeryHard">Very Hard (multiple words)</label>
 </div>
+
+<br>
 <br>
 
-# The Games
+### Speed
 
-## Morse Code Listening Game
-
-In this game, it will play a word in Morse Code and you have to enter it right.
-
-Press Enter (or submit) to see if you got it, and press Control (or the reset button) to reset your answer and hear it again.
-
-
-<button id="playListeningGame">Start</button>
-
-<div id="matchingGame">
-  <p id="status">Press Start to begin.</p>
-  <input type="text" id="wordInput" placeholder="Enter message" autocomplete="off" disabled>
+<legend>Please select your preferred speed:</legend>
+<div>
+  <input type="radio" id="speedEasy"
+    name="speed" value="easy" checked>
+  <label for="speedEasy">Slow</label>
   <br>
-  <button id="submitButton" disabled>Submit</buton>
+  <input type="radio" id="speedMedium" name="speed" value="medium" >
+  <label for="speedMedium">Medium</label>
   <br>
-  <button id="resetButton" disabled>Reset</buton>
+  <input type="radio" id="speedHard" name="speed" value="hard">
+  <label for="speedHard">Fast</label>
 </div>
+
 <br>
 
-## Morse Code Input Game
+The speeds match the following from Wikipedia:
 
-For the input game, it will show a word, and you'll have to input it in Morse Code.
+*The duration of a dah is three times the duration of a dit. Each dit or dah within an encoded character is followed by a period of signal absence, called a space, equal to the dit duration. The letters of a word are separated by a space of duration equal to three dits, and words are separated by a space equal to seven dits.*
 
-You can use your spacebar on desktop or the button on mobile. Press Control to clear your input and start over. It will automatically insert a space for you; be careful you don't take too long in between dits!
+<div>
 
-<button id="playInputGame">Start</button>
+| Speed  | Dit (ms) | Dash (ms) | Letter gap (ms) | Word gap (ms) |
+|--------|---------------|----------------|-----------------|---------------|
+| Slow   |           300 |            900 |             900 |          2100 |
+| Medium |           200 |            600 |             600 |          1400 |
+| Fast   |           100 |            300 |             300 |           700 |
 
-<div id="inputGame">
-  <!-- 1.7em to match CSS -->
-  <p id="targetDisplay" style="min-height: 1.7em">Press Start to begin.</p>
-  <p id="inputDisplay" style="min-height: 1.7em"></p>
-  <div>
-  <button id="signalButton" disabled>Tap</buton>
-  </div>
-  <div>
-  <button id="startOverButton" disabled>Start Over</buton>
-  </div>
 </div>
+
+All times are in milliseconds. I recommend starting with slow and giving yourself plenty of time for the dahs, then increasing the speed as you go!
+
+<br>
+
+## Other details
+
+#### *Something went wrong?*
+
+You may need to refresh — it's a little rough around the edges.
+
+#### *Why is it so quick with the spaces when listening?*
+
+Sorry, it was easiest to be super strict about the timing when making it. Try slowing the speed down or practicing to go faster!
+
+#### *How does it work?*
+
+You can see the source code [here](morse-code.js) and [here](constants.js), though it's very unpolished. I'll follow this up with a blog post describing it as well.
 
 <script src="constants.js"></script>
 <script src="morse-code.js"></script>

@@ -1,0 +1,49 @@
+  .game-container {
+    padding: 10px;
+    border-radius: 36px;
+    box-shadow: 0px 11px 20px 4px #aaa;
+  }
+
+  #wordInput {
+    text-align: center;
+  }
+
+  .start-button {
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 10px;
+    font-size: 20px;
+  }
+
+  .interaction-button {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    margin: 10px;
+    font-size: 20px;
+  }
+
+  .game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .input {
+    font-size: 20px;
+  }
+
+  .display-message {
+    font-size: 20px;
+    text-align: center;
+    min-height: 1.7em;
+  }
+
+  .morse-input {
+    white-space: pre-wrap;
+    border-bottom: 1px solid #aaa;
+    border-radius: 4px;
+    min-height: calc(1.7em + 1px);
+  }
