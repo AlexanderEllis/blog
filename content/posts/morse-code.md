@@ -117,6 +117,9 @@ After changing settings, you have to stop and restart the above games.
   <br>
   <input type="radio" id="speedHard" name="speed" value="hard">
   <label for="speedHard">Fast</label>
+  <br>
+  <input type="radio" id="speedHarder" name="speed" value="harder">
+  <label for="speedHarder">Faster</label>
 </div>
 
 <br>
@@ -132,6 +135,7 @@ The speeds match the following from Wikipedia:
 | Slow   |           300 |            900 |             900 |          2100 |
 | Medium |           200 |            600 |             600 |          1400 |
 | Fast   |           100 |            300 |             300 |           700 |
+| Very Fast   |            50 |            150 |             150 |           350 |
 
 </div>
 

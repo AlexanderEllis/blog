@@ -164,8 +164,11 @@ function updateSpeed() {
     case 'medium':
       DOT_TIME = 200;
       break;
-    default:
+    case 'hard':
       DOT_TIME = 100;
+      break;
+    default:
+      DOT_TIME = 50;
       break;
   }
   DASH_TIME = DOT_TIME * 3;
