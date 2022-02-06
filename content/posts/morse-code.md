@@ -24,7 +24,7 @@ In this game, it will play a word in Morse Code, and you have to type in the wor
   <br>
   <div class="button-container">
     <button id="submitButton" class="interaction-button" disabled>Enter</button>
-    <button id="resetButton" class="interaction-button" disabled>Try again</button>
+    <button id="resetButton" class="interaction-button" disabled>Replay</button>
   </div>
 </div>
 
@@ -35,7 +35,7 @@ In this game, it will play a word in Morse Code, and you have to type in the wor
 
 <br>
 
-As you hear the Morse Code, enter the letters (or words!) that you hear. Press Enter (either the button or on your keyboard) to see if you got it, and press Try Again (or Control on your keyboard) to reset your input and hear it again.
+As you hear the Morse Code, enter the letters (or words!) that you hear. Press Enter (either the button or on your keyboard) to see if you got it, and press Replay (or Control on your keyboard) to hear it again.
 
 For doing Morse to letter lookups, I find it helpful to look at a tree-shaped diagram, where you can follow from one node to the next based on whether it's a dit or a dah.
 <a href="https://upload.wikimedia.org/wikipedia/commons/1/19/Morse-code-tree.svg" target="blank_">
@@ -91,7 +91,7 @@ After changing settings, you have to stop and restart the above games.
     name="difficulty" value="easy" checked>
   <label for="difficultyEasy">Easy (letters)</label>
   <br>
-  <input type="radio" id="difficultyMedium" name="difficulty" value="medium" >
+  <input type="radio" id="difficultyMedium" name="difficulty" value="medium">
   <label for="difficultyMedium">Medium (short words)</label>
   <br>
   <input type="radio" id="difficultyHard" name="difficulty" value="hard">

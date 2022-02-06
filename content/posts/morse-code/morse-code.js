@@ -43,18 +43,18 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Global variable to stop the playing. Not the most elegant, but whatever.
-var STOPPED = false;
+// Global strictly increasing play counter to avoid multiple replays at the same time.
+var playCounter = 0;
 
-async function playDash() {
-  if (STOPPED) { return; }
+async function playDash(currentPlayCounter) {
+  if (currentPlayCounter != playCounter) { return; }
   startNotePlaying();
   await sleep(DASH_TIME);
   stopNotePlaying();
 }
 
-async function playDot() {
-  if (STOPPED) { return; }
+async function playDot(currentPlayCounter) {
+  if (currentPlayCounter != playCounter) { return; }
   startNotePlaying();
   await sleep(DOT_TIME);
   stopNotePlaying();
@@ -63,40 +63,45 @@ async function playDot() {
 /**
  * message is something like '---'
  */
-async function playLetter(letter) {
+async function playLetter(letter, currentPlayCounter) {
+  // console.log('playSentence with', playCounter, currentPlayCounter);
   if (!audioContextInitialized) {
     initializeAudioContext();
   }
   // console.log('playing', letter);
   for (let i = 0; i < letter.length; i++) {
-    if (STOPPED) { return; }
+    if (currentPlayCounter != playCounter) { return; }
     if (letter[i] == '-') {
-      await playDash();
+      await playDash(currentPlayCounter);
     } else if (letter[i] == '.') {
-      await playDot();
+      await playDot(currentPlayCounter);
     }
     await sleep(SYMBOL_BREAK);
   }
 }
 
 // Word is an array of letters, like ['.', '.-', '-']
-async function playWord(word) {
+async function playWord(word, currentPlayCounter) {
+  // console.log('playSentence with', playCounter, currentPlayCounter);
   for (let i = 0; i < word.length; i++) {
-    if (STOPPED) { return; }
-    await playLetter(word[i]);
+    if (currentPlayCounter != playCounter) { return; }
+    await playLetter(word[i], currentPlayCounter);
     await sleep(LETTER_BREAK);
   }
 }
 
 // Sentence is an array of words.
 // Ex. "dog is good" -> [['-..', '---', '--.'], ['..', '...'], ['--.', '---', '---', '-..']]
-async function playSentence(sentence) {
-  STOPPED = false;
+async function playSentence(sentence, currentPlayCounter) {
+  // console.log('playSentence with', playCounter, currentPlayCounter);
+  if (currentPlayCounter != playCounter) { return; }
   // Slight pause before it starts
-  await sleep(DASH_TIME);
+  // console.log('playSentence with', playCounter, currentPlayCounter);
+  await sleep(LETTER_BREAK);
+  // console.log('playSentence with', playCounter, currentPlayCounter);
   for (let i = 0; i < sentence.length; i++) {
-    if (STOPPED) { return; }
-    await playWord(sentence[i]);
+    if (currentPlayCounter != playCounter) { return; }
+    await playWord(sentence[i], currentPlayCounter);
     await sleep(WORD_BREAK);
   }
 }
@@ -165,10 +170,10 @@ function updateSpeed() {
     let letterBreakMultiplier;
     switch (difficulty) {
       case 'easy':
-        letterBreakMultiplier = 18;
+        letterBreakMultiplier = 24;
         break;
       case 'medium':
-        letterBreakMultiplier = 9;
+        letterBreakMultiplier = 12;
         break;
       case 'hard':
         letterBreakMultiplier = 6;
@@ -223,11 +228,6 @@ function getTarget() {
 }
 
 var startButton = document.getElementById('playGame');
-
-// function stop() {
-//   STOPPED = true;
-//   document.getElementById('playGame').textContent = 'Start';
-// }
 
 class ListeningGame {
   constructor(wordInput, statusElement, submitButton, resetButton) {
@@ -287,32 +287,36 @@ class ListeningGame {
         // If they got the word, show message and switch event listener.
         this.statusElement.textContent = 'Correct! Press enter to play a new round.';
         this.messageFound = true;
+        // Extra playCounter increase to stop any current playing.
+        this.stopCurrentPlaying();
       } else {
         // If they didn't, clear the text box and let them try again.
         this.statusElement.textContent = 'Not quite! Try again.';
-        // Play message.
-        this.wordInput.value = '';
-        this.wordInput.focus();
-        this.playTarget();
+        this.replay();
       }
     }
   }
 
-  async reset() {
+  stopCurrentPlaying() {
+    // console.log('stopping current playing');
+    // Also increase playCounter to stop any current playing. Wastes a count, but we have the bits to spare.
+    playCounter += 1;
+  }
+
+  async replay() {
     if (this.messageFound) {
       this.startNewGame();
       return;
     }
-    // Reset the input, stop the current playing, and play the target again.
-    this.wordInput.value = '';
-    STOPPED = true;
-    await sleep(LETTER_BREAK);
+    // Stop the current playing, and play the target again.
+    this.stopCurrentPlaying();
+    this.wordInput.focus();
     this.playTarget();
   }
 
   resetButtonListener(event) {
     event.preventDefault();
-    this.reset();
+    this.replay();
   }
 
   inputListener(event) {
@@ -321,20 +325,20 @@ class ListeningGame {
       return;
     }
     if (event.key == 'Control') {
-      this.reset();
+      this.replay();
     } else if (event.key == 'Enter') {
       this.submit(event);
     }
   }
 
   playTarget() {
-    playSentence(convertAsciiSentenceToMorse(this.target));
+    playCounter += 1;
+    // console.log('playing with counter', playCounter)
+    playSentence(convertAsciiSentenceToMorse(this.target), playCounter);
   }
 
   stopGame() {
-    // console.log('stopping');
-    // Reset
-    STOPPED = true;
+    this.stopCurrentPlaying();
     this.wordInput.value = '';
     this.statusElement.textContent = 'Press Start to begin.';
     this.wordInput.removeEventListener('keyup', this.inputListener);
