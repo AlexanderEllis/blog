@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 04 Feb 2022 22:32:54 -0500</lastBuildDate>
+    <lastBuildDate>Sat, 12 Feb 2022 12:36:19 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Writing Morse code games in JavaScript using the Web Audio API</title>
+      <link>https://alexanderell.is/posts/writing-morse-code-games/</link>
+      <pubDate>Sat, 12 Feb 2022 12:36:19 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/writing-morse-code-games/</guid>
+      <description>Playing sound with the Web Audio API Playing Morse code  Morse code timing Playing letters, words, and sentences Adjusting the speed   The Listening Game     The &amp;ldquo;Speaking&amp;rdquo; game  Parsing the incoming signal into Morse code Hooking it up to user input   Finishing thoughts    Last week, I posted a pair of games I made to play with Morse code in your browser.</description>
+    </item>
     
     <item>
       <title>Little games to play with Morse Code in your browser</title>

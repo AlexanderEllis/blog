@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>JavaScript on Caffeinspiration</title>
+    <title>Javascript on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/javascript/</link>
-    <description>Recent content in JavaScript on Caffeinspiration</description>
+    <description>Recent content in Javascript on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 Feb 2020 18:01:11 -0500</lastBuildDate>
+    <lastBuildDate>Sat, 12 Feb 2022 12:36:19 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Writing Morse code games in JavaScript using the Web Audio API</title>
+      <link>https://alexanderell.is/posts/writing-morse-code-games/</link>
+      <pubDate>Sat, 12 Feb 2022 12:36:19 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/writing-morse-code-games/</guid>
+      <description>Playing sound with the Web Audio API Playing Morse code  Morse code timing Playing letters, words, and sentences Adjusting the speed   The Listening Game     The &amp;ldquo;Speaking&amp;rdquo; game  Parsing the incoming signal into Morse code Hooking it up to user input   Finishing thoughts    Last week, I posted a pair of games I made to play with Morse code in your browser.</description>
+    </item>
     
     <item>
       <title>Don&#39;t touch my clipboard</title>
