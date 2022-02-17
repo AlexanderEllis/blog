@@ -359,7 +359,13 @@ layout: staticpage
 }
 
 .icon {
-  user-select: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
   cursor: pointer;
 }
 
@@ -435,7 +441,13 @@ layout: staticpage
   box-sizing: border-box;
   color: var(--tile-text-color);
   text-transform: uppercase;
-  user-select: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .game-tile::before {
   content: '';
@@ -507,7 +519,13 @@ layout: staticpage
 
 #keyboard {
   margin: 0 8px;
-  user-select: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
 .row {
@@ -535,7 +553,6 @@ layout: staticpage
   height: 58px;
   border-radius: 4px;
   cursor: pointer;
-  user-select: none;
   background-color: var(--key-bg);
   color: var(--key-text-color);
   flex: 1;
@@ -544,6 +561,13 @@ layout: staticpage
   align-items: center;
   text-transform: uppercase;
   -webkit-tap-highlight-color: rgba(0,0,0,0.3);
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
 .key:last-of-type {
