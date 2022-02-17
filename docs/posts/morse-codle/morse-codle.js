@@ -197,10 +197,11 @@ Game #${GAME_NUMBER}
 
 ${result}`;
   // ugh, but thanks to https://stackoverflow.com/questions/34045777/copy-to-clipboard-using-javascript-in-ios
-  var textArea = document.createElement('textArea');
+  var textArea = document.createElement('textarea');
   textArea.style.position = 'absolute';
   textArea.style.left = '-9999px';
   textArea.value = stringToCopy;
+  textArea.textContent = stringToCopy;
   document.body.appendChild(textArea);
   // var range;
   if (navigator.userAgent.match(/ipad|iphone/i)) {
