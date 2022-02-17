@@ -1,0 +1,428 @@
+:root {
+  --color-tone-1: #000000;
+  --color-tone-2: #787c7e;
+  --color-tone-3: #878a8c;
+  --color-tone-4: #d3d6da;
+  --color-tone-5: #edeff1;
+  --color-tone-6: #f6f7f8;
+  --color-tone-7: #ffffff;
+  --color-nav-hover: #f4f4f4;
+  --opacity-50: rgba(255, 255, 255, 0.5);
+  --green: #6aaa64;
+  --darkendGreen: #538d4e;
+  --yellow: #c9b458;
+  --darkendYellow: #b59f3b;
+  --lightGray: #d8d8d8;
+  --gray: #86888a;
+  --darkGray: #939598;
+  --white: #fff;
+  --black: #212121;
+  --orange: #f5793a;
+  --blue: #85c0f9;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  --header-height: 50px;
+  --keyboard-height: 200px;
+  --game-max-width: 500px;
+  --color-present: var(--yellow);
+  --color-correct: var(--green);
+  --color-absent: var(--color-tone-2);
+  --tile-text-color: var(--color-tone-7);
+  --key-text-color: var(--color-tone-1);
+  --key-evaluated-text-color: var(--color-tone-7);
+  --key-bg: var(--color-tone-4);
+  --key-bg-present: var(--color-present);
+  --key-bg-correct: var(--color-correct);
+  --key-bg-absent: var(--color-absent);
+  --modal-content-bg: var(--color-tone-7);
+  --fadeout-time: 0.2s;
+}
+
+#game {
+  width: 100%;
+  max-width: var(--game-max-width);
+  margin: 0 auto;
+  height: calc(100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.overlay-modal {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--opacity-50);
+  z-index: 3000;
+  opacity: 1;
+  transition: opacity var(--fadeout-time) linear;
+}
+
+.overlay-modal[open] {
+    display: flex;
+}
+
+.overlay-modal.hidden {
+  opacity: 0;
+}
+
+.modal-content {
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid var(--color-tone-6);
+  background-color: var(--modal-content-bg);
+  color: var(--color-tone-1);
+  box-shadow: 0 4px 23px 0 rgb(0 0 0 / 20%);
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  animation: SlideIn 200ms;
+  max-width: var(--game-max-width);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+#close-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.icon {
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+  cursor: pointer;
+}
+
+.game-icon {
+  position: fixed;
+}
+
+/* Title styles */
+
+#title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 4px;
+}
+
+#morse-codle-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--color-tone-0);
+}
+
+/* Play button styles*/
+#play-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+#play-button {
+  width: 120px;
+}
+
+/* Gameboard styles */
+
+#board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* flex-grow: 1; */
+  overflow: hidden;
+}
+
+#board {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 300px;
+}
+
+.game-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 5px;
+}
+
+/* examples */
+.example>.board-row>.game-tile {
+  width: 52px;
+  height: 52px;
+}
+
+.game-tile {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: bold;
+  vertical-align: middle;
+  box-sizing: border-box;
+  color: var(--tile-text-color);
+  text-transform: uppercase;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+.game-tile::before {
+  content: '';
+  display: inline-block;
+  padding-bottom: 100%;
+}
+
+/* Allow tiles to be smaller on small screens */
+@media (max-height: 600px) {
+  .game-tile {
+    font-size: 1em;
+    line-height: 1em;
+  }
+}
+
+/* A game tile can have the following data-states: empty, tbd, correct, present, or absent. */
+.game-tile[data-state='empty'] {
+  border: 2px solid var(--color-tone-4);
+}
+.game-tile[data-state='tbd'] {
+  background-color: var(--color-tone-7);
+  border: 2px solid var(--color-tone-3);
+  color: var(--color-tone-1);
+}
+.game-tile[data-state='correct'] {
+  background-color: var(--color-correct);
+}
+.game-tile[data-state='present'] {
+  background-color: var(--color-present);
+}
+.game-tile[data-state='absent'] {
+  background-color: var(--color-absent);
+}
+
+.game-tile[data-animation='pop'] {
+  animation-name: PopIn;
+  animation-duration: 100ms;
+}
+
+@keyframes PopIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+.game-tile[data-animation='flip-in'] {
+  animation-name: FlipIn;
+  animation-duration: 500ms;
+  animation-timing-function: ease-in-out;
+}
+@keyframes FlipIn {
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+/* Keyboard styles */
+
+#keyboard {
+  margin: 0 8px;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  margin: 0 auto 8px;
+  touch-action: manipulation;
+}
+
+.half {
+  flex: 0.5;
+}
+
+.one-and-a-half {
+  flex: 1.5;
+  font-size: 12px;
+}
+
+.key {
+  font-family: inherit;
+  font-weight: bold;
+  border: 0;
+  padding: 0;
+  margin: 0 6px 0 0;
+  height: 58px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--key-bg);
+  color: var(--key-text-color);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.3);
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+.key:last-of-type {
+    margin: 0;
+}
+
+.key[data-state='correct'] {
+  background-color: var(--key-bg-correct);
+  color: var(--key-evaluated-text-color);
+}
+
+.key[data-state='present'] {
+  background-color: var(--key-bg-present);
+  color: var(--key-evaluated-text-color);
+}
+
+.key[data-state='absent'] {
+  background-color: var(--key-bg-absent);
+  color: var(--key-evaluated-text-color);
+}
+
+
+
+/* Options modal */
+
+#options-close-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+#settings-title {
+  text-align: center;
+  font-size: 24px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-tone-4);
+}
+
+.switch[checked] {
+    background: var(--color-correct);
+}
+.switch {
+  cursor: pointer;
+  height: 20px;
+  width: 32px;
+  vertical-align: middle;
+  background: var(--color-tone-3);
+  border-radius: 999px;
+  display: block;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.knob[checked] {
+    transform: translateX(calc(100% - 4px));
+}
+.knob {
+    display: block;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    height: calc(100% - 4px);
+    width: 50%;
+    border-radius: 8px;
+    background: var(--white);
+    transform: translateX(0);
+    transition: transform 0.3s;
+}
+
+a, a:visited {
+  color: var(--color-tone-2);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Done modal */
+
+#done-close-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+#done-title {
+  text-align: center;
+  font-size: 24px;
+  padding: 8px 0;
+}
+
+#done-subtitle {
+  text-align: center;
+  font-size: 18px;
+  padding: 8px 0;
+}
+
+#share-button {
+  background-color: var(--color-correct);
+  color: white;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  font-weight: bold;
+  border: 1px solid var(--color-tone-6);
+  font-size: 16px;
+  cursor: pointer;
+}

@@ -12,7 +12,9 @@ const TILE_ANIMATION_REVEAL = 'reveal';
 // Help modal functions
 const overlayModal = document.getElementById('overlay-modal');
 function showHelpModal(event) {
-  event.preventDefault();
+  if (event) {
+    event.preventDefault();
+  }
   overlayModal.classList.remove('hidden');
   overlayModal.setAttribute('open', '');
 }
@@ -207,6 +209,7 @@ if (window.localStorage.getItem('morseCodleHistory')) {
   playerHistory = JSON.parse(window.localStorage.getItem('morseCodleHistory'));
 } else {
   playerHistory = DEFAULT_HISTORY;
+  showHelpModal();
 }
 
 var settings = playerHistory.settings;
