@@ -1,0 +1,29 @@
+# Morse Codle FAQ
+
+## How does this work?
+
+This works with the Web Audio API: you can read more about my Morse code games at the following links:
+https://alexanderell.is/posts/writing-morse-code-games/
+https://alexanderell.is/posts/morse-code/
+
+
+## How do I reach you for suggestion/comment?
+
+You can reach me on Twitter: https://twitter.com/lxmkls
+
+
+## Is that really a word?
+
+According to Wordle it is! The Random Mode is _very_ random - it doesn't rely on any of the weighted frequency business that Wordle does.
+
+
+## Something went wrong?
+
+First, try refreshing the page - it's a little rough around the edges :)
+
+
+## Can I buy this for low seven figures?
+
+Yes, please get in touch at your leisure.
+
+

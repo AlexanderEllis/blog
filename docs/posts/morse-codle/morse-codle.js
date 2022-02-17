@@ -12,28 +12,36 @@ const TILE_ANIMATION_REVEAL = 'reveal';
 // Help modal functions
 const overlayModal = document.getElementById('overlay-modal');
 function showHelpModal(event) {
+  event.preventDefault();
   overlayModal.classList.remove('hidden');
   overlayModal.setAttribute('open', '');
 }
 function hideHelpModal(event) {
+  event.preventDefault();
   overlayModal.classList.add('hidden');
   setTimeout(() => { overlayModal.removeAttribute('open'); }, 200);
 }
 document.getElementById('close-icon').addEventListener('click', hideHelpModal);
 document.getElementById('help-icon').addEventListener('click', showHelpModal);
+document.getElementById('close-icon').addEventListener('touchstart', hideHelpModal);
+document.getElementById('help-icon').addEventListener('touchstart', showHelpModal);
 
 // Options modal functions
 const optionsOverlayModal = document.getElementById('options-overlay-modal');
 function showOptionsModal(event) {
+  event.preventDefault();
   optionsOverlayModal.classList.remove('hidden');
   optionsOverlayModal.setAttribute('open', '');
 }
 function hideOptionsModal(event) {
+  event.preventDefault();
   optionsOverlayModal.classList.add('hidden');
   setTimeout(() => { optionsOverlayModal.removeAttribute('open'); }, 200);
 }
 document.getElementById('options-close-icon').addEventListener('click', hideOptionsModal);
 document.getElementById('options-icon').addEventListener('click', showOptionsModal);
+document.getElementById('options-close-icon').addEventListener('touchstart', hideOptionsModal);
+document.getElementById('options-icon').addEventListener('touchstart', showOptionsModal);
 
 // Done modal functions
 const doneOverlayModal = document.getElementById('done-overlay-modal');
@@ -59,14 +67,17 @@ function showDoneModal(event) {
   doneOverlayModal.setAttribute('open', '');
 }
 function hideDoneModal(event) {
+  event.preventDefault();
   doneOverlayModal.classList.add('hidden');
   setTimeout(() => { doneOverlayModal.removeAttribute('open'); }, 200);
 }
 document.getElementById('done-close-icon').addEventListener('click', hideDoneModal);
+document.getElementById('done-close-icon').addEventListener('touchstart', hideDoneModal);
 
 // Speed switch
 const speedSwitch = document.getElementById('speed-switch');
 function toggleSpeed (event) {
+  event.preventDefault();
   // Set active
   const checked = speedSwitch.hasAttribute('checked');
 
@@ -82,9 +93,11 @@ function toggleSpeed (event) {
   }
 }
 document.getElementById('speed-switch').addEventListener('click', toggleSpeed);
+document.getElementById('speed-switch').addEventListener('touchstart', toggleSpeed);
 
 const hardSwitch = document.getElementById('hard-switch');
 function toggleHard (event) {
+  event.preventDefault();
   // Set active
   const checked = hardSwitch.hasAttribute('checked');
 
@@ -100,9 +113,11 @@ function toggleHard (event) {
   }
 }
 document.getElementById('hard-switch').addEventListener('click', toggleHard);
+document.getElementById('hard-switch').addEventListener('touchstart', toggleHard);
 
 const randomSwitch = document.getElementById('random-switch');
 function togglerandom (event) {
+  event.preventDefault();
   // Set active
   const checked = randomSwitch.hasAttribute('checked');
   if (checked) {
@@ -117,6 +132,7 @@ function togglerandom (event) {
   }
 }
 document.getElementById('random-switch').addEventListener('click', togglerandom);
+document.getElementById('random-switch').addEventListener('touchstart', togglerandom);
 
 
 
@@ -132,8 +148,8 @@ function getDayOffset() {
 const GAME_NUMBER = getDayOffset();
 const STEP = 4;
 
-// Share button
-document.getElementById('share-button').addEventListener('click', (event) => {
+function share(event) {
+  event.preventDefault();
   // Build results array
   var result = '';
   for (let i = 0; i < gameState.currentGameGuesses.length; i++) {
@@ -159,7 +175,11 @@ Game #${GAME_NUMBER}
 ${result}
 `;
   navigator.clipboard.writeText(stringToCopy);
-});
+
+}
+// Share button
+document.getElementById('share-button').addEventListener('click', share);
+document.getElementById('share-button').addEventListener('touchstart', share);
 
 
 function getTargetWord() {
@@ -288,7 +308,10 @@ function updateRandom(useRandomWord) {
   saveSettings();
 }
 
-function playCurrentWord() {
+function playCurrentWord(event) {
+  if (event) {
+    event.preventDefault();
+  }
   if (settings.hardMode && alreadyPlayedThrough) {
     return;
   }
@@ -296,9 +319,8 @@ function playCurrentWord() {
   alreadyPlayedThrough = true;
 }
 
-document.getElementById('play-button').addEventListener('click', (event) => {
-  playCurrentWord();
-});
+document.getElementById('play-button').addEventListener('click', playCurrentWord);
+document.getElementById('play-button').addEventListener('touchstart', playCurrentWord);
 
 function isPresent(targetWord, guess, index) {
   // We only want the unmatched counts
@@ -517,6 +539,11 @@ document.addEventListener('keydown', event => {
 
 Array.from(document.getElementsByClassName('key')).forEach((keyboardKey => {
   keyboardKey.addEventListener('click', (event) => {
-    handleKeyboardEntry(event.target.dataset.key);
+    event.preventDefault();
+    handleKeyboardEntry(keyboardKey.dataset.key);
+  });
+  keyboardKey.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    handleKeyboardEntry(keyboardKey.dataset.key);
   });
 }));

@@ -23,7 +23,10 @@
 	</head>
 
 <noscript>
-  Unfortunately, JavaScript is needed to run this game. Totally get it — I <a href="/posts/taking-over-my-clipboard/" target="blank_">often</a> <a href="/posts/attention-javascript" target="blank_">don't like</a> it either.
+  This is a game for playing Wordle with Morse Code.
+
+
+  JavaScript is needed to run this game.  If you don't have it enabled, I totally get it — I <a href="/posts/taking-over-my-clipboard/" target="blank_">often</a> <a href="/posts/attention-javascript" target="blank_">don't like</a> it either.
 </noscript>
 
 <div id="game">
@@ -253,6 +256,18 @@
           </a>
         </div>
       </div>
+      <div class="setting">
+        <div class="text">
+          <div class="title">
+            Questions?
+          </div>
+        </div>
+        <div class="settings-link">
+          <a href="/posts/morse-codle/faq.txt" target="blank_">
+            FAQ
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -378,7 +393,13 @@
 }
 
 .icon {
-  user-select: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
   cursor: pointer;
 }
 
@@ -454,7 +475,13 @@
   box-sizing: border-box;
   color: var(--tile-text-color);
   text-transform: uppercase;
-  user-select: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .game-tile::before {
   content: '';
@@ -526,7 +553,13 @@
 
 #keyboard {
   margin: 0 8px;
-  user-select: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
 .row {
@@ -554,7 +587,6 @@
   height: 58px;
   border-radius: 4px;
   cursor: pointer;
-  user-select: none;
   background-color: var(--key-bg);
   color: var(--key-text-color);
   flex: 1;
@@ -563,6 +595,13 @@
   align-items: center;
   text-transform: uppercase;
   -webkit-tap-highlight-color: rgba(0,0,0,0.3);
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
 .key:last-of-type {
