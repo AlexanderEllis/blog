@@ -1,0 +1,574 @@
+---
+title: "Morse Codle"
+date: 2022-02-16T21:03:02-05:00
+draft: true
+layout: staticpage
+---
+- Save state in localstorage
+- Final styles
+
+<noscript>
+  Unfortunately, JavaScript is needed to run this game. Totally get it — I <a href="/posts/taking-over-my-clipboard/" target="blank_">often</a> <a href="/posts/attention-javascript" target="blank_">don't like</a> it either.
+</noscript>
+
+<div id="game">
+  <div id="title-bar">
+      <div id="help-icon" class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
+      </svg>
+    </div>
+
+    <div id="title">
+      MORSE CODLE
+    </div>
+
+    <div id="options-icon" class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div id="play-button-container">
+    <div id="play-button" class="icon">
+      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          fill="var(--color-tone-2)" viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+      <g>
+        <path d="M45.563,29.174l-22-15c-0.307-0.208-0.703-0.231-1.031-0.058C22.205,14.289,22,14.629,22,15v30
+          c0,0.371,0.205,0.711,0.533,0.884C22.679,45.962,22.84,46,23,46c0.197,0,0.394-0.059,0.563-0.174l22-15
+          C45.836,30.64,46,30.331,46,30S45.836,29.36,45.563,29.174z M24,43.107V16.893L43.225,30L24,43.107z"/>
+        <path d="M30,0C13.458,0,0,13.458,0,30s13.458,30,30,30s30-13.458,30-30S46.542,0,30,0z M30,58C14.561,58,2,45.439,2,30
+          S14.561,2,30,2s28,12.561,28,28S45.439,58,30,58z"/>
+      </g>
+      </svg>
+    </div>
+  </div>
+
+  <div id="board-container">
+    <div id="board">
+      <div class="game-row">
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+      </div>
+      <div class="game-row">
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+      </div>
+      <div class="game-row">
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+      </div>
+      <div class="game-row">
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+        <div class="game-tile" data-state="empty"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="keyboard">
+    <div class="row">
+      <div class="key" data-key="q">q</div>
+      <div class="key" data-key="w">w</div>
+      <div class="key" data-key="e">e</div>
+      <div class="key" data-key="r">r</div>
+      <div class="key" data-key="t">t</div>
+      <div class="key" data-key="y">y</div>
+      <div class="key" data-key="u">u</div>
+      <div class="key" data-key="i">i</div>
+      <div class="key" data-key="o">o</div>
+      <div class="key" data-key="p">p</div>
+    </div>
+    <div class="row">
+      <div class="spacer half"></div>
+      <div class="key" data-key="a">a</div>
+      <div class="key" data-key="s">s</div>
+      <div class="key" data-key="d">d</div>
+      <div class="key" data-key="f">f</div>
+      <div class="key" data-key="g">g</div>
+      <div class="key" data-key="h">h</div>
+      <div class="key" data-key="j">j</div>
+      <div class="key" data-key="k">k</div>
+      <div class="key" data-key="l">l</div>
+      <div class="spacer half"></div>
+    </div>
+    <div class="row">
+      <div id="enter" class="one-and-a-half key" data-key="↵">Enter</div>
+      <div class="key" data-key="z">z</div>
+      <div class="key" data-key="x">x</div>
+      <div class="key" data-key="c">c</div>
+      <div class="key" data-key="v">v</div>
+      <div class="key" data-key="b">b</div>
+      <div class="key" data-key="m">n</div>
+      <div class="key" data-key="m">m</div>
+      <div id="delete" class="one-and-a-half key" data-key="←">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path fill="var(--color-tone-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <!-- <div id="overlay-modal" class="overlay-modal" open> -->
+  <div id="overlay-modal" class="overlay-modal">
+    <div class="modal-content">
+      <div id="close-icon" class="icon">
+      <svg class="game-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+      </svg>
+      </div>
+      <div class="instructions">
+        <p>Guess the <strong>MORSE CODLE</strong> in four tries.</p>
+        <p>Press the play button to hear the word. Each guess must be a valid five-letter word. Hit the enter button to submit.</p>
+        <p>After each guess, the color of the tiles will change to show how close your guess was to the word, and the tile will show the Morse code for that letter.</p>
+        <div class="examples">
+          <p><strong>Examples</strong></p>
+          <div class="example">
+            <div class="board-row">
+              <div class="game-tile" letter="w" data-state="correct" reveal="">.--</div>
+              <div class="game-tile" letter="e" data-state="tbd">.</div>
+              <div class="game-tile" letter="a" data-state="tbd">.-</div>
+              <div class="game-tile" letter="r" data-state="tbd">.-.</div>
+              <div class="game-tile" letter="y" data-state="tbd">-.--</div>
+            </div>
+            <p>The letter <strong>W</strong> is in the word and in the correct spot.</p>
+          </div>
+          <div class="example">
+            <div class="board-row">
+              <div class="game-tile" letter="p" data-state="tbd">.--.</div>
+              <div class="game-tile" letter="i" data-state="present" reveal="">..</div>
+              <div class="game-tile" letter="l" data-state="tbd">.-..</div>
+              <div class="game-tile" letter="l" data-state="tbd">.-..</div>
+              <div class="game-tile" letter="s" data-state="tbd">...</div>
+            </div>
+            <p>The letter <strong>I</strong> is in the word but in the wrong spot.</p>
+          </div>
+          <div class="example">
+            <div class="board-row">
+              <div class="game-tile" letter="v" data-state="tbd">---.</div>
+              <div class="game-tile" letter="a" data-state="tbd">.-</div>
+              <div class="game-tile" letter="g" data-state="tbd">--.</div>
+              <div class="game-tile" letter="u" data-state="absent" reveal="">..-</div>
+              <div class="game-tile" letter="e" data-state="tbd">.</div>
+            </div>
+            <p>The letter <strong>U</strong> is not in the word in any spot.</p>
+          </div>
+        </div>
+        <p><strong>A new MORSE CODLE will be available each day!<strong></strong></strong></p><strong><strong>
+      </strong></strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- Options Modal -->
+<!-- <div id="options-overlay-modal" class="overlay-modal" open> -->
+<div id="options-overlay-modal" class="overlay-modal">
+  <div class="modal-content">
+    <div id="options-close-icon" class="icon">
+    <svg class="game-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+      <path fill="var(--color-tone-1)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+    </svg>
+  </div>
+  <div class="settings">
+    <div id="settings-title">
+      Settings
+    </div>
+    <div class="setting">
+      <div class="text">
+        <div class="title">
+          Full speed
+        </div>
+        <div class="description">
+          No additional space in between letters
+          </div>
+      </div>
+      <div class="switch" id="speed-switch">
+        <span class="knob" id="speed-knob"></span></div>
+      </div>
+    </div>
+    <div class="setting">
+      <div class="text">
+        <div class="title">
+          Feedback
+        </div>
+      </div>
+      <div class="settings-link">
+        <a href="https://twitter.com/lxmkls" target="blank_">
+          Twitter
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+:root {
+  --color-tone-1: #000000;
+  --color-tone-2: #787c7e;
+  --color-tone-3: #878a8c;
+  --color-tone-4: #d3d6da;
+  --color-tone-5: #edeff1;
+  --color-tone-6: #f6f7f8;
+  --color-tone-7: #ffffff;
+  --color-nav-hover: #f4f4f4;
+  --opacity-50: rgba(255, 255, 255, 0.5);
+  --green: #6aaa64;
+  --darkendGreen: #538d4e;
+  --yellow: #c9b458;
+  --darkendYellow: #b59f3b;
+  --lightGray: #d8d8d8;
+  --gray: #86888a;
+  --darkGray: #939598;
+  --white: #fff;
+  --black: #212121;
+  --orange: #f5793a;
+  --blue: #85c0f9;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  --header-height: 50px;
+  --keyboard-height: 200px;
+  --game-max-width: 500px;
+  --color-present: var(--yellow);
+  --color-correct: var(--green);
+  --color-absent: var(--color-tone-2);
+  --tile-text-color: var(--color-tone-7);
+  --key-text-color: var(--color-tone-1);
+  --key-evaluated-text-color: var(--color-tone-7);
+  --key-bg: var(--color-tone-4);
+  --key-bg-present: var(--color-present);
+  --key-bg-correct: var(--color-correct);
+  --key-bg-absent: var(--color-absent);
+  --modal-content-bg: var(--color-tone-7);
+  --fadeout-time: 0.2s;
+}
+
+#game {
+  width: 100%;
+  max-width: var(--game-max-width);
+  margin: 0 auto;
+  height: calc(100% - var(--header-height));
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay-modal {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--opacity-50);
+  z-index: 3000;
+  opacity: 1;
+  transition: opacity var(--fadeout-time) linear;
+}
+
+.overlay-modal[open] {
+    display: flex;
+}
+
+.overlay-modal.hidden {
+  opacity: 0;
+}
+
+.modal-content {
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid var(--color-tone-6);
+  background-color: var(--modal-content-bg);
+  color: var(--color-tone-1);
+  box-shadow: 0 4px 23px 0 rgb(0 0 0 / 20%);
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  animation: SlideIn 200ms;
+  max-width: var(--game-max-width);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+#close-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.icon {
+  user-select: none;
+  cursor: pointer;
+}
+
+.game-icon {
+  position: fixed;
+}
+
+/* Title styles */
+
+#title-bar {
+  display: flex;
+  justify-content: space-between;
+}
+
+#title {
+  color: var(--color-tone-2);
+}
+
+/* Play button styles*/
+#play-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+#play-button {
+  width: 120px;
+}
+
+/* Gameboard styles */
+
+#board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+#board {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 300px;
+}
+
+.game-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 5px;
+}
+
+/* examples */
+.example>.board-row>.game-tile {
+  width: 75px;
+  height: 40px;
+}
+
+.game-tile {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: bold;
+  vertical-align: middle;
+  box-sizing: border-box;
+  color: var(--tile-text-color);
+  text-transform: uppercase;
+  user-select: none;
+}
+.game-tile::before {
+  content: '';
+  display: inline-block;
+  padding-bottom: 100%;
+}
+
+/* Allow tiles to be smaller on small screens */
+@media (max-height: 600px) {
+  .game-tile {
+    font-size: 1em;
+    line-height: 1em;
+  }
+}
+
+/* A game tile can have the following data-states: empty, tbd, correct, present, or absent. */
+.game-tile[data-state='empty'] {
+  border: 2px solid var(--color-tone-4);
+}
+.game-tile[data-state='tbd'] {
+  background-color: var(--color-tone-7);
+  border: 2px solid var(--color-tone-3);
+  color: var(--color-tone-1);
+}
+.game-tile[data-state='correct'] {
+  background-color: var(--color-correct);
+}
+.game-tile[data-state='present'] {
+  background-color: var(--color-present);
+}
+.game-tile[data-state='absent'] {
+  background-color: var(--color-absent);
+}
+
+.game-tile[data-animation='pop'] {
+  animation-name: PopIn;
+  animation-duration: 100ms;
+}
+
+@keyframes PopIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+.game-tile[data-animation='flip-in'] {
+  animation-name: FlipIn;
+  animation-duration: 500ms;
+  animation-timing-function: ease-in-out;
+}
+@keyframes FlipIn {
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+/* Keyboard styles */
+
+.keyboard {
+  margin: 0 8px;
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  margin: 0 auto 8px;
+  touch-action: manipulation;
+}
+
+.half {
+  flex: 0.5;
+}
+
+.one-and-a-half {
+  flex: 1.5;
+  font-size: 12px;
+}
+
+.key {
+  font-family: inherit;
+  font-weight: bold;
+  border: 0;
+  padding: 0;
+  margin: 0 6px 0 0;
+  height: 58px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--key-bg);
+  color: var(--key-text-color);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.3);
+}
+
+.key:last-of-type {
+    margin: 0;
+}
+
+/* Options modal */
+
+#options-close-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+#settings-title {
+  text-align: center;
+  font-size: 24px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-tone-4);
+}
+
+.switch[checked] {
+    background: var(--color-correct);
+}
+.switch {
+  cursor: pointer;
+  height: 20px;
+  width: 32px;
+  vertical-align: middle;
+  background: var(--color-tone-3);
+  border-radius: 999px;
+  display: block;
+  position: relative;
+}
+
+.knob[checked] {
+    transform: translateX(calc(100% - 4px));
+}
+.knob {
+    display: block;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    height: calc(100% - 4px);
+    width: 50%;
+    border-radius: 8px;
+    background: var(--white);
+    transform: translateX(0);
+    transition: transform 0.3s;
+}
+
+a, a:visited {
+  color: var(--color-tone-2);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+</style>
+
+<script>
+</script>
+
+<script src="constants.js"></script>
+<script src="morse-code.js"></script>
+<script src="morse-codle.js"></script>
