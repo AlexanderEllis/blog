@@ -1,11 +1,3 @@
-/*
-
-TODO:
-- Add letters guessed to the tiles
-- Handle duplicate potentials
-
-*/
-
 const TILE_STATE_TBD = 'tbd';
 const TILE_STATE_EMPTY = 'empty';
 const TILE_STATE_ABSENT = 'absent';
@@ -53,11 +45,13 @@ function showDoneModal(event) {
   } else {
     doneTitle = 'Better luck next time!';
     doneSubtitle = `The word was '${gameState.targetWord}'`;
-    if (settings.randomWord) {
-      document.getElementById('share-button').style.display = 'none';
-    } else {
-      document.getElementById('share-button').style.display = 'block';
-    }
+  }
+  if (settings.randomWord) {
+    document.getElementById('share-button').style.display = 'none';
+    document.getElementById('done-text').textContent = 'Refresh the page for a new challenge!';
+  } else {
+    document.getElementById('share-button').style.display = 'block';
+    document.getElementById('done-text').textContent = 'You can wait for tomorrow for a new game, or if you want a new challenge now, you can enable Random mode and refresh the page.';
   }
   document.getElementById('done-title').textContent = doneTitle;
   document.getElementById('done-subtitle').textContent = doneSubtitle;
@@ -306,17 +300,47 @@ document.getElementById('play-button').addEventListener('click', (event) => {
   playCurrentWord();
 });
 
+function isPresent(targetWord, guess, index) {
+  // We only want the unmatched counts
+  let unmatchedTargetWordLetterCounts = {};
+  for (let i = 0; i < targetWord.length; i++) {
+    const letter = targetWord[i];
+    if (targetWord[i] == guess[i]) {
+      continue;
+    }
+    if (unmatchedTargetWordLetterCounts[letter]) {
+      unmatchedTargetWordLetterCounts[letter] += 1;
+    } else {
+      unmatchedTargetWordLetterCounts[letter] = 1;
+    }
+  }
+  const letterInQuestion = guess[index];
+  // How many unmatched letters are there left?
+  for (let i = 0; i < index; i++) {
+    // If there's an instance of the letter before this, decrement target count
+    if (guess[i] == letterInQuestion && guess[i] != targetWord[i]) {
+      unmatchedTargetWordLetterCounts[letterInQuestion] -= 1;
+    }
+  }
+  if (unmatchedTargetWordLetterCounts[letterInQuestion] > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function getLetterStatus(targetWord, guess, index) {
   const letter = guess[index];
   if (targetWord[index] == letter) {
     return TILE_STATE_CORRECT;
   }
   if (targetWord.indexOf(letter) != -1) {
-    // TODO: handle duplicates
-    return TILE_STATE_PRESENT;
-  } else {
-    return TILE_STATE_ABSENT;
+    // When is there a duplicate? When there's still a letter of this type to find.
+    if (isPresent(targetWord, guess, index)) {
+      return TILE_STATE_PRESENT;
+    }
   }
+  return TILE_STATE_ABSENT;
 }
 
 function updateLettersTried() {

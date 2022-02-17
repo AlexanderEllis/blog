@@ -2,11 +2,8 @@
 title: "Morse Codle"
 date: 2022-02-16T21:03:02-05:00
 draft: true
-<!-- layout: staticpage -->
+layout: staticpage
 ---
-- Save state in localstorage
-- Final styles
-
 <noscript>
   Unfortunately, JavaScript is needed to run this game. Totally get it — I <a href="/posts/taking-over-my-clipboard/" target="blank_">often</a> <a href="/posts/attention-javascript" target="blank_">don't like</a> it either.
 </noscript>
@@ -19,7 +16,7 @@ draft: true
       </svg>
     </div>
 
-    <div id="title">
+    <div id="morse-codle-title">
       MORSE CODLE
     </div>
 
@@ -179,38 +176,39 @@ draft: true
 <div id="options-overlay-modal" class="overlay-modal">
   <div class="modal-content">
     <div id="options-close-icon" class="icon">
-    <svg class="game-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-      <path fill="var(--color-tone-1)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-    </svg>
-  </div>
-  <div class="settings">
-    <div id="settings-title">
-      Settings
+      <svg class="game-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+      </svg>
     </div>
-    <div class="setting">
-      <div class="text">
-        <div class="title">
-          Full speed
-        </div>
-        <div class="description">
-          No additional space in between letters
+    <div class="settings">
+      <div id="settings-title">
+        Settings
+      </div>
+      <div class="setting">
+        <div class="text">
+          <div class="title">
+            Full speed
           </div>
-      </div>
-      <div class="switch" id="speed-switch">
-        <span class="knob" id="speed-knob"></span></div>
-      </div>
-    </div>
-    <div class="setting">
-      <div class="text">
-        <div class="title">
-          Hard mode
+          <div class="description">
+            No additional space in between letters
+          </div>
         </div>
-        <div class="description">
-          Only one playthrough per guess
+        <div class="switch" id="speed-switch">
+          <span class="knob" id="speed-knob"></span>
         </div>
       </div>
-      <div class="switch" id="hard-switch">
-        <span class="knob" id="hard-knob"></span></div>
+      <div class="setting">
+        <div class="text">
+          <div class="title">
+            Hard mode
+          </div>
+          <div class="description">
+            Only one playthrough per guess
+          </div>
+        </div>
+        <div class="switch" id="hard-switch">
+          <span class="knob" id="hard-knob"></span>
+        </div>
       </div>
       <div class="setting">
         <div class="text">
@@ -218,24 +216,24 @@ draft: true
             Random mode
           </div>
           <div class="description">
-            Instead of waiting for tomorrow, you can get a new word by refreshing the page
+            Instead of using the word of the day, use a new random word every time you refresh the page.
           </div>
         </div>
         <div class="switch" id="random-switch">
-          <span class="knob" id="random-knob"></span></div>
+          <span class="knob" id="random-knob"></span>
         </div>
       </div>
-    </div>
-    <div class="setting">
-      <div class="text">
-        <div class="title">
-          Feedback
+      <div class="setting">
+        <div class="text">
+          <div class="title">
+            Feedback
+          </div>
         </div>
-      </div>
-      <div class="settings-link">
-        <a href="https://twitter.com/lxmkls" target="blank_">
-          Twitter
-        </a>
+        <div class="settings-link">
+          <a href="https://twitter.com/lxmkls" target="blank_">
+            Twitter
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -252,11 +250,9 @@ draft: true
     </svg>
   </div>
   <div class="done">
-    <div id="done-title">
-    </div>
-    <div id="done-subtitle">
-    </div>
-    <div class="done-text">
+    <div id="done-title"></div>
+    <div id="done-subtitle"></div>
+    <div id="done-text">
       You can wait for tomorrow for a new game, or if you want a new challenge now, you can enable Random mode and refresh the page.
     </div>
     <div class="setting">
@@ -310,9 +306,10 @@ draft: true
   width: 100%;
   max-width: var(--game-max-width);
   margin: 0 auto;
-  height: calc(100% - var(--header-height));
+  height: calc(100%);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .overlay-modal {
@@ -376,10 +373,14 @@ draft: true
 #title-bar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 16px 4px;
 }
 
-#title {
-  color: var(--color-tone-2);
+#morse-codle-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--color-tone-0);
 }
 
 /* Play button styles*/
@@ -398,7 +399,7 @@ draft: true
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  /* flex-grow: 1; */
   overflow: hidden;
 }
 
@@ -419,8 +420,8 @@ draft: true
 
 /* examples */
 .example>.board-row>.game-tile {
-  width: 75px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
 }
 
 .game-tile {
@@ -505,7 +506,7 @@ draft: true
 
 /* Keyboard styles */
 
-.keyboard {
+#keyboard {
   margin: 0 8px;
   user-select: none;
 }
