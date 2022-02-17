@@ -150,6 +150,27 @@ function getDayOffset() {
 const GAME_NUMBER = getDayOffset();
 const STEP = 4;
 
+function iosCopyToClipboard(el) {
+  var oldContentEditable = el.contentEditable,
+      oldReadOnly = el.readOnly,
+      range = document.createRange();
+
+  el.contentEditable = true;
+  el.readOnly = false;
+  range.selectNodeContents(el);
+
+  var s = window.getSelection();
+  s.removeAllRanges();
+  s.addRange(range);
+
+  el.setSelectionRange(0, 999999); // A big number, to cover anything that could be inside the element.
+
+  el.contentEditable = oldContentEditable;
+  el.readOnly = oldReadOnly;
+
+  document.execCommand('copy');
+}
+
 function share(event) {
   event.preventDefault();
   // Build results array
@@ -175,29 +196,22 @@ function share(event) {
 Game #${GAME_NUMBER}
 
 ${result}`;
-  // ugh, but thanks to
+  // ugh, but thanks to https://stackoverflow.com/questions/34045777/copy-to-clipboard-using-javascript-in-ios
   var textArea = document.createElement('textArea');
-  textArea.contentEditable = true;
-  textArea.readOnly = false;
   textArea.style.position = 'absolute';
   textArea.style.left = '-9999px';
   textArea.value = stringToCopy;
   document.body.appendChild(textArea);
-  var range;
+  // var range;
   if (navigator.userAgent.match(/ipad|iphone/i)) {
-    range = document.createRange();
-    range.selectNodeContents(textArea);
-    selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-    textArea.setSelectionRange(0, 999);
+    iosCopyToClipboard(textArea);
   } else {
     textArea.select();
+    document.execCommand('copy');
   }
-  document.execCommand('copy');
   document.body.removeChild(textArea);
 
-  alert('Results copied to clipboard');
+  alert('Results copied to clipboard.');
 }
 // Share button
 document.getElementById('share-button').addEventListener('click', share);
