@@ -174,10 +174,30 @@ function share(event) {
 -- --- .-. ... .   -.-. --- -.. .-.. .
 Game #${GAME_NUMBER}
 
-${result}
-`;
-  navigator.clipboard.writeText(stringToCopy);
+${result}`;
+  // ugh, but thanks to
+  var textArea = document.createElement('textArea');
+  textArea.contentEditable = true;
+  textArea.readOnly = false;
+  textArea.style.position = 'absolute';
+  textArea.style.left = '-9999px';
+  textArea.value = stringToCopy;
+  document.body.appendChild(textArea);
+  var range;
+  if (navigator.userAgent.match(/ipad|iphone/i)) {
+    range = document.createRange();
+    range.selectNodeContents(textArea);
+    selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    textArea.setSelectionRange(0, 999);
+  } else {
+    textArea.select();
+  }
+  document.execCommand('copy');
+  document.body.removeChild(textArea);
 
+  alert('Results copied to clipboard');
 }
 // Share button
 document.getElementById('share-button').addEventListener('click', share);
