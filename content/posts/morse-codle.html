@@ -112,7 +112,7 @@ draft: true
       <div class="key" data-key="c">c</div>
       <div class="key" data-key="v">v</div>
       <div class="key" data-key="b">b</div>
-      <div class="key" data-key="m">n</div>
+      <div class="key" data-key="n">n</div>
       <div class="key" data-key="m">m</div>
       <div id="delete" class="one-and-a-half key" data-key="←">
         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -549,6 +549,23 @@ draft: true
 .key:last-of-type {
     margin: 0;
 }
+
+.key[data-state='correct'] {
+  background-color: var(--key-bg-correct);
+  color: var(--key-evaluated-text-color);
+}
+
+.key[data-state='present'] {
+  background-color: var(--key-bg-present);
+  color: var(--key-evaluated-text-color);
+}
+
+.key[data-state='absent'] {
+  background-color: var(--key-bg-absent);
+  color: var(--key-evaluated-text-color);
+}
+
+
 
 /* Options modal */
 

@@ -205,6 +205,7 @@ if (playerHistory && playerHistory.settings && playerHistory.settings.randomWord
     targetWord: getRandomWord(),
     currentGameGuesses: [],
     currentLetters: [],
+    lettersTried: {},
     targetFound: false,
     gameOver: false,
   };
@@ -218,6 +219,7 @@ if (playerHistory && playerHistory.settings && playerHistory.settings.randomWord
     targetWord: getTargetWord(),
     currentGameGuesses: [],
     currentLetters: [],
+    lettersTried: {},
     targetFound: false,
     gameOver: false,
   };
@@ -263,6 +265,7 @@ function savePastGames() {
 }
 
 updateGameBoard();
+updateLettersTried();
 
 function updateSpeed(useFastMode) {
   DOT_TIME = 60;
@@ -316,6 +319,37 @@ function getLetterStatus(targetWord, guess, index) {
   }
 }
 
+function updateLettersTried() {
+  const keyboardKeys = document.getElementsByClassName('key');
+  for (const letter in gameState.lettersTried) {
+    for (const keyboardKey of keyboardKeys) {
+      if (keyboardKey.dataset.key == letter) {
+        const letterStatus = gameState.lettersTried[letter];
+        if (letterStatus == TILE_STATE_ABSENT) {
+          // No luck
+          keyboardKey.dataset.state = TILE_STATE_ABSENT;
+        } else if (letterStatus == TILE_STATE_CORRECT) {
+          keyboardKey.dataset.state = TILE_STATE_CORRECT;
+        } else if (letterStatus == TILE_STATE_PRESENT) {
+          keyboardKey.dataset.state = TILE_STATE_PRESENT;
+        }
+      }
+    }
+  }
+}
+
+function updateLetter(letter, letterStatus) {
+  const currentLetterStatus = gameState.lettersTried[letter];
+  if (letterStatus == TILE_STATE_ABSENT) {
+    gameState.lettersTried[letter] = TILE_STATE_ABSENT;
+  } else if (letterStatus == TILE_STATE_CORRECT) {
+    gameState.lettersTried[letter] = TILE_STATE_CORRECT;
+  } else if (letterStatus == TILE_STATE_PRESENT && currentLetterStatus != TILE_STATE_CORRECT) {
+    // We only want to mark something as present if we haven't already found it correctly.
+    gameState.lettersTried[letter] = TILE_STATE_PRESENT;
+  }
+}
+
 async function updateGameBoard() {
   if (gameState.currentGameGuesses.length > 4) {
     // We don't want to update any more.
@@ -339,10 +373,12 @@ async function updateGameBoard() {
       await sleep(240);
       tile.textContent = MORSE_MAP[letter];
       tile.dataset.state = getLetterStatus(gameState.targetWord, previousGuess, letterIndex);
+      updateLetter(letter, tile.dataset.state);
       tile.dataset.animation = TILE_ANIMATION_FLIP_IN;
       await sleep(60);
     }
     row.dataset.checked = true;
+    updateLettersTried();
   }
 
   if (gameState.currentGameGuesses.length >= 4) {
@@ -408,11 +444,9 @@ async function handleEnter() {
   await sleep(200);
   alreadyPlayedThrough = false;
   if (candidateWord == gameState.targetWord) {
-    alert('you got it!');
     gameState.targetFound = true;
     gameState.gameOver = true;
   } else if (gameState.currentGameGuesses.length == 4) {
-    alert('no luck!');
     gameState.gameOver = true;
   }
   saveGameState();
