@@ -2,7 +2,7 @@
 title: "Morse Codle"
 date: 2022-02-16T21:03:02-05:00
 draft: true
-layout: staticpage
+<!-- layout: staticpage -->
 ---
 - Save state in localstorage
 - Final styles
@@ -168,7 +168,7 @@ layout: staticpage
             <p>The letter <strong>U</strong> is not in the word in any spot.</p>
           </div>
         </div>
-        <p><strong>A new MORSE CODLE will be available each day!<strong></strong></strong></p><strong><strong>
+        <p><strong>A new MORSE CODLE will be available each day! You can also enable random mode to get a new word every time you refresh.<strong></strong></strong></p><strong><strong>
       </strong></strong></div>
     </div>
   </div>
@@ -203,6 +203,32 @@ layout: staticpage
     <div class="setting">
       <div class="text">
         <div class="title">
+          Hard mode
+        </div>
+        <div class="description">
+          Only one playthrough per guess
+        </div>
+      </div>
+      <div class="switch" id="hard-switch">
+        <span class="knob" id="hard-knob"></span></div>
+      </div>
+      <div class="setting">
+        <div class="text">
+          <div class="title">
+            Random mode
+          </div>
+          <div class="description">
+            Instead of waiting for tomorrow, you can get a new word by refreshing the page
+          </div>
+        </div>
+        <div class="switch" id="random-switch">
+          <span class="knob" id="random-knob"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="setting">
+      <div class="text">
+        <div class="title">
           Feedback
         </div>
       </div>
@@ -211,6 +237,30 @@ layout: staticpage
           Twitter
         </a>
       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Options Modal -->
+<!-- <div id="options-overlay-modal" class="overlay-modal" open> -->
+<div id="done-overlay-modal" class="overlay-modal">
+  <div class="modal-content">
+    <div id="done-close-icon" class="icon">
+    <svg class="game-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+      <path fill="var(--color-tone-1)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+    </svg>
+  </div>
+  <div class="done">
+    <div id="done-title">
+    </div>
+    <div id="done-subtitle">
+    </div>
+    <div class="done-text">
+      You can wait for tomorrow for a new game, or if you want a new challenge now, you can enable Random mode and refresh the page.
+    </div>
+    <div class="setting">
+      <button id="share-button">Share</button>
     </div>
   </div>
 </div>
@@ -540,6 +590,7 @@ layout: staticpage
   border-radius: 999px;
   display: block;
   position: relative;
+  flex-shrink: 0;
 }
 
 .knob[checked] {
@@ -562,6 +613,40 @@ a, a:visited {
   color: var(--color-tone-2);
   cursor: pointer;
   text-decoration: underline;
+}
+
+/* Done modal */
+
+#done-close-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+#done-title {
+  text-align: center;
+  font-size: 24px;
+  padding: 8px 0;
+}
+
+#done-subtitle {
+  text-align: center;
+  font-size: 18px;
+  padding: 8px 0;
+}
+
+#share-button {
+  background-color: var(--color-correct);
+  color: white;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  font-weight: bold;
+  border: 1px solid var(--color-tone-6);
+  font-size: 16px;
+  cursor: pointer;
 }
 
 </style>
