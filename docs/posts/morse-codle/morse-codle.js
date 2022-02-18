@@ -176,7 +176,11 @@ Game #${GAME_NUMBER}
 
 ${result}`;
 
-  clipboard.writeText(stringToCopy);
+  clipboard.writeText(stringToCopy).then(function () {
+    alert('Text copied successfully.');
+  }, function (err) {
+    alert('There was a problem copying your result.');
+  });
 }
 // Share button
 document.getElementById('share-button').addEventListener('click', share);
