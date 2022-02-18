@@ -176,15 +176,7 @@ Game #${GAME_NUMBER}
 
 ${result}`;
 
-  if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText("this text is plain.").then(function() {
-      alert('Copied successfully.');
-    }, function (err) {
-      alert('Sorry, could not copy results');
-    });
-  } else {
-    alert('Sorry, could not copy results');
-  }
+  clipboard.writeText(stringToCopy);
 }
 // Share button
 document.getElementById('share-button').addEventListener('click', share);
