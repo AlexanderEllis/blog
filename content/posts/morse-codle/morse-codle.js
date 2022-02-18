@@ -325,7 +325,6 @@ function playCurrentWord(event) {
 }
 
 document.getElementById('play-button').addEventListener('click', playCurrentWord);
-document.getElementById('play-button').addEventListener('touchstart', playCurrentWord);
 
 function isPresent(targetWord, guess, index) {
   // We only want the unmatched counts
@@ -544,10 +543,16 @@ document.addEventListener('keydown', event => {
 
 Array.from(document.getElementsByClassName('key')).forEach((keyboardKey => {
   keyboardKey.addEventListener('click', (event) => {
+    if (gameState.targetFound) {
+      return;
+    }
     event.preventDefault();
     handleKeyboardEntry(keyboardKey.dataset.key);
   });
   keyboardKey.addEventListener('touchstart', (event) => {
+    if (gameState.targetFound) {
+      return;
+    }
     event.preventDefault();
     handleKeyboardEntry(keyboardKey.dataset.key);
   });
