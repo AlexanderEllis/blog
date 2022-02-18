@@ -184,7 +184,6 @@ ${result}`;
 }
 // Share button
 document.getElementById('share-button').addEventListener('click', share);
-document.getElementById('share-button').addEventListener('touchstart', share);
 
 
 function getTargetWord() {
