@@ -390,7 +390,7 @@ function updateLettersTried() {
 
 function updateLetter(letter, letterStatus) {
   const currentLetterStatus = gameState.lettersTried[letter];
-  if (letterStatus == TILE_STATE_ABSENT) {
+  if (letterStatus == TILE_STATE_ABSENT && currentLetterStatus != TILE_STATE_CORRECT) {
     gameState.lettersTried[letter] = TILE_STATE_ABSENT;
   } else if (letterStatus == TILE_STATE_CORRECT) {
     gameState.lettersTried[letter] = TILE_STATE_CORRECT;
