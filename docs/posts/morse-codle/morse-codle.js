@@ -170,11 +170,11 @@ function share(event) {
     result += '\n';
   }
   // Copy results to clipboard
-  const stringToCopy =`
--- --- .-. ... .   -.-. --- -.. .-.. .
+  const stringToCopy =
+  `-- --- .-. ... .   -.-. --- -.. .-.. .
 Game #${GAME_NUMBER}
 
-${result}`;
+${result}\nhttps://alexanderell.is/posts/morse-codle/`;
 
   clipboard.writeText(stringToCopy).then(function () {
     alert('Text copied successfully.');
