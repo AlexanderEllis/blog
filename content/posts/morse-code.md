@@ -4,6 +4,8 @@ date: 2022-02-04T22:32:54-05:00
 draft: false
 ---
 
+*Be sure to also check out my other Morse code game, [Morse Codle](/posts/morse-codle), a daily Morse code Wordle puzzle.*
+
 This is a pair of games for playing with Morse Code. Since the games play the signals as sound, I recommend headphones (wired if possible for the latency) and a low volume. Game options are available towards the bottom.
 
 <link rel="stylesheet" href="styles.css">

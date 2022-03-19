@@ -69,8 +69,9 @@ A colleague and I would be looking at their screen together, working with a tool
       <pubDate>Fri, 04 Feb 2022 22:32:54 -0500</pubDate>
       
       <guid>https://alexanderell.is/posts/morse-code/</guid>
-      <description>This is a pair of games for playing with Morse Code. Since the games play the signals as sound, I recommend headphones (wired if possible for the latency) and a low volume. Game options are available towards the bottom.
- Unfortunately, JavaScript is needed to run these games. The only JS running on my site is for the games (no tracking, etc) if you want to enable it. The good news is that if you&#39;re disabling JavaScript, you probably already know some Morse Code :)  Morse Code Listening Game In this game, it will play a word in Morse Code, and you have to type in the word.</description>
+      <description>Be sure to also check out my other Morse code game, Morse Codle, a daily Morse code Wordle puzzle.
+This is a pair of games for playing with Morse Code. Since the games play the signals as sound, I recommend headphones (wired if possible for the latency) and a low volume. Game options are available towards the bottom.
+ Unfortunately, JavaScript is needed to run these games. The only JS running on my site is for the games (no tracking, etc) if you want to enable it.</description>
     </item>
     
     <item>
