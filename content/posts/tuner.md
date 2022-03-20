@@ -1,6 +1,7 @@
 ---
 title: "Detecting pitch with the Web Audio API and autocorrelation"
 date: 2022-03-20T13:00:15-04:00
+tags: ['JavaScript']
 draft: false
 ---
 
@@ -156,7 +157,7 @@ Offset 1: [       0.0, 0.5, 1.0, 0.5,  0.0, -0.5, -1.0, -0.5,  0.0, 0.5, 1.0, 0.
 Offset 2: [            0.0, 0.5, 1.0,  0.5,  0.0, -0.5, -1.0, -0.5, 0.0, 0.5, 1.0,  0.5,  0.0, -0.5]
 ```
 
-. You can kind of imagine it like this, with multiple graphs at offsets 1 and 2 respectively:
+You can kind of imagine it like this, with multiple graphs at offsets 1 and 2 respectively:
 
 ![Graph of the above time series and additional graphs of the original shifted to the right by 1 and 2 time steps, respectively](time-series-offsets-visualized.png)
 

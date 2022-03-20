@@ -51,10 +51,10 @@
                     </h2>
                     <h2 class="headline">
                     Mar 20, 2022
-                    · 1696 words
+                    · 1695 words
                     · 8 minutes read
                       <span class="tags">
-                            
+                            <a href="https://alexanderell.is/tags/javascript">JavaScript</a>
                       </span>
                     </h2>
                 </header>
@@ -170,7 +170,7 @@ fData[1023] is the strength of frequencies from 23976.6Hz to 24000Hz.
 <pre><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
 Offset 1: [       0.0, 0.5, 1.0, 0.5,  0.0, -0.5, -1.0, -0.5,  0.0, 0.5, 1.0, 0.5,  0.0, -0.5, -1.0]
 Offset 2: [            0.0, 0.5, 1.0,  0.5,  0.0, -0.5, -1.0, -0.5, 0.0, 0.5, 1.0,  0.5,  0.0, -0.5]
-</code></pre><p>. You can kind of imagine it like this, with multiple graphs at offsets 1 and 2 respectively:</p>
+</code></pre><p>You can kind of imagine it like this, with multiple graphs at offsets 1 and 2 respectively:</p>
 <p><img src="time-series-offsets-visualized.png" alt="Graph of the above time series and additional graphs of the original shifted to the right by 1 and 2 time steps, respectively"></p>
 <p>To see where our graph repeats itself, we can look at each potential offset value and look at what it would look like if we multiplied each point on the graph by its offset value. Because we&rsquo;re expecting a sinusoidal wave, the sum of those products would be highest when the wave repeats itself, as it would basically be squaring each value.</p>
 <p>For example, for Offset 2, we would multiply each original value by the value of the offset graph:</p>
