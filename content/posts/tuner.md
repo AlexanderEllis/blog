@@ -1,7 +1,7 @@
 ---
 title: "Detecting pitch with the Web Audio API and autocorrelation"
 date: 2022-03-20T13:00:15-04:00
-draft: true
+draft: false
 ---
 
 I've been playing with the Web Audio API recently, and I made a basic app that will detect the pitch of incoming tones using your microphone. You can try it by pressing "Start" (be sure to try both the sine wave and the frequency displays), and I'll be walking through how it works below.

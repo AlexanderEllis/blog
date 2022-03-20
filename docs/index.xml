@@ -6,10 +6,21 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 13 Mar 2022 18:52:21 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 20 Mar 2022 13:00:15 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Detecting pitch with the Web Audio API and autocorrelation</title>
+      <link>https://alexanderell.is/posts/tuner/</link>
+      <pubDate>Sun, 20 Mar 2022 13:00:15 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/tuner/</guid>
+      <description>I&amp;rsquo;ve been playing with the Web Audio API recently, and I made a basic app that will detect the pitch of incoming tones using your microphone. You can try it by pressing &amp;ldquo;Start&amp;rdquo; (be sure to try both the sine wave and the frequency displays), and I&amp;rsquo;ll be walking through how it works below.
+ Start
+Press start to begin Rounding options:  No rounding Round to nearest Hz Round to nearest note  Smoothing options:  No smoothing Basic smoothing Very smoothed (note must be more consistent and held for longer)  Display (click Start after you switch):  Sine wave Frequency   Unfortunately, JavaScript is needed to run this.</description>
+    </item>
     
     <item>
       <title>I prefer my biographies in chronological order, thank you very much</title>

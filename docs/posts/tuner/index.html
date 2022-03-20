@@ -1,0 +1,280 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.64.1" />
+		<title>Detecting pitch with the Web Audio API and autocorrelation &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Detecting pitch with the Web Audio API and autocorrelation
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    Mar 20, 2022
+                    · 1696 words
+                    · 8 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>I&rsquo;ve been playing with the Web Audio API recently, and I made a basic app that will detect the pitch of incoming tones using your microphone. You can try it by pressing &ldquo;Start&rdquo; (be sure to try both the sine wave and the frequency displays), and I&rsquo;ll be walking through how it works below.</p>
+<p><canvas class="visualizer" width="640" height="100"></canvas>
+<br>
+<button id="init" onClick="init()">Start</button></p>
+<h1 id="note">Press start to begin</h1>
+<legend>Rounding options:</legend>
+<div>
+  <input type="radio" id="roundingNone" name="rounding" value="none" >
+  <label for="roundingNone">No rounding</label>
+  <br>
+  <input type="radio" id="roundingMedium" name="rounding" value="hz" checked>
+  <label for="roundingMedium">Round to nearest Hz</label>
+  <br>
+  <input type="radio" id="roundingHard" name="rounding" value="note">
+  <label for="roundingHard">Round to nearest note</label>
+  <br>
+</div>
+<br>
+<legend>Smoothing options:</legend>
+<div>
+  <input type="radio" id="smoothingNone" name="smoothing" value="none">
+  <label for="smoothingNone">No smoothing</label>
+  <br>
+  <input type="radio" id="smoothingMedium" name="smoothing" value="basic" checked>
+  <label for="smoothingMedium">Basic smoothing</label>
+  <br>
+  <input type="radio" id="smoothingHard" name="smoothing" value="very">
+  <label for="smoothingHard">Very smoothed (note must be more consistent and held for longer)</label>
+  <br>
+</div>
+<br>
+<legend>Display (click Start after you switch):</legend>
+<div>
+  <input type="radio" id="displaySine" name="display" value="sine" checked>
+  <label for="displaySine">Sine wave</label>
+  <br>
+  <input type="radio" id="displayFrequency" name="display" value="frequency" >
+  <label for="displayFrequency">Frequency</label>
+  <br>
+</div>
+<br>
+<noscript>
+  Unfortunately, JavaScript is needed to run this. The only JS running on my site is for the projects (no tracking, etc) if you want to enable it. If not, I totally understand :)
+<p><a href="440hz.png">Here&rsquo;s what the pitch detection looks like.</a>
+</noscript></p>
+<hr>
+<h1 id="how-it-works">How it works</h1>
+<p>This basic app relies on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a>, a powerful module in our browsers that lets us directly work with noise with JavaScript.  I also leveraged this when making <a href="/posts/morse-codle/">Morse Codle</a> and <a href="/posts/morse-code/">my Morse code games</a>, which you can read about <a href="/posts/writing-morse-code-games/">here</a>.</p>
+<p>The Web Audio API works by connecting a series of nodes to an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext">AudioContext</a>. For this setup, I wanted to connect the user&rsquo;s microphone as an incoming stream to an AudioContext. I also wanted to attach an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode">AnalyserNode</a> to the stream, which would allow me to access real-time data about the stream.</p>
+<p>This is all pretty straightforward, especially if we follow some existing examples from MDN on visualizing the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API">Web Audio API</a>. First, we can access the microphone via <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia">getUserMedia</a>. We can check if getUserMedia is valid and, if so, try to access the user&rsquo;s microphone, which creates the permissions check for the user. If that&rsquo;s successful, then we can connect our nodes and start the application.</p>
+<pre><code>var source;
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+var analyser = audioContext.createAnalyser();
+analyser.minDecibels = -100;
+analyser.maxDecibels = -10;
+analyser.smoothingTimeConstant = 0.85;
+if (!navigator?.mediaDevices?.getUserMedia) {
+  // No audio allowed
+  alert('Sorry, getUserMedia is required for the app.')
+  return;
+} else {
+  var constraints = {audio: true};
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then(
+      function(stream) {
+        // Initialize the SourceNode
+        source = audioContext.createMediaStreamSource(stream);
+        // Connect the source node to the analyzer
+        source.connect(analyser);
+        visualize();
+      }
+    )
+    .catch(function(err) {
+      alert('Sorry, microphone permissions are required for the app. Feel free to read on without playing :)')
+    });
+}
+</code></pre><p>For the main application loop via <code>visualize</code>, we want to do the following:</p>
+<ul>
+<li>Draw the sound data on the canvas</li>
+<li>Process the incoming sound data to calculate the frequency</li>
+</ul>
+<br>
+<h3 id="drawing-the-sound-data-on-the-canvas">Drawing the sound data on the canvas</h3>
+<p>Because I was more interested in the processing side, I leaned on the examples in the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API">MDN Visualizations with Web Audio API page</a>, particularly the examples from the Voice-change-O-matic. You can see the code snippets I borrowed <a href="https://github.com/mdn/voice-change-o-matic/blob/gh-pages/scripts/app.js#L123-L167">here</a>.</p>
+<h3 id="processing-the-incoming-sound-data">Processing the incoming sound data</h3>
+<p>The real difference between that example app and this one is that we want to calculate the main frequency of the incoming sound, and that&rsquo;s where the interesting part of it is.</p>
+<h4 id="can-we-just-use-the-analysernodes-getbytefrequencydata">Can we just use the AnalyserNode&rsquo;s getByteFrequencyData?</h4>
+<p>The AnalyserNode actually already has all of the data we need, and it even exposes the <code>getByteFrequencyData</code> method, which populates a buffer with the frequency bucket intensity level via <a href="https://en.wikipedia.org/wiki/Fast_Fourier_transform">Fast Fourier transform</a>.</p>
+<p>The main problem is that if we&rsquo;re trying to get a specific frequency, we can&rsquo;t just look at the buckets (shout out to <a href="https://stackoverflow.com/questions/44502536/determining-frequencies-in-js-audiocontext-analysernode">this stackoverflow question</a>). If we have a FFT size of 2048, sample rate of 48,000 Hz, our AnalyserNode will generate frequency bins across the range from [0Hz, 24000Hz], with each bin being <code>max_frequency / frequencyBinCount</code>, where <code>frequencyBinCount</code> is FFT size divided by 2. In this case, the bins would <code>24000 / 1024 == 23.4Hz</code> wide. In other words:</p>
+<pre><code>fData[0] is the strength of frequencies from 0 to 23.4Hz.
+fData[1] is the strength of frequencies from 23.4Hz to 46.8Hz.
+fData[2] is the strength of frequencies from 46.8Hz to 70.2Hz.
+fData[3] is the strength of frequencies from 70.2Hz to 93.6Hz.
+...
+fData[511] is the strength of frequencies from 11976.6Hz to 12000Hz.
+fData[512] is the strength of frequencies from 12000Hz to 12023.4Hz.
+...
+fData[1023] is the strength of frequencies from 23976.6Hz to 24000Hz.
+</code></pre><p>The issue here is that these buckets wouldn&rsquo;t be exact enough to differentiate between notes in the lower ranges (you can see the note to frequency mapping <a href="https://pages.mtu.edu/~suits/notefreqs.html">here</a>). For example, if we want to tune the top string of our guitar in the regular tuning, E, we would want to tune it close to 82.41 Hz (assuming we want the exact match - we won&rsquo;t be getting into any more advanced theory here). If we want to tune it to F instead, we would want to tune it to 87.3 Hz. If all we know about the sound of the string is that it&rsquo;s in the 70.2-93.6Hz bucket, we wouldn&rsquo;t be able to tell which one we&rsquo;re closer to.</p>
+<p>One way to get around this would be to decrease bucket size by increasing the FFT size - we could do this, but our calculations would be more expensive, we&rsquo;d require more space for this, and we&rsquo;d have to bump the size up 10-fold to even get closer to to fine-tuned distances. Additionally, we don&rsquo;t actually need these small bucket sizes for the higher frequency notes, which means we would have a ton of wasted bucket space.</p>
+<h4 id="autocorrelation-we-can-do-some-quick-math-ourselves">Autocorrelation: we can do some quick math ourselves</h4>
+<p>Instead of relying on the <code>getByteFrequencyData</code>, we can instead access the sound information directly and calculate the frequency ourselves. Autocorrelation is a technique where we compare part of a signal, in this case a sound wave, with a delayed copy of itself. By looking at how the signal compares to itself with a given offset, then varying that offset, we can calculate the offset at which the pattern roughly repeats. That would represent the period of the sound wave, and we could easily then calculate the frequency.</p>
+<p>Let&rsquo;s say we have a very simple data series representing the signal at different time steps:</p>
+<pre><code>[0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5, 0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5]
+</code></pre><p>That might look something like this, where the x-axis is time and the y-axis is amplitude:</p>
+<p><img src="time-series.png" alt="Basic graph of the above time series"></p>
+<p>We want to compare this signal against what it would look like at different offsets, for example, with offsets 1 and 2:</p>
+<pre><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
+Offset 1: [       0.0, 0.5, 1.0, 0.5,  0.0, -0.5, -1.0, -0.5,  0.0, 0.5, 1.0, 0.5,  0.0, -0.5, -1.0]
+Offset 2: [            0.0, 0.5, 1.0,  0.5,  0.0, -0.5, -1.0, -0.5, 0.0, 0.5, 1.0,  0.5,  0.0, -0.5]
+</code></pre><p>. You can kind of imagine it like this, with multiple graphs at offsets 1 and 2 respectively:</p>
+<p><img src="time-series-offsets-visualized.png" alt="Graph of the above time series and additional graphs of the original shifted to the right by 1 and 2 time steps, respectively"></p>
+<p>To see where our graph repeats itself, we can look at each potential offset value and look at what it would look like if we multiplied each point on the graph by its offset value. Because we&rsquo;re expecting a sinusoidal wave, the sum of those products would be highest when the wave repeats itself, as it would basically be squaring each value.</p>
+<p>For example, for Offset 2, we would multiply each original value by the value of the offset graph:</p>
+<pre><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
+Offset 2: [            0.0, 0.5, 1.0,  0.5,  0.0, -0.5, -1.0, -0.5, 0.0, 0.5, 1.0,  0.5,  0.0, -0.5]
+Product:  [            0.0, .25, 0.0, -.25,  0.0,  .25,  0.0, -.25, 0.0, .25, 0.0, -.25,  0.0,  .25]
+Sum: 0.25
+</code></pre><p>Or, another way to think about this, we would multiple each value in the original by its value two timesteps later:</p>
+<p><img src="offset-2-product.png" alt="Basic graph of the above time series with a line to the value 2 timesteps later for each"></p>
+<p>This yields a total of 0.25 for this offset - not a strong contender!</p>
+<p>You could imagine doing this for each offset. At some point, if our wave is regular, we&rsquo;ll reach the point where the wave repeats itself. In this case, with offset 8, we would be multiplying the points by themselves, as the full offset means the graph repeats.</p>
+<pre><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
+Offset 8: [                                              0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
+Product:  [                                              0.0, .25, 1.0, .25, 0.0,  .25,  1.0,  .25]
+Sum: 3.0
+</code></pre><p><img src="offset-8.png" alt="Basic graph of the above time series multiplied by its value 8 timesteps later, which is the same value"></p>
+<p>With a sum of 3, this would be the largest sum, and we&rsquo;d know that our wave repeats itself every 8 timesteps. If our total time data length is 1 second cut into 15 time steps, then our frequency would be 15 / 8 = 1.875 Hz.</p>
+<p>What would this look like in code? We could do the following:</p>
+<pre><code>// Start with a bufferLength of the analyser's FFT size
+var bufferLength = analyser.fftSize;
+// Actually create the buffer
+var buffer = new Float32Array(bufferLength);
+// Populate the buffer with the time domain data
+analyser.getFloatTimeDomainData(buffer);
+
+// Create a new array of the sums of offsets to do the autocorrelation
+var offsetSums = new Array(bufferLength).fill(0);
+// For each potential offset, calculate the sum of each buffer value times its offset value
+for (let offset = 0; offset &lt; bufferLength; offset++) {
+  for (let j = 0; j &lt; SIZE - i; j++) {
+    offsetSums[offset] = offsetSums[offset] + buffer[j] * buffer[j+offset]
+  }
+}
+
+// Calculate the offset with the highest value
+var maxValue = -1;
+var bestOffset = -1;
+for (var i = 0; i &lt; offsetSums.length; i++) {
+  if (offsetSums[i] &gt; maxValue) {
+    maxValue = c[i];
+    bestOffset = i;
+  }
+}
+
+// Once we have the best offset for the repetition, we can calculate the frequency from the sampleRate
+var frequency = sampleRate / bestOffset
+</code></pre><p>That&rsquo;s pretty much it! All that&rsquo;s left is some UX to smooth the display changing (we don&rsquo;t want to flash a new value every animation frame, though you can try it above) and translate the frequency into a note.</p>
+<p><img src="440hz.png" alt="Screenshot of the  pitch detection with a 440Hz tuning fork."></p>
+<p>You can see the full source code <a href="tuner.js">here</a>.</p>
+<hr>
+<p>This will eventually be part of an interactive ear training app, where you will listen to a tone and have to repeat it — this pitch detection will be the backbone of processing the incoming sound and translating it to the note.</p>
+<p>It&rsquo;s a good start for now!</p>
+<script src="tuner.js"></script>
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>
