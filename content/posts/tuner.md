@@ -218,7 +218,7 @@ var maxValue = -1;
 var bestOffset = -1;
 for (var i = 0; i < offsetSums.length; i++) {
   if (offsetSums[i] > maxValue) {
-    maxValue = c[i];
+    maxValue = offsetSums[i];
     bestOffset = i;
   }
 }
