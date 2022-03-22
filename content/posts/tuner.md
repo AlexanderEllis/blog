@@ -137,7 +137,7 @@ One way to get around this would be to decrease bucket size by increasing the FF
 
 #### Autocorrelation: we can do some quick math ourselves
 
-Instead of relying on the `getByteFrequencyData`, we can instead access the sound information directly and calculate the frequency ourselves. Autocorrelation is a technique where we compare part of a signal, in this case a sound wave, with a delayed copy of itself. By looking at how the signal compares to itself with a given offset, then varying that offset, we can calculate the offset at which the pattern roughly repeats. That would represent the period of the sound wave, and we could easily then calculate the frequency.
+Instead of relying on the `getByteFrequencyData`, we can instead access the sound information directly and calculate the frequency ourselves. One simple way to do this is autocorrelation, a technique where we compare part of a signal, in this case a sound wave, with a delayed copy of itself. By looking at how the signal compares to itself with a given offset, then varying that offset, we can calculate the offset at which the pattern roughly repeats. That would represent the period of the sound wave, and we could easily then calculate the frequency.
 
 Let's say we have a very simple data series representing the signal at different time steps:
 
@@ -232,6 +232,14 @@ That's pretty much it! All that's left is some UX to smooth the display changing
 ![Screenshot of the  pitch detection with a 440Hz tuning fork.](440hz.png)
 
 You can see the full source code [here](tuner.js).
+
+#### Can we do better?
+
+One of the drawbacks of this basic autocorrelation is that it has trouble with sounds with multiple stacked notes - think of a piano note that actually has that same note layered across different octaves. The basic detector does well with my 440Hz tuning fork, but when I try to tune the A string on my guitar and play a more complicated sound wave (the guitar string vibrating), it will switch between detecting the 110Hz tone and 440Hz, depending on how close I am to the microphone. Another drawback is that it's not as efficient as it could be; since we're calculating each offset across the entire sample, leading to quadratic complexity.
+
+There are also many ways to tune this basic detection further, such as trimming the sound data to only run on interesting parts of the tone and doing parabolic interpolation, where we assume that our peak isn't a sharp point on the graph but instead a smooth parabola between the points on either side - we can use the highest point of the parabola for even more accuracy.
+
+I chose this basic approach because 1) it's easy to implement and follow along with the code and 2) it works pretty well for my use case. If you're interested in more of the intricacies, I highly recommend checking out the [pitch detection algorithm](https://en.wikipedia.org/wiki/Pitch_detection_algorithm) page on Wikipedia; definitely a rabbit hole!
 
 -----
 

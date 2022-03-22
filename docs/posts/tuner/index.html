@@ -51,8 +51,8 @@
                     </h2>
                     <h2 class="headline">
                     Mar 20, 2022
-                    · 1695 words
-                    · 8 minutes read
+                    · 1936 words
+                    · 10 minutes read
                       <span class="tags">
                             <a href="https://alexanderell.is/tags/javascript">JavaScript</a>
                       </span>
@@ -161,7 +161,7 @@ fData[1023] is the strength of frequencies from 23976.6Hz to 24000Hz.
 </code></pre><p>The issue here is that these buckets wouldn&rsquo;t be exact enough to differentiate between notes in the lower ranges (you can see the note to frequency mapping <a href="https://pages.mtu.edu/~suits/notefreqs.html">here</a>). For example, if we want to tune the top string of our guitar in the regular tuning, E, we would want to tune it close to 82.41 Hz (assuming we want the exact match - we won&rsquo;t be getting into any more advanced theory here). If we want to tune it to F instead, we would want to tune it to 87.3 Hz. If all we know about the sound of the string is that it&rsquo;s in the 70.2-93.6Hz bucket, we wouldn&rsquo;t be able to tell which one we&rsquo;re closer to.</p>
 <p>One way to get around this would be to decrease bucket size by increasing the FFT size - we could do this, but our calculations would be more expensive, we&rsquo;d require more space for this, and we&rsquo;d have to bump the size up 10-fold to even get closer to to fine-tuned distances. Additionally, we don&rsquo;t actually need these small bucket sizes for the higher frequency notes, which means we would have a ton of wasted bucket space.</p>
 <h4 id="autocorrelation-we-can-do-some-quick-math-ourselves">Autocorrelation: we can do some quick math ourselves</h4>
-<p>Instead of relying on the <code>getByteFrequencyData</code>, we can instead access the sound information directly and calculate the frequency ourselves. Autocorrelation is a technique where we compare part of a signal, in this case a sound wave, with a delayed copy of itself. By looking at how the signal compares to itself with a given offset, then varying that offset, we can calculate the offset at which the pattern roughly repeats. That would represent the period of the sound wave, and we could easily then calculate the frequency.</p>
+<p>Instead of relying on the <code>getByteFrequencyData</code>, we can instead access the sound information directly and calculate the frequency ourselves. One simple way to do this is autocorrelation, a technique where we compare part of a signal, in this case a sound wave, with a delayed copy of itself. By looking at how the signal compares to itself with a given offset, then varying that offset, we can calculate the offset at which the pattern roughly repeats. That would represent the period of the sound wave, and we could easily then calculate the frequency.</p>
 <p>Let&rsquo;s say we have a very simple data series representing the signal at different time steps:</p>
 <pre><code>[0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5, 0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5]
 </code></pre><p>That might look something like this, where the x-axis is time and the y-axis is amplitude:</p>
@@ -220,6 +220,10 @@ var frequency = sampleRate / bestOffset
 </code></pre><p>That&rsquo;s pretty much it! All that&rsquo;s left is some UX to smooth the display changing (we don&rsquo;t want to flash a new value every animation frame, though you can try it above) and translate the frequency into a note.</p>
 <p><img src="440hz.png" alt="Screenshot of the  pitch detection with a 440Hz tuning fork."></p>
 <p>You can see the full source code <a href="tuner.js">here</a>.</p>
+<h4 id="can-we-do-better">Can we do better?</h4>
+<p>One of the drawbacks of this basic autocorrelation is that it has trouble with sounds with multiple stacked notes - think of a piano note that actually has that same note layered across different octaves. The basic detector does well with my 440Hz tuning fork, but when I try to tune the A string on my guitar and play a more complicated sound wave (the guitar string vibrating), it will switch between detecting the 110Hz tone and 440Hz, depending on how close I am to the microphone. Another drawback is that it&rsquo;s not as efficient as it could be; since we&rsquo;re calculating each offset across the entire sample, leading to quadratic complexity.</p>
+<p>There are also many ways to tune this basic detection further, such as trimming the sound data to only run on interesting parts of the tone and doing parabolic interpolation, where we assume that our peak isn&rsquo;t a sharp point on the graph but instead a smooth parabola between the points on either side - we can use the highest point of the parabola for even more accuracy.</p>
+<p>I chose this basic approach because 1) it&rsquo;s easy to implement and follow along with the code and 2) it works pretty well for my use case. If you&rsquo;re interested in more of the intricacies, I highly recommend checking out the <a href="https://en.wikipedia.org/wiki/Pitch_detection_algorithm">pitch detection algorithm</a> page on Wikipedia; definitely a rabbit hole!</p>
 <hr>
 <p>This will eventually be part of an interactive ear training app, where you will listen to a tone and have to repeat it — this pitch detection will be the backbone of processing the incoming sound and translating it to the note.</p>
 <p>It&rsquo;s a good start for now!</p>
