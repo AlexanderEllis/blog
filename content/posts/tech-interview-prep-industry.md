@@ -1,5 +1,5 @@
 ---
-title: "The Tech Interview Prep Industry"
+title: "The tech interview prep industry"
 date: 2022-04-03T17:55:05-04:00
 draft: false
 ---
