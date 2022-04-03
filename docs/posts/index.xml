@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 27 Mar 2022 13:09:00 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 03 Apr 2022 17:55:05 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Tech Interview Prep Industry</title>
+      <link>https://alexanderell.is/posts/tech-interview-prep-industry/</link>
+      <pubDate>Sun, 03 Apr 2022 17:55:05 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/tech-interview-prep-industry/</guid>
+      <description>Before I got into tech, I worked at a tutoring company in the Northern Virginia suburbs of Washington, D.C., doing a mix of schoolwork-related tutoring and standardized test prep.
+From a business perspective, it made so much sense - you have kids taking standardized tests and parents who wanted their kids to do well on them. Here we have the SAT, a measurable evaluation that can be an immediate help to your future if you do well on it (though whether or not it&amp;rsquo;s truly a good evaluation is well beyond the scope of this essay).</description>
+    </item>
     
     <item>
       <title>Keeping a debugging lab notebook</title>
