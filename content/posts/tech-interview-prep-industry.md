@@ -56,7 +56,7 @@ As a quick aside, I just wanted to note that there's no disrespect meant towards
 
 There are also a few interesting differences between this interview/business cycle and the standardized tests above. First, financially, the math is much clearer in favor of spending now to get a positive result later, as doing very well on these interviews can have a direct mapping to future benefits. If you're able to land a job that increases your salary by $50,000, suddenly the $40 you spend on a book and the $35 you spend on an online subscription pale in comparison to the upside.
 
-Additionally, there's a strong self-fulfilling cycle here. Let's say Company A does algorithm interviews and they know that there's a gap between an engineer's day-to-day responsibilities (such as writing good code to solve real business needs) and what you have to do in these interviews, so maybe they recommend a few test-prep sites to the candidate so they can get a little practice in. This would be like if signing up for the SAT came with a recommendation for a Kaplan study book - free marketing![^2]
+Additionally, there's a strong self-fulfilling cycle here. Let's say Company A does algorithm interviews and they know that there's a gap between an engineer's day-to-day responsibilities (such as writing good code to solve real business needs) and what you have to do in these interviews, so maybe they recommend a few test-prep sites to the candidate so they can get a little practice in. This would be like if signing up for the SAT came with a recommendation for a Kaplan study book - free marketing\![^2]
 
 
 -----
