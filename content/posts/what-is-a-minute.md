@@ -12,7 +12,7 @@ What's in a minute? It can be sixty long seconds, or it can be just a blink of t
 If you're trying to slow time down, see how long a minute feels for any of the following:
 
 - If you're able to, hold a plank for 60 seconds
-- Read the [*Elemetary Rules of Usage* section from *The Elements of Style*](https://www.gutenberg.org/files/37134/37134-h/37134-h.htm#Page_7)
+- Read the [*Elementary Rules of Usage* section from *The Elements of Style*](https://www.gutenberg.org/files/37134/37134-h/37134-h.htm#Page_7)
 - If you're able to, sprint at full speed for 60 seconds
 - After asking a question to a group and hearing no response, wait for 60 seconds before offering the answer
 - Try to hold your breath for 60 seconds
