@@ -6,10 +6,20 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 10 Apr 2022 11:44:07 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 17 Apr 2022 13:08:57 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Opinionated Variable Names</title>
+      <link>https://alexanderell.is/posts/opinionated-variable-names/</link>
+      <pubDate>Sun, 17 Apr 2022 13:08:57 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/opinionated-variable-names/</guid>
+      <description>I think a lot about the human part of code, especially the work our brains do when writing and reading it and interfacing with the computer. Rachelbythebay had a great take on a way to inject some brain-processing into a technical task - when you&amp;rsquo;re running a command to affect n servers, maybe it would be good to type that number in manually.
+ The idea is to force you to take in that number through your usual input devices (I&amp;rsquo;d say eyes, but some people are using text-to-speech stuff or similar, and they count too), chew on it with your wetware, and then feed it back into the computer somehow.</description>
+    </item>
     
     <item>
       <title>What is a minute, really?</title>
