@@ -1,5 +1,5 @@
 ---
-title: "Opinionated Variable Names"
+title: "Opinionated variable names"
 date: 2022-04-17T13:08:57-04:00
 draft: false
 ---
