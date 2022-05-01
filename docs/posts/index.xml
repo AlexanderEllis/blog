@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 17 Apr 2022 13:08:57 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 01 May 2022 00:28:44 -0400</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Getting comfortable with being uncomfortable</title>
+      <link>https://alexanderell.is/posts/uncomfortable/</link>
+      <pubDate>Sun, 01 May 2022 00:28:44 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/uncomfortable/</guid>
+      <description>Software engineering is cursed with uncertainty.
+When we&amp;rsquo;re solving big new problems with software, if the exact problem has been solved before, we could just reuse the solution that already exists. Frequently though, the exact problem (or combination of problems) hasn&amp;rsquo;t been solved before, and we need to come up with a way to solve it.
+Have you felt that feeling? That moment of uncertainty, where you don&amp;rsquo;t know what the solution will look like.</description>
+    </item>
     
     <item>
       <title>Opinionated variable names</title>
