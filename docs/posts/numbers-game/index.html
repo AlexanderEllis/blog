@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     May 8, 2022
-                    · 2746 words
+                    · 2748 words
                     · 13 minutes read
                       <span class="tags">
                             
@@ -182,7 +182,7 @@ products: {
   <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],  <span style="color:#75715e"># For 4, we have two pairs: (1, 4) and (2, 2)</span>
   <span style="color:#75715e"># And so on.</span>
   <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  <span style="color:#ae81ff">7920</span>: [(<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>)]
+  <span style="color:#ae81ff">7920</span>: [(<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>), (<span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">99</span>)]
 }
 
 </code></pre></div><p>Now, it&rsquo;s Sandy&rsquo;s turn to say that she doesn&rsquo;t know the numbers. Because Sandy knows the <strong>sum</strong>, again it must mean that the sum can&rsquo;t be any sum with only one pair as an option in <code>sums</code>, so we can again cull those pairs. In the updated <code>sums</code> structure, we can see that 4 is now only made up of a single candidate pair, <code>(2, 2)</code>. If the sum was 4, Sandy would know immediately what the pair was, but since she doesn&rsquo;t, it means the pair cannot be <code>(2, 2)</code>, and we can remove it from the candidates.</p>

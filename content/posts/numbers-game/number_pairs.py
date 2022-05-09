@@ -43,6 +43,8 @@ def foo():
         print('sums', sums)
         products = generate_products(candidate_pairs)
         print('products', products)
+        if round == 2:
+            return
         # First, check if there's a single product left with one pair.
         if round == 15:
             for product in products:
@@ -94,6 +96,10 @@ def find_pairs(n):
         products = generate_products(candidate_pairs)
         print('products', products)
         name = 'Peter:' if do_not_know_product else 'Sandy:'
+        if round == 2:
+            print('jsldfjlkasdjf')
+            print(products[7280])
+            return
 
         potential_final = None
         # First, check if there's a single product left with one pair.
@@ -145,7 +151,7 @@ def find_pairs(n):
 
 
 if __name__ == '__main__':
-    i = 4
+    i = 100
     print('N =', i)
-    find_pairs(i)
+    foo()
     print('*****')
