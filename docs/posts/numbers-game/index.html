@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     May 8, 2022
-                    · 2780 words
+                    · 2785 words
                     · 14 minutes read
                       <span class="tags">
                             
@@ -170,7 +170,8 @@ candidates: [
 ]
 
 sums: {
-  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>)],
+  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
+  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
   <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)],
   <span style="color:#75715e"># And so on.</span>
   <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
@@ -184,7 +185,7 @@ products: {
   <span style="color:#ae81ff">7920</span>: [(<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>)]
 }
 
-</code></pre></div><p>Now, it&rsquo;s Sandy&rsquo;s turn to say that she doesn&rsquo;t know the numbers. Because Sandy knows the <strong>sum</strong>, again it must mean that the sum can&rsquo;t be any sum with only one pair as an option in <code>sums</code>, so we can again cull those pairs. In the updated <code>sums</code> structure, we can see that 5 is now only made up of a single candidate pair, <code>(1, 4)</code>. If the sum was 5, Sandy would know immediately what the pair was, but since she doesn&rsquo;t, it means the pair cannot be <code>(1, 4)</code>, and we can remove it from the candidates.</p>
+</code></pre></div><p>Now, it&rsquo;s Sandy&rsquo;s turn to say that she doesn&rsquo;t know the numbers. Because Sandy knows the <strong>sum</strong>, again it must mean that the sum can&rsquo;t be any sum with only one pair as an option in <code>sums</code>, so we can again cull those pairs. In the updated <code>sums</code> structure, we can see that 4 is now only made up of a single candidate pair, <code>(2, 2)</code>. If the sum was 4, Sandy would know immediately what the pair was, but since she doesn&rsquo;t, it means the pair cannot be <code>(2, 2)</code>, and we can remove it from the candidates.</p>
 <p>Every round, we&rsquo;re disqualifying potential candidates. Because we&rsquo;re also able to remove them from the <code>sums</code> and <code>products</code> as potential options, it means that each protagonist is working on a new collection every time, giving a little more information every time they say they don&rsquo;t know the number.</p>
 <p>This pattern will continue, with a certain number of options being removed every time. At some point, Peter finally says that he does know the numbers - finally, there is only one product left with one potential pair, and that is the answer. Importantly, it has to go down to a single product - otherwise there would be multiple answers! That&rsquo;s why this version has Peter claiming to know after 14 rounds, because it limits the answer to a single pair (although there are other options - see later).</p>
 <hr>
