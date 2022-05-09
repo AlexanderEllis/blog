@@ -208,9 +208,8 @@ def find_pairs():
     # First, generate all possible pairs from (1, 1) to (N-1, N-1).
     candidate_pairs = set()
     for i in range(1, N):
-        for j in range(1, N):
-            if (i, j) not in candidate_pairs and (j, i) not in candidate_pairs:
-                candidate_pairs.add((i, j))
+        for j in range(i, N):
+            candidate_pairs.add((i, j))
 
     # Swap between hearing from Peter or Sandy every round (product or sum)
     do_not_know_product = True
@@ -225,12 +224,9 @@ def find_pairs():
                     print('Peter: I do know the numbers')
                     print(products[product][0])
                     return
-        if do_not_know_product:
-            print('Peter: I don\'t know the numbers')
-        else:
-            print('Sandy: I don\'t know the numbers')
 
         if do_not_know_product:
+            print('Peter: I don\'t know the numbers')
             # Go through products. For any product that only has a single pair,
             # we can remove those from the candidates for the next round.
             for product in products:
@@ -240,6 +236,7 @@ def find_pairs():
                     candidate_pairs.remove(tuple_pair)
             do_not_know_product = False
         else:
+            print('Sandy: I don\'t know the numbers')
             # Go through sums. For any product that only has a single pair,
             # we can remove those from the candidates for the next round.
             for sum in sums:
@@ -289,9 +286,8 @@ def find_pairs():
     # First, generate all possible pairs from (1, 1) to (N-1, N-1).
     candidate_pairs = set()
     for i in range(1, N):
-        for j in range(1, N):
-            if (i, j) not in candidate_pairs and (j, i) not in candidate_pairs:
-                candidate_pairs.add((i, j))
+        for j in range(i, N):
+            candidate_pairs.add((i, j))
 
     # Swap between hearing from Peter or Sandy every round (product or sum)
     do_not_know_product = True
@@ -381,9 +377,8 @@ def find_pairs(n):
     # First, generate all possible pairs from (1, 1) to (N-1, N-1).
     candidate_pairs = set()
     for i in range(1, n):
-        for j in range(1, n):
-            if (i, j) not in candidate_pairs and (j, i) not in candidate_pairs:
-                candidate_pairs.add((i, j))
+        for j in range(i, n):
+            candidate_pairs.add((i, j))
     # ... everything else the same
 
 

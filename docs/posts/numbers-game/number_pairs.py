@@ -31,9 +31,8 @@ def foo():
     # First, generate all possible pairs from (1, 1) to (N-1, N-1).
     candidate_pairs = set()
     for i in range(1, N):
-        for j in range(1, N):
-            if (i, j) not in candidate_pairs and (j, i) not in candidate_pairs:
-                candidate_pairs.add((i, j))
+        for j in range(i, N):
+            candidate_pairs.add((i, j))
 
     # Swap between hearing from Peter or Sandy every round (product or sum)
     do_not_know_product = True
