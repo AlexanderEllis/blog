@@ -41,8 +41,18 @@ def foo():
         print('candidate_pairs', candidate_pairs)
         sums = generate_sums(candidate_pairs)
         print('sums', sums)
+        foo = [sum for sum in sums]
+        print('*********')
+        foo.sort()
+        print(foo)
+        print('*********')
         products = generate_products(candidate_pairs)
         print('products', products)
+        foo = [product for product in products]
+        print('*********')
+        foo.sort()
+        print(foo)
+        print('*********')
         if round == 2:
             return
         # First, check if there's a single product left with one pair.
