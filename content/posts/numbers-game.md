@@ -144,7 +144,8 @@ candidates: [
 ]
 
 sums: {
-  5: [(1, 4)],
+  4: [(2, 2)],
+  5: [(1, 4), (2, 3)],
   6: [(2, 4), (3, 3)],
   # And so on.
   ...
@@ -160,7 +161,7 @@ products: {
 
 ```
 
-Now, it's Sandy's turn to say that she doesn't know the numbers. Because Sandy knows the **sum**, again it must mean that the sum can't be any sum with only one pair as an option in `sums`, so we can again cull those pairs. In the updated `sums` structure, we can see that 5 is now only made up of a single candidate pair, `(1, 4)`. If the sum was 5, Sandy would know immediately what the pair was, but since she doesn't, it means the pair cannot be `(1, 4)`, and we can remove it from the candidates.
+Now, it's Sandy's turn to say that she doesn't know the numbers. Because Sandy knows the **sum**, again it must mean that the sum can't be any sum with only one pair as an option in `sums`, so we can again cull those pairs. In the updated `sums` structure, we can see that 4 is now only made up of a single candidate pair, `(2, 2)`. If the sum was 4, Sandy would know immediately what the pair was, but since she doesn't, it means the pair cannot be `(2, 2)`, and we can remove it from the candidates.
 
 Every round, we're disqualifying potential candidates. Because we're also able to remove them from the `sums` and `products` as potential options, it means that each protagonist is working on a new collection every time, giving a little more information every time they say they don't know the number.
 
