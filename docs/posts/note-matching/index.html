@@ -1,0 +1,182 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.64.1" />
+		<title>A basic ear training note matching game &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        A basic ear training note matching game
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    May 14, 2022
+                    · 175 words
+                    · 1 minute read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <noscript>
+  This is a game for matching musical notes.
+<p>JavaScript is needed to run this game. If you don&rsquo;t have it enabled, I totally get it — I <a
+href="/posts/taking-over-my-clipboard/" target="blank_">often</a> <a href="/posts/attention-javascript"
+target="blank_">don&rsquo;t like</a> it either.
+</noscript></p>
+<p>This is a simple ear-training game for matching notes. Play along with your favorite instrument!</p>
+<p>You can also try singing/whistling, but note that <em>the pitch detection is <a href="/posts/tuner/">hand rolled and rough around the edges</a> — apologies if it makes any mistakes, especially for lower notes.</em></p>
+<p>Here&rsquo;s how to play:</p>
+<ul>
+<li>Press the start button to begin</li>
+<li>Listen to the notes, then play them yourself</li>
+<li>(Optional): Hit Replay to listen to the notes again</li>
+<li>Play around with the options and continue as long as you want :)</li>
+</ul>
+<br>
+<p><b>Options (they&rsquo;ll apply to the next round):</b>
+<br>
+<label for="numNotes">Number of notes:</label>
+<select name="numNotes" id="numNotes"></p>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+</select>
+<br>
+<label for="numRepeats">Number of repeated success required:</label>
+<select name="numRepeats" id="numRepeats">
+  <option value="0">0</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+</select>
+<br>
+<label for="minDuration">Min note duration (the one you play):</label>
+<select name="minDuration" id="minDuration">
+  <option value="100">100ms</option>
+  <option value="200">200ms</option>
+  <option value="300" selected>300ms</option>
+  <option value="500">500ms</option>
+</select>
+<br>
+<div id="game">
+  <div>Total correct: <span id="totalCorrect">0</span></div>
+  <div>Perfect streak: <span id="perfectStreak">0</span></div>
+  <div>Best perfect streak: <span id="bestPerfectStreak">0</span></div>
+  <button id="startButton">Start</button>
+  <br>
+  <button id="replayButton" disabled>Replay</button>
+  <br>
+  <div id="status"></div>
+  <div id="results">
+  </div>
+</div>
+<script src="autocorrelate.js"></script>
+<script src="note-matching.js"></script>
+<style>
+  .note {
+    margin: 0 5px;
+    min-width: 45px;
+    display: inline-block;
+    font-size: 26px;
+  }
+</style><blockquote>
+</blockquote>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

@@ -6,10 +6,21 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 08 May 2022 15:29:23 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 14 May 2022 01:03:02 -0500</lastBuildDate>
     
 	<atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>A basic ear training note matching game</title>
+      <link>https://alexanderell.is/posts/note-matching/</link>
+      <pubDate>Sat, 14 May 2022 01:03:02 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/note-matching/</guid>
+      <description>This is a game for matching musical notes. JavaScript is needed to run this game. If you don&amp;rsquo;t have it enabled, I totally get it — I often don&amp;rsquo;t like it either. 
+This is a simple ear-training game for matching notes. Play along with your favorite instrument!
+You can also try singing/whistling, but note that the pitch detection is hand rolled and rough around the edges — apologies if it makes any mistakes, especially for lower notes.</description>
+    </item>
     
     <item>
       <title>&#34;I don&#39;t know the numbers&#34;: a math puzzle</title>
