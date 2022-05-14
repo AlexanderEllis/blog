@@ -24,12 +24,22 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// This is wild if this works. Keep a map of the audios around and instantiate them on
+// user action for mobile safari.
+var audioMap = {};
+
 async function playNote(source) {
   // console.log(source);
+  // It sounds like we may need an explicit user action every time we create a new audio?
   await new Promise((resolve) => {
-    var audio = new Audio(source);
+    var audio = audioMap[source];
     audio.onended = resolve;
-    audio.play();
+    audio.play()
+      .catch(eror => {
+        // Probably iOS permissions and couldn't autoplay.
+        // console.log(error);
+        resolve();
+      });
   });
 }
 
@@ -96,6 +106,11 @@ class NoteMatchingGame {
 
   initializeListener() {
     this.noteListener = new NoteListener(this.handleNote);
+    // Also initialize all Audio elements in audioMap...
+    for (const note of ALL_NOTES) {
+      var source = 'notes/' + note + '.mp3';
+      audioMap[source] = new Audio(source);
+    }
   }
 
   getDefaults() {
