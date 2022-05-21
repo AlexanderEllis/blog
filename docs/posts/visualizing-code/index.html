@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>How do you visualize code? &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -70,7 +70,7 @@
 <br>
 <br>
 <p>On the other end of the spectrum, if I&rsquo;m worried about the minuscule specifics of how the computer is reading what I&rsquo;ve given it, it&rsquo;s helpful to zoom all the way in to a representation of the physical memory.</p>
-<p><img src="assembly.png" alt="Screenshot of a Google Sheets page where I&rsquo;ve added assembly code in the various cells for walking through it carefully"></p>
+<p><img src="assembly.png" alt="Screenshot of a Google Sheets page where I&amp;rsquo;ve added assembly code in the various cells for walking through it carefully"></p>
 <center>Screenshot of a Google Sheets page I once made with memory addresses and assembly in the various cells. This was helpful for walking through it very, very carefully.</center>
 <br>
 <br>
@@ -92,14 +92,14 @@
 <p>Maybe we could rank them on how well they represent the larger system? Architecture diagrams would do well there, but a flame graph would only represent a single execution path. Maybe frequency of change? That would be an interesting one, with architecture diagrams (hopefully) staying pretty static as the source code changes frequently.</p>
 <p>What if we thought about how well the visualization represents the actual code execution through the system? In this case, maybe a high level architecture diagram wouldn&rsquo;t score very high, as it would abstract away many of the details inside the service boxes. Distributed tracing could do better, though the level of specificity would depend on the number of tracepoints you have. Class diagrams, while helpful for visualizing the relationship between classes, may not represent the actual paths taken through. Flame graphs would show a clear execution path, but again they would only show a single code path without giving visibility to the larger system.</p>
 <p>Graphing these <em>might</em> look something like the following, (though each of these dots may be better represented as a range):</p>
-<p><img src="graph.png" alt="Ranking the above visualizations on a scale from high level to low level along the x axis and &ldquo;visualization of actual execution&rdquo; on the y axis">
+<p><img src="graph.png" alt="Ranking the above visualizations on a scale from high level to low level along the x axis and &amp;ldquo;visualization of actual execution&amp;rdquo; on the y axis">
 <a href="graph.png">Link to a larger version of the graph</a></p>
 <p>This made me think about what that upper right section would be like. What would a helpful visualization look like that provided clear insight into the details? Is there a way to visualize the path through the larger system while staying at a low level?</p>
 <h2 id="what-would-it-look-like-if-we-tried-to-use-space-as-well">What would it look like if we tried to use space as well?</h2>
 <p>Looking at a diagram still feels like reading a map. There&rsquo;s that moment of spatially translating what you see in the code to the diagram, much like you&rsquo;d orient yourself with a map in an unfamiliar area. Like the desktop metaphor for things on our computers, I wonder if there&rsquo;s another way to visualize code as things that exist in the world to make the translation easier.</p>
 <p>What if we had a toy visualization where we represented code in physical space?</p>
 <p>Let&rsquo;s say we have the following basic example, where we have a <code>Counter</code> class that keeps track of a private <code>count_</code> variable and allows various access methods. Maybe it&rsquo;s accessed in a simple <code>main</code> function to do some counting.</p>
-<pre><code>#include &lt;iostream&gt;
+<pre tabindex="0"><code>#include &lt;iostream&gt;
 
 class Counter {
 public:
@@ -157,7 +157,7 @@ int main() {
 <h2 id="visualizing-code">Visualizing Code</h2>
 <p>I&rsquo;m not very familiar with this area of data visualization (nor the rest of data visualization, really), but in a brief search (AKA 30 minutes of Googling), I found a few projects that seem like they&rsquo;re doing something similar:</p>
 <ul>
-<li><a href="https://softvis3d.com/">SoftVis3D</a>: where a <em>&quot;&lsquo;code city&rsquo; view provides a visualization for the hierarchical structure of the project&rdquo;</em>.</li>
+<li><a href="https://softvis3d.com/">SoftVis3D</a>: where a <em>&quot;&lsquo;code city&rsquo; view provides a visualization for the hierarchical structure of the project&quot;</em>.</li>
 <li><a href="https://arxiv.org/pdf/1708.02174.pdf">Code Park: A New 3D Code Visualization Tool</a> (2017), a <em>&ldquo;novel tool for visualizing codebases in a 3D game-like environment&rdquo;</em> with code represented as <em>&ldquo;code rooms&rdquo;</em> with code on the walls (sounds very similar now that I read this).</li>
 <li><a href="https://opus-htw-aalen.bsz-bw.de/frontdoor/deliver/index/docId/658/file/ICCSE16-SEE.pdf">Code Structure Visualization Using 3D-Flythrough</a> (2016), with spatial metaphors and first-person exploration of code.</li>
 <li><a href="https://primitive.io/">Primitive</a>, a VR collaboration startup with a Matrix-looking <em>&ldquo;Immersive Development Environment&rdquo;</em> with <em>&ldquo;new tools for visually analyzing software in 3D&rdquo;</em>.</li>

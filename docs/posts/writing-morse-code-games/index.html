@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Writing Morse code games in JavaScript using the Web Audio API &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -95,7 +95,7 @@
 <p>The first thing that comes to mind for these games is the ability to play sound. You can do so many things with JavaScript, and luckily, this is one of them. The main interface for sound in the browser is <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">the Web Audio API</a>. I won&rsquo;t go into too much detail about it here, but I highly recommend the MDN docs and the tutorials there for playing around with it.</p>
 <p>For both of these games, I want to be able to play a single tone for a certain amount of time. The first step is playing the tone, and we can worry about the times later. One way to do this is to set up a new <code>AudioContext</code> (&ldquo;an audio-processing graph built from audio modules linked together&rdquo;) with an <a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode"><code>OscillatorNode</code></a> (&ldquo;an AudioNode audio-processing module that causes a given frequency of wave to be created&rdquo;) and a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GainNode"><code>GainNode</code></a> (&ldquo;an AudioNode audio-processing module that causes a given gain to be applied to the input data before its propagation to the output&rdquo;) for controlling volume. Simply put, we&rsquo;ll want to be able to create a tone at a certain frequency using the <code>OscillatorNode</code>, and we&rsquo;ll want to start and stop the tone by adjusting the volume with the <code>GainNode</code>.</p>
 <p>Before we do anything, we&rsquo;ll need to initialize the <code>AudioContext</code>, add the nodes, and connect them to the context. We can set up the <code>OscillatorNode</code> with a frequency of 440hz, A, which is a reasonably pleasant Morse code tone. This might look something like the following:</p>
-<pre><code>const FREQUENCY = 440;
+<pre tabindex="0"><code>const FREQUENCY = 440;
 
 let note_context;
 let note_node;
@@ -114,7 +114,7 @@ function initializeAudioContext() {
   audioContextInitialized = true;
 }
 </code></pre><p>With that audio context, we can then make functions for starting and stopping playing, which really adjust the gain value in the <code>GainNode</code>:</p>
-<pre><code>function startNotePlaying() {
+<pre tabindex="0"><code>function startNotePlaying() {
   // Pass a start time of 0 so it starts ramping up immediately.
   gain_node.gain.setTargetAtTime(0.1, 0, 0.001)
 }
@@ -172,7 +172,7 @@ document.getElementById('stopNote').addEventListener('click', () => {
 </script>
 <p>Not too bad! The next step is being able to play them for a given amount of time, since Morse code is made up of short signals (dots) and longer signals (dashes). For this, we can do a subtle trick with JavaScript&rsquo;s <code>async</code> and <code>Promises</code>. JavaScript doesn&rsquo;t really have a sleep method, but we can simulate one by creating a <code>Promise</code> that resolves itself after a certain amount of time. We can then <code>await</code> that function in an <code>async</code> function; this will cause that <code>async</code> function to pause at that function call until the amount of time has passed. Because of JavaScript&rsquo;s event loop, it isn&rsquo;t an exact timing, but it&rsquo;s close enough for this!</p>
 <p>To play a note for a certain amount of time, we can start the note playing, wait for the given time, then stop playing the note. That could look something like the following:</p>
-<pre><code>// Times in milliseconds; note that Morse code dash time is 3 * dot time
+<pre tabindex="0"><code>// Times in milliseconds; note that Morse code dash time is 3 * dot time
 var DOT_TIME = 60;
 var DASH_TIME = DOT_TIME * 3;
 
@@ -244,31 +244,31 @@ document.getElementById('playDash').addEventListener('click', () => {
 </ul>
 <br>
 <p>Or, in code:</p>
-<pre><code>var DOT_TIME = 60;  // If our unit is 60ms.
+<pre tabindex="0"><code>var DOT_TIME = 60;  // If our unit is 60ms.
 var DASH_TIME = DOT_TIME * 3;
 var SYMBOL_BREAK = DOT_TIME;
 var LETTER_BREAK = DOT_TIME * 3;
 var WORD_BREAK = DOT_TIME * 7;
 </code></pre><h3 id="playing-letters-words-and-sentences">Playing letters, words, and sentences</h3>
 <p>Using our async and sleep tricks from earlier, we can start to build higher order functions to play our Morse code letters. For a given character, we&rsquo;ll want to play each symbol with a symbol break in between. We can write a <code>playLetter</code> function that takes in a letter&rsquo;s Morse code representation (e.g. <code>&quot;.-.&quot;</code> for <code>&quot;r&quot;</code>) and plays it.</p>
-<pre><code>/**
- * letter is something like '---'
+<pre tabindex="0"><code>/**
+ * letter is something like &#39;---&#39;
  */
 async function playLetter(letter) {
   if (!audioContextInitialized) {
     initializeAudioContext();
   }
   for (let i = 0; i &lt; letter.length; i++) {
-    if (letter[i] == '-') {
+    if (letter[i] == &#39;-&#39;) {
       await playDash(currentPlayCounter);
-    } else if (letter[i] == '.') {
+    } else if (letter[i] == &#39;.&#39;) {
       await playDot(currentPlayCounter);
     }
     await sleep(SYMBOL_BREAK);
   }
 }
 
-playLetter('.-.');  // &quot;r&quot; is &quot;.-.&quot; in Morse code
+playLetter(&#39;.-.&#39;);  // &#34;r&#34; is &#34;.-.&#34; in Morse code
 </code></pre><p><button id="playLetter">Play &ldquo;r&rdquo; in Morse code</button></p>
 <script>
 function resetTiming() {
@@ -308,7 +308,7 @@ document.getElementById('playLetter').addEventListener('click', () => {
 });
 </script>
 <p>We can then build this up one level higher, into playing a word. Now, we&rsquo;ll want to play each letter, then wait for the duration of the letter break:</p>
-<pre><code>// Word is an array of letters as Morse code, like ['.', '.-', '-']
+<pre tabindex="0"><code>// Word is an array of letters as Morse code, like [&#39;.&#39;, &#39;.-&#39;, &#39;-&#39;]
 async function playWord(word) {
   for (let i = 0; i &lt; word.length; i++) {
     await playLetter(word[i]);
@@ -316,7 +316,7 @@ async function playWord(word) {
   }
 }
 
-playWord(['.', '.-', '-']);  // &quot;eat&quot; is &quot;. .- -&quot; in Morse code
+playWord([&#39;.&#39;, &#39;.-&#39;, &#39;-&#39;]);  // &#34;eat&#34; is &#34;. .- -&#34; in Morse code
 </code></pre><p><button id="playAre">Play &ldquo;eat&rdquo; in Morse code</button></p>
 <script>
 // Word is an array of letters as Morse code, like ['.', '.-', '-']
@@ -335,8 +335,8 @@ document.getElementById('playAre').addEventListener('click', () => {
 });
 </script>
 <p>Finally, we can do one more higher order function to play a sentence, again reusing what we&rsquo;ve already done. We&rsquo;ll play each word, followed by a word break.</p>
-<pre><code>// Sentence is an array of words.
-// Ex. &quot;dog is good&quot; -&gt; [['-..', '---', '--.'], ['..', '...'], ['--.', '---', '---', '-..']]
+<pre tabindex="0"><code>// Sentence is an array of words.
+// Ex. &#34;dog is good&#34; -&gt; [[&#39;-..&#39;, &#39;---&#39;, &#39;--.&#39;], [&#39;..&#39;, &#39;...&#39;], [&#39;--.&#39;, &#39;---&#39;, &#39;---&#39;, &#39;-..&#39;]]
 async function playSentence(sentence, currentPlayCounter) {
   for (let i = 0; i &lt; sentence.length; i++) {
     await playWord(sentence[i], currentPlayCounter);
@@ -344,7 +344,7 @@ async function playSentence(sentence, currentPlayCounter) {
   }
 }
 
-playSentence([['-..', '---', '--.'], ['..', '...'], ['--.', '---', '---', '-..']]);  // &quot;dog is good&quot; in Morse code
+playSentence([[&#39;-..&#39;, &#39;---&#39;, &#39;--.&#39;], [&#39;..&#39;, &#39;...&#39;], [&#39;--.&#39;, &#39;---&#39;, &#39;---&#39;, &#39;-..&#39;]]);  // &#34;dog is good&#34; in Morse code
 </code></pre><p><button id="playDogIsGood">Play &ldquo;dog is good&rdquo; in Morse code</button></p>
 <script>
 async function playSentence(sentence, currentPlayCounter) {
@@ -362,54 +362,54 @@ document.getElementById('playDogIsGood').addEventListener('click', () => {
 });
 </script>
 <p>Writing each word out in Morse code is pretty rough, though. We can write a translation layer to translate from a string (anything from a letter to a sentence) to the Morse code representation, starting with a map of letter to Morse:</p>
-<pre><code>const MORSE_MAP = {
-  'a': '.-',
-  'b': '-...',
-  'c': '-.-.',
-  'd': '-..',
-  'e': '.',
-  'f': '..-.',
-  'g': '--.',
-  'h': '....',
-  'i': '..',
-  'j': '.---',
-  'k': '-.-',
-  'l': '.-..',
-  'm': '--',
-  'n': '-.',
-  'o': '---',
-  'p': '.--.',
-  'q': '--.-',
-  'r': '.-.',
-  's': '...',
-  't': '-',
-  'u': '..-',
-  'v': '...-',
-  'w': '.--',
-  'x': '-..-',
-  'y': '-.--',
-  'z': '--..',
+<pre tabindex="0"><code>const MORSE_MAP = {
+  &#39;a&#39;: &#39;.-&#39;,
+  &#39;b&#39;: &#39;-...&#39;,
+  &#39;c&#39;: &#39;-.-.&#39;,
+  &#39;d&#39;: &#39;-..&#39;,
+  &#39;e&#39;: &#39;.&#39;,
+  &#39;f&#39;: &#39;..-.&#39;,
+  &#39;g&#39;: &#39;--.&#39;,
+  &#39;h&#39;: &#39;....&#39;,
+  &#39;i&#39;: &#39;..&#39;,
+  &#39;j&#39;: &#39;.---&#39;,
+  &#39;k&#39;: &#39;-.-&#39;,
+  &#39;l&#39;: &#39;.-..&#39;,
+  &#39;m&#39;: &#39;--&#39;,
+  &#39;n&#39;: &#39;-.&#39;,
+  &#39;o&#39;: &#39;---&#39;,
+  &#39;p&#39;: &#39;.--.&#39;,
+  &#39;q&#39;: &#39;--.-&#39;,
+  &#39;r&#39;: &#39;.-.&#39;,
+  &#39;s&#39;: &#39;...&#39;,
+  &#39;t&#39;: &#39;-&#39;,
+  &#39;u&#39;: &#39;..-&#39;,
+  &#39;v&#39;: &#39;...-&#39;,
+  &#39;w&#39;: &#39;.--&#39;,
+  &#39;x&#39;: &#39;-..-&#39;,
+  &#39;y&#39;: &#39;-.--&#39;,
+  &#39;z&#39;: &#39;--..&#39;,
 };
-// asciiChar is something like 'd'
+// asciiChar is something like &#39;d&#39;
 // Assumes [a-z0-9]
 function convertAsciiCharToMorse(asciiChar) {
   return MORSE_MAP[asciiChar];
 }
 
-// asciiWord is something like 'dog'
+// asciiWord is something like &#39;dog&#39;
 // Assumes [a-z0-9]
 function convertAsciiWordToMorse(asciiWord) {
-  return asciiWord.split('').map(convertAsciiCharToMorse);
+  return asciiWord.split(&#39;&#39;).map(convertAsciiCharToMorse);
 }
 
-// asciiSentence is something like 'dog is good'
+// asciiSentence is something like &#39;dog is good&#39;
 // Assumes words are separated by spaces.
 function convertAsciiSentenceToMorse(asciiSentence) {
-  let splitSentence = asciiSentence.toLowerCase().split(' ');
+  let splitSentence = asciiSentence.toLowerCase().split(&#39; &#39;);
   return splitSentence.map(convertAsciiWordToMorse);
 }
 </code></pre><p>We can then use these higher order functions to translate our strings first.</p>
-<pre><code>let targetString = 'dog is good';
+<pre tabindex="0"><code>let targetString = &#39;dog is good&#39;;
 playSentence(convertAsciiSentenceToMorse(targetString));
 </code></pre><script>
 const MORSE_MAP = {
@@ -477,7 +477,7 @@ document.getElementById('playHigherOrderDogIsGood').addEventListener('click', ()
 <p>Try out the following values with a very slow 300ms dot:</p>
 <p><button id="playDotLong">Play 300ms dot</button>
 <button id="playDashLong">Play 900ms dash</button>
-<button id="playEatLong">Play &lsquo;eat&rsquo; with these values</button></p>
+<button id="playEatLong">Play &rsquo;eat&rsquo; with these values</button></p>
 <script>
 document.getElementById('playDotLong').addEventListener('click', () => {
   DOT_TIME = 300;
@@ -510,20 +510,20 @@ document.getElementById('playEatLong').addEventListener('click', () => {
 <p>It turns out this isn&rsquo;t actually helpful, since a large part of learning Morse code is being able to recognize and parse the sound of entire letters and words. If you slow everything down, you don&rsquo;t build the familiarity with identifying the real sounds at the real speeds.  Instead, there&rsquo;s a technique called the <a href="https://www.google.com/search?q=Farnsworth+method">Farnsworth method</a>, where the individual letters are kept at the same speed, but the space between them varies. This gives you the benefit of hearing the letters at full speed with a longer break to process in between characters.</p>
 <p><em>Thanks to the commenters on <a href="https://news.ycombinator.com/item?id=30221869">Hacker News</a> for recommending this; I had never heard about it!</em></p>
 <p>If we have some difficulty input, we can do something like the following to vary the spacing in between characters and words:</p>
-<pre><code>function updateSpeed(difficulty) {
+<pre tabindex="0"><code>function updateSpeed(difficulty) {
   // Get the difficulty and update the constants.
   DOT_TIME = 60;
   DASH_TIME = DOT_TIME * 3;
   SYMBOL_BREAK = DOT_TIME;
   let letterBreakMultiplier;
   switch (difficulty) {
-    case 'easy':
+    case &#39;easy&#39;:
       letterBreakMultiplier = 24;
       break;
-    case 'medium':
+    case &#39;medium&#39;:
       letterBreakMultiplier = 12;
       break;
-    case 'hard':
+    case &#39;hard&#39;:
       letterBreakMultiplier = 6;
       break;
     default:
@@ -534,7 +534,7 @@ document.getElementById('playEatLong').addEventListener('click', () => {
   WORD_BREAK = DOT_TIME * (letterBreakMultiplier * 2.5);
 }
 </code></pre><p>Now, try listening to <code>&quot;eat&quot;</code> again, now with the Farnsworth method. Listen to how each letter is at full speed, but you have space to think in between!</p>
-<p><button id="playEatFarnsworth">Play &lsquo;eat&rsquo; with the Farnsworth method</button></p>
+<p><button id="playEatFarnsworth">Play &rsquo;eat&rsquo; with the Farnsworth method</button></p>
 <script>
 document.getElementById('playEatFarnsworth').addEventListener('click', () => {
   DOT_TIME = 60;
@@ -566,17 +566,17 @@ document.getElementById('playEatFarnsworth').addEventListener('click', () => {
 </ul>
 <br>
 <p>First, let&rsquo;s look at how we&rsquo;d get a random target. Let&rsquo;s say we have an input with a few different radio buttons:</p>
-<pre><code>function getTarget(difficulty) {
+<pre tabindex="0"><code>function getTarget(difficulty) {
   // Get the difficulty and assign a random target.
   let target;
   switch (difficulty) {
-    case 'easy':
+    case &#39;easy&#39;:
       target = getRandomLetter();
       break;
-    case 'medium':
+    case &#39;medium&#39;:
       target = getRandomWord();
       break;
-    case 'hard':
+    case &#39;hard&#39;:
       target = getRandomEasyWords();
       break;
     default:
@@ -586,10 +586,10 @@ document.getElementById('playEatFarnsworth').addEventListener('click', () => {
   return target;
 }
 </code></pre><p>That&rsquo;s not too bad! We just have to implement those child functions:</p>
-<pre><code>// Note: in the game, EASY_WORDS and ALL_WORDS are long arrays of strings.
+<pre tabindex="0"><code>// Note: in the game, EASY_WORDS and ALL_WORDS are long arrays of strings.
 // Here are a Shown here for example.
-const EASY_WORDS = ['cat', 'ate', 'dog'];
-const ALL_WORDS = ['cat', 'ate', 'dog', 'interest', 'complexity'];
+const EASY_WORDS = [&#39;cat&#39;, &#39;ate&#39;, &#39;dog&#39;];
+const ALL_WORDS = [&#39;cat&#39;, &#39;ate&#39;, &#39;dog&#39;, &#39;interest&#39;, &#39;complexity&#39;];
 
 function getRandomLetter() {
   const randomIndex = Math.floor(Math.random() * 26);
@@ -603,11 +603,11 @@ function getRandomWord() {
 
 function getRandomEasyWords() {
   const totalLength = Math.floor(Math.random() * 3) + 2;
-  let finalSentence = ''
+  let finalSentence = &#39;&#39;
   for (let i = 0; i &lt; totalLength; i++) {
     finalSentence += EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)];
     if (i &lt; totalLength - 1) {
-      finalSentence += ' ';
+      finalSentence += &#39; &#39;;
     }
   }
   return finalSentence;
@@ -615,26 +615,26 @@ function getRandomEasyWords() {
 
 function getRandomWords() {
   const totalLength = Math.floor(Math.random() * 4) + 2;
-  let finalSentence = ''
+  let finalSentence = &#39;&#39;
   for (let i = 0; i &lt; totalLength; i++) {
     finalSentence += ALL_WORDS[Math.floor(Math.random() * ALL_WORDS.length)];
     if (i &lt; totalLength - 1) {
-      finalSentence += ' ';
+      finalSentence += &#39; &#39;;
     }
   }
   return finalSentence;
 }
 </code></pre><p>With these in hand, we can write the basic game functions:</p>
-<pre><code>// The listening game
-let target = '';
+<pre tabindex="0"><code>// The listening game
+let target = &#39;&#39;;
 
 function startGame() {
-  // Initialize audio context if it isn't already
+  // Initialize audio context if it isn&#39;t already
   if (!audioContextInitialized) {
     initializeAudioContext();
   }
-  // Get a random target, assume we're on medium mode
-  target = getTarget('medium');
+  // Get a random target, assume we&#39;re on medium mode
+  target = getTarget(&#39;medium&#39;);
   // Play the target phrase
   playTarget();
 }
@@ -645,13 +645,12 @@ function playTarget() {
 
 function guess(enteredGuess) {
   if (enteredWord == target) {
-    console.log('Correct! call `startGame()` to play again.');
+    console.log(&#39;Correct! call `startGame()` to play again.&#39;);
   } else {
-    console.log('Not quite! Try again.');
+    console.log(&#39;Not quite! Try again.&#39;);
     playTarget();
   }
 }
-
 </code></pre><script>
 function getTarget(difficulty) {
   // Get the difficulty and assign a random target.
@@ -755,7 +754,7 @@ function guess(enteredWord) {
 <p>I initially tried to manage this with a global <code>STOPPED</code> variable and a few checks; if the <code>playSentence</code> function saw that everything was stopped, it wouldn&rsquo;t try to play any more. This quickly ran into problems related to the different sleeps I have in there: since I set it up so that a new playthrough would set <code>STOPPED</code> to <code>false</code>, this meant it could be reset while the earlier <code>playSentence</code> was still sleeping, leading to the original playthrough still continuing. This meant that two playthroughs would play at the same time, which quickly led to a terribly messing sounding audio.</p>
 <p>I ended up fixing this by introducing a monotonically increasing playthrough counter global variable and introducing an invariant that only the most recent playthrough can be played. By incrementing this variable when a playthrough is initiated and passing the value to the child play calls, each child function can perform a check if its passed playthrough ID still matches the global current playthrough ID; if not, it means that there&rsquo;s a newer playthrough and the current one should be discarded.</p>
 <p>This looked something like this:</p>
-<pre><code>// Global strictly increasing play counter to avoid multiple replays at the same time.
+<pre tabindex="0"><code>// Global strictly increasing play counter to avoid multiple replays at the same time.
 var playCounter = 0;
 
 async function playDash(currentPlayCounter) {
@@ -816,20 +815,20 @@ playTarget() {
 <p>Like any interesting stack, the real question is when to read from it. This is where the pauses and silences come into play. Earlier we talked about the ratios for the pauses (the <code>SYMBOL_BREAK</code>, <code>LETTER_BREAK</code>, and <code>WORD_BREAK</code> from earlier). We can abstract away the actual input and imagine a decision tree like the following:</p>
 <p><img src="decision-tree.png" alt="Decision tree of parsing silence and signal"></p>
 <p>That gives us four events to handle: <code>handleDot</code>, <code>handleDash</code>, <code>handleLetterBreak</code>, and <code>handleWordBreak</code>.  With our stacks from earlier, those could do the following, where we parse the symbol stack in <code>handleLetterBreak</code> and the letter stack in <code>handleWordBreak</code>:</p>
-<pre><code>let symbolStack = [];
+<pre tabindex="0"><code>let symbolStack = [];
 let letterStack = [];
 let wordStack = [];
 
 function handleDot() {
-  symbolStack.push('.');
+  symbolStack.push(&#39;.&#39;);
 }
 
 function handleDash() {
-  symbolStack.push('-');
+  symbolStack.push(&#39;-&#39;);
 }
 
 function handleLetterBreak() {
-  const letterAsMorse = symbolStack.join('');
+  const letterAsMorse = symbolStack.join(&#39;&#39;);
   // Assume we have a mapping of Morse:letter,
   // the reverse of the earlier MORSE_MAP
   const letter = lookUpMorse(letterAsMorse);
@@ -839,7 +838,7 @@ function handleLetterBreak() {
 }
 
 function handleWordBreak() {
-  const word = letterStack.join('');
+  const word = letterStack.join(&#39;&#39;);
   wordStack.push(word);
   // Clear the word stack.
   wordStack = [];
@@ -847,7 +846,7 @@ function handleWordBreak() {
 </code></pre><p>This looks pretty good. We&rsquo;ll be incrementally building up our inputs as we see them, from symbol all the way up to words, pushing to stacks and parsing them when appropriate. Now, how do we translate user input into these chunks?</p>
 <p>Let&rsquo;s start by imagining our signal as an electrical signal (much like our oscillation from before) as a square wave, to make it easy to see. Let&rsquo;s say we have <code>&quot;r&quot;</code> as an input.</p>
 <p><img src="square-wave.png" alt="Visualizing Morse code input as a square wave"></p>
-<p><button id="playLetter2">Press to hear the Morse code for &ldquo;r&quot;</button></p>
+<p><button id="playLetter2">Press to hear the Morse code for &ldquo;r&rdquo;</button></p>
 <script>
 document.getElementById('playLetter2').addEventListener('click', () => {
   if (!audioContextInitialized) {
@@ -858,7 +857,7 @@ document.getElementById('playLetter2').addEventListener('click', () => {
 });
 </script>
 <p>Parsing the high signal seems pretty easy, as we can just look at the time when the signal starts and the time when the signal stops. We can say it&rsquo;s a dot if it&rsquo;s shorter than a <code>DASH_TIME</code>, and if it&rsquo;s longer, then it&rsquo;s clearly a dash.Since humans aren&rsquo;t perfect, we can be a little generous about the time.</p>
-<pre><code>let signalStartTime = 0;
+<pre tabindex="0"><code>let signalStartTime = 0;
 
 function handleSignalStart() {
   signalStartTime = Date.now();
@@ -877,7 +876,7 @@ function handleSignalEnd() {
 <p><img src="parsing-signal.png" alt="Parsing the signal"></p>
 <p>Now, how can we parse the silences? One initial approach could be to look backwards whenever a signal starts. Silence is the absence of signal, and every time a signal starts, we can look to see how long it has been since the last signal ended. This is the pause between signals, and we can parse it appropriately. We can even ignore the first silent section, since we don&rsquo;t want a leading space before any input.</p>
 <p>To add to the previous code, we now need to also keep track of the timestamp when the signal ended.</p>
-<pre><code>let signalStartTime = 0;
+<pre tabindex="0"><code>let signalStartTime = 0;
 let signalEndTime = 0;
 
 function handleSignalStart() {
@@ -921,9 +920,9 @@ function handleSignalEnd() {
 <p>Now, when a user inputs the word <code>&quot;at&quot;</code>, we can proactively handle the silence.</p>
 <p><img src="look-forward-silence.png" alt="Parsing the silence looking forward with timers"></p>
 <p>To do this in the code, we can use a combination of creating timeouts and clearing them as we need to.</p>
-<pre><code>let signalStartTime = 0;
+<pre tabindex="0"><code>let signalStartTime = 0;
 
-// Timeout IDs we'll keep around so we can clear them when needed.
+// Timeout IDs we&#39;ll keep around so we can clear them when needed.
 let letterTimeout = null;
 let wordTimeout = null;
 

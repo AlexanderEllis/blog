@@ -1,0 +1,313 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.99.1" />
+		<title>Wikipedia Over WhatsApp &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Wikipedia Over WhatsApp
+                    </h1>
+                    <h2>
+                        Tunneling Wikipedia through WhatsApp to (maybe?) get around wifi restrictions
+                    </h2>
+                    <h2 class="headline">
+                    May 21, 2022
+                    · 1242 words
+                    · 6 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <h2 id="in-flight-messaging">In-flight messaging</h2>
+<p>I was on a Delta flight the other day, and I was thinking about how they offer
+free messaging from your smartphone.</p>
+<p><img src="delta.png" alt="Screenshot of Delta site that says &amp;ldquo;Connect to Delta Wi-Fi to book, change, orcheck the status of your flight on delta.com, all without purchasing a Wi-Fipass. You can also message for free from your smartphone via iMessage, FacebookMessenger or WhatsApp (limited to text and emojis, SMSunavailable).&amp;rdquo;"></p>
+<p>How do they limit the wifi? Maybe they have some basic filter that says &ldquo;deny
+everything except the urls for these 3 messaging apps&rdquo;, which makes sense
+conceptually.</p>
+<p><img src="delta-wifi.png" alt="Basic diagram of my phone, Delta Wifi, and the rest of the internet, withDelta wifi blocking all types of requests other than messagingrequests"></p>
+<p>What if we don&rsquo;t want to pay for wifi and we still want to be able to browse the
+web?</p>
+<h2 id="tunneling-through-whatsapp">Tunneling through WhatsApp</h2>
+<p>If the wifi is letting WhatsApp messages through, what if we used WhatsApp as a
+vehicle for the information we really care about? Much like we encapsulate the
+rest of our networking objects in higher-level objects, we could encapsulate
+web pages inside of WhatsApp messages.</p>
+<p>We could start with a simple case, like Wikipedia. It&rsquo;s mostly text-based, so
+there should be no issue with sending images (which are blocked in the free
+messaging over wifi). What if we built a basic service that allowed users to
+query Wikipedia pages and read them over WhatsApp?</p>
+<p>Maybe it looks something like this, where a user sends a message to a WhatsApp
+number. If we hook that number into a WhatsApp automated backend (probably via
+Twilio), we can have that backend parse the message, query Wikipedia, and send
+the response.</p>
+<p><img src="system.png" alt="System diagram of phone talking to WhatsApp that talks to a proxy service thattalks to Wikipedia"></p>
+<p>There are two main components to this Wikipedia Over WhatsApp, or <code>WoW</code> service:</p>
+<ul>
+<li>The parsing of the messages and making requests to Wikipedia</li>
+<li>The WhatsApp interface for sending/receiving messages</li>
+</ul>
+<br>
+<h3 id="requesting-articles-from-wikipedia">Requesting articles from Wikipedia</h3>
+<p>Wikipedia has a <a href="https://www.mediawiki.org/wiki/API:Main_page">pretty approachable API</a>
+that allows you to do a few
+things. We can keep our service very simple: let&rsquo;s say the user has to send the
+title of a Wikipedia article. If there&rsquo;s an article that matches, we respond
+with it. If there isn&rsquo;t an article that matches, we can do a search for the
+given text and return the top 10 articles.</p>
+<p>A very basic Python version might look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> urllib.parse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> urllib.request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># URL to query a page, format JSON, extract the text, and give us plain wiki text.</span>
+</span></span><span style="display:flex;"><span>PAGE_WIKI_REQ_STRING <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://en.wikipedia.org/w/api.php?action=query&amp;format=json&amp;prop=extracts&amp;list=&amp;formatversion=2&amp;exlimit=1&amp;explaintext=1&amp;exsectionformat=wiki&amp;titles=&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># URL to search for articles for a search term.</span>
+</span></span><span style="display:flex;"><span>SEARCH_WIKI_REQ_STRING <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://en.wikipedia.org/w/api.php?action=query&amp;format=json&amp;list=search&amp;formatversion=2&amp;srsearch=&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This is a simple function for getting articles from wikipedia</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_wiki_page</span>(page_name):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Encode the article name and build the URL.</span>
+</span></span><span style="display:flex;"><span>    encoded_page_name <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>quote(page_name<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#39;utf8&#39;</span>))
+</span></span><span style="display:flex;"><span>    page_req_url <span style="color:#f92672">=</span> PAGE_WIKI_REQ_STRING <span style="color:#f92672">+</span> encoded_page_name
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    page_result <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlopen(page_req_url)
+</span></span><span style="display:flex;"><span>    result_body <span style="color:#f92672">=</span> page_result<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>    result_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(result_body<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># If it&#39;s an article, we should have gotten an &#39;extract&#39;, so we can send it.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># In our case, this will be the entire article.</span>
+</span></span><span style="display:flex;"><span>    query_result <span style="color:#f92672">=</span> result_json[<span style="color:#e6db74">&#39;query&#39;</span>][<span style="color:#e6db74">&#39;pages&#39;</span>][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;extract&#39;</span> <span style="color:#f92672">in</span> query_result <span style="color:#f92672">and</span> query_result[<span style="color:#e6db74">&#39;extract&#39;</span>] <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> query_result[<span style="color:#e6db74">&#39;extract&#39;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If we don&#39;t have an article, we can instead search for articles for</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># that term and return the top 10 results.</span>
+</span></span><span style="display:flex;"><span>        result_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;I didn</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">t find a perfect match for &#39;</span> <span style="color:#f92672">+</span> \
+</span></span><span style="display:flex;"><span>            page_name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;, but you can try one of the following:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Try to search for it now.</span>
+</span></span><span style="display:flex;"><span>        search_req_url <span style="color:#f92672">=</span> SEARCH_WIKI_REQ_STRING <span style="color:#f92672">+</span> encoded_page_name
+</span></span><span style="display:flex;"><span>        search_result <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlopen(search_req_url)
+</span></span><span style="display:flex;"><span>        search_result_body <span style="color:#f92672">=</span> search_result<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        search_result_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(search_result_body<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> result <span style="color:#f92672">in</span> search_result_json[<span style="color:#e6db74">&#39;query&#39;</span>][<span style="color:#e6db74">&#39;search&#39;</span>]:
+</span></span><span style="display:flex;"><span>            result_string <span style="color:#f92672">+=</span> result[<span style="color:#e6db74">&#39;title&#39;</span>] <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result_string
+</span></span></code></pre></div><p>To test this, we could even throw it together for a quick CLI tool:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">...</span> code <span style="color:#f92672">from</span> above
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>        page_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> page_name<span style="color:#f92672">.</span>strip() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;&#39;</span>:
+</span></span><span style="display:flex;"><span>            page_name <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#39;Please enter a Wikipedia page title.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>        get_wiki_page(page_name)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>Running that gives the following:</p>
+<p><img src="cli.png" alt="Screenshot of accessing Wikipedia via the CLI"></p>
+<p>That&rsquo;s a good start! Given a page name, we can search for articles or get the
+requested article. The formatting is wonky, but we&rsquo;re just having fun here.</p>
+<br>
+<h3 id="the-whatsapp-interface">The WhatsApp interface</h3>
+<p>Like a good engineer, I started with a Google search, and one of the first
+results was exactly on the money:</p>
+<p><a href="https://www.twilio.com/blog/receive-whatsapp-messages-python-flask-twilio">How to Receive WhatsApp Messages in Python Using Flask and Twilio</a></p>
+<p>I won&rsquo;t bore you with the details, but the TL;DR is that it&rsquo;s pretty easy to set
+up a sandbox Twilio WhatsApp environment that you can send and receive messages
+with. I hooked this up with a few changes, and the relevant parts are in the
+following diagram:</p>
+<p><img src="mvp.png" alt="Diagram of the various components connected from the user to the service andback"></p>
+<p>The flow is roughly like this:</p>
+<ul>
+<li>The user sends a message to the WhatsApp number that corresponds with a Twilio
+number</li>
+<li>That Twilio number is connected to Twilio hooks that say &ldquo;when I receive a
+message, post it to this URL&rdquo;</li>
+<li>That URL corresponds to an ngrok URL fronting my WoW service running on my
+computer</li>
+<li>My WoW service receives the message and passes it to the <code>get_wiki_page</code> code
+above</li>
+<li>Once we have a response, we can send it back through Twilio to the user</li>
+</ul>
+<br>
+<p>The only issues ended up being that 1) WhatsApp messages are limited to 1600
+characters, while Wikipedia pages are frequently much longer and 2) the basic
+free accounts I was using rate-limit to ~1QPS, so if you try to chunk up a
+message and send it as many messages, you may get throttled. To handle those, we
+can do some basic chunking and delay between messages. You&rsquo;re on a plane after
+all; you&rsquo;ve got nowhere to go!</p>
+<p>This simple <code>WoW</code> service, with its message handling, ended up looking something like
+this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> dotenv <span style="color:#f92672">import</span> load_dotenv
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> twilio.twiml.messaging_response <span style="color:#f92672">import</span> MessagingResponse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> twilio.rest <span style="color:#f92672">import</span> Client
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> wow
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Leave some room for the progress meter, like `(1/20) `</span>
+</span></span><span style="display:flex;"><span>MESSAGE_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">1590</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>load_dotenv()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>TWILIO_ACCOUNT_SID <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;TWILIO_ACCOUNT_SID&#39;</span>)
+</span></span><span style="display:flex;"><span>TWILIO_AUTH_TOKEN <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;TWILIO_AUTH_TOKEN&#39;</span>)
+</span></span><span style="display:flex;"><span>client <span style="color:#f92672">=</span> Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://www.twilio.com/blog/receive-whatsapp-messages-python-flask-twilio</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">respond</span>(request, full_message):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Break the message up into chunks that fall under the WhatsApp character</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># limit and send them with a delay in between.</span>
+</span></span><span style="display:flex;"><span>    chunks <span style="color:#f92672">=</span> (len(full_message) <span style="color:#f92672">//</span> MESSAGE_SIZE) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(chunks):
+</span></span><span style="display:flex;"><span>        start <span style="color:#f92672">=</span> i <span style="color:#f92672">*</span> MESSAGE_SIZE
+</span></span><span style="display:flex;"><span>        end <span style="color:#f92672">=</span> start <span style="color:#f92672">+</span> MESSAGE_SIZE
+</span></span><span style="display:flex;"><span>        progress <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;(</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">) &#39;</span><span style="color:#f92672">.</span>format(i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, chunks)
+</span></span><span style="display:flex;"><span>        message_chunk <span style="color:#f92672">=</span> progress <span style="color:#f92672">+</span> full_message[start:end]
+</span></span><span style="display:flex;"><span>        client<span style="color:#f92672">.</span>messages<span style="color:#f92672">.</span>create(
+</span></span><span style="display:flex;"><span>            body<span style="color:#f92672">=</span>message_chunk,
+</span></span><span style="display:flex;"><span>            from_<span style="color:#f92672">=</span>request<span style="color:#f92672">.</span>form<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;To&#39;</span>),
+</span></span><span style="display:flex;"><span>            to<span style="color:#f92672">=</span>request<span style="color:#f92672">.</span>form<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;From&#39;</span>),
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> str(MessagingResponse())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/message&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">reply</span>():
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;Body&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> message:
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> wow<span style="color:#f92672">.</span>get_wiki_page(message)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> respond(request, result)
+</span></span></code></pre></div><p>Once I wired everything up and <a href="debugging.png">debugged</a> a little, it ended up
+working pretty smoothly!</p>
+<p><img src="cheese.PNG" alt="Screenshot of the basic bot working in WhatsApp"></p>
+<p>As you can see, I now have 20 full messages of the <a href="https://en.wikipedia.org/wiki/Cheese">entire Wikipedia page on Cheese</a>
+to read, and this will keep me plenty busy for the flight!</p>
+<h3 id="what-would-this-need-to-go-past-a-prototype">What would this need to go past a prototype?</h3>
+<p>For one, like most of my side projects, my artificial limit here was not paying
+for anything, so I&rsquo;m rate limited, using the sandbox, and running the service
+off of my own computer.</p>
+<p>The user experience is also pretty rough - maybe we&rsquo;d want to allow for an easy
+way to get to the next page? Maybe paginating so you don&rsquo;t get the full article
+all at once?  Maybe sending a section at a time, so if you&rsquo;re really just
+interested in the history of the harmonica, you don&rsquo;t have to get to the rest of
+the page?</p>
+<p>Nothing quite kills the fun of a silly side project like having to do anything
+real for it, and as soon as I started to read the guidelines for the WhatsApp
+Business API and integrating with other Meta services, I realized I wasn&rsquo;t going
+to go through with setting this up as a publicly-available service. Feel free to
+set your own up, though!</p>
+<hr>
+<p>Back to the original question, though: would this really work? I think so off
+the top of my head, but I&rsquo;ll just have to try setting up a sandbox again before
+my next flight.</p>
+<p>Either way, a fun little toy :)</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

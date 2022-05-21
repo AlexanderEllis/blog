@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Detecting pitch with the Web Audio API and autocorrelation &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -110,7 +110,7 @@
 <p>This basic app relies on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a>, a powerful module in our browsers that lets us directly work with noise with JavaScript.  I also leveraged this when making <a href="/posts/morse-codle/">Morse Codle</a> and <a href="/posts/morse-code/">my Morse code games</a>, which you can read about <a href="/posts/writing-morse-code-games/">here</a>.</p>
 <p>The Web Audio API works by connecting a series of nodes to an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext">AudioContext</a>. For this setup, I wanted to connect the user&rsquo;s microphone as an incoming stream to an AudioContext. I also wanted to attach an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode">AnalyserNode</a> to the stream, which would allow me to access real-time data about the stream.</p>
 <p>This is all pretty straightforward, especially if we follow some existing examples from MDN on visualizing the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API">Web Audio API</a>. First, we can access the microphone via <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia">getUserMedia</a>. We can check if getUserMedia is valid and, if so, try to access the user&rsquo;s microphone, which creates the permissions check for the user. If that&rsquo;s successful, then we can connect our nodes and start the application.</p>
-<pre><code>var source;
+<pre tabindex="0"><code>var source;
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 var analyser = audioContext.createAnalyser();
 analyser.minDecibels = -100;
@@ -118,7 +118,7 @@ analyser.maxDecibels = -10;
 analyser.smoothingTimeConstant = 0.85;
 if (!navigator?.mediaDevices?.getUserMedia) {
   // No audio allowed
-  alert('Sorry, getUserMedia is required for the app.')
+  alert(&#39;Sorry, getUserMedia is required for the app.&#39;)
   return;
 } else {
   var constraints = {audio: true};
@@ -133,7 +133,7 @@ if (!navigator?.mediaDevices?.getUserMedia) {
       }
     )
     .catch(function(err) {
-      alert('Sorry, microphone permissions are required for the app. Feel free to read on without playing :)')
+      alert(&#39;Sorry, microphone permissions are required for the app. Feel free to read on without playing :)&#39;)
     });
 }
 </code></pre><p>For the main application loop via <code>visualize</code>, we want to do the following:</p>
@@ -149,7 +149,7 @@ if (!navigator?.mediaDevices?.getUserMedia) {
 <h4 id="can-we-just-use-the-analysernodes-getbytefrequencydata">Can we just use the AnalyserNode&rsquo;s getByteFrequencyData?</h4>
 <p>The AnalyserNode actually already has all of the data we need, and it even exposes the <code>getByteFrequencyData</code> method, which populates a buffer with the frequency bucket intensity level via <a href="https://en.wikipedia.org/wiki/Fast_Fourier_transform">Fast Fourier transform</a>.</p>
 <p>The main problem is that if we&rsquo;re trying to get a specific frequency, we can&rsquo;t just look at the buckets (shout out to <a href="https://stackoverflow.com/questions/44502536/determining-frequencies-in-js-audiocontext-analysernode">this stackoverflow question</a>). If we have a FFT size of 2048, sample rate of 48,000 Hz, our AnalyserNode will generate frequency bins across the range from [0Hz, 24000Hz], with each bin being <code>max_frequency / frequencyBinCount</code>, where <code>frequencyBinCount</code> is FFT size divided by 2. In this case, the bins would <code>24000 / 1024 == 23.4Hz</code> wide. In other words:</p>
-<pre><code>fData[0] is the strength of frequencies from 0 to 23.4Hz.
+<pre tabindex="0"><code>fData[0] is the strength of frequencies from 0 to 23.4Hz.
 fData[1] is the strength of frequencies from 23.4Hz to 46.8Hz.
 fData[2] is the strength of frequencies from 46.8Hz to 70.2Hz.
 fData[3] is the strength of frequencies from 70.2Hz to 93.6Hz.
@@ -163,18 +163,18 @@ fData[1023] is the strength of frequencies from 23976.6Hz to 24000Hz.
 <h4 id="autocorrelation-we-can-do-some-quick-math-ourselves">Autocorrelation: we can do some quick math ourselves</h4>
 <p>Instead of relying on the <code>getByteFrequencyData</code>, we can instead access the sound information directly and calculate the frequency ourselves. One simple way to do this is autocorrelation, a technique where we compare part of a signal, in this case a sound wave, with a delayed copy of itself. By looking at how the signal compares to itself with a given offset, then varying that offset, we can calculate the offset at which the pattern roughly repeats. That would represent the period of the sound wave, and we could easily then calculate the frequency.</p>
 <p>Let&rsquo;s say we have a very simple data series representing the signal at different time steps:</p>
-<pre><code>[0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5, 0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5]
+<pre tabindex="0"><code>[0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5, 0.0, 0.5, 1, 0.5, 0.0, -0.5, -1, -0.5]
 </code></pre><p>That might look something like this, where the x-axis is time and the y-axis is amplitude:</p>
 <p><img src="time-series.png" alt="Basic graph of the above time series"></p>
 <p>We want to compare this signal against what it would look like at different offsets, for example, with offsets 1 and 2:</p>
-<pre><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
+<pre tabindex="0"><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
 Offset 1: [       0.0, 0.5, 1.0, 0.5,  0.0, -0.5, -1.0, -0.5,  0.0, 0.5, 1.0, 0.5,  0.0, -0.5, -1.0]
 Offset 2: [            0.0, 0.5, 1.0,  0.5,  0.0, -0.5, -1.0, -0.5, 0.0, 0.5, 1.0,  0.5,  0.0, -0.5]
 </code></pre><p>You can kind of imagine it like this, with multiple graphs at offsets 1 and 2 respectively:</p>
 <p><img src="time-series-offsets-visualized.png" alt="Graph of the above time series and additional graphs of the original shifted to the right by 1 and 2 time steps, respectively"></p>
 <p>To see where our graph repeats itself, we can look at each potential offset value and look at what it would look like if we multiplied each point on the graph by its offset value. Because we&rsquo;re expecting a sinusoidal wave, the sum of those products would be highest when the wave repeats itself, as it would basically be squaring each value.</p>
 <p>For example, for Offset 2, we would multiply each original value by the value of the offset graph:</p>
-<pre><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
+<pre tabindex="0"><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
 Offset 2: [            0.0, 0.5, 1.0,  0.5,  0.0, -0.5, -1.0, -0.5, 0.0, 0.5, 1.0,  0.5,  0.0, -0.5]
 Product:  [            0.0, .25, 0.0, -.25,  0.0,  .25,  0.0, -.25, 0.0, .25, 0.0, -.25,  0.0,  .25]
 Sum: 0.25
@@ -182,14 +182,14 @@ Sum: 0.25
 <p><img src="offset-2-product.png" alt="Basic graph of the above time series with a line to the value 2 timesteps later for each"></p>
 <p>This yields a total of 0.25 for this offset - not a strong contender!</p>
 <p>You could imagine doing this for each offset. At some point, if our wave is regular, we&rsquo;ll reach the point where the wave repeats itself. In this case, with offset 8, we would be multiplying the points by themselves, as the full offset means the graph repeats.</p>
-<pre><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
+<pre tabindex="0"><code class="language-none" data-lang="none">Original: [ 0.0,  0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5,  0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
 Offset 8: [                                              0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1.0, -0.5]
 Product:  [                                              0.0, .25, 1.0, .25, 0.0,  .25,  1.0,  .25]
 Sum: 3.0
 </code></pre><p><img src="offset-8.png" alt="Basic graph of the above time series multiplied by its value 8 timesteps later, which is the same value"></p>
 <p>With a sum of 3, this would be the largest sum, and we&rsquo;d know that our wave repeats itself every 8 timesteps. If our total time data length is 1 second cut into 15 time steps, then our frequency would be 15 / 8 = 1.875 Hz.</p>
 <p>What would this look like in code? We could do the following:</p>
-<pre><code>// Start with a bufferLength of the analyser's FFT size
+<pre tabindex="0"><code>// Start with a bufferLength of the analyser&#39;s FFT size
 var bufferLength = analyser.fftSize;
 // Actually create the buffer
 var buffer = new Float32Array(bufferLength);

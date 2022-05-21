@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Building a Simple Cache Server in Python &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     May 26, 2018
-                    · 1238 words
+                    · 1239 words
                     · 6 minutes read
                       <span class="tags">
                             <a href="https://alexanderell.is/tags/python">python</a>
@@ -64,20 +64,20 @@
 <p>I think it&rsquo;s important to balance toy projects with getting exposure to production-level code.  While this project has been helpful for understanding the idea, an open source project like [Squid-Cache] (<a href="https://github.com/squid-cache/squid">https://github.com/squid-cache/squid</a>) is definitely on my reading list!</p>
 <p>At the very simplest level, an HTTP server responds to requests.  Let&rsquo;s take a look at a simple server that can respond to GET requests:</p>
 <p>Here&rsquo;s a pseudo-code for a very basic HTTP server that can respond to GET requests:</p>
-<pre><code class="language-nohighlight" data-lang="nohighlight">- Wait for a request
-  - When a request comes in, check what file it's looking for.
+<pre tabindex="0"><code class="language-nohighlight" data-lang="nohighlight">- Wait for a request
+  - When a request comes in, check what file it&#39;s looking for.
   - If we have it:
     - Great! Send it.
-  - If we don't have it:
+  - If we don&#39;t have it:
     - Send back a 404.
 </code></pre><h3 id="caching">Caching</h3>
 <p>At the very simplest level, a cache server is responsible for serving items that have already been requested from the main server.  Doing this gives the main server a break from having to respond to every request, and the workload can be shared by the cache server.</p>
 <p>Here&rsquo;s the pseudocode for a very basic cache server:</p>
-<pre><code class="language-nohighlight" data-lang="nohighlight">- Wait for a request
-  - When a request comes in, check what file it's looking for.
+<pre tabindex="0"><code class="language-nohighlight" data-lang="nohighlight">- Wait for a request
+  - When a request comes in, check what file it&#39;s looking for.
   - If we have it stored in the cache:
     - Send it.
-  - If we don't have it in the cache:
+  - If we don&#39;t have it in the cache:
     - Request it from the main server
     - If the main server has it:
       - Store a copy in the cache
@@ -111,122 +111,122 @@
 <p><img src="caching-timeline.JPG" alt="Fetching item from cache server, timeline"></p>
 <p>This isn&rsquo;t too bad! Let&rsquo;s build a very simple version in python.  We&rsquo;ll use <a href="http://joaoventura.net/blog/2017/python-webserver/">joaoventura&rsquo;s simple python webserver</a> as our simple http server and a template for our cache server.</p>
 <p>Here&rsquo;s how we can set the server up to abstract away the caching in the main process:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># cacheproxy.py</span>
-
-<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">
-</span><span style="color:#e6db74"></span><span style="color:#e6db74">    Implements a simple cache proxy</span><span style="color:#e6db74">
-</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span>
-
-<span style="color:#f92672">import</span> socket
-<span style="color:#f92672">from</span> urllib.request <span style="color:#f92672">import</span> Request, urlopen, HTTPError
-<span style="color:#f92672">import</span> argparse
-
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
-    <span style="color:#75715e"># Get port command line argument</span>
-    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser()
-    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">port</span><span style="color:#e6db74">&#39;</span>)
-    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
-
-    <span style="color:#75715e"># Define socket host and port</span>
-    SERVER_HOST <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">0.0.0.0</span><span style="color:#e6db74">&#39;</span>
-    SERVER_PORT <span style="color:#f92672">=</span> int(args<span style="color:#f92672">.</span>port)
-
-    <span style="color:#75715e"># Initialize socket</span>
-    server_socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
-    server_socket<span style="color:#f92672">.</span>setsockopt(socket<span style="color:#f92672">.</span>SOL_SOCKET, socket<span style="color:#f92672">.</span>SO_REUSEADDR, <span style="color:#ae81ff">1</span>)
-    server_socket<span style="color:#f92672">.</span>bind((SERVER_HOST, SERVER_PORT))
-
-    server_socket<span style="color:#f92672">.</span>listen(<span style="color:#ae81ff">1</span>)
-
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Cache proxy is listening on port </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> ...</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> SERVER_PORT)
-
-    <span style="color:#66d9ef">while</span> True:
-        <span style="color:#75715e"># Wait for client connection</span>
-        client_connection, client_address <span style="color:#f92672">=</span> server_socket<span style="color:#f92672">.</span>accept()
-
-        <span style="color:#75715e"># Get the client request</span>
-        request <span style="color:#f92672">=</span> client_connection<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>)<span style="color:#f92672">.</span>decode()
-        <span style="color:#66d9ef">print</span>(request)
-
-        <span style="color:#75715e"># Parse HTTP headers</span>
-        headers <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>split(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
-
-        top_header <span style="color:#f92672">=</span> headers[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>split()
-        method <span style="color:#f92672">=</span> top_header[<span style="color:#ae81ff">0</span>]
-        filename <span style="color:#f92672">=</span> top_header[<span style="color:#ae81ff">1</span>]
-
-        <span style="color:#75715e"># Index check</span>
-        <span style="color:#66d9ef">if</span> filename <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">&#39;</span>:
-            filename <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/index.html</span><span style="color:#e6db74">&#39;</span>
-
-        <span style="color:#75715e"># Get the file</span>
-        content <span style="color:#f92672">=</span> fetch_file(filename)
-
-        <span style="color:#75715e"># If we have the file, return it, otherwise 404</span>
-        <span style="color:#66d9ef">if</span> content:
-            response <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">HTTP/1.0 200 OK</span><span style="color:#ae81ff">\n</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> content
-        <span style="color:#66d9ef">else</span>:
-            response <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">HTTP/1.0 404 NOT FOUND</span><span style="color:#ae81ff">\n</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74"> File Not Found</span><span style="color:#e6db74">&#39;</span>
-
-        <span style="color:#75715e"># Send the response and close the connection</span>
-        client_connection<span style="color:#f92672">.</span>sendall(response<span style="color:#f92672">.</span>encode())
-        client_connection<span style="color:#f92672">.</span>close()
-
-    <span style="color:#75715e"># Close socket</span>
-    server_socket<span style="color:#f92672">.</span>close()
-</code></pre></div><p>Depending on how <code>fetch_file</code> is implemented, this could just be a regular server that serves local files.  We can make this more interesting by implementing the caching at this point:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_file</span>(filename):
-    <span style="color:#75715e"># Let&#39;s try to read the file locally first</span>
-    file_from_cache <span style="color:#f92672">=</span> fetch_from_cache(filename)
-
-    <span style="color:#66d9ef">if</span> file_from_cache:
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Fetched successfully from cache.</span><span style="color:#e6db74">&#39;</span>)
-        <span style="color:#66d9ef">return</span> file_from_cache
-    <span style="color:#66d9ef">else</span>:
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Not in cache. Fetching from server.</span><span style="color:#e6db74">&#39;</span>)
-        file_from_server <span style="color:#f92672">=</span> fetch_from_server(filename)
-
-        <span style="color:#66d9ef">if</span> file_from_server:
-            save_in_cache(filename, file_from_server)
-            <span style="color:#66d9ef">return</span> file_from_server
-        <span style="color:#66d9ef">else</span>:
-            <span style="color:#66d9ef">return</span> None
-</code></pre></div><p>This matches up exactly with our pseudocode. If we have it stored in the cache, return it. If we don&rsquo;t have it in the cache, request it from the main server. If we get it from the main server, save a copy in the cache and return it, but if we don&rsquo;t get it back from the main server, return <code>None</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># cacheproxy.py</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Implements a simple cache proxy
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib.request <span style="color:#f92672">import</span> Request, urlopen, HTTPError
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> argparse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Get port command line argument</span>
+</span></span><span style="display:flex;"><span>    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser()
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#39;port&#39;</span>)
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Define socket host and port</span>
+</span></span><span style="display:flex;"><span>    SERVER_HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0.0.0.0&#39;</span>
+</span></span><span style="display:flex;"><span>    SERVER_PORT <span style="color:#f92672">=</span> int(args<span style="color:#f92672">.</span>port)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Initialize socket</span>
+</span></span><span style="display:flex;"><span>    server_socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>    server_socket<span style="color:#f92672">.</span>setsockopt(socket<span style="color:#f92672">.</span>SOL_SOCKET, socket<span style="color:#f92672">.</span>SO_REUSEADDR, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    server_socket<span style="color:#f92672">.</span>bind((SERVER_HOST, SERVER_PORT))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    server_socket<span style="color:#f92672">.</span>listen(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Cache proxy is listening on port </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> ...&#39;</span> <span style="color:#f92672">%</span> SERVER_PORT)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Wait for client connection</span>
+</span></span><span style="display:flex;"><span>        client_connection, client_address <span style="color:#f92672">=</span> server_socket<span style="color:#f92672">.</span>accept()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the client request</span>
+</span></span><span style="display:flex;"><span>        request <span style="color:#f92672">=</span> client_connection<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>)<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>        print(request)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Parse HTTP headers</span>
+</span></span><span style="display:flex;"><span>        headers <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        top_header <span style="color:#f92672">=</span> headers[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>split()
+</span></span><span style="display:flex;"><span>        method <span style="color:#f92672">=</span> top_header[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>        filename <span style="color:#f92672">=</span> top_header[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Index check</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> filename <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;/&#39;</span>:
+</span></span><span style="display:flex;"><span>            filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/index.html&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the file</span>
+</span></span><span style="display:flex;"><span>        content <span style="color:#f92672">=</span> fetch_file(filename)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If we have the file, return it, otherwise 404</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> content:
+</span></span><span style="display:flex;"><span>            response <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;HTTP/1.0 200 OK</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> content
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            response <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;HTTP/1.0 404 NOT FOUND</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74"> File Not Found&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Send the response and close the connection</span>
+</span></span><span style="display:flex;"><span>        client_connection<span style="color:#f92672">.</span>sendall(response<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>        client_connection<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Close socket</span>
+</span></span><span style="display:flex;"><span>    server_socket<span style="color:#f92672">.</span>close()
+</span></span></code></pre></div><p>Depending on how <code>fetch_file</code> is implemented, this could just be a regular server that serves local files.  We can make this more interesting by implementing the caching at this point:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_file</span>(filename):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Let&#39;s try to read the file locally first</span>
+</span></span><span style="display:flex;"><span>    file_from_cache <span style="color:#f92672">=</span> fetch_from_cache(filename)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> file_from_cache:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Fetched successfully from cache.&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> file_from_cache
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Not in cache. Fetching from server.&#39;</span>)
+</span></span><span style="display:flex;"><span>        file_from_server <span style="color:#f92672">=</span> fetch_from_server(filename)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> file_from_server:
+</span></span><span style="display:flex;"><span>            save_in_cache(filename, file_from_server)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> file_from_server
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div><p>This matches up exactly with our pseudocode. If we have it stored in the cache, return it. If we don&rsquo;t have it in the cache, request it from the main server. If we get it from the main server, save a copy in the cache and return it, but if we don&rsquo;t get it back from the main server, return <code>None</code>.</p>
 <p>Since above we&rsquo;re checking on the return value from this function to decide if we return a <code>200</code> or <code>404</code>, returning <code>None</code> from this function will correctly return a <code>404</code> to the client.</p>
 <p>Let&rsquo;s take a look at what a simple <code>fetch_from_cache</code> implementation might look like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_from_cache</span>(filename):
-    <span style="color:#66d9ef">try</span>:
-        <span style="color:#75715e"># Check if we have this file locally</span>
-        fin <span style="color:#f92672">=</span> open(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">cache</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> filename)
-        content <span style="color:#f92672">=</span> fin<span style="color:#f92672">.</span>read()
-        fin<span style="color:#f92672">.</span>close()
-        <span style="color:#75715e"># If we have it, let&#39;s send it</span>
-        <span style="color:#66d9ef">return</span> content
-    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">IOError</span>:
-        <span style="color:#66d9ef">return</span> None
-</code></pre></div><p>This is about as simple as it gets! Check the local <code>cache/</code> directory for the file, read it, and return it.  If we run into any &ldquo;file not found&rdquo; issue, we&rsquo;ll just return <code>None</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_from_cache</span>(filename):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check if we have this file locally</span>
+</span></span><span style="display:flex;"><span>        fin <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#39;cache&#39;</span> <span style="color:#f92672">+</span> filename)
+</span></span><span style="display:flex;"><span>        content <span style="color:#f92672">=</span> fin<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>        fin<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If we have it, let&#39;s send it</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> content
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">IOError</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div><p>This is about as simple as it gets! Check the local <code>cache/</code> directory for the file, read it, and return it.  If we run into any &ldquo;file not found&rdquo; issue, we&rsquo;ll just return <code>None</code>.</p>
 <p>Next, let&rsquo;s take a look at a simple implementation of <code>fetch_from_server</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_from_server</span>(filename):
-    url <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">http://127.0.0.1:8000</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> filename
-    q <span style="color:#f92672">=</span> Request(url)
-
-    <span style="color:#66d9ef">try</span>:
-        response <span style="color:#f92672">=</span> urlopen(q)
-        <span style="color:#75715e"># Grab the header and content from the server req</span>
-        response_headers <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>info()
-        content <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf-8</span><span style="color:#e6db74">&#39;</span>)
-        <span style="color:#66d9ef">return</span> content
-    <span style="color:#66d9ef">except</span> HTTPError:
-        <span style="color:#66d9ef">return</span> None
-</code></pre></div><p>Once again, pretty simple! It creates a url to request from the main server running on <code>localhost:8000</code>, then it attempts to get the file from that endpoint.  If it runs into a <code>404</code> HTTPError, it simply returns <code>None</code>, which is then passed up and results in a <code>404</code> being returned from the cache server.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch_from_server</span>(filename):
+</span></span><span style="display:flex;"><span>    url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://127.0.0.1:8000&#39;</span> <span style="color:#f92672">+</span> filename
+</span></span><span style="display:flex;"><span>    q <span style="color:#f92672">=</span> Request(url)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> urlopen(q)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Grab the header and content from the server req</span>
+</span></span><span style="display:flex;"><span>        response_headers <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>info()
+</span></span><span style="display:flex;"><span>        content <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> content
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> HTTPError:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div><p>Once again, pretty simple! It creates a url to request from the main server running on <code>localhost:8000</code>, then it attempts to get the file from that endpoint.  If it runs into a <code>404</code> HTTPError, it simply returns <code>None</code>, which is then passed up and results in a <code>404</code> being returned from the cache server.</p>
 <p>Finally, let&rsquo;s take a look at <code>save_in_cache</code>, which allows us to store a local copy to serve on the next duplicate request:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_in_cache</span>(filename, content):
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Saving a copy of {} in the cache</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(filename))
-    cached_file <span style="color:#f92672">=</span> open(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">cache</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> filename, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">w</span><span style="color:#e6db74">&#39;</span>)
-    cached_file<span style="color:#f92672">.</span>write(content)
-    cached_file<span style="color:#f92672">.</span>close()
-</code></pre></div><p>Very simple! It takes the filename and content and writes it in the <code>cache/</code> directory.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_in_cache</span>(filename, content):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Saving a copy of </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> in the cache&#39;</span><span style="color:#f92672">.</span>format(filename))
+</span></span><span style="display:flex;"><span>    cached_file <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#39;cache&#39;</span> <span style="color:#f92672">+</span> filename, <span style="color:#e6db74">&#39;w&#39;</span>)
+</span></span><span style="display:flex;"><span>    cached_file<span style="color:#f92672">.</span>write(content)
+</span></span><span style="display:flex;"><span>    cached_file<span style="color:#f92672">.</span>close()
+</span></span></code></pre></div><p>Very simple! It takes the filename and content and writes it in the <code>cache/</code> directory.</p>
 <p>Putting this all together, we have a simple cache server!  Here&rsquo;s what it looks like when you run it for the first time:</p>
 <p><img src="in-action.gif" alt="Cache proxy in action"></p>
 <p>Note that the main server in the top left responds to the first curl, but the cache handles the second one!</p>

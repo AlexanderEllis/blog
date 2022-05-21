@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>JavaScript: Writing your own Array.reduce &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -64,7 +64,7 @@
 <p>In this post, I&rsquo;ll walk through <code>Array.reduce</code> and my own implementation.  Although it&rsquo;s easy to read my code, I highly recommend that you go through this process yourself.</p>
 <p>Deep knowledge of how <code>Array.reduce</code> works is useful to have in your JavaScript toolkit.  It allows you to succinctly break down an array using a function of your choice.  The idea of reducing, especially when paired with mapping, is a common one that can be found in <a href="https://en.wikipedia.org/wiki/MapReduce">MapReduce</a>, <a href="https://redux.js.org/">Redux</a>, <a href="https://docs.mongodb.com/manual/core/map-reduce/">mongoDB</a>, and many other areas.</p>
 <p>Let&rsquo;s start by <a href="https://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.reduce">looking at the spec</a> for <code>Array.reduce</code>:</p>
-<pre><code>22.1.3.18 Array.prototype.reduce ( callbackfn [ , initialValue ] )
+<pre tabindex="0"><code>22.1.3.18 Array.prototype.reduce ( callbackfn [ , initialValue ] )
 
 NOTE callbackfn should be a function that takes four arguments. reduce calls the callback, as a function, once for each element present in the array, in ascending order.
 
@@ -72,7 +72,7 @@ When the reduce method is called with one or two arguments, the following steps 
 
 1. Let O be ToObject(this value).
 2. ReturnIfAbrupt(O).
-3. Let len be ToLength(Get(O, &quot;length&quot;)).
+3. Let len be ToLength(Get(O, &#34;length&#34;)).
 4. ReturnIfAbrupt(len).
 5. If IsCallable(callbackfn) is false, throw a TypeError exception.
 6. If len is 0 and initialValue is not present, throw a TypeError exception.
@@ -103,55 +103,54 @@ When the reduce method is called with one or two arguments, the following steps 
 11. Return accumulator.
 
 The length property of the reduce method is 1.
-
 </code></pre><p>Overall it&rsquo;s not too bad!  Let&rsquo;s write this out in pseudocode:</p>
-<pre><code>1. Keep track of input object with O
+<pre tabindex="0"><code>1. Keep track of input object with O
 2. If there are any issues doing so, return
 3. Keep track of the length of the input object with variable len
 4. If there are any issues doing so, return
-5. If we can't call callbackfn, eg it isn't a function, throw a TypeError exception (we need a function to call)
-6. If we have an empty input but don't have an initial value, throw a TypeError exception (we need to have a value to start with)
+5. If we can&#39;t call callbackfn, eg it isn&#39;t a function, throw a TypeError exception (we need a function to call)
+6. If we have an empty input but don&#39;t have an initial value, throw a TypeError exception (we need to have a value to start with)
 7. Initialize a counter variable k to be 0
 8. If we have an initial value,
   a. Initialize our accumulator variable to be that initial value
-9. If we don't have an initial value,
+9. If we don&#39;t have an initial value,
   a. Initialize a present indicator variable kPresent to be false
-  b. While we haven't found an item and our counter variable is less than the length of our input,
+  b. While we haven&#39;t found an item and our counter variable is less than the length of our input,
     i. Get the string version of our counter variable to use for indexing
     ii. Check whether or not our input object O has an element at the current index
-    iii. If there's any problem indexing in to our input element, return
+    iii. If there&#39;s any problem indexing in to our input element, return
     iv. If our input object O has an element at the current index,
       1. Initialize our accumulator variable to be that element
-      2. If there's any problem accessing that element, return
+      2. If there&#39;s any problem accessing that element, return
     v. Increase our counter variable to the next index
-  c. If we've gone through all the indexes of the input object and didn't find a value, throw a TypeError exception (since we need a value to start with)
+  c. If we&#39;ve gone through all the indexes of the input object and didn&#39;t find a value, throw a TypeError exception (since we need a value to start with)
 10. While our counter variable k is less than the length of our input object,
   a. Get the string version of our counter variable to use for indexing
   b. Check whether or not our input object O has an element at the current index
-  c. If there's any problem checking, return
+  c. If there&#39;s any problem checking, return
   d. If there is an element at the current index,
     i. Assign that element to a variable kValue
-    ii. If there's a problem accessing or assigning, return
+    ii. If there&#39;s a problem accessing or assigning, return
     iii. Call our callback function with the accumulator variable, the current element kValue, the current index k, and our input O, then assign that value to the accumulator variable
     iv. If there was any problem calling the callback, return
   e. Increase our counter variable by one
-11. We're done! Return the accumulator variable
+11. We&#39;re done! Return the accumulator variable
 </code></pre><p>That ended up much longer than it needs to be, in part because the specification is very specific.  Let&rsquo;s put this in broad brush strokes:</p>
-<pre><code>1. Make sure we have an object with length, a callback function, and a value to start with
+<pre tabindex="0"><code>1. Make sure we have an object with length, a callback function, and a value to start with
 2. Loop through the rest of the values and update the accumulator variable with the result of our callback function called with the accumulator and the value
 3. Return the accumulator variable
 </code></pre><p>That doesn&rsquo;t look so bad!  If you&rsquo;re looking for an interesting exercise, try writing your own reduce function.  Here&rsquo;s one way to do it in JavaScript:</p>
-<pre><code>function reduce (input, callback, initialValue) {
+<pre tabindex="0"><code>function reduce (input, callback, initialValue) {
   let O = input;
   const inputLength = O.length;
 
 
-  if (typeof callback !== 'function') {
-    throw new TypeError('callback must be a function');
+  if (typeof callback !== &#39;function&#39;) {
+    throw new TypeError(&#39;callback must be a function&#39;);
   }
 
   if (!inputLength &amp;&amp; !initialValue &amp;&amp; initialValue !== 0) {
-    throw new TypeError('We need an initial value');
+    throw new TypeError(&#39;We need an initial value&#39;);
   }
 
   let k = 0;
@@ -175,7 +174,7 @@ The length property of the reduce method is 1.
     }
 
     if (!kPresent) {
-      throw new TypeError('If no initial value is given, the input must have a value to use as the initial value');
+      throw new TypeError(&#39;If no initial value is given, the input must have a value to use as the initial value&#39;);
     }
   }
 

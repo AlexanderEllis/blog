@@ -6,11 +6,7 @@
     <description>Recent content in Design in the wild on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 24 Oct 2019 20:40:52 -0400</lastBuildDate>
-    
-	<atom:link href="https://alexanderell.is/tags/design-in-the-wild/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 24 Oct 2019 20:40:52 -0400</lastBuildDate><atom:link href="https://alexanderell.is/tags/design-in-the-wild/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dark pattern for autoplaying videos: clickjacking pause</title>
       <link>https://alexanderell.is/posts/intercept-pause/</link>

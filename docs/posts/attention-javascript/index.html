@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>(1) New Message: How websites catch your attention with JavaScript &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -65,7 +65,7 @@
 <p><em>Note: these were all tested on desktop in Chrome, Firefox, and Safari. If you&rsquo;re on mobile or an unsupported browser, I apologize that you won&rsquo;t get to see the weirdness, and I&rsquo;ve included screenshots and screencasts for your enjoyment.</em></p>
 <h2 id="1-new-message">(1) New Message</h2>
 <p>One of the things you have probably seen is how pages play with the page&rsquo;s title, like prepending &ldquo;(1) New Message&rdquo; to the title. There are some valid and helpful use cases for this, such as an online chat app or an email inbox showing the number of unread messages.</p>
-<p><img src="inbox-1.png" alt="Screenshot of gmail tab with &ldquo;(1)&rdquo; prepended to title"></p>
+<p><img src="inbox-1.png" alt="Screenshot of gmail tab with &amp;ldquo;(1)&amp;rdquo; prepended to title"></p>
 <p>Where this gets a little fuzzier is when the page updates it in a way to catch your eye with movement. This is doubly dubious when the message is something eye-catching that you didn&rsquo;t opt in to, such as an unprompted sales message from a chat bot. At that point, it feels like a blinking advertisement desperate to get your attention. As the developer, if you want to be extra sneaky, you can even make it only happen when the user tabs away from the page, creating an extra little push to get them back to your site.</p>
 <p>Give it a shot with the radio button below: turn it on, then open a new tab!</p>
 <p><b>Blinking the title when hidden:</b>
@@ -103,6 +103,7 @@
   <source src="blinking-title.webm"  type="video/webm">
   <source src="blinking-title.mp4"  type="video/mp4">
 </video>
+
 </details>
 <br>
 <p>When I was playing around with this with other values for the title, I even fooled myself — I had tabbed away from my draft blog post for a minute, and my eye was immediately grabbed by the &ldquo;(1)&rdquo; in the title! Funny to see how quickly your conditioned mind gets fooled.</p>
@@ -110,11 +111,11 @@
 <p>The main reason this works is because the page&rsquo;s title is accessible through the <code>document</code> element via <code>document.title</code>. Because you can assign directly to it, like <code>document.title = &quot;foo&quot;;</code>, you can easily put it in a continuously running interval with two options, the default title and a new title. Page visibility is also accessible in JavaScript via the <code>document</code> element. In this case, you can perform a check on <code>document.hidden</code> to see whether or not the page is currently hidden. If it is, you can go ahead with the title update; if not, you can lay low for now.</p>
 <details>
   <summary>Click to view code</summary>
-  <pre><code>
-  var titleBlinkOff = document.querySelector(&quot;#title-blink-off&quot;);
-  var titleBlinkOn = document.querySelector(&quot;#title-blink-on&quot;);
+  <pre tabindex="0"><code>
+  var titleBlinkOff = document.querySelector(&#34;#title-blink-off&#34;);
+  var titleBlinkOn = document.querySelector(&#34;#title-blink-on&#34;);
   var originalTitle = document.title;
-  var newTitle = &quot;HELP I'M TRAPPED IN A WEBSITE&quot;;
+  var newTitle = &#34;HELP I&#39;M TRAPPED IN A WEBSITE&#34;;
 
   var titleBlinkInterval;
   titleBlinkOff.onclick = () =&gt; {
@@ -130,7 +131,7 @@
     }, 1000);
   }
   // If you click back in, go back to original title.
-  document.addEventListener(&quot;visibilitychange&quot;, function() {
+  document.addEventListener(&#34;visibilitychange&#34;, function() {
     if (!document.hidden) {
       document.title = originalTitle;
     }
@@ -203,6 +204,7 @@
   <source src="blinking-favicon.webm"  type="video/webm">
   <source src="blinking-favicon.mp4"  type="video/mp4">
 </video>
+
 </details>
 <br>
 <h4 id="how-does-this-work-1">How does this work?</h4>
@@ -216,19 +218,19 @@
 <p>As I mentioned earlier, definitely a little more cursed!</p>
 <details>
   <summary>Click to view code</summary>
-  <pre><code>
-  // This is so dumb, I'm sorry
+  <pre tabindex="0"><code>
+  // This is so dumb, I&#39;m sorry
   // Used some of https://stackoverflow.com/questions/260857/changing-website-favicon-dynamically to create favicon.
-  var faviconBlinkOff = document.querySelector(&quot;#favicon-blink-off&quot;);
-  var faviconBlinkOn = document.querySelector(&quot;#favicon-blink-on&quot;);
-  var headElement = document.getElementsByTagName(&quot;head&quot;)[0];
+  var faviconBlinkOff = document.querySelector(&#34;#favicon-blink-off&#34;);
+  var faviconBlinkOn = document.querySelector(&#34;#favicon-blink-on&#34;);
+  var headElement = document.getElementsByTagName(&#34;head&#34;)[0];
 
   var childAppended = false;
-  var blankFaviconHref = &quot;blank-favicon.ico&quot;;
-  var originalFaviconHref = &quot;/images/favicon.ico&quot;;
+  var blankFaviconHref = &#34;blank-favicon.ico&#34;;
+  var originalFaviconHref = &#34;/images/favicon.ico&#34;;
   var getNewFavicon = (blank) =&gt; {
-    var newFavicon = document.createElement(&quot;link&quot;);
-    newFavicon.rel = &quot;icon&quot;;
+    var newFavicon = document.createElement(&#34;link&#34;);
+    newFavicon.rel = &#34;icon&#34;;
     newFavicon.href = blank ? blankFaviconHref : originalFaviconHref;
     return newFavicon;
   }
@@ -270,7 +272,7 @@
 <p>Further reading: <a href="https://en.wikipedia.org/wiki/Favicon">Wikipedia article on favicons</a>.</p>
 <h2 id="are-you-sure-you-want-to-leave">Are you sure you want to leave?</h2>
 <p>Sometimes when you try to navigate away from a page, you&rsquo;ll get a popup asking you if you&rsquo;re sure you want to go. There are some cases where this can be helpful. Maybe you&rsquo;re halfway through a long comment on your favorite social media site and you accidentally hit control-w. Rather than lose your unsaved progress, that helpful intermediate step can let you cancel the action and get back to your typing.</p>
-<p><img src="are-you-sure.png" alt="Screenshot of the &ldquo;Leave site?&rdquo; alert"></p>
+<p><img src="are-you-sure.png" alt="Screenshot of the &amp;ldquo;Leave site?&amp;rdquo; alert"></p>
 <p>The downside is that like everything else, there&rsquo;s nothing stopping pages from doing this when it isn&rsquo;t helpful. For example, maybe I want to do everything I can to keep people from leaving my blog (note: I don&rsquo;t — please leave at your leisure!). Try turning on the following radio option and closing this tab.</p>
 <p><b>Confirm before leaving:</b>
 <input type="radio" name="leave-confirmation" id="leave-confirmation-off" checked>
@@ -298,9 +300,9 @@
 <p>This one is much more straightforward. By adding a function that fires for the <code>beforeunload</code> event, we can ask the browser to check with the user before they leave the page. Browsers frequently require you to first interact with the page, but if you clicked the radio button above, you would have already done so. We can mess with this event easily by setting the <code>window.onbeforeunload</code> function to do a simple <code>return true;</code>.</p>
 <details>
   <summary>Click to view code</summary>
-  <pre><code>  // Shout out to https://stackoverflow.com/questions/1119289/how-to-show-the-are-you-sure-you-want-to-navigate-away-from-this-page-when-ch
-  var leaveConfirmationOff = document.querySelector(&quot;#leave-confirmation-off&quot;);
-  var leaveConfirmationOn = document.querySelector(&quot;#leave-confirmation-on&quot;);
+  <pre tabindex="0"><code>  // Shout out to https://stackoverflow.com/questions/1119289/how-to-show-the-are-you-sure-you-want-to-navigate-away-from-this-page-when-ch
+  var leaveConfirmationOff = document.querySelector(&#34;#leave-confirmation-off&#34;);
+  var leaveConfirmationOn = document.querySelector(&#34;#leave-confirmation-on&#34;);
 
   leaveConfirmationOff.onclick = () =&gt; {
     window.onbeforeunload = null;
@@ -346,23 +348,23 @@
 <p>This one is also not as exciting. The userAgent is easily available via <code>navigator.userAgent</code>, and we can check a few values to see what would match. For instance, we could look for the string <code>&quot;Mac&quot;</code> in the userAgent, and if it&rsquo;s there, we could add an element with Mac styles. The trick here would be in the CSS, since we&rsquo;d (presumably) want to make it match the system and not be too out of date.</p>
 <details>
   <summary>Click to view code</summary>
-  <pre><code>  var userAgentButton = document.querySelector(&quot;#show-user-agent&quot;);
+  <pre tabindex="0"><code>  var userAgentButton = document.querySelector(&#34;#show-user-agent&#34;);
   var userAgents = [
-    &quot;iPhone&quot;,
-    &quot;iPad&quot;,
-    &quot;Mac&quot;,
-    &quot;Android&quot;,
-    &quot;Linux&quot;,
-    &quot;Windows&quot;,
+    &#34;iPhone&#34;,
+    &#34;iPad&#34;,
+    &#34;Mac&#34;,
+    &#34;Android&#34;,
+    &#34;Linux&#34;,
+    &#34;Windows&#34;,
   ]
   userAgentButton.onclick = () =&gt; {
     for (const userAgent of userAgents) {
       if (navigator.userAgent.indexOf(userAgent) !== -1) {
-        alert(&quot;This is when I'd add a popup HTML element with &quot; + userAgent + &quot; styles.&quot;);
+        alert(&#34;This is when I&#39;d add a popup HTML element with &#34; + userAgent + &#34; styles.&#34;);
         return;
       }
     }
-    alert(&quot;Sorry, I wasn't checking for your userAgent. You're safe today!&quot; );
+    alert(&#34;Sorry, I wasn&#39;t checking for your userAgent. You&#39;re safe today!&#34; );
   }
 </code></pre>
 </details>

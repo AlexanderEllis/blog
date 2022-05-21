@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Investigating a Bug in Moment.js &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -51,7 +51,7 @@
                     </h2>
                     <h2 class="headline">
                     Jan 6, 2018
-                    · 2524 words
+                    · 2532 words
                     · 6 minutes read
                       <span class="tags">
                             <a href="https://alexanderell.is/tags/open-source">Open Source</a>, <a href="https://alexanderell.is/tags/javascript">JavaScript</a>
@@ -67,21 +67,21 @@
 <p>I&rsquo;ve used Moment.js a number of times, both for side projects and for my day job.  Recently, I&rsquo;ve been occasionally visiting the issues page to see if there was anything I could help out with.  Since I work with JavaScript a lot, I figured something like this would be the most approachable for me.  I also wanted to learn about how it works internally, and I knew that this would be a great chance to dig through the code and learn more.</p>
 <h4 id="the-issue">The issue</h4>
 <p>The other day, I came across <a href="https://github.com/moment/moment/issues/4386">this issue</a> marked as a bug:</p>
-<pre><code>Hello,
-I'm reviewing tutorial
+<pre tabindex="0"><code>Hello,
+I&#39;m reviewing tutorial
 https://momentjs.com/docs/#/i18n/locale-data/
 
 I got an issue for the following:
 localeData = moment.localeData();
 localeData.longDateFormat();
-Uncaught TypeError: Cannot read property 'toUpperCase' of undefined
+Uncaught TypeError: Cannot read property &#39;toUpperCase&#39; of undefined
 
 Also recently found.
 localeData.relativeTime();
-Uncaught TypeError: Cannot read property 'replace' of undefined
+Uncaught TypeError: Cannot read property &#39;replace&#39; of undefined
 
 localeData.week();
-Uncaught TypeError: Cannot read property 'year' of undefined
+Uncaught TypeError: Cannot read property &#39;year&#39; of undefined
 
 Please resolve this issue.
 Thank you.
@@ -92,11 +92,11 @@ Thank you.
 <p>(At this point, how would you debug further?  I missed a few things here that seem obvious in retrospect and went on a longer route, and I&rsquo;ll review the different paths towards the end.)</p>
 <p>I then forked and cloned the Moment repository so that I could have a local copy.  This let me dig around in the code and search for specific things.</p>
 <p>As a quick check, I searched for a few things using <code>grep</code> to see how often they came up.  <code>localeData</code>, <code>.replace</code>, and <code>.year</code> appeared often, but <code>toUpperCase()</code> appeared only twice:</p>
-<pre><code>moment: $ grep -r toUpperCase src
+<pre tabindex="0"><code>moment: $ grep -r toUpperCase src
 src/lib/locale/formats.js:        formatUpper = this._longDateFormat[key.toUpperCase()];
 src/test/moment/normalize_units.js:        fullKeyCaps = fullKey.toUpperCase();
 </code></pre><p>Two results is much easier to look through!  Since I was already on the lookout for <code>lognDateFormat</code>, I took a look at <code>src/lib/locale/formats.js</code> and saw the following function:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/lib/locale/formats.js
 */
 ...
@@ -118,7 +118,7 @@ export function longDateFormat (key) {
 </code></pre><p>Since the TypeError said <code>Cannot read property 'toUpperCase' of undefined</code>, my guess was that <code>longDateFormat</code> was getting an undefined <code>key</code> passed to it, which would throw the error when formatUpper is being assigned.  This looked promising! I wrote it down to later investigate who was calling <code>longDateFormat</code> with what argument as I went through the rest of the code.</p>
 <hr>
 <p>I started to really dig in by opening <code>src/moment.js</code>, the main file for the project.  Taking a look at what it imports, I saw the following:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/moment.js
 */
 ...
@@ -133,12 +133,12 @@ import {
     listWeekdays       as weekdays,
     listWeekdaysMin    as weekdaysMin,
     listWeekdaysShort  as weekdaysShort
-} from './lib/locale/locale';
+} from &#39;./lib/locale/locale&#39;;
 ...
 </code></pre><p>This let me know that <code>localeData</code> comes from <code>getLocale</code>, which lives in <code>src/lib/locale/locale.js</code>.  Warmer!</p>
 <p>I also noticed that there was another locale directory with the various configurations for different locales.  The first one, <code>af.js</code>, is the Afrikaans configuration.  The files in this directory were all similarly named, so the <code>localeData</code> code probably wouldn&rsquo;t live in there.</p>
 <p>Here&rsquo;s part of <code>src/lib/locale/locale.js</code>:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/lib/locale/locale.js
 */
 ...
@@ -148,11 +148,11 @@ import {
     updateLocale,
     getLocale,
     listLocales
-} from './locales';
+} from &#39;./locales&#39;;
 ...
 </code></pre><p><code>src/lib/locale/locale.js</code> didn&rsquo;t have much in it, but <code>getLocale</code>, which <code>src/moment.js</code> imports as our friend <code>localeData</code>, is imported from <code>src/lib/locale/locales.js</code>.  Note the &ldquo;s&rdquo; on the end!  Definitely made me double check what file I had open a few times.</p>
 <p>Inside <code>src/lib/locale/locales.js</code>, I found the <code>getLocale</code> function I had been looking for:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/lib/locale.locales.js
 */
 ...
@@ -181,7 +181,7 @@ export function getLocale (key) {
 }
 ...
 </code></pre><p>At first glance, I didn&rsquo;t see anything particularly helpful in there.  I knew that when I had been calling <code>moment.localeData()</code>, I hadn&rsquo;t been passing in any argument, so the key for <code>getLocale</code> would be undefined.  That meant it would return <code>globalLocale</code> about halfway through the function.  Not super helpful, but let&rsquo;s take a look at <code>globalLocale</code>.  I did a quick search, and the only reference not in another function was at the top:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/lib/locale.locales.js
 */
 ...
@@ -190,22 +190,22 @@ var globalLocale;
 </code></pre><p>Hmm, not very helpful.  At this point, I was thinking that I must be missing something.  <code>moment.localeData()</code> was clearly not returning undefined, as I was able to call <code>localeData.week()</code> and others, although not successfully.</p>
 <hr>
 <p>My next step was to take a break from digging and write a failing test to confirm that this error was happening locally.  I took a look in the tests, and I found <code>src/test/moment/locale.js</code>, which had a few tests for <code>localeData</code>:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/test/moment/locale.js
 */
 ...
-test('library localeData', function (assert) {
-    moment.locale('en');
+test(&#39;library localeData&#39;, function (assert) {
+    moment.locale(&#39;en&#39;);
 
     var jan = moment([2000, 0]);
 
-    assert.equal(moment.localeData().months(jan), 'January', 'no arguments returns global');
-    assert.equal(moment.localeData('zh-cn').months(jan), '一月', 'a string returns the locale based on key');
-    assert.equal(moment.localeData(moment().locale('es')).months(jan), 'enero', 'if you pass in a moment it uses the moment\'s locale');
+    assert.equal(moment.localeData().months(jan), &#39;January&#39;, &#39;no arguments returns global&#39;);
+    assert.equal(moment.localeData(&#39;zh-cn&#39;).months(jan), &#39;一月&#39;, &#39;a string returns the locale based on key&#39;);
+    assert.equal(moment.localeData(moment().locale(&#39;es&#39;)).months(jan), &#39;enero&#39;, &#39;if you pass in a moment it uses the moment\&#39;s locale&#39;);
 });
 ...
 </code></pre><p>Since I figured it would throw an error anyways, I wasn&rsquo;t too worried about having a perfect test written.  I added <code>assert.equal(moment.localeData().week(), 1, 'Quick week test')</code> and ran the tests:</p>
-<pre><code>Errors:
+<pre tabindex="0"><code>Errors:
 
 Module: locale Test: library localeData
 Died on test #1     at global.test.QUnit.test (/path/to/moment/node_modules/qunit/lib/child.js:146:21)
@@ -215,8 +215,8 @@ Died on test #1     at global.test.QUnit.test (/path/to/moment/node_modules/quni
     at Module._compile (module.js:556:32)
     at Object.Module._extensions..js (module.js:565:10)
     at Module.load (module.js:473:32)
-    at tryModuleLoad (module.js:432:12): Cannot read property 'year' of undefined
-TypeError: Cannot read property 'year' of undefined
+    at tryModuleLoad (module.js:432:12): Cannot read property &#39;year&#39; of undefined
+TypeError: Cannot read property &#39;year&#39; of undefined
     at weekOfYear (/path/to/moment/build/umd/moment.js:1204:41)
     at Locale.localeWeek [as week] (/path/to/moment/build/umd/moment.js:1262:12)
     at Object.&lt;anonymous&gt; (/path/to/moment/build/umd/test/moment/locale.js:244:38)
@@ -228,9 +228,8 @@ Global summary:
 │ 1     │ 3262  │ 130247     │ 1      │ 130246 │ 25097   │
 └───────┴───────┴────────────┴────────┴────────┴─────────┘
 Warning: 1 tests failed Use --force to continue.
-
 </code></pre><p>Nice! So this was happening locally too.  I took a look at <code>build/umd/moment.js</code> at lines 1204 and 1262:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   build/umd/moment.js
 */
 ...
@@ -261,26 +260,26 @@ function localeWeek (mom) { // Line 1262
 }
 ...
 </code></pre><p>Interesting! Not super helpful to view it in the built code, so I <code>grep</code>ped <code>localeWeek</code> and found these results (along with others):</p>
-<pre><code>moment: $ grep localeWeek -r src
-src/lib/locale/prototype.js:import { localeWeek, localeFirstDayOfYear, localeFirstDayOfWeek } from '../units/week';
+<pre tabindex="0"><code>moment: $ grep localeWeek -r src
+src/lib/locale/prototype.js:import { localeWeek, localeFirstDayOfYear, localeFirstDayOfWeek } from &#39;../units/week&#39;;
 src/lib/locale/prototype.js:proto.week = localeWeek;
 </code></pre><p>Getting warmer!  I opened up <code>src/lib/locale/prototype.js</code>.</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/lib/locale/prototype.js
 */
-import { Locale } from './constructor';
+import { Locale } from &#39;./constructor&#39;;
 
 var proto = Locale.prototype;
 ...
 // Week
-import { localeWeek, localeFirstDayOfYear, localeFirstDayOfWeek } from '../units/week';
+import { localeWeek, localeFirstDayOfYear, localeFirstDayOfWeek } from &#39;../units/week&#39;;
 proto.week = localeWeek;
 proto.firstDayOfYear = localeFirstDayOfYear;
 proto.firstDayOfWeek = localeFirstDayOfWeek;
 ...
 </code></pre><p>I can see here that <code>prototype</code> is importing a function named <code>localeWeek</code> from <code>src/lib/units/week.js</code> and assigning it to the <code>week</code> key.  This is where the structure started to make more sense.  <code>prototype.js</code> defined the methods available to the <code>Locale</code> constructor, so that when the Locale is created, it has access to everything defined here.  The default locale must create a Locale object that we then can call <code>.week()</code> from.  That makes more sense!</p>
 <p>The question remains why the <code>.week()</code> function isn&rsquo;t firing right. I opened up <code>src/lib/units/week.js</code> and found the <code>localeWeek</code> function in question:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/lib/units/week.js
 */
 ...
@@ -291,7 +290,7 @@ export function localeWeek (mom) {
 }
 ...
 </code></pre><p>Alright, we&rsquo;ve seen this one before! So this is the function being given to the prototype, which is accessible to the localeData as <code>.week()</code>.  The only problem is that <code>localeWeek</code> is called with a <code>mom</code> argument, and it passes it to <code>weekOfYear</code>, which appears in <code>src/lib/units/week-calendar-utils.js</code> :.</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   src/lib/units/week-calendar-utils.js
 */
 ...
@@ -317,14 +316,14 @@ export function weekOfYear(mom, dow, doy) {
     };
 }
 ...
-</code></pre><p>So here, we see that the <code>mom</code> being passed in is used in the first line, where it is accessed with <code>mom.year()</code>. This means that when we call <code>localeData.week()</code> without an argument, <code>week</code>'s <code>mom</code> parameter is undefined, so that when it passes it to <code>weekOfYear</code>, <code>weekOfYear</code> calls <code>mom.year()</code>, which is really <code>(undefined).year()</code>, which causes the <code>Uncaught TypeError: Cannot read property 'year' of undefined</code>.  This makes sense!  We&rsquo;re missing the argument in <code>week()</code>.</p>
+</code></pre><p>So here, we see that the <code>mom</code> being passed in is used in the first line, where it is accessed with <code>mom.year()</code>. This means that when we call <code>localeData.week()</code> without an argument, <code>week</code>&rsquo;s <code>mom</code> parameter is undefined, so that when it passes it to <code>weekOfYear</code>, <code>weekOfYear</code> calls <code>mom.year()</code>, which is really <code>(undefined).year()</code>, which causes the <code>Uncaught TypeError: Cannot read property 'year' of undefined</code>.  This makes sense!  We&rsquo;re missing the argument in <code>week()</code>.</p>
 <p>It took me longer than it should have to realize that <code>mom</code> meant a Moment object.  I confirmed this in the jsfiddle:</p>
 <script async src="//jsfiddle.net/efe9L98p/2/embed/"></script>
 <p>Clicking on result should successfully alert <code>1</code>, which makes sense.  It&rsquo;s current January 6 for me, and in the default locale, <code>en</code>, this is the first week.  This will change accordingly if you&rsquo;re reading this in a later week of the year.</p>
 <p>I investigated <code>longDateFormat()</code> and <code>relativeTime()</code> in a similar way (left as an exercise for the reader), and I found that <code>longDateFormat</code> should have a date format string passed to it (like <code>longDateFormat(String)</code>), and <code>relativeTime</code> should be called with a number, a withoutSuffix boolean, a key string, and an isFuture boolean (like <code>relativeTime(Number, Boolean, String, Boolean)</code>).</p>
 <p>Armed with this new knowledge, I returned to the GitHub issue and wrote up a response detailing that it was an error in the docs, not an error in the code, and that I would be more than happy to update the docs.  Right before I hit submit, I checked the docs one more time.  To my dismay, I noticed the following information a couple of mouse scrolls below the method signatures:</p>
-<pre><code>localeData.longDateFormat(dateFormat);  // returns the full format of abbreviated date-time formats LT, L, LL and so on
-localeData.relativeTime(number, withoutSuffix, key, isFuture);  // returns relative time string, key is on of 's', 'm', 'mm', 'h', 'hh', 'd', 'dd', 'M', 'MM', 'y', 'yy'. Single letter when number is 1.
+<pre tabindex="0"><code>localeData.longDateFormat(dateFormat);  // returns the full format of abbreviated date-time formats LT, L, LL and so on
+localeData.relativeTime(number, withoutSuffix, key, isFuture);  // returns relative time string, key is on of &#39;s&#39;, &#39;m&#39;, &#39;mm&#39;, &#39;h&#39;, &#39;hh&#39;, &#39;d&#39;, &#39;dd&#39;, &#39;M&#39;, &#39;MM&#39;, &#39;y&#39;, &#39;yy&#39;. Single letter when number is 1.
 localeData.week(aMoment);  // returns week-of-year of aMoment
 </code></pre><p>In these three lines we have the info I just found through investigating the code.  This was one of the steps I mised earlier!  I&rsquo;m not sure how I missed this the first time around, but the answer was right there.  This did confirm what I found though, and the fact that it didn&rsquo;t match the above method signatures was a sign that the docs were indeed lacking.  If this new user could make this mistake, followed by me making the mistake, then something could be improved.</p>
 <p>I ended up replying to the issue, opening an issue in the Moment.js docs repository, and submitting a PR with updated method signatures.  Since I knew where to look for these functions, I was able to confirm my understanding of any unclear types in the code.</p>

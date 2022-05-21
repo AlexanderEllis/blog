@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Investigating JavaScript Casting Behavior &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -65,7 +65,7 @@
 <p>Much of this behavior can be explained by JavaScript&rsquo;s casting.  From ECMAScipt: &ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.&rdquo;  Since knowing is half the battle, I&rsquo;ve found it helpful to know of the unexpected behavior so that it&rsquo;s in the back of my mind when writing new code.</p>
 <hr>
 <p>I&rsquo;ve worked with and am reasonably comfortable with JavaScript, but occasionally unintuitive behavior will still show up unannounced.  For instance, I recently ran into the following unexpected code:</p>
-<pre><code>&gt; 0 == null
+<pre tabindex="0"><code>&gt; 0 == null
 false
 &gt; 0 === null
 false
@@ -75,7 +75,7 @@ false
 true
 </code></pre><p>At first glance, not knowing the exact casting behavior, this seems to make no sense at all (especially without an idea of what&rsquo;s going on under the hood).  If 0 isn&rsquo;t equal to null, either with equality or strict equality, and 0 is not less than null, why would <code>0 &lt;= null</code> be true?</p>
 <p><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-relational-operators-runtime-semantics-evaluation">Diving into the ECMAScript docs</a> tells us more:</p>
-<pre><code>RelationalExpression:RelationalExpression&lt;=ShiftExpression
+<pre tabindex="0"><code>RelationalExpression:RelationalExpression&lt;=ShiftExpression
 
 1) Let lref be the result of evaluating RelationalExpression.
 2) Let lval be ? GetValue(lref).
@@ -87,7 +87,7 @@ true
 </code></pre><p>So this evaluates the left side, gets the value, evaluates the right side, gets the value, and performs <em><a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison">Abstract Relational Comparison rval &lt; lval with LeftFirst equal to false</a></em>.</p>
 <p>Note how the right and left values are swapped in the Abstract Relational Comparison.  This uses the idea that <code>a &lt;= b</code> is the same as <code>!(b &lt; a)</code>.  If <code>b</code> is not less than <code>a</code>, it must be greater than or equal to <code>a</code>, or flipped, <code>a</code> must be less than or equal to <code>b</code>.</p>
 <p>Let&rsquo;s take a look at the Abstract Relational Comparison x &lt; y:</p>
-<pre><code>Abstract Relational Comparison x &lt; y
+<pre tabindex="0"><code>Abstract Relational Comparison x &lt; y
 
 1. If the LeftFirst flag is true, then
     a. Let px be ? ToPrimitive(x, hint Number).
@@ -120,21 +120,21 @@ true
     l. If the mathematical value of nx is less than the mathematical value of ny —note that these mathematical values are both finite and not both zero—return true. Otherwise, return false.
 </code></pre><p>For our case comparing <code>0 &lt;= null</code>, the inputs are evaluated in the second step (as LeftFirst was passed in as false) with <strong>ToPrimitive</strong> with a hint of <code>Number</code>.  Since they aren&rsquo;t both strings, step 3 is skipped, and and later <strong>ToNumber</strong> is called on them in step 4.  This seems promising!</p>
 <p>Let&rsquo;s take a look at <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-toprimitive">ToPrimitive</a> to see what&rsquo;s happening here:</p>
-<pre><code>ToPrimitive ( input [ , PreferredType ] )
+<pre tabindex="0"><code>ToPrimitive ( input [ , PreferredType ] )
 
 1. Assert: input is an ECMAScript language value.
 2. If Type(input) is Object, then
 
-    a. If PreferredType was not passed, let hint be &quot;default&quot;.
-    b. Else if PreferredType is hint String, let hint be &quot;string&quot;.
-    c. Else PreferredType is hint Number, let hint be &quot;number&quot;.
+    a. If PreferredType was not passed, let hint be &#34;default&#34;.
+    b. Else if PreferredType is hint String, let hint be &#34;string&#34;.
+    c. Else PreferredType is hint Number, let hint be &#34;number&#34;.
     d. Let exoticToPrim be ? GetMethod(input, @@toPrimitive).
     e. If exoticToPrim is not undefined, then
         i. Let result be ? Call(exoticToPrim, input, « hint »).
         ii. If Type(result) is not Object, return result.
         iii. Throw a TypeError exception.
 
-    f. If hint is &quot;default&quot;, set hint to &quot;number&quot;.
+    f. If hint is &#34;default&#34;, set hint to &#34;number&#34;.
     g. Return ? OrdinaryToPrimitive(input, hint).
 
 3. Return input.
@@ -142,7 +142,7 @@ true
 <p>So it actually looks like ToPrimitive immediate goes to step 3, where it just returns <code>null</code>.  This means we can look back at the 4th step in Abstract Relational Comparison.  The next call is <code>Let nx be ? ToNumber(px)</code>.  This is where the magic is happening.  <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-tonumber"><strong>ToNumber</strong></a> does what you&rsquo;d (mostly) expect and returns <code>+0</code> for an argument type of <code>Null</code>, which is what we&rsquo;ve passed in with <code>null</code>.</p>
 <p>This is finally where we&rsquo;re comparing 0 and +0.  +0 is not less than 0, so our call to Abstract Relational Comparison returns false, and our original &lt;= RelationalExpression returns true, evaluating <code>0 &lt;= null</code> as true.</p>
 <p>Returning to our original troublesome code, we can connect why this leads to our <code>0 &lt;= null</code> being true.  The only things left to look at are the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-abstract-relational-comparison"><strong>equality comparisons</strong></a>.</p>
-<pre><code>Abstract Equality Comparison
+<pre tabindex="0"><code>Abstract Equality Comparison
 
 The comparison x == y, where x and y are values, produces true or false. Such a comparison is performed as follows:
 
@@ -157,7 +157,7 @@ The comparison x == y, where x and y are values, produces true or false. Such a 
 8. If Type(x) is either String, Number, or Symbol and Type(y) is Object, return the result of the comparison x == ToPrimitive(y).
 9. If Type(x) is Object and Type(y) is either String, Number, or Symbol, return the result of the comparison ToPrimitive(x) == y.
 10. Return false.
-</code></pre><pre><code>Strict Equality Comparison
+</code></pre><pre tabindex="0"><code>Strict Equality Comparison
 
 The comparison x === y, where x and y are values, produces true or false. Such a comparison is performed as follows:
 
@@ -171,7 +171,7 @@ The comparison x === y, where x and y are values, produces true or false. Such a
     f. Return false.
 3. Return SameValueNonNumber(x, y).
 </code></pre><p>For the Abstract Equality, we can see that there is no ToNumber call that would make <code>null</code> +0, and we can also see that the Strict Equality immediately returns false when Type(0), <strong>Number</strong>, is different from Type(null), <strong>Null</strong>.</p>
-<pre><code>&gt; 0 == null
+<pre tabindex="0"><code>&gt; 0 == null
 false // No casting in Abstract Equality
 &gt; 0 === null
 false // No casting in Strict Equality

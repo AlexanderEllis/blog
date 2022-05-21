@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Don&#39;t touch my clipboard &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -65,7 +65,7 @@
 <p><img src="the-punctuation-guide.png" alt="Screenshot of The Punctuation Guide, the website I visited">
 <em>From <a href="https://www.thepunctuationguide.com/em-dash.html">https://www.thepunctuationguide.com/em-dash.html</a></em></p>
 <p>I&rsquo;m a sucker for a good copy and paste, so I selected the em dash character, copied it, and pasted back into my doc. One problem though:</p>
-<pre><code>Lorem ipsum dolor sit amet, consectetur adipiscing elit—
+<pre tabindex="0"><code>Lorem ipsum dolor sit amet, consectetur adipiscing elit—
 
 From https://www.thepunctuationguide.com/em-dash.html
 © 2020 thepunctuationguide.com
@@ -75,17 +75,17 @@ From https://www.thepunctuationguide.com/em-dash.html
 <p>My first instinct was that they were using some generically named &ldquo;copy-copyright&rdquo; library somewhere, so I inspected the HTML. JavaScript tags usually come at the end of the page, so straight to the bottom.</p>
 <p><img src="script-tag.png" alt="Screenshot of the HTML of site with the JS script visible"></p>
 <p>Opening this up shows the 15 responsible lines of JS:</p>
-<pre><code>// JavaScript Document
+<pre tabindex="0"><code>// JavaScript Document
 function addLink() {
 
     var selection = window.getSelection(),
-        pagelink = '&lt;br /&gt;&lt;br /&gt; From ' + document.location.href + '&lt;br /&gt;Â© 2020 thepunctuationguide.com',
+        pagelink = &#39;&lt;br /&gt;&lt;br /&gt; From &#39; + document.location.href + &#39;&lt;br /&gt;Â© 2020 thepunctuationguide.com&#39;,
         copytext = selection + pagelink,
-        newdiv = document.createElement('div');
+        newdiv = document.createElement(&#39;div&#39;);
 
 
-    newdiv.style.position = 'absolute';
-    newdiv.style.left = '-99999px';
+    newdiv.style.position = &#39;absolute&#39;;
+    newdiv.style.left = &#39;-99999px&#39;;
 
 
     document.body.appendChild(newdiv);
@@ -97,7 +97,7 @@ function addLink() {
     }, 100);
 }
 
-document.addEventListener('copy', addLink);
+document.addEventListener(&#39;copy&#39;, addLink);
 </code></pre><p><em>From <a href="https://www.thepunctuationguide.com/js/copyright.js">https://www.thepunctuationguide.com/js/copyright.js</a> at the time of writing</em></p>
 <p>This creates a function <em>addLink</em> that does the following:</p>
 <ul>
@@ -120,7 +120,7 @@ document.addEventListener('copy', addLink);
 <p>Interestingly, this function must run before the copy event is fully bubbled up. This means that it&rsquo;s intercepting the copy event, modifying the text that&rsquo;s selected, and passing it on, like a man-in-the-middle attack against your clipboard.</p>
 <h2 id="this-is-bad">This is bad</h2>
 <p>This falls into the category of not respecting the user&rsquo;s actions. Attribution is important, but changing things outside of what the site should be changing is a bad pattern. It&rsquo;s like smooth scrolling, where the page commandeers the user&rsquo;s scroll actions. I&rsquo;m strongly of the opinion that you shouldn&rsquo;t do things behind the scenes that diverge from the user&rsquo;s normal expectations.</p>
-<p>One other thing I&rsquo;m also curious about is the validity of the copyright for small text selections. I don&rsquo;t know much about copyrights, but I&rsquo;d be curious if an atomic selection from a creative work (like a single character, &ldquo;—&quot;) would fall under the same copyright as the whole work.</p>
+<p>One other thing I&rsquo;m also curious about is the validity of the copyright for small text selections. I don&rsquo;t know much about copyrights, but I&rsquo;d be curious if an atomic selection from a creative work (like a single character, &ldquo;—&rdquo;) would fall under the same copyright as the whole work.</p>
 <p>Ironically, a little reverse searching reveals that this code was copied verbatim without attribution from <a href="https://stackoverflow.com/questions/2026335/how-to-add-extra-info-to-copied-web-text?rq=1">this StackOverflow post</a> (see &ldquo;Manipulating the selection&rdquo; from the top answer). Maybe copy/paste isn&rsquo;t so bad?</p>
 
                 </section>

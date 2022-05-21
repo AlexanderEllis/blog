@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>typeof null: investigating a classic JavaScript bug &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -63,12 +63,12 @@
                     <p>In my last post, I looked into some JavaScript casting and explored why <code>0 &lt;= null</code> evaluates as true.</p>
 <p>For this post, I&rsquo;d like to investigate another unexpected behavior in JavaScript: why <code>typeof(null)</code> evaluates as <code>'object'</code>.</p>
 <p>This is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof">well-known bug</a>, and we&rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.</p>
-<p>The main idea is that the code assigned each item some bits for use as flags for different types, but <em>null</em> was different.  Objects had a flag of <code>000</code>, so an object&rsquo;s last 3 bits were <code>000</code>.  <em>null</em> was previously defined as 32 <code>0</code> bits: <code>00000000000000000000000000000000</code>.  When the code tried to check <em>null</em>&lsquo;s flag, the last three bits of <em>null</em> (<code>000</code>) matched the Object flag (<code>000</code>), so it was incorrectly determined to be an object.</p>
+<p>The main idea is that the code assigned each item some bits for use as flags for different types, but <em>null</em> was different.  Objects had a flag of <code>000</code>, so an object&rsquo;s last 3 bits were <code>000</code>.  <em>null</em> was previously defined as 32 <code>0</code> bits: <code>00000000000000000000000000000000</code>.  When the code tried to check <em>null</em>&rsquo;s flag, the last three bits of <em>null</em> (<code>000</code>) matched the Object flag (<code>000</code>), so it was incorrectly determined to be an object.</p>
 <p>Let&rsquo;s take a deeper look!</p>
 <p>As before, for a proper background and preparation for this post, please watch (or rewatch!) <a href="https://www.destroyallsoftware.com/talks/wat">wat</a>.</p>
 <hr>
 <p>To start, let&rsquo;s take a look at the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-typeof-operator">ECMAScript spec for typeof</a>:</p>
-<pre><code>The typeof Operator
+<pre tabindex="0"><code>The typeof Operator
 
 Runtime Semantics: Evaluation
 
@@ -76,11 +76,11 @@ UnaryExpression : typeof UnaryExpression
 
 1. Let val be the result of evaluating UnaryExpression.
 2. If Type(val) is Reference, then
-  a. If IsUnresolvableReference(val) is true, return &quot;undefined&quot;.
+  a. If IsUnresolvableReference(val) is true, return &#34;undefined&#34;.
 3. Set val to ? GetValue(val).
 4. Return a String according to Table 35.
 </code></pre><p>So when we call <code>typeof null</code>, <em>null</em> is passed in as the UnaryExpression.  It is evaluated in step 1, and val gets its value, <em>null</em>.  Type(null) evaluates to the <a href="https://www.ecma-international.org/ecma-262/8.0/index.html#sec-terms-and-definitions-null-type">Null type</a>, so Type(val) is not Reference and step 2 is false.  Next, step 3 calls GetValue on <em>null</em>.  We saw get value before, but let&rsquo;s take another look to confirm nothing odd is going on:</p>
-<pre><code>GetValue ( V )
+<pre tabindex="0"><code>GetValue ( V )
 
 1. ReturnIfAbrupt(V).
 2. If Type(V) is not Reference, return V.
@@ -149,7 +149,7 @@ UnaryExpression : typeof UnaryExpression
 <p>I came across the <a href="http://2ality.com/2013/10/typeof-null.html">2ality post about the history of <code>typeof null</code></a>, and it answers the question very well with reference to an early implementation.  As Brendan Eich wrote in the top comment, the code comes from the 1996 Spider Monkey implementation, not the very original 10-day Mocha, although the bug existed in the original as well.  Let&rsquo;s take a look!</p>
 <p>Although the link from that post is deprecated, we can still see the classic version of the code on <a href="https://dxr.mozilla.org/classic/source/js/src/">https://dxr.mozilla.org/classic/source/js/src/</a>.</p>
 <p>Two main C files will be of interest here at first: <code>classic/js/src/jsapi.h</code> and <code>classic/js/src/jsapi.c</code>.  Let&rsquo;s take a look at the relevant part of <code>jsapi.c</code> first:</p>
-<pre><code>JS_PUBLIC_API(JSType)
+<pre tabindex="0"><code>JS_PUBLIC_API(JSType)
 JS_TypeOfValue(JSContext *cx, jsval v)
 {
     JSType type = JSTYPE_VOID;
@@ -183,14 +183,14 @@ JS_TypeOfValue(JSContext *cx, jsval v)
 }
 </code></pre><p>Let&rsquo;s walk through what this does.</p>
 <p>First, it checks <code>JSVAL_IS_VOID(v)</code>.  That is defined in <code>jsapi.h</code> as follows:</p>
-<pre><code>#define JSVAL_IS_VOID(v)        ((v) == JSVAL_VOID)
+<pre tabindex="0"><code>#define JSVAL_IS_VOID(v)        ((v) == JSVAL_VOID)
 </code></pre><p>And <code>JSVAL_VOID</code> is defined as:</p>
-<pre><code>#define JSVAL_VOID              INT_TO_JSVAL(0 - JSVAL_INT_POW2(30))
+<pre tabindex="0"><code>#define JSVAL_VOID              INT_TO_JSVAL(0 - JSVAL_INT_POW2(30))
 </code></pre><p>So the void value, what we know in JavaScript as <code>undefined</code>, is defined as <code>-(2^30)</code>, an integer outside of the integer range.  The <code>typeof</code> call first checks if that&rsquo;s what we&rsquo;re dealing with.  If so, the line <code>type = JSVAL_VOID</code> is called, and then that is returned.  Good so far!</p>
 <p>If we aren&rsquo;t dealing with a void value, the code then evaluates <code>JSVAL_IS_OBJECT(v)</code>.  This is defined as follows in <code>jsapi.h</code>:</p>
-<pre><code>#define JSVAL_IS_OBJECT(v)      (JSVAL_TAG(v) == JSVAL_OBJECT)
+<pre tabindex="0"><code>#define JSVAL_IS_OBJECT(v)      (JSVAL_TAG(v) == JSVAL_OBJECT)
 </code></pre><p>So this checks a tag on the value and sees if it matches the object tag.  Here are the tag definitions from <code>jsapi.h</code>:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
  * Type tags stored in the low bits of a jsval.
  */
 #define JSVAL_OBJECT            0x0     /* untagged reference to object */
@@ -200,17 +200,17 @@ JS_TypeOfValue(JSContext *cx, jsval v)
 #define JSVAL_BOOLEAN           0x6     /* tagged boolean value */
 </code></pre><p>This means that objects will have <code>000</code> as the bits for its tag, integers will have <code>001</code>, doubles will have <code>010</code>, strings will have <code>100</code>, and booleans will have <code>110</code>.</p>
 <p>Here&rsquo;s <code>JSVAL_TAG</code> and its called <code>JSVAL_TAGMASK</code>:</p>
-<pre><code>#define JSVAL_TAGBITS           3
+<pre tabindex="0"><code>#define JSVAL_TAGBITS           3
 #define JSVAL_TAGMASK           JS_BITMASK(JSVAL_TAGBITS)
 #define JSVAL_TAG(v)            ((v) &amp; JSVAL_TAGMASK)
 </code></pre><p><code>JS_BITMASK</code> comes from a different file, <a href="https://dxr.mozilla.org/classic/source/js/src/jstypes.h">jstypes.h</a>, and it builds the correct value to bitmask against tag.  This means that it grabs the last 3 bits from the value, and those three bits correspond to the tag.</p>
 <p>For instance, if we were working with a very simplified version with integers of 5 bit length and the last 3 bits were the tag, we may have a value like 00001001.  Here, the first 5 bits, <strong>00001</strong>, would correspond to the value, and the last 3 bits, <strong>001</strong>, wold be the tag (here, for an integer).  To get just the tag, we would do a bitwise AND comparison between our value <code>00001001</code> and a mask with 1s for the last three bits, <code>111</code>, to get just the tag, <code>001</code>.</p>
-<pre><code>Value:           00001001
+<pre tabindex="0"><code>Value:           00001001
 Bitmask:         00000111
 Value &amp; bitmask: 00000001
 </code></pre><p>So far so good!  Let&rsquo;s see what we can find about the <em>null</em> value.  A quick search reveals the definition for <em>null</em> from <code>jsapi.h</code>:</p>
-<pre><code>/*
- * Well-known JS values.  The extern'd variables are initialized when the
+<pre tabindex="0"><code>/*
+ * Well-known JS values.  The extern&#39;d variables are initialized when the
  * first JSContext is created by JS_NewContext (see below).
  */
 #define JSVAL_VOID              INT_TO_JSVAL(0 - JSVAL_INT_POW2(30))
@@ -221,32 +221,32 @@ Value &amp; bitmask: 00000001
 #define JSVAL_TRUE              BOOLEAN_TO_JSVAL(JS_TRUE)
 </code></pre><p>Here, <code>JSVAL_NULL</code> is <code>OBJECT_TO_JSVAL(0)</code>.  Let&rsquo;s follow this down:</p>
 <p><code>jsapi.h</code>:</p>
-<pre><code>#define OBJECT_TO_JSVAL(obj)    ((jsval)(obj))
+<pre tabindex="0"><code>#define OBJECT_TO_JSVAL(obj)    ((jsval)(obj))
 </code></pre><p><code>jspubtd.h</code>:</p>
-<pre><code>typedef jsword    jsval;
+<pre tabindex="0"><code>typedef jsword    jsval;
 </code></pre><p><code>jscompat.h</code>:</p>
-<pre><code>typedef JSWord jsword;
+<pre tabindex="0"><code>typedef JSWord jsword;
 </code></pre><p><code>jstypes.h</code>:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
 ** A JSWord is an integer that is the same size as a void*
 */
 typedef long JSWord;
 typedef unsigned long JSUword;
 </code></pre><p>This means that <em>null</em>, <code>OBJECT_TO_JSVAL(0)</code>, is actually just creating a <code>long</code> with just <code>0</code> as the value.  This is just <code>00000000000000000000000000000000</code> (32 bits, all 0).</p>
 <p>Now, let&rsquo;s go back to our <code>JSVAL_IS_OBJECT</code> call</p>
-<pre><code>#define JSVAL_IS_OBJECT(v)      (JSVAL_TAG(v) == JSVAL_OBJECT)
+<pre tabindex="0"><code>#define JSVAL_IS_OBJECT(v)      (JSVAL_TAG(v) == JSVAL_OBJECT)
 </code></pre><p>Now, what happens if we call JS_TAG on our <em>null</em> value?</p>
-<pre><code>Value:           00000000000000000000000000000000
+<pre tabindex="0"><code>Value:           00000000000000000000000000000000
 Bitmask:         00000000000000000000000000000111
 Value &amp; bitmask: 00000000000000000000000000000000
 </code></pre><p>No surprises there: this means that the resulting calculated tag is just <code>0x0</code>.</p>
-<p>This is where we have the problem!  We then compare <em>null</em>&lsquo;s calculated <code>0x0</code> tag with <code>JSVAL_OBJECT</code>, <code>0x0</code>.  They match!</p>
+<p>This is where we have the problem!  We then compare <em>null</em>&rsquo;s calculated <code>0x0</code> tag with <code>JSVAL_OBJECT</code>, <code>0x0</code>.  They match!</p>
 <p>This means our JS_TypeOfValue call then checks if its a function, and when it isn&rsquo;t, it assigns <code>type</code> to be <code>JSTYPE_OBJECT</code> and returns <code>type</code>.  <code>JSTYPE_OBJECT</code> is the string <code>'object'</code>, and we get <code>typeof null === 'object'</code>.</p>
 <p>As mentioned in the 2ality blog, interestingly enough there <em>is</em> a function (in this version of the code, at least) that checks for a <em>null</em> value:</p>
-<pre><code>#define JSVAL_IS_NULL(v)        ((v) == JSVAL_NULL)
+<pre tabindex="0"><code>#define JSVAL_IS_NULL(v)        ((v) == JSVAL_NULL)
 </code></pre><p>Maybe this was added in after the fact?  Maybe this was in there and overlooked?  Regardless, this bug was in the original, and it remains to this day.</p>
 <blockquote>
-<p>_&ldquo;In general, typeof seems like a mess that will be hard to reform sensibly. &ldquo;_</p>
+<p><em>&ldquo;In general, typeof seems like a mess that will be hard to reform sensibly. &ldquo;</em></p>
 <p>— <em>Brendan Eich 2006/03/31 15:13</em></p>
 </blockquote>
 <hr>

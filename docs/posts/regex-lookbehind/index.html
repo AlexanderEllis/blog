@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Investigating JavaScript&#39;s RegExp Lookbehind &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -71,26 +71,26 @@
 <p>On the other hand, if I wanted to match <code>'cc'</code> only if it does not come after <code>'aa'</code>, this would be a <strong>negative lookbehind</strong>.  This would only match the <code>'cc'</code> in the second string.</p>
 <h3 id="using-lookbehinds-in-javascript">Using lookbehinds in JavaScript</h3>
 <p>If you&rsquo;re using Chrome 62 or higher, Node 6.0.0 or higher (with the <code>--harmony</code> flag), or Node 8.1.10 or higher (see below for finding these details), you can use negative lookbehinds through Google&rsquo;s V8 engine.  Here&rsquo;s how you would do those cases above:</p>
-<pre><code>~: $ nvm use 8.10.0
+<pre tabindex="0"><code>~: $ nvm use 8.10.0
 Now using node v8.10.0 (npm v5.6.0)
 
 ~: $ node
 
-// Positive lookbehind checking 'aabbcc' for 'cc' preceded by 'aa' at some point
-&gt; /(?&lt;=aa.*)cc/.exec('aabbcc')
-[ 'cc', index: 4, input: 'aabbcc' ]
+// Positive lookbehind checking &#39;aabbcc&#39; for &#39;cc&#39; preceded by &#39;aa&#39; at some point
+&gt; /(?&lt;=aa.*)cc/.exec(&#39;aabbcc&#39;)
+[ &#39;cc&#39;, index: 4, input: &#39;aabbcc&#39; ]
 
-// Positive lookbehind checking 'bbccdd' for 'cc' preceded by 'aa' at some point
-&gt; /(?&lt;=aa.*)cc/.exec('bbccdd')
+// Positive lookbehind checking &#39;bbccdd&#39; for &#39;cc&#39; preceded by &#39;aa&#39; at some point
+&gt; /(?&lt;=aa.*)cc/.exec(&#39;bbccdd&#39;)
 null
 
-// Negative lookbehind checking 'aabbcc' for 'cc' not preceded by 'aa' at some point
-&gt; /(?&lt;!aa.*)cc/.exec('aabbcc')
+// Negative lookbehind checking &#39;aabbcc&#39; for &#39;cc&#39; not preceded by &#39;aa&#39; at some point
+&gt; /(?&lt;!aa.*)cc/.exec(&#39;aabbcc&#39;)
 null
 
-// Negative lookbehind checking 'bbccdd' for 'cc' not preceded by 'aa' at some point
-&gt; /(?&lt;!aa.*)cc/.exec('bbccdd')
-[ 'cc', index: 2, input: 'bbccdd' ]
+// Negative lookbehind checking &#39;bbccdd&#39; for &#39;cc&#39; not preceded by &#39;aa&#39; at some point
+&gt; /(?&lt;!aa.*)cc/.exec(&#39;bbccdd&#39;)
+[ &#39;cc&#39;, index: 2, input: &#39;bbccdd&#39; ]
 </code></pre><h3 id="looking-into-compability">Looking into compability</h3>
 <p>In my case, I was trying to do a negative lookbehind for my replacement.  I was also attempting to do so with just a regular expression and no additional parsing through a function, as I was passing it to another module.  After a few attempts by hand, I did some searching to see if it was possible.  The results were not encouraging, mostly indicating in older posts that it was not supported but there were many hacks to work around it.</p>
 <p>I then came across <a href="http://2ality.com/2017/05/regexp-lookbehind-assertions.html">2ality&rsquo;s blog post on negative lookbehinds</a>, which looked much more promising.</p>

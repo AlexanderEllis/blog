@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Writing a toy traceroute from scratch &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -63,7 +63,7 @@
                     <p><code>traceroute</code> is a tool you can use to trace the route of packets from your computer to another computer. It lets you see each step that your packets take along the way.</p>
 <p>For example, the following is the result of running <code>traceroute</code> from my computer in Massachusetts to &ldquo;example.com&rdquo;:</p>
 <p><img src="traceroute.png" alt="Screenshot of running traceroute example.com."></p>
-<p>You can see that it took 8 hops to get from my computer to the destination IP (<code>93.184.216.34</code>), and you can see the associated timing for three different attempts for each step. If we wanted to, we could map out these IPs to see the rough physical path of our packets too; from a quick <code>whois</code>, it looks like <code>example.com</code>'s server is based in Los Angeles, and there are quite a few ways to get there!</p>
+<p>You can see that it took 8 hops to get from my computer to the destination IP (<code>93.184.216.34</code>), and you can see the associated timing for three different attempts for each step. If we wanted to, we could map out these IPs to see the rough physical path of our packets too; from a quick <code>whois</code>, it looks like <code>example.com</code>&rsquo;s server is based in Los Angeles, and there are quite a few ways to get there!</p>
 <p><code>traceroute</code> is made possible by a side effect of features in the Internet Protocol (IP). Every <a href="https://en.wikipedia.org/wiki/IPv4#Header">IPv4 packet header</a> includes a number of fields:</p>
 <p><img src="header.png" alt="Diagram of IPv4 header"></p>
 <p>One of the fields in the header is a &ldquo;Time To Live&rdquo; value, or TTL. The <a href="https://datatracker.ietf.org/doc/html/rfc791#section-1.4">original DARPA RFC defined Time to Live in 1981 as follows</a>:</p>
@@ -153,7 +153,7 @@ if __name__ == &#39;__main__&#39;:
 
 
 <p>There we go! If I go ahead and run this, I get the following:</p>
-<pre><code>blog: $ python3 content/posts/toy-traceroute/toy_traceroute.py
+<pre tabindex="0"><code>blog: $ python3 content/posts/toy-traceroute/toy_traceroute.py
 Tracing the route to 93.184.216.34
 Current hop 1: ICMP message received from 10.1.10.1
 Current hop 2: ICMP message received from 96.120.66.197

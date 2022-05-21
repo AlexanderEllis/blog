@@ -6,11 +6,7 @@
     <description>Recent content in Homelab on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 10 Nov 2020 20:48:00 -0400</lastBuildDate>
-    
-	<atom:link href="https://alexanderell.is/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 10 Nov 2020 20:48:00 -0400</lastBuildDate><atom:link href="https://alexanderell.is/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Checking if the Pi is done</title>
       <link>https://alexanderell.is/posts/pi-cluster-monitoring/</link>

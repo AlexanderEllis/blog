@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>&#34;I don&#39;t know the numbers&#34;: a math puzzle &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -86,274 +86,267 @@ Sandy: I don&rsquo;t know the numbers. <br></p>
 <hr>
 <p>Again, at first glance, it doesn&rsquo;t look like any of this information would be helpful, but the trick is that each time they say they don&rsquo;t know the answer, the other party is able to narrow down the options for what the numbers could be. If you do this enough times, there&rsquo;s only one pair of numbers left, at which point Peter knows the answer.</p>
 <p>I found it helpful to think about this in a few different ways. First, let&rsquo;s say we have a list of all of the pairs of numbers - we can think about those as our candidates. To simplify, let&rsquo;s say that the order doesn&rsquo;t matter (<code>(1, 2)</code> is the same as <code>(2, 1)</code>) and we just keep track of one of the duplicates.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-candidates: [
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>),
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>),
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>),
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>),
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  (<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)
-]
-
-</code></pre></div><p>Let&rsquo;s also imagine a big representation of all of the possible <strong>sums</strong> and <strong>products</strong> and the pairs of numbers that make up those sums and products. Let&rsquo;s say they&rsquo;re maps, where the keys are the sums/products and the values are lists of the pairs that make up those sums/products. Furthermore, let&rsquo;s say that both Sandy and Peter have full knowledge of these maps.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-sums: {
-  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],  <span style="color:#75715e"># The only pair that adds up to 2 is (1, 1)</span>
-  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],  <span style="color:#75715e"># For 4, we have two pairs: (1, 3) and (2, 2)</span>
-  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#75715e"># And so on.</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  <span style="color:#ae81ff">198</span>: [(<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)]
-}
-
-products: {
-  <span style="color:#ae81ff">1</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],  <span style="color:#75715e"># The only pair that multiply together to make 1 is (1, 1)</span>
-  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],  <span style="color:#75715e"># For 4, we have two pairs: (1, 4) and (2, 2)</span>
-  <span style="color:#75715e"># And so on.</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  <span style="color:#ae81ff">9801</span>: [(<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)]
-}
-
-</code></pre></div><p>The trick is in those entries that are only made up of a single pair.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>candidates: [
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>),
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><p>Let&rsquo;s also imagine a big representation of all of the possible <strong>sums</strong> and <strong>products</strong> and the pairs of numbers that make up those sums and products. Let&rsquo;s say they&rsquo;re maps, where the keys are the sums/products and the values are lists of the pairs that make up those sums/products. Furthermore, let&rsquo;s say that both Sandy and Peter have full knowledge of these maps.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sums: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],  <span style="color:#75715e"># The only pair that adds up to 2 is (1, 1)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],  <span style="color:#75715e"># For 4, we have two pairs: (1, 3) and (2, 2)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># And so on.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">198</span>: [(<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>products: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">1</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],  <span style="color:#75715e"># The only pair that multiply together to make 1 is (1, 1)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],  <span style="color:#75715e"># For 4, we have two pairs: (1, 4) and (2, 2)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># And so on.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">9801</span>: [(<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The trick is in those entries that are only made up of a single pair.</p>
 <p>Let&rsquo;s look at Peter first. Peter knows the product of the two numbers. Peter can look up this product in the <code>products</code> map - if there is only one pair that makes up that product, then those <em>must</em> be the numbers! When Peter tells us that he doesn&rsquo;t know the numbers, it means that the product <em>must not be any product that only has one pair</em>. This means that every time Peter doesn&rsquo;t know, we can remove each pair that is the only pair for a product, and those pairs can be removed from the list of potential candidates.</p>
 <p>Let&rsquo;s look at those above lists and Peter&rsquo;s first claim. At the start, we have a full list of candidate pairs, a full <code>sums</code> map, and a full <code>products</code> map. Because Peter knows the product, when he says &ldquo;I don&rsquo;t know the numbers&rdquo;, it means that he looked at the possible pairs that made up this product and found multiple potential pairs - otherwise he would immediately know the numbers. This means that we can then disqualify products that are made up of one pair. <code>1</code> as a product, for instance, is only made from multiplying the pair <code>(1, 1)</code>. Since we know that Peter doesn&rsquo;t immediately know it as the solution, it means that it can&rsquo;t be <code>(1, 1)</code>.</p>
 <p>Similarly, if the product was <code>9801</code>, Peter would have immediately known the pair was <code>(99, 99)</code>. Because he can&rsquo;t yet say for certain, it means that the numbers must not be <code>(99, 99)</code>.</p>
 <p>We&rsquo;re able to now remove all candidates that were the only factors that made up a product. For the first round, this is notably <code>1</code> times each prime and each prime multiplied by another prime that results in a number greater than 100. Importantly, we can also remove them and their products/sums from the <code>products</code> map <em>and</em> the <code>sums</code> map.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-<span style="color:#75715e"># After culling the candidates from the first round</span>
-candidates: [
-  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
-  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
-  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>),
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>
- ]
-
-sums: {
-  <span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,
-  <span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>, (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">6</span>: [(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">5</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>, (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#75715e"># And so on.</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  <span style="color:#ae81ff">198</span>: [(<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)]
-}
-
-products: {
-  <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
-  <span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
-  <span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#75715e"># And so on.</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  <span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">8</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>
-}
-
-<span style="color:#75715e"># Note: the above uses strikethrough code - if it looks funny on your screen, I apologize!</span>
-<span style="color:#75715e"># In that case, the culling is an exercise left to the reader.</span>
-
-</code></pre></div><p>This is the trick. Because the space of possible candidates has been reduced, it means the possible candidates that make up each sum and product have also been reduced. Let&rsquo;s look at the updated <code>candidates</code>, <code>sums</code>, and <code>products</code>, filling in a few more previously omitted values:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-candidates: [
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>),
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">6</span>),
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">8</span>),
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  (<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>)
-]
-
-sums: {
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#75715e"># And so on.</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  <span style="color:#ae81ff">178</span>: [(<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>)],
-  <span style="color:#ae81ff">179</span>: [(<span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">99</span>)]
-}
-
-products: {
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],  <span style="color:#75715e"># For 4, we have two pairs: (1, 4) and (2, 2)</span>
-  <span style="color:#75715e"># And so on.</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  <span style="color:#ae81ff">7920</span>: [(<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>), (<span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">99</span>)]
-}
-
-</code></pre></div><p>Now, it&rsquo;s Sandy&rsquo;s turn to say that she doesn&rsquo;t know the numbers. Because Sandy knows the <strong>sum</strong>, again it must mean that the sum can&rsquo;t be any sum with only one pair as an option in <code>sums</code>, so we can again cull those pairs. In the updated <code>sums</code> structure, we can see that 4 is now only made up of a single candidate pair, <code>(2, 2)</code>. If the sum was 4, Sandy would know immediately what the pair was, but since she doesn&rsquo;t, it means the pair cannot be <code>(2, 2)</code>, and we can remove it from the candidates.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># After culling the candidates from the first round</span>
+</span></span><span style="display:flex;"><span>candidates: [
+</span></span><span style="display:flex;"><span>  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>),
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span> ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sums: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>, (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">6</span>: [(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">5</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>, (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># And so on.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">198</span>: [(<span style="color:#ae81ff">99</span>, <span style="color:#ae81ff">99</span>)]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>products: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># And so on.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">8</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">̶</span>:<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span>[<span style="color:#960050;background-color:#1e0010">̶</span>(<span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>,<span style="color:#960050;background-color:#1e0010">̶</span> <span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span><span style="color:#ae81ff">9</span><span style="color:#960050;background-color:#1e0010">̶</span>)<span style="color:#960050;background-color:#1e0010">̶</span>]<span style="color:#960050;background-color:#1e0010">̶</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Note: the above uses strikethrough code - if it looks funny on your screen, I apologize!</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># In that case, the culling is an exercise left to the reader.</span>
+</span></span></code></pre></div><p>This is the trick. Because the space of possible candidates has been reduced, it means the possible candidates that make up each sum and product have also been reduced. Let&rsquo;s look at the updated <code>candidates</code>, <code>sums</code>, and <code>products</code>, filling in a few more previously omitted values:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>candidates: [
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">6</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">8</span>),
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>)
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sums: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># And so on.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">178</span>: [(<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">179</span>: [(<span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">99</span>)]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>products: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],  <span style="color:#75715e"># For 4, we have two pairs: (1, 4) and (2, 2)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># And so on.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">7920</span>: [(<span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">90</span>), (<span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">99</span>)]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now, it&rsquo;s Sandy&rsquo;s turn to say that she doesn&rsquo;t know the numbers. Because Sandy knows the <strong>sum</strong>, again it must mean that the sum can&rsquo;t be any sum with only one pair as an option in <code>sums</code>, so we can again cull those pairs. In the updated <code>sums</code> structure, we can see that 4 is now only made up of a single candidate pair, <code>(2, 2)</code>. If the sum was 4, Sandy would know immediately what the pair was, but since she doesn&rsquo;t, it means the pair cannot be <code>(2, 2)</code>, and we can remove it from the candidates.</p>
 <p>Every round, we&rsquo;re disqualifying potential candidates. Because we&rsquo;re also able to remove them from the <code>sums</code> and <code>products</code> as potential options, it means that each protagonist is working on a new collection every time, giving a little more information every time they say they don&rsquo;t know the number.</p>
 <p>This pattern will continue, with a certain number of options being removed every time. At some point, Peter finally says that he does know the numbers - finally, there is only one product left with one potential pair, and that is the answer. Importantly, it has to go down to a single product - otherwise there would be multiple answers! That&rsquo;s why this version has Peter claiming to know after 14 rounds, because it limits the answer to a single pair (although there are other options - see later).</p>
 <hr>
 <p>This would be a little rough to do by hand, but luckily we can have the computer do it for us.</p>
 <br>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-N <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
-
-
-<span style="color:#75715e"># Helper functions to regenerate the sums/products data structures every round.</span>
-<span style="color:#75715e"># Not optimal but hey this is for fun.</span>
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_sums</span>(candidate_pairs):
-    sums <span style="color:#f92672">=</span> {}
-    <span style="color:#66d9ef">for</span> tuple_pair <span style="color:#f92672">in</span> candidate_pairs:
-        (i, j) <span style="color:#f92672">=</span> tuple_pair
-        sum <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> j
-        <span style="color:#66d9ef">if</span> sum <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> sums:
-            sums[sum] <span style="color:#f92672">=</span> [tuple_pair]
-        <span style="color:#66d9ef">else</span>:
-            sums[sum]<span style="color:#f92672">.</span>append(tuple_pair)
-    <span style="color:#66d9ef">return</span> sums
-
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_products</span>(candidate_pairs):
-    products <span style="color:#f92672">=</span> {}
-    <span style="color:#66d9ef">for</span> tuple_pair <span style="color:#f92672">in</span> candidate_pairs:
-        (i, j) <span style="color:#f92672">=</span> tuple_pair
-        product <span style="color:#f92672">=</span> i <span style="color:#f92672">*</span> j
-        <span style="color:#66d9ef">if</span> product <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> products:
-            products[product] <span style="color:#f92672">=</span> [tuple_pair]
-        <span style="color:#66d9ef">else</span>:
-            products[product]<span style="color:#f92672">.</span>append(tuple_pair)
-    <span style="color:#66d9ef">return</span> products
-
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_pairs</span>():
-    <span style="color:#75715e"># First, generate all possible pairs from (1, 1) to (N-1, N-1).</span>
-    candidate_pairs <span style="color:#f92672">=</span> set()
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, N):
-        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i, N):
-            candidate_pairs<span style="color:#f92672">.</span>add((i, j))
-
-    <span style="color:#75715e"># Swap between hearing from Peter or Sandy every round (product or sum)</span>
-    do_not_know_product <span style="color:#f92672">=</span> True
-    round <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-    <span style="color:#66d9ef">while</span> True:
-        sums <span style="color:#f92672">=</span> generate_sums(candidate_pairs)
-        products <span style="color:#f92672">=</span> generate_products(candidate_pairs)
-        <span style="color:#75715e"># First, check if there&#39;s a single product left with one pair.</span>
-        <span style="color:#66d9ef">if</span> round <span style="color:#f92672">==</span> <span style="color:#ae81ff">15</span>:
-            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
-                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Peter: I do know the numbers</span><span style="color:#e6db74">&#39;</span>)
-                    <span style="color:#66d9ef">print</span>(products[product][<span style="color:#ae81ff">0</span>])
-                    <span style="color:#66d9ef">return</span>
-
-        <span style="color:#66d9ef">if</span> do_not_know_product:
-            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Peter: I don</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">t know the numbers</span><span style="color:#e6db74">&#39;</span>)
-            <span style="color:#75715e"># Go through products. For any product that only has a single pair,</span>
-            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
-            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
-                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                    tuple_pair <span style="color:#f92672">=</span> products[product][<span style="color:#ae81ff">0</span>]
-                    <span style="color:#75715e"># Remove from candidates.</span>
-                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
-            do_not_know_product <span style="color:#f92672">=</span> False
-        <span style="color:#66d9ef">else</span>:
-            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Sandy: I don</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">t know the numbers</span><span style="color:#e6db74">&#39;</span>)
-            <span style="color:#75715e"># Go through sums. For any product that only has a single pair,</span>
-            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
-            <span style="color:#66d9ef">for</span> sum <span style="color:#f92672">in</span> sums:
-                <span style="color:#66d9ef">if</span> len(sums[sum]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                    tuple_pair <span style="color:#f92672">=</span> sums[sum][<span style="color:#ae81ff">0</span>]
-                    <span style="color:#75715e"># Remove from candidates.</span>
-                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
-            do_not_know_product <span style="color:#f92672">=</span> True
-        round <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-
-
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__main__</span><span style="color:#e6db74">&#39;</span>:
-    find_pairs()
-
-</code></pre></div><p>Running that leads to the following, just like the puzzle, though now it includes an answer:</p>
-<pre><code class="language-none" data-lang="none">
-Peter: I don't know the numbers
-Sandy: I don't know the numbers
-Peter: I don't know the numbers
-Sandy: I don't know the numbers
-Peter: I don't know the numbers
-Sandy: I don't know the numbers
-Peter: I don't know the numbers
-Sandy: I don't know the numbers
-Peter: I don't know the numbers
-Sandy: I don't know the numbers
-Peter: I don't know the numbers
-Sandy: I don't know the numbers
-Peter: I don't know the numbers
-Sandy: I don't know the numbers
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>N <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Helper functions to regenerate the sums/products data structures every round.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Not optimal but hey this is for fun.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_sums</span>(candidate_pairs):
+</span></span><span style="display:flex;"><span>    sums <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> tuple_pair <span style="color:#f92672">in</span> candidate_pairs:
+</span></span><span style="display:flex;"><span>        (i, j) <span style="color:#f92672">=</span> tuple_pair
+</span></span><span style="display:flex;"><span>        sum <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> j
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> sum <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> sums:
+</span></span><span style="display:flex;"><span>            sums[sum] <span style="color:#f92672">=</span> [tuple_pair]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            sums[sum]<span style="color:#f92672">.</span>append(tuple_pair)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> sums
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_products</span>(candidate_pairs):
+</span></span><span style="display:flex;"><span>    products <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> tuple_pair <span style="color:#f92672">in</span> candidate_pairs:
+</span></span><span style="display:flex;"><span>        (i, j) <span style="color:#f92672">=</span> tuple_pair
+</span></span><span style="display:flex;"><span>        product <span style="color:#f92672">=</span> i <span style="color:#f92672">*</span> j
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> product <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> products:
+</span></span><span style="display:flex;"><span>            products[product] <span style="color:#f92672">=</span> [tuple_pair]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            products[product]<span style="color:#f92672">.</span>append(tuple_pair)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> products
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_pairs</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># First, generate all possible pairs from (1, 1) to (N-1, N-1).</span>
+</span></span><span style="display:flex;"><span>    candidate_pairs <span style="color:#f92672">=</span> set()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, N):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i, N):
+</span></span><span style="display:flex;"><span>            candidate_pairs<span style="color:#f92672">.</span>add((i, j))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Swap between hearing from Peter or Sandy every round (product or sum)</span>
+</span></span><span style="display:flex;"><span>    do_not_know_product <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    round <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        sums <span style="color:#f92672">=</span> generate_sums(candidate_pairs)
+</span></span><span style="display:flex;"><span>        products <span style="color:#f92672">=</span> generate_products(candidate_pairs)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># First, check if there&#39;s a single product left with one pair.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> round <span style="color:#f92672">==</span> <span style="color:#ae81ff">15</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                    print(<span style="color:#e6db74">&#39;Peter: I do know the numbers&#39;</span>)
+</span></span><span style="display:flex;"><span>                    print(products[product][<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> do_not_know_product:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#39;Peter: I don</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">t know the numbers&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Go through products. For any product that only has a single pair,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                    tuple_pair <span style="color:#f92672">=</span> products[product][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># Remove from candidates.</span>
+</span></span><span style="display:flex;"><span>                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
+</span></span><span style="display:flex;"><span>            do_not_know_product <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#39;Sandy: I don</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">t know the numbers&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Go through sums. For any product that only has a single pair,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> sum <span style="color:#f92672">in</span> sums:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> len(sums[sum]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                    tuple_pair <span style="color:#f92672">=</span> sums[sum][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># Remove from candidates.</span>
+</span></span><span style="display:flex;"><span>                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
+</span></span><span style="display:flex;"><span>            do_not_know_product <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        round <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    find_pairs()
+</span></span></code></pre></div><p>Running that leads to the following, just like the puzzle, though now it includes an answer:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">
+Peter: I don&#39;t know the numbers
+Sandy: I don&#39;t know the numbers
+Peter: I don&#39;t know the numbers
+Sandy: I don&#39;t know the numbers
+Peter: I don&#39;t know the numbers
+Sandy: I don&#39;t know the numbers
+Peter: I don&#39;t know the numbers
+Sandy: I don&#39;t know the numbers
+Peter: I don&#39;t know the numbers
+Sandy: I don&#39;t know the numbers
+Peter: I don&#39;t know the numbers
+Sandy: I don&#39;t know the numbers
+Peter: I don&#39;t know the numbers
+Sandy: I don&#39;t know the numbers
 Peter: I do know the numbers
 (77, 84)
-
 </code></pre><p>There&rsquo;s the pair! 77 and 84.</p>
 <p>Interestingly, as part of debugging this solution, I found that there could be different answers at different numbers of rounds. As long as there is a single product made up of a single pair, that could be the answer. We can update the <code>find_pairs</code> function to check for potential solutions at various round lengths (and stop before we go to infinity):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_pairs</span>():
-    <span style="color:#75715e"># First, generate all possible pairs from (1, 1) to (N-1, N-1).</span>
-    candidate_pairs <span style="color:#f92672">=</span> set()
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, N):
-        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i, N):
-            candidate_pairs<span style="color:#f92672">.</span>add((i, j))
-
-    <span style="color:#75715e"># Swap between hearing from Peter or Sandy every round (product or sum)</span>
-    do_not_know_product <span style="color:#f92672">=</span> True
-    round <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-    <span style="color:#66d9ef">while</span> True:
-        sums <span style="color:#f92672">=</span> generate_sums(candidate_pairs)
-        products <span style="color:#f92672">=</span> generate_products(candidate_pairs)
-        name <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Peter:</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">if</span> do_not_know_product <span style="color:#66d9ef">else</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Sandy:</span><span style="color:#e6db74">&#39;</span>
-
-        potential_final <span style="color:#f92672">=</span> None
-        <span style="color:#75715e"># First, check if there&#39;s a single product left with one pair.</span>
-        <span style="color:#66d9ef">if</span> do_not_know_product:
-            count_unique_product_pairs <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
-                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                    count_unique_product_pairs <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-                    potential_final <span style="color:#f92672">=</span> products[product][<span style="color:#ae81ff">0</span>]
-            <span style="color:#66d9ef">if</span> count_unique_product_pairs <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                <span style="color:#66d9ef">print</span>(name, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">I could know the numbers after</span><span style="color:#e6db74">&#39;</span>,
-                      round, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">rounds:</span><span style="color:#e6db74">&#39;</span>, potential_final)
-        <span style="color:#66d9ef">else</span>:
-            count_unique_sum_pairs <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-            <span style="color:#66d9ef">for</span> sum <span style="color:#f92672">in</span> sums:
-                <span style="color:#66d9ef">if</span> len(sums[sum]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                    count_unique_sum_pairs <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-                    potential_final <span style="color:#f92672">=</span> sums[sum][<span style="color:#ae81ff">0</span>]
-            <span style="color:#66d9ef">if</span> count_unique_sum_pairs <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                <span style="color:#66d9ef">print</span>(name, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">I could know the numbers after</span><span style="color:#e6db74">&#39;</span>,
-                      round, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">rounds:</span><span style="color:#e6db74">&#39;</span>, potential_final)
-
-        num_candidates_before_cull <span style="color:#f92672">=</span> len(candidate_pairs)
-        <span style="color:#66d9ef">if</span> do_not_know_product:
-            <span style="color:#75715e"># Go through products. For any product that only has a single pair,</span>
-            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
-            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
-                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                    tuple_pair <span style="color:#f92672">=</span> products[product][<span style="color:#ae81ff">0</span>]
-                    <span style="color:#75715e"># Remove from candidates.</span>
-                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
-            do_not_know_product <span style="color:#f92672">=</span> False
-        <span style="color:#66d9ef">else</span>:
-            <span style="color:#75715e"># Go through sums. For any product that only has a single pair,</span>
-            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
-            <span style="color:#66d9ef">for</span> sum <span style="color:#f92672">in</span> sums:
-                <span style="color:#66d9ef">if</span> len(sums[sum]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
-                    tuple_pair <span style="color:#f92672">=</span> sums[sum][<span style="color:#ae81ff">0</span>]
-                    <span style="color:#75715e"># Remove from candidates.</span>
-                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
-            do_not_know_product <span style="color:#f92672">=</span> True
-        round <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-        <span style="color:#75715e"># If we didn&#39;t remove any pairs, we may be in an infinite loop and want</span>
-        <span style="color:#75715e"># to stop.</span>
-        <span style="color:#66d9ef">if</span> len(candidate_pairs) <span style="color:#f92672">==</span> num_candidates_before_cull:
-            <span style="color:#66d9ef">return</span>
-
-</code></pre></div><p>Using this version, we now get the following:</p>
-<pre><code class="language-none" data-lang="none">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_pairs</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># First, generate all possible pairs from (1, 1) to (N-1, N-1).</span>
+</span></span><span style="display:flex;"><span>    candidate_pairs <span style="color:#f92672">=</span> set()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, N):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i, N):
+</span></span><span style="display:flex;"><span>            candidate_pairs<span style="color:#f92672">.</span>add((i, j))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Swap between hearing from Peter or Sandy every round (product or sum)</span>
+</span></span><span style="display:flex;"><span>    do_not_know_product <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    round <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        sums <span style="color:#f92672">=</span> generate_sums(candidate_pairs)
+</span></span><span style="display:flex;"><span>        products <span style="color:#f92672">=</span> generate_products(candidate_pairs)
+</span></span><span style="display:flex;"><span>        name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Peter:&#39;</span> <span style="color:#66d9ef">if</span> do_not_know_product <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#39;Sandy:&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        potential_final <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># First, check if there&#39;s a single product left with one pair.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> do_not_know_product:
+</span></span><span style="display:flex;"><span>            count_unique_product_pairs <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                    count_unique_product_pairs <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                    potential_final <span style="color:#f92672">=</span> products[product][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> count_unique_product_pairs <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                print(name, <span style="color:#e6db74">&#39;I could know the numbers after&#39;</span>,
+</span></span><span style="display:flex;"><span>                      round, <span style="color:#e6db74">&#39;rounds:&#39;</span>, potential_final)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            count_unique_sum_pairs <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> sum <span style="color:#f92672">in</span> sums:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> len(sums[sum]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                    count_unique_sum_pairs <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                    potential_final <span style="color:#f92672">=</span> sums[sum][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> count_unique_sum_pairs <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                print(name, <span style="color:#e6db74">&#39;I could know the numbers after&#39;</span>,
+</span></span><span style="display:flex;"><span>                      round, <span style="color:#e6db74">&#39;rounds:&#39;</span>, potential_final)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        num_candidates_before_cull <span style="color:#f92672">=</span> len(candidate_pairs)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> do_not_know_product:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Go through products. For any product that only has a single pair,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> products:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> len(products[product]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                    tuple_pair <span style="color:#f92672">=</span> products[product][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># Remove from candidates.</span>
+</span></span><span style="display:flex;"><span>                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
+</span></span><span style="display:flex;"><span>            do_not_know_product <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Go through sums. For any product that only has a single pair,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># we can remove those from the candidates for the next round.</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> sum <span style="color:#f92672">in</span> sums:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> len(sums[sum]) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                    tuple_pair <span style="color:#f92672">=</span> sums[sum][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># Remove from candidates.</span>
+</span></span><span style="display:flex;"><span>                    candidate_pairs<span style="color:#f92672">.</span>remove(tuple_pair)
+</span></span><span style="display:flex;"><span>            do_not_know_product <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        round <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If we didn&#39;t remove any pairs, we may be in an infinite loop and want</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># to stop.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(candidate_pairs) <span style="color:#f92672">==</span> num_candidates_before_cull:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span></code></pre></div><p>Using this version, we now get the following:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">
 Sandy: I could know the numbers after 6 rounds: (72, 99)
 Peter: I could know the numbers after 7 rounds: (81, 88)
 Sandy: I could know the numbers after 8 rounds: (70, 99)
@@ -364,27 +357,26 @@ Sandy: I could know the numbers after 12 rounds: (70, 96)
 Peter: I could know the numbers after 13 rounds: (80, 84)
 Sandy: I could know the numbers after 14 rounds: (66, 98)
 Peter: I could know the numbers after 15 rounds: (77, 84)
-
 </code></pre><p>This means that the puzzle could be a number of different round combinations, with either Sandy or Peter saying they know the answer! In my opinion, showing 15 &ldquo;I don&rsquo;t know&quot;s makes the puzzle all the more confuddling, which adds to the puzzleness.</p>
 <hr>
 <p>How many rounds does it go? Here, we see that it can progress until there are no culled candidates - for <code>N = 100</code>, we go 15 rounds before we stop. What does that look like for a different value of N? We can explore that easily, and I think there&rsquo;s a fun question here: what&rsquo;s the lowest value of N that has an answer?</p>
 <p>For the lowest, we can just do the following, adding <code>n</code> as an argument:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_pairs</span>(n):
-    <span style="color:#75715e"># First, generate all possible pairs from (1, 1) to (N-1, N-1).</span>
-    candidate_pairs <span style="color:#f92672">=</span> set()
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, n):
-        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i, n):
-            candidate_pairs<span style="color:#f92672">.</span>add((i, j))
-    <span style="color:#75715e"># ... everything else the same</span>
-
-
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__main__</span><span style="color:#e6db74">&#39;</span>:
-    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">N =</span><span style="color:#e6db74">&#39;</span>, i)
-        find_pairs(i)
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">*****</span><span style="color:#e6db74">&#39;</span>)
-</code></pre></div><pre><code class="language-none" data-lang="none">N = 0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_pairs</span>(n):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># First, generate all possible pairs from (1, 1) to (N-1, N-1).</span>
+</span></span><span style="display:flex;"><span>    candidate_pairs <span style="color:#f92672">=</span> set()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, n):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i, n):
+</span></span><span style="display:flex;"><span>            candidate_pairs<span style="color:#f92672">.</span>add((i, j))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... everything else the same</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;N =&#39;</span>, i)
+</span></span><span style="display:flex;"><span>        find_pairs(i)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;*****&#39;</span>)
+</span></span></code></pre></div><pre tabindex="0"><code class="language-none" data-lang="none">N = 0
 *****
 N = 1
 *****
@@ -417,34 +409,33 @@ Peter: I could know the numbers after 9 rounds: (2, 8)
 ... a lot more
 </code></pre><p>It looks like the lowest is <code>N = 2</code>, which is not a lot of fun, because the only pair is <code>(1, 1)</code>. Not a very interesting puzzle! The next one is <code>N = 10</code> for values 1-9, which can be done in 3-9 turns. That&rsquo;s pretty interesting, since we could formulate the riddle differently, though the large number of numbers and rounds makes it all the more befuddling.</p>
 <p>I think the other interesting thing here is that for some values of N, there is no solution! Let&rsquo;s look at <code>N = 4</code>, where the numbers are 1-3. These tables are pretty easy to write out by hand:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-candidates: [
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>),
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>),
-  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>),
-  (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>),
-  (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>),
-  (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)
-]
-
-sums: {
-  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],
-  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>), (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)]
-}
-
-products: {
-  <span style="color:#ae81ff">1</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],
-  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
-  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
-  <span style="color:#ae81ff">9</span>: [(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)]
-}
-
-</code></pre></div><p>OK shoot, if we remove all of the products that are made up of a single pair, we don&rsquo;t have any pairs left, which makes sense. Because not all values of N lead to a solution, this also means that trying to reason through the problem for low values of N is extra tricky, since it doesn&rsquo;t actually lead you to a solution!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>candidates: [
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>  (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sums: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>), (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">5</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>products: {
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">1</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">3</span>: [(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">4</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">6</span>: [(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)],
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">9</span>: [(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>OK shoot, if we remove all of the products that are made up of a single pair, we don&rsquo;t have any pairs left, which makes sense. Because not all values of N lead to a solution, this also means that trying to reason through the problem for low values of N is extra tricky, since it doesn&rsquo;t actually lead you to a solution!</p>
 <hr>
 <p>Overall, a fun puzzle. Here are a few closing extra credit questions for you:</p>
 <ul>

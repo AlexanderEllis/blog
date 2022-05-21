@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.64.1" />
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Connecting Arduino with a Node Server &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -68,7 +68,7 @@
 <p>After a little research, I came across the <a href="https://github.com/node-serialport/node-serialport">serialport </a>package, which would allow a simple connection between the server and the Arduino.  Easy enough!</p>
 <h4 id="hello-arduino">Hello, Arduino</h4>
 <p>My first test was to get an LED shining from a message from the Node server.  I decided to keep it very simple and only send 1 byte at a time, either a <code>1</code> or a <code>0</code>.  For now, the server would send a <code>1</code>, and the Arduino would turn the LED on.  I started with very basic Arduino code:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   project.ino
 */
 int LEDPin = 6; // LED connected to pin 6
@@ -96,22 +96,22 @@ void loop() {
   }
 }
 </code></pre><p>Not too bad!  My server code was similarly simple.  One thing to note is that there&rsquo;s a slight delay between opening the Serial port and being able to send a message.  Apparently <a href="https://github.com/noopkat/avrgirl-arduino/issues/43#issuecomment-166146526">when the port is opened, the Arduino code restarts</a>, leading to a slight delay. I got around this by adding in a 2 second delay before the server sends the <code>1</code>.</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   server.js
 */
 // Import SerialPort
-var SerialPort = require('serialport');
+var SerialPort = require(&#39;serialport&#39;);
 
 // Create a new connection with the correct path to the Arduino and a baudRate that matches
-var port = new SerialPort('/dev/cu.usbmodemFD131', { baudRate: 9600 }, function(err) {
+var port = new SerialPort(&#39;/dev/cu.usbmodemFD131&#39;, { baudRate: 9600 }, function(err) {
   if (err) {
-    console.log('Error: ', err.message);
+    console.log(&#39;Error: &#39;, err.message);
   }
 });
 
 
 // When the connection is open, send the Arduino a 1
-port.on('open', function() {
+port.on(&#39;open&#39;, function() {
   setTimeout(function() {
     port.write([1]);
   }, 2000);
@@ -120,21 +120,21 @@ port.on('open', function() {
 <hr>
 <h4 id="hello-server">Hello, Server</h4>
 <p>The next step was to get the Arduino talking to the server.  Since I had the server to Arduino code already set, I added an event listener to the server that would listen for new data on the Serial port.  I kept it simple, sending a <code>1</code> if it heard a <code>1</code> and a <code>0</code> if it heard a <code>0</code>.</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   server.js
 */
-var SerialPort = require('serialport');
+var SerialPort = require(&#39;serialport&#39;);
 
-var port = new SerialPort('/dev/cu.usbmodemFD131', { baudRate: 9600 }, function(err) {
+var port = new SerialPort(&#39;/dev/cu.usbmodemFD131&#39;, { baudRate: 9600 }, function(err) {
   if (err) {
-    console.log('Error: ', err.message);
+    console.log(&#39;Error: &#39;, err.message);
   }
 });
 
 
-port.on('open', function() {
+port.on(&#39;open&#39;, function() {
   // Add event listener for data
-  port.on('data', function(data) {
+  port.on(&#39;data&#39;, function(data) {
     // Log the incoming data so we can see it
     console.log(data[0]);
     // If we get a 1, send a 1 back
@@ -147,7 +147,7 @@ port.on('open', function() {
   });
 });
 </code></pre><p>Now, I needed to make the Arduino listen for a button press change.  I kept track of the state of the switch, whether it&rsquo;s open or closed, and the previous state.  This allowed me to only send a message to the server when something new happened, instead of constantly sending messages.  Essentially, pressing the switch down would send one message to the server, instead of many messages while the switch is open and many messages once the button was pressed down. Given how often the Arduino runs its loop, I wanted to keep the flow simple.</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   project.ino
 */
 int LEDPin = 6;
@@ -171,7 +171,7 @@ void loop() {
   switchState = digitalRead(2);
 
   if (switchState == HIGH &amp;&amp; switchState != previousSwitchState) {
-    // If the switchState is pressed and it didn't used to be, send message to server
+    // If the switchState is pressed and it didn&#39;t used to be, send message to server
     Serial.write(1);
     previousSwitchState = switchState;
   } else if (switchState == LOW &amp;&amp; switchState != previousSwitchState) {
@@ -195,24 +195,24 @@ void loop() {
 <p>This worked!  I then realized that it could be working because the Arduino is reading the byte that it just sent, which would mean that it was really bouncing these messages off of a mirror to turn the light on.  As a sanity check, I stopped the node server, at which point the light stopped turning on or off.  This left me confident that the server was in fact playing its role correctly.</p>
 <hr>
 <p>All that was left was some refactoring to clean up the code:</p>
-<pre><code>/*
+<pre tabindex="0"><code>/*
   server.js
 */
 /*
-  This is the very simple server code for listening to and responding to the arduino's button press.
+  This is the very simple server code for listening to and responding to the arduino&#39;s button press.
   It listens for data from the arduino, and if it receives an ON signal, it returns an ON signal. Likewise for OFF.
 */
-var SerialPort = require('serialport');
-var PATH = '/dev/cu.usbmodemFD131';
+var SerialPort = require(&#39;serialport&#39;);
+var PATH = &#39;/dev/cu.usbmodemFD131&#39;;
 
 var port = new SerialPort(PATH, { baudRate: 9600 }, function(err) {
   if (err) {
-    console.log('Error: ', err.message);
+    console.log(&#39;Error: &#39;, err.message);
   }
 });
 
-port.on('open', function() {
-  port.on('data', function(data) {
+port.on(&#39;open&#39;, function() {
+  port.on(&#39;data&#39;, function(data) {
     console.log(data[0]);
     if (data[0]) {
       port.write([1]);
@@ -221,7 +221,7 @@ port.on('open', function() {
     }
   });
 });
-</code></pre><pre><code>/*
+</code></pre><pre tabindex="0"><code>/*
   project.ino
 */
 /*
@@ -253,7 +253,7 @@ void loop() {
   // Read button press
   switchState = digitalRead(switchPin);
 
-  // Check previousSwitchState so we aren't constantly writing back and forth without a button change
+  // Check previousSwitchState so we aren&#39;t constantly writing back and forth without a button change
   if (switchState != previousSwitchState) {
     Serial.write(switchState);
     previousSwitchState = switchState;

@@ -1,324 +1,199 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://alexanderell.is/posts/note-matching/</loc>
-    <lastmod>2022-05-14T01:03:02-05:00</lastmod>
-  </url>
-  
   <url>
     <loc>https://alexanderell.is/</loc>
-    <lastmod>2022-05-14T01:03:02-05:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2022-05-21T17:37:15-04:00</lastmod>
+  </url><url>
     <loc>https://alexanderell.is/posts/</loc>
+    <lastmod>2022-05-21T17:37:15-04:00</lastmod>
+  </url><url>
+    <loc>https://alexanderell.is/posts/wikipedia-over-whatsapp/</loc>
+    <lastmod>2022-05-21T17:37:15-04:00</lastmod>
+  </url><url>
+    <loc>https://alexanderell.is/posts/note-matching/</loc>
     <lastmod>2022-05-14T01:03:02-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/numbers-game/</loc>
     <lastmod>2022-05-08T15:29:23-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/uncomfortable/</loc>
     <lastmod>2022-05-01T00:28:44-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/opinionated-variable-names/</loc>
     <lastmod>2022-04-17T13:08:57-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/what-is-a-minute/</loc>
     <lastmod>2022-04-10T11:44:07-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/tech-interview-prep-industry/</loc>
     <lastmod>2022-04-03T17:55:05-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/debugging-lab-notebook/</loc>
     <lastmod>2022-03-27T13:09:00-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/tuner/</loc>
     <lastmod>2022-03-20T13:00:15-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/javascript/</loc>
     <lastmod>2022-03-20T13:00:15-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://alexanderell.is/tags/</loc>
-    <lastmod>2022-03-20T13:00:15-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/chrono-bio/</loc>
     <lastmod>2022-03-13T18:52:21-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/infinite-scroll/</loc>
     <lastmod>2022-03-06T17:28:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/casual-collaboration/</loc>
     <lastmod>2022-02-27T13:58:57-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/morse-codle/</loc>
     <lastmod>2022-02-16T21:03:02-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/writing-morse-code-games/</loc>
     <lastmod>2022-02-12T12:36:19-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/morse-code/</loc>
     <lastmod>2022-02-04T22:32:54-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/toy-traceroute/</loc>
     <lastmod>2022-01-30T10:59:16-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/attention-javascript/</loc>
     <lastmod>2022-01-22T11:59:21-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/visualizing-code/</loc>
     <lastmod>2022-01-17T17:11:31-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/terrier-dist-sys/</loc>
     <lastmod>2022-01-12T20:07:04-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/mscs/</loc>
     <lastmod>2022-01-08T17:33:34-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/limitations/</loc>
     <lastmod>2021-10-31T00:10:11-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/rpc-from-scratch/</loc>
     <lastmod>2021-04-18T13:15:13-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/youre-reading-this-in-the-future/</loc>
     <lastmod>2021-04-16T19:39:25-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/pi-cluster-monitoring/</loc>
     <lastmod>2020-11-10T20:48:00-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/distributed-systems/</loc>
     <lastmod>2020-11-10T20:48:00-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/homelab/</loc>
     <lastmod>2020-11-10T20:48:00-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/raspberry-pi/</loc>
     <lastmod>2020-11-10T20:48:00-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/pi-cluster/</loc>
     <lastmod>2020-10-24T20:48:06-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/debugging/</loc>
     <lastmod>2020-08-23T23:14:15-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/me-and-my-work/</loc>
     <lastmod>2020-06-03T00:07:04-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/taking-over-my-clipboard/</loc>
     <lastmod>2020-02-17T18:01:11-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/ux/</loc>
     <lastmod>2020-02-17T18:01:11-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/trust-in-your-unconscious/</loc>
     <lastmod>2019-11-16T21:43:06-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/learning/</loc>
     <lastmod>2019-11-16T21:43:06-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/intercept-pause/</loc>
     <lastmod>2019-10-24T20:40:52-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/design-in-the-wild/</loc>
     <lastmod>2019-10-24T20:40:52-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/clickbait-snail-mail/</loc>
     <lastmod>2019-10-19T20:47:19-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/design/</loc>
     <lastmod>2019-10-19T20:47:19-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/simple-map-reduce/</loc>
     <lastmod>2019-02-09T00:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/reservoir-signs/</loc>
     <lastmod>2018-08-27T23:52:22-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/taking-apart/</loc>
     <lastmod>2018-06-08T10:27:44-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/check-valve/</loc>
     <lastmod>2018-06-08T10:27:44-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/store-layout/</loc>
     <lastmod>2018-06-06T09:02:23-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/simple-cache-server-in-python/</loc>
     <lastmod>2018-05-26T10:24:05-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/python/</loc>
     <lastmod>2018-05-26T10:24:05-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/regex-lookbehind/</loc>
     <lastmod>2018-04-28T13:22:25-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/investigations/</loc>
     <lastmod>2018-04-28T13:22:25-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/javascript-array-reduce/</loc>
     <lastmod>2018-04-01T09:51:00-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/typeof-null/</loc>
     <lastmod>2018-03-19T08:40:17-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/javascript-casting/</loc>
     <lastmod>2018-03-18T11:14:19-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/investigating-moment-bug/</loc>
     <lastmod>2018-01-06T11:37:37-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/open-source/</loc>
     <lastmod>2018-01-06T11:37:37-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/arduino/</loc>
     <lastmod>2018-01-01T09:59:52-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/arduinode/</loc>
     <lastmod>2018-01-01T09:59:52-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/node/</loc>
     <lastmod>2018-01-01T09:59:52-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/mbta-bus/</loc>
     <lastmod>2017-12-06T08:51:05-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/arduino-project-3/</loc>
     <lastmod>2017-08-13T15:16:13-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/posts/noticing-ui-shazam/</loc>
     <lastmod>2017-08-05T21:29:38-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/tags/ux-analysis/</loc>
     <lastmod>2017-08-05T21:29:38-04:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://alexanderell.is/about/</loc>
     <lastmod>2015-06-20T14:02:37+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://alexanderell.is/tags/</loc>
+    <lastmod>2015-06-20T14:02:37+02:00</lastmod>
+  </url><url>
     <loc>https://alexanderell.is/categories/</loc>
   </url>
-  
 </urlset>
