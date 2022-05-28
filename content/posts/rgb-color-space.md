@@ -26,6 +26,8 @@ For instance, here's 100% red, 33% green, and 33% blue:
 
 <div style="height: 100px; width: 100px; background-color: #ff5656"></div>
 
+<br>
+
 Now we're talking!
 
 ### 2D, but with a spectrum
