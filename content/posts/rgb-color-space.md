@@ -130,6 +130,9 @@ sliders while it's running.
     </div>
 </fieldset>
 
+<noscript> Unfortunately, JavaScript is needed to run this little game. The only
+JS running on my site is for the games (no tracking, etc) if you want to enable
+  it. If not, I totally understand :) </noscript>
 
 
 <script src="https://x3dom.org/download/1.7/x3dom.js"></script>
