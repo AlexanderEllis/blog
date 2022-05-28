@@ -275,15 +275,23 @@ ul {
 }
 
 /*
-    Remove this so that lists are normal?
-    See the "reading this in the future" footnotes
+  List-style-position: inside means the bullets and numbers (the :marker) will be inside the div.
+  That messed up footnotes, so I added the .footnotes styles below.
 */
-/* li {
+li {
     list-style-position: inside;
-} */
+}
 
 ul>li {
     list-style-type: circle;
+}
+
+.footnotes li {
+  margin-bottom: 20px;
+}
+
+.footnotes p {
+  display: inline;
 }
 
 

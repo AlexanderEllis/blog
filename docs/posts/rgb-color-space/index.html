@@ -1,0 +1,239 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.99.1" />
+		<title>Playing with a 3D representation of RGB color space &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Playing with a 3D representation of RGB color space
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    May 28, 2022
+                    · 854 words
+                    · 5 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>I&rsquo;m working on a color picking/finding game, and part of it will be asking the
+user to pick a color from a range of colors. This got me thinking: what are some
+ways we can represent RGB color space?</p>
+<h2 id="rgb">RGB</h2>
+<p>One way to think of colors, especially colors on computers, is as a combination
+of three different primary colors: <strong>R</strong>ed, <strong>G</strong>reen, and <strong>B</strong>lue. If we say
+how much of each color we want, we can build a color from the values. For
+example, maybe we want all Red and no Green or Blue - we could represent this as
+(100%, 0%, 0%), corresponding to (R, G, B). That would look like this:</p>
+<div style="height: 100px; width: 100px; background-color: #ff0000"></div>
+<br>
+<p>That&rsquo;s an OK red, but it gets more interesting when we mix in some other colors.
+For instance, here&rsquo;s 100% red, 33% green, and 33% blue:</p>
+<div style="height: 100px; width: 100px; background-color: #ff5656"></div>
+<p>Now we&rsquo;re talking!</p>
+<h3 id="2d-but-with-a-spectrum">2D, but with a spectrum</h3>
+<p>If you Google &ldquo;color picker&rdquo;, you get a widget that provides you with
+a spectrum of colors to pick from. I think these are pretty intuitive, since
+you&rsquo;re able to see what colors are close and similar to your colors. That
+being said, it&rsquo;s a little unintuitive how the actual values map to the layout
+on the grid - try clicking and dragging left and right, and see what the RGB values do.</p>
+<p><img src="google-picker.png" alt="Screenshot of Google&amp;rsquo;s default color picker">
+Give it a shot <a href="https://www.google.com/search?q=color+picker">here</a>.</p>
+<p>The y-axis looks like it&rsquo;s red, as going up and down on the far left and far
+right only changes the red value. But, go to the middle and go up and down, and
+all three values change. Put your picker in the middle, then change the spectrum
+from red to blue - you can see there are discrete sections where only one value
+or another is increasing. The display is intuitive, but the numbers aren&rsquo;t!</p>
+<h2 id="3d-rgb-color-space">3D RGB color space</h2>
+<p>Because each color is composed of those three separate values, you could imagine
+it as if it were a 3D chart, with one axis for red, one axis for green, and one
+axis for blue. As you go up to 100% for each axis, the color changes
+accordingly.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/8/83/RGB_Cube_Show_lowgamma_cutout_b.png" alt="Color cube, with each color on a different axis">
+SharkD, CC BY-SA 3.0 <a href="https://creativecommons.org/licenses/by-sa/3.0">https://creativecommons.org/licenses/by-sa/3.0</a>, via Wikimedia Commons</p>
+<p>You could, if you wanted to, actually <em>make</em> one of these cubes. That&rsquo;s what
+<a href="https://taubaauerbach.com/view.php?id=286&amp;alt=2945">Tauba Auerbach did in the RGB ColorspaceAtlas</a>, where the pages in a
+book correspond to a slice of that cube, so that every color in the entire space
+is printed. Pretty neat!</p>
+<h3 id="how-do-we-see-this-represented">How do we see this represented?</h3>
+<p>Oftentimes when working with computers and colors, you&rsquo;ll want to pick a color
+from a selection of colors. An interesting question here is how the colors are
+represented — on one unhelpful end, we could just type in the color codes and
+see the color, while on the other end, we&rsquo;d somehow fly through the 3D color
+space to find the right one. An interesting consideration is how well the
+representation lets you compare the color you&rsquo;ve chosen with its colorful
+neighbors. If you&rsquo;re just typing in an exact number, you won&rsquo;t have any context
+of the colors around it. If you&rsquo;re selecting from a spectrum, you&rsquo;d have much
+more context, though this gets interesting when you think in 3D.</p>
+<p>As a side note, we usually talk about each color ranging from 0 to 255, with
+each color represented by 8 bits. I&rsquo;ll use percentages below, but keep that in
+mind for the actual code and color pickers.</p>
+<h3 id="exploring-in-3d">Exploring in 3D</h3>
+<p>Let&rsquo;s start with what looks like a very color picker, where you can pick a value
+for each color and see how it changes. As you go through, you can also visualize
+in the 3D space below, where one axis is for red, one is for green, and one is
+for blue. I&rsquo;ll let you figure out which is which! Feel free to change the sliders
+and see how the color changes.</p>
+<p>For an extra bonus, try enabling DVD screensaver mode below — you can still mess with the
+sliders while it&rsquo;s running.</p>
+<div style="display: flex;">
+  <div id="slider-select" style="height: 100px; width: 100px; background-color: #7F7F7F"></div>
+  <div style="
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;">
+    <div>
+      <input type="range" id="red" name="red"
+            min="0" max="100">
+      <label for="red">Red: <span id="red-label">50</span>%</label>
+    </div>
+    <div>
+      <input type="range" id="green" name="green"
+            min="0" max="100">
+      <label for="green">Green: <span id="green-label">50</span>%</label>
+    </div>
+    <div>
+      <input type="range" id="blue" name="blue"
+            min="0" max="100">
+      <label for="blue">Blue: <span id="blue-label">50</span>%</label>
+    </div>
+  </div>
+</div>
+<br>
+<div id="x3d-container"></div>
+<fieldset>
+    <legend>DVD screensaver mode:</legend>
+    <div>
+      <input type="radio" id="dvd-off" name="drone" value="off" checked onclick="handleRadioChange(this)">
+      <label for="dvd-off">Off</label>
+      <input type="radio" id="dvd-on" name="drone" value="on"
+             onclick="handleRadioChange(this)">
+      <label for="dvd-on">On</label>
+    </div>
+</fieldset>
+<script src="http://x3dom.org/download/1.7/x3dom.js"></script>
+<script src="//d3js.org/d3.v4.0.0-alpha.28.min.js"></script>
+<script src="d3-x3dom-axis.min.js"></script>
+<script src="color-space.js"></script>
+<br>
+<p>Not bad! It&rsquo;s almost like an ant crawling through the inside of that cube above,
+reporting back the color it finds at each position.</p>
+<p>But I think there are some key drawbacks with this single-color visualization:</p>
+<ul>
+<li>It&rsquo;s hard to visualize what changing a value does to the color, and you can&rsquo;t
+see the neighbors before you select the color.</li>
+<li>You&rsquo;re only able to see the exact color at a time, so searching is more
+difficult.</li>
+<li>You have three axes to change, but you&rsquo;re only able to do one slider at a
+time.</li>
+<li>DVD mode repeats itself frequently</li>
+</ul>
+<br>
+<p>I wonder what this could look like if you had a plane of color across two of the
+axes, then adjusted the third axis? It would kind of be like fluidly switching
+between pages in the book above.</p>
+<p>This is already rambling enough, so I&rsquo;ll have to explore that another time :)</p>
+<hr>
+<p>You can see the source code <a href="color-space.js">here</a>, though it&rsquo;s very rough
+around the edges. It&rsquo;s built with D3 and X3DOM, though it was mostly scraped
+together from examples.</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>
