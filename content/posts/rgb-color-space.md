@@ -132,8 +132,8 @@ sliders while it's running.
 
 
 
-<script src="http://x3dom.org/download/1.7/x3dom.js"></script>
-<script src="//d3js.org/d3.v4.0.0-alpha.28.min.js"></script>
+<script src="https://x3dom.org/download/1.7/x3dom.js"></script>
+<script src="https://d3js.org/d3.v4.0.0-alpha.28.min.js"></script>
 <script src="d3-x3dom-axis.min.js"></script>
 <script src="color-space.js"></script>
 
