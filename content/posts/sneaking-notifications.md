@@ -1,5 +1,5 @@
 ---
-title: "I only really care about the helpful notifications, not the promotional ones"
+title: "I only care about the helpful notifications, not the promotional ones"
 subtitle: "Taking a look at coarse grained notification options that allow apps to sneak in marketing notifications"
 date: 2022-06-05T10:54:51-04:00
 draft: false
