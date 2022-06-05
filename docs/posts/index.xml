@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 28 May 2022 12:29:44 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Jun 2022 10:54:51 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I only really care about the helpful notifications, not the promotional ones</title>
+      <link>https://alexanderell.is/posts/sneaking-notifications/</link>
+      <pubDate>Sun, 05 Jun 2022 10:54:51 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/sneaking-notifications/</guid>
+      <description>Here&amp;rsquo;s a scenario. First, you download an app for a service that has some sort of in-person component, like picking up an order or meeting a driver at the curb. When using that app for the goal, be it that order or that meeting, it&amp;rsquo;s very helpful to have notifications, since they give you the current status and it can be important to coordinate.
+You&amp;rsquo;d like to get a notification for when your order is ready, since that takes away the need for you to repeatedly poll the app and refresh constantly.</description>
+    </item>
+    
     <item>
       <title>Playing with a 3D representation of RGB color space</title>
       <link>https://alexanderell.is/posts/rgb-color-space/</link>
