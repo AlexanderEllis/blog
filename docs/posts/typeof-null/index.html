@@ -20,6 +20,13 @@
 		
 		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="typeof null: investigating a classic JavaScript bug"/>
+<meta name="twitter:description" content="In my last post, I looked into some JavaScript casting and explored why 0 &lt;= null evaluates as true.
+For this post, I&rsquo;d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
+This is a well-known bug, and we&rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
+The main idea is that the code assigned each item some bits for use as flags for different types, but null was different."/>
+
 	</head>
 
     <body>
