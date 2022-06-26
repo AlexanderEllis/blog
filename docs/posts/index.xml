@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 12 Jun 2022 10:03:10 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Jun 2022 11:45:27 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Long running pull requests</title>
+      <link>https://alexanderell.is/posts/my-longest-running-pr/</link>
+      <pubDate>Sun, 26 Jun 2022 11:45:27 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/my-longest-running-pr/</guid>
+      <description>There&amp;rsquo;s nothing quite like merging a pull request that has been pending for months. It&amp;rsquo;s so satisfying.
+At Google, they have little badges for your internal user profile. One of the ones you can get celebrates the longest time delta in between creating a change and submitting it. For example, if you create a PR on August 1st and submit it on September 1st, you&amp;rsquo;d probably get the 1-month PR badge.</description>
+    </item>
+    
     <item>
       <title>How far behind a plane is its noise?</title>
       <link>https://alexanderell.is/posts/plane-noise/</link>
