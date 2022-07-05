@@ -115,7 +115,7 @@ Stack trace:
   0xfb65e9: testing::TestSuite::Run()
 ... Google Test internal frames ...
 </code></pre><p>This means that an exception was thrown because there was an unknown field,
-the <code>logs</code> field, in a <code>resource_logs.instrumentation_library_logs</code> proto.
+the <code>log</code> field, in a <code>resource_logs.instrumentation_library_logs</code> proto.
 Because that exception was thrown, this meant that the gmock
 expectation on line 51 of the <code>async_client.startRaw</code> function being called was
 <em>not</em> being fulfilled, as the exception stopped everything immediately.</p>

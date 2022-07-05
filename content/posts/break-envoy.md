@@ -64,7 +64,7 @@ Stack trace:
 ```
 
 This means that an exception was thrown because there was an unknown field,
-the `logs` field, in a `resource_logs.instrumentation_library_logs` proto.
+the `log` field, in a `resource_logs.instrumentation_library_logs` proto.
 Because that exception was thrown, this meant that the gmock
 expectation on line 51 of the `async_client.startRaw` function being called was
 _not_ being fulfilled, as the exception stopped everything immediately.
