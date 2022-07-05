@@ -1,0 +1,227 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.99.1" />
+		<title>How to break the Envoy CI at head &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to break the Envoy CI at head"/>
+<meta name="twitter:description" content="I like to talk about small mistakes I&rsquo;ve made. I&rsquo;m a big proponent of psychological safety, and as a champion for it, I think it&rsquo;s very important to talk about times you&rsquo;ve slipped up or done something dumb. We all make mistakes, and there are times when you feel silly for doing something.
+This is one of those times.
+ I recently merged a large pull request in Envoy that required a lot of work."/>
+
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        How to break the Envoy CI at head
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    Jul 3, 2022
+                    · 767 words
+                    · 4 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>I like to talk about small mistakes I&rsquo;ve made. I&rsquo;m a big proponent of
+psychological safety, and as a champion for it, I think it&rsquo;s very important to
+talk about times you&rsquo;ve slipped up or done something dumb. We all make mistakes,
+and there are times when you feel silly for doing something.</p>
+<p>This is one of those times.</p>
+<hr>
+<p><a href="/posts/my-longest-running-pr">I recently merged a large pull request in Envoy that required a lot of work</a>.
+It was so satisfying to see the approvals come in, and that final moment where
+the <a href="https://github.com/envoyproxy/envoy/pull/20281">PR</a> finally merged was so
+gratifying after many months, many delays, and many revisions.</p>
+<p>It <em>was</em>, at least, until I got a few GitHub notifications:</p>
+<blockquote>
+<p>@AlexanderEllis we&rsquo;re reverting this because it broke CI on main. Can you
+figure out what broke and re-submit the PR with a fix? The easiest-to-review
+way to do that is to revert this revert, then add another commit with whatever
+fix needs to be made.</p>
+</blockquote>
+<p>Ah, that satisfying feeling, quickly replaced by &ldquo;oh shit I broke the build for
+a big public project&rdquo;, the satisfaction vanishing into the afternoon breeze. Not
+the end of the world, but I hate that feeling, especially as it meant other PRs
+were blocked.</p>
+<h3 id="the-problem">The problem</h3>
+<p>Scoping out the error was illuminating, but mostly because I&rsquo;ve been
+desensitized to this sort of error message.</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">...
+[ RUN      ] GrpcAccessLoggerCacheImplTest.LoggerCreationResourceAttributes
+unknown file: Failure
+C++ exception with description &#34;Protobuf message (type opentelemetry.proto.collector.logs.v1.ExportLogsServiceRequest reason INVALID_ARGUMENT:(resource_logs.instrumentation_library_logs[0]) logs: Cannot find field.) has unknown fields&#34; thrown in the test body.
+test/extensions/access_loggers/open_telemetry/grpc_access_log_impl_test.cc:51: Failure
+Actual function call count doesn&#39;t match EXPECT_CALL(*async_client, startRaw(_, _, _, _))...
+         Expected: to be called once
+           Actual: never called - unsatisfied and active
+Stack trace:
+  0xf9f9ff: testing::internal::GoogleTestFailureReporter::ReportFailure()
+  0xfa25ca: testing::internal::UntypedFunctionMockerBase::VerifyAndClearExpectationsLocked()
+  0x6bab7e: testing::internal::FunctionMocker&lt;&gt;::~FunctionMocker()
+  0x6bac9d: Envoy::Grpc::MockAsyncClient::~MockAsyncClient()
+  0x6bacbe: Envoy::Grpc::MockAsyncClient::~MockAsyncClient()
+  0x6b5961: Envoy::Extensions::AccessLoggers::Common::GrpcAccessLogger&lt;&gt;::~GrpcAccessLogger()
+  0x6b6b81: Envoy::Extensions::AccessLoggers::Common::GrpcAccessLoggerCache&lt;&gt;::ThreadLocalCache::~ThreadLocalCache()
+  0x90b59a: Envoy::ThreadLocal::MockInstance::SlotImpl::~SlotImpl()
+  0x90b5fe: Envoy::ThreadLocal::MockInstance::SlotImpl::~SlotImpl()
+  0x6b41aa: Envoy::Extensions::AccessLoggers::OpenTelemetry::(anonymous namespace)::GrpcAccessLoggerCacheImplTest::~GrpcAccessLoggerCacheImplTest()
+  0x6b425e: Envoy::Extensions::AccessLoggers::OpenTelemetry::(anonymous namespace)::GrpcAccessLoggerCacheImplTest_LoggerCreationResourceAttributes_Test::~GrpcAccessLoggerCacheImplTest_LoggerCreationResourceAttributes_Test()
+  0xfb49dc: testing::internal::HandleExceptionsInMethodIfSupported&lt;&gt;()
+  0xfb5894: testing::TestInfo::Run()
+  0xfb65e9: testing::TestSuite::Run()
+... Google Test internal frames ...
+</code></pre><p>This means that an exception was thrown because there was an unknown field,
+the <code>logs</code> field, in a <code>resource_logs.instrumentation_library_logs</code> proto.
+Because that exception was thrown, this meant that the gmock
+expectation on line 51 of the <code>async_client.startRaw</code> function being called was
+<em>not</em> being fulfilled, as the exception stopped everything immediately.</p>
+<p>Much like the actual function call, I was also very unsatisfied.</p>
+<p>This test in question,
+<code>test/extensions/access_loggers/open_telemetry/grpc_access_log_impl_test.cc</code>,
+was parsing YAML strings as protos to ensure the right fields were being
+populated correctly, with something like the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C++" data-lang="C++"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> std<span style="color:#f92672">::</span>string expected_message_yaml <span style="color:#f92672">=</span> R<span style="color:#e6db74">&#34;EOF(</span>
+</span></span><span style="display:flex;"><span>  resource_logs:
+</span></span><span style="display:flex;"><span>    instrumentation_library_logs:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">-</span> log:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">-</span> severity_text: <span style="color:#e6db74">&#34;test-severity-text&#34;</span>
+</span></span><span style="display:flex;"><span>  )EOF<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>opentelemetry<span style="color:#f92672">::</span>proto<span style="color:#f92672">::</span>collector<span style="color:#f92672">::</span>logs<span style="color:#f92672">::</span>v1<span style="color:#f92672">::</span>ExportLogsServiceRequest expected_message;
+</span></span><span style="display:flex;"><span>TestUtility<span style="color:#f92672">::</span>loadFromYaml(expected_message_yaml, expected_message);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ... more C++ goodness that verifies that the expected message is what shows up
+</span></span></span></code></pre></div><p>The error above meant that it was running into trouble when parsing this YAML,
+purportedly because the <code>log</code> field didn&rsquo;t exist.</p>
+<h3 id="the-diagnosis">The diagnosis</h3>
+<p>This area of the code was actually only tangentially related to the changes I
+was making. I was adding a new OpenTelemetry <em>tracing</em> extension, but this error
+was in the OpenTelemetry <em>access logger</em>.  Although it was a separate extension
+altogether, it immediately rang a bell as a suspicious character I had seen
+before.</p>
+<p>As part of the PR, I had bumped the version of the
+<a href="https://github.com/open-telemetry/opentelemetry-proto">OpenTelemetry Proto library</a>
+that Envoy uses. One of the included changes in this bump was a breaking
+change that renamed the <code>logs</code> field in
+<code>resouce_logs.instrumentation_library_logs</code> to <code>log_records</code>.
+I had bumped the version, and I had already done
+<a href="https://github.com/envoyproxy/envoy/pull/20281/commits/4057f4f54d8e8679cf779f87af4432aacbab5ada">a little work to deal with the new field name</a>,
+even though I was doing nothing related to logging.</p>
+<p>Unfortunately for Envoy&rsquo;s CI, with hilariously bad timing, around 6 hours before
+my multi-month PR was merged, a different PR had added a new test with the
+<code>log</code>. I hadn&rsquo;t pulled that commit into my branch, and when my PR was merged,
+this new test immediately started throwing exceptions when it was being run, as
+this <code>log</code> field no longer existed with the new version of the library.</p>
+<p>Luckily, this meant that it was only
+<a href="https://github.com/envoyproxy/envoy/pull/21842/files">a quick one line forward fix</a>
+to get things back in business.</p>
+<h3 id="happy-little-accidents">Happy little accidents</h3>
+<p>These silly mistakes are always helpful, if only for little reminders to
+yourself down the line. For me, it&rsquo;s a good little reminder for a few things:</p>
+<ol>
+<li>Be more careful about merging main (rookie mistake, and I blame myself for
+getting out of practice after 3.5 years of not using git for work)</li>
+<li>Be careful about unstable library upgrades</li>
+<li>Decouple library upgrades from other functional changes and avoid large PRs</li>
+<li>As I mention in that other post, do everything you can to not have
+multi-month PRs!</li>
+</ol>
+<br>
+<p>May your builds be ever green and your tests be ever passing.</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

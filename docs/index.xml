@@ -6,7 +6,18 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 26 Jun 2022 11:45:27 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Jul 2022 18:16:17 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to break the Envoy CI at head</title>
+      <link>https://alexanderell.is/posts/break-envoy/</link>
+      <pubDate>Sun, 03 Jul 2022 18:16:17 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/break-envoy/</guid>
+      <description>I like to talk about small mistakes I&amp;rsquo;ve made. I&amp;rsquo;m a big proponent of psychological safety, and as a champion for it, I think it&amp;rsquo;s very important to talk about times you&amp;rsquo;ve slipped up or done something dumb. We all make mistakes, and there are times when you feel silly for doing something.
+This is one of those times.
+ I recently merged a large pull request in Envoy that required a lot of work.</description>
+    </item>
+    
     <item>
       <title>Long running pull requests</title>
       <link>https://alexanderell.is/posts/my-longest-running-pr/</link>
