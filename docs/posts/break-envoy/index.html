@@ -57,7 +57,7 @@ This is one of those times.
                     </h2>
                     <h2 class="headline">
                     Jul 3, 2022
-                    · 767 words
+                    · 775 words
                     · 4 minutes read
                       <span class="tags">
                             
@@ -150,10 +150,11 @@ I had bumped the version, and I had already done
 <a href="https://github.com/envoyproxy/envoy/pull/20281/commits/4057f4f54d8e8679cf779f87af4432aacbab5ada">a little work to deal with the new field name</a>,
 even though I was doing nothing related to logging.</p>
 <p>Unfortunately for Envoy&rsquo;s CI, with hilariously bad timing, around 6 hours before
-my multi-month PR was merged, a different PR had added a new test with the
-<code>log</code>. I hadn&rsquo;t pulled that commit into my branch, and when my PR was merged,
-this new test immediately started throwing exceptions when it was being run, as
-this <code>log</code> field no longer existed with the new version of the library.</p>
+my multi-month PR was merged, a different PR had added a new test with the <code>log</code>
+field in a YAML string that it parsed. I hadn&rsquo;t pulled that commit into my
+branch, and when my PR was merged, this new test immediately started throwing
+exceptions when it was being run, as this <code>log</code> field no longer existed with the
+new version of the library.</p>
 <p>Luckily, this meant that it was only
 <a href="https://github.com/envoyproxy/envoy/pull/21842/files">a quick one line forward fix</a>
 to get things back in business.</p>

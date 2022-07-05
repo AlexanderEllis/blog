@@ -109,10 +109,11 @@ I had bumped the version, and I had already done
 even though I was doing nothing related to logging.
 
 Unfortunately for Envoy's CI, with hilariously bad timing, around 6 hours before
-my multi-month PR was merged, a different PR had added a new test with the
-`log`. I hadn't pulled that commit into my branch, and when my PR was merged,
-this new test immediately started throwing exceptions when it was being run, as
-this `log` field no longer existed with the new version of the library.
+my multi-month PR was merged, a different PR had added a new test with the `log`
+field in a YAML string that it parsed. I hadn't pulled that commit into my
+branch, and when my PR was merged, this new test immediately started throwing
+exceptions when it was being run, as this `log` field no longer existed with the
+new version of the library.
 
 Luckily, this meant that it was only
 [a quick one line forward fix](https://github.com/envoyproxy/envoy/pull/21842/files)
