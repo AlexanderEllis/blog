@@ -102,7 +102,7 @@ before.
 As part of the PR, I had bumped the version of the
 [OpenTelemetry Proto library](https://github.com/open-telemetry/opentelemetry-proto)
 that Envoy uses. One of the included changes in this bump was a breaking
-change that renamed the `logs` field in
+change that renamed the `log` field in
 `resouce_logs.instrumentation_library_logs` to `log_records`.
 I had bumped the version, and I had already done
 [a little work to deal with the new field name](https://github.com/envoyproxy/envoy/pull/20281/commits/4057f4f54d8e8679cf779f87af4432aacbab5ada),
