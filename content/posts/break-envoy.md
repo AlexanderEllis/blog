@@ -122,7 +122,8 @@ to get things back in business.
 ### Happy little accidents
 
 These silly mistakes are always helpful, if only for little reminders to
-yourself down the line. For me, it's a good little reminder for a few things:
+yourself down the line. If you're looking for a few recommendations, this is a
+good little reminder about a few things:
 
 1. Be more careful about merging main (rookie mistake, and I blame myself for
    getting out of practice after 3.5 years of not using git for work)
