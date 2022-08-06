@@ -1,0 +1,211 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.99.1" />
+		<title>Sharpening the axe for programming &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Sharpening the axe for programming"/>
+<meta name="twitter:description" content="A woodsman was once asked, “What would you do if you had just five minutes to chop down a tree?” He answered, “I would spend the first two and a half minutes sharpening my axe.”
+ When it comes to solving a problem with code, I&rsquo;ve found a few things that help make the process more efficient. The code is the output, but like sharpening the axe, there are a few things I do outside of writing code that makes it easier."/>
+
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Sharpening the axe for programming
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    Aug 6, 2022
+                    · 1022 words
+                    · 5 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <blockquote>
+<p>A woodsman was once asked, “What would you do if you had just five minutes to
+chop down a tree?” He answered, “I would spend the first two and a half
+minutes sharpening my axe.”</p>
+</blockquote>
+<p>When it comes to solving a problem with code, I&rsquo;ve found a few things that help
+make the process more efficient. The code is the output, but like
+sharpening the axe, there are a few things I do outside of writing code that
+makes it easier. I&rsquo;ll be walking through a few of them below.</p>
+<p>Quick note that this isn&rsquo;t a guide to sharpening your own programming axe; that
+you&rsquo;ll have to figure out on your own! While I encourage everyone to think
+deliberately about how they work, this is just a few things I&rsquo;ve found work for
+my own brain.</p>
+<hr>
+<h3 id="explaining-myself">Explaining myself</h3>
+<p>I&rsquo;ve found that one of the best ways to think through a tricky problem is to
+explain it first. Sometimes it&rsquo;s a formal design document for other people to
+spread awareness and build consensus. Sometimes, it&rsquo;s a rubber-duck debugging
+session as I explain the problem to my dog. Sometimes, it&rsquo;s even a scribbled
+diagram on a throwaway piece of paper that helps me visualize the solution.</p>
+<p>Putting the problem into words forces you to think through it and requires that
+you be exact about it. There&rsquo;s nothing quite like attempting to go through a
+detailed explanation to force you to really understand what&rsquo;s going on (extra
+points if you&rsquo;re explaining it to someone else), and you quickly uncover areas
+you don&rsquo;t fully understand. Those areas you don&rsquo;t understand are the ones that
+can make coming up with a solution and implementing it difficult, and working
+through them ahead of time can save you from so many later troubles.</p>
+<p>Additional extra points if you have someone already familiar with the problem
+take a look at what you&rsquo;ve written to confirm your understanding. It&rsquo;s a great
+way to learn, and it&rsquo;s a strong benefit to going through the writing process.</p>
+<h3 id="deliberately-exploring-and-chipping-away">Deliberately exploring and chipping away</h3>
+<p>When working through a tricky problem, it can be so tempting to noodle, and I&rsquo;d
+be lying if I said I had never rerun a test after randomly changing a line or
+two without fully thinking through it. I try not to, though. I&rsquo;m a huge fan of
+<a href="/posts/debugging-lab-notebook/">keeping a debugging lab notebook</a>, and I often
+find myself writing summaries and updates of what I&rsquo;ve tried and what I&rsquo;m seeing
+to help keep my exploration guided, even though no one will ever read them. Most
+of the time, they&rsquo;re a winding path of things I uncover and think about as I
+work through a problem, including the next steps I&rsquo;m planning to take.</p>
+<p>It&rsquo;s a combination of writing it down (like earlier) and being deliberate that
+helps me. Keeping track of what I&rsquo;ve done, where I&rsquo;ve been, and the immediate
+next steps helps me deliberately build my understanding, as I write down
+questions and dig in to the answers. It&rsquo;s like a targeted exploration of the
+problem, where you take individual steps to build your understanding, explore
+the problem, and get closer to a solution.</p>
+<p>I really enjoy this Julia Evans comic about debugging: just focus on one
+question at a time, and slowly build understanding from there!</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">debugging strategy: come up with one question <a href="https://t.co/2Lytzl4laQ">pic.twitter.com/2Lytzl4laQ</a></p>&mdash; 🔎Julia Evans🔍 (@b0rk) <a href="https://twitter.com/b0rk/status/1554120424602193921?ref_src=twsrc%5Etfw">August 1, 2022</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<br>
+<p>When faced with ambiguous problems and a difficult search space, I find it
+helpful to take those individual steps. I write down a few questions, then go
+through answering each one. They often result in more questions, but they also
+result in progress.</p>
+<p>Much like writing notes throughout the day, I find that the best benefit is from
+the process and not saving my steps for the future. Usually my debugging
+notebooks waste away as bytes on a Google Drive server somewhere, but
+occasionally I&rsquo;ll see a similar problem and be able to go back and see what
+steps I took before. Like visiting old code, it&rsquo;s also sometimes fun to go back
+with my current knowledge and see how I thought about a problem at the time.</p>
+<h3 id="passing-it-off-to-a-background-thread">Passing it off to a background thread</h3>
+<p>One of the best ways for me to make forward progress is to step away from the
+computer and <a href="/posts/trust-in-your-unconscious/">let my brain passively think about the problem</a>.
+It can be difficult to remember to do sometimes, especially when I&rsquo;m stuck deep
+in a problem whose solution feels like it&rsquo;s right around the corner: what if I
+just tried this one other thing?</p>
+<p>In the moment, it can feel counterintuitive, especially when you&rsquo;re deep in the
+weeds.  I&rsquo;ve never regretted taking a break, and more often than not, something
+in the background will fire and make a connection that makes sense and helps
+uncover some mystery.</p>
+<blockquote>
+<p>If none of this works, I’ve found that one of the best ways to move forward
+with a problem is to get away from the problem. If it’s halfway through the
+day, going for a walk around the block (importantly, without just going on my
+phone) or going for a swim will often let me realize something I missed that
+proves to be the key when I get back to my desk. If it’s close to the end of
+the day, heading home and letting the problem sit overnight is often enough to
+unblock me for the next morning. I’ve lost track of how many times I’ve
+realized a key insight on the train home, only 15 minutes of unfocused day
+dreaming since I was just looking intently at the code.</p>
+</blockquote>
+<hr>
+<p>Part of the game for me is making it easy for my brain to do the difficult work.
+I once saw a question about whether or not typing speed was important to be a
+proficient programmer, and I don&rsquo;t think it is. For programming, typing the code
+in is the easy part; it&rsquo;s understanding systems and the existing code, deciding
+which code to write, and figuring out <em>how</em> to write it that are the hard parts.
+Luckily, I&rsquo;ve found a few things that make it all easier.</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

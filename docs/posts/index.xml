@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 30 Jul 2022 13:16:31 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Aug 2022 15:46:51 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sharpening the axe for programming</title>
+      <link>https://alexanderell.is/posts/sharpening-the-axe/</link>
+      <pubDate>Sat, 06 Aug 2022 15:46:51 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/sharpening-the-axe/</guid>
+      <description>A woodsman was once asked, “What would you do if you had just five minutes to chop down a tree?” He answered, “I would spend the first two and a half minutes sharpening my axe.”
+ When it comes to solving a problem with code, I&amp;rsquo;ve found a few things that help make the process more efficient. The code is the output, but like sharpening the axe, there are a few things I do outside of writing code that makes it easier.</description>
+    </item>
+    
     <item>
       <title>Funny artifacts in a 3D house scan</title>
       <link>https://alexanderell.is/posts/3d-scan/</link>
