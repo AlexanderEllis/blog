@@ -8,7 +8,7 @@ draft: false
 I dabble with DNS for work, and I'm frequently checking if CNAMEs are properly
 configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate
 that one domain name is a nickname for another domain name. For example, you
-probably encounter CNAMEs that map from the classic `www` subdomains:
+probably encounter CNAMEs that map from the classic `www` subdomain:
 
 ```none
 www.example.com CNAME example.com
@@ -18,7 +18,7 @@ This entry indicates that `example.com` is the Canonical NAME for
 `www.example.com`. When you go to `www.example.com`, your DNS resolver sees this
 entry and looks up the right side instead, `example.com`, which then (hopefully)
 resolves to the actual destination. This is pretty neat, and it can be handy for
-doing all sorts of interesting things with subdomain.
+doing all sorts of interesting things with subdomains.
 
 If you aren't familiar with CNAMEs or DNS, I'd highly, highly recommend
 [Julia Evans' _How DNS Works!_ Zine](https://jvns.ca/blog/2022/04/26/new-zine--how-dns-works-/).

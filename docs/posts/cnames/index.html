@@ -22,7 +22,7 @@
 		
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="What happens if you point two CNAMEs at each other? Not much, really"/>
-<meta name="twitter:description" content="I dabble with DNS for work, and I&rsquo;m frequently checking if CNAMEs are properly configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate that one domain name is a nickname for another domain name. For example, you probably encounter CNAMEs that map from the classic www subdomains:
+<meta name="twitter:description" content="I dabble with DNS for work, and I&rsquo;m frequently checking if CNAMEs are properly configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate that one domain name is a nickname for another domain name. For example, you probably encounter CNAMEs that map from the classic www subdomain:
 www.example.com CNAME example.com This entry indicates that example.com is the Canonical NAME for www.example.com. When you go to www.example.com, your DNS resolver sees this entry and looks up the right side instead, example."/>
 
 	</head>
@@ -68,13 +68,13 @@ www.example.com CNAME example.com This entry indicates that example.com is the C
                     <p>I dabble with DNS for work, and I&rsquo;m frequently checking if CNAMEs are properly
 configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate
 that one domain name is a nickname for another domain name. For example, you
-probably encounter CNAMEs that map from the classic <code>www</code> subdomains:</p>
+probably encounter CNAMEs that map from the classic <code>www</code> subdomain:</p>
 <pre tabindex="0"><code class="language-none" data-lang="none">www.example.com CNAME example.com
 </code></pre><p>This entry indicates that <code>example.com</code> is the Canonical NAME for
 <code>www.example.com</code>. When you go to <code>www.example.com</code>, your DNS resolver sees this
 entry and looks up the right side instead, <code>example.com</code>, which then (hopefully)
 resolves to the actual destination. This is pretty neat, and it can be handy for
-doing all sorts of interesting things with subdomain.</p>
+doing all sorts of interesting things with subdomains.</p>
 <p>If you aren&rsquo;t familiar with CNAMEs or DNS, I&rsquo;d highly, highly recommend
 <a href="https://jvns.ca/blog/2022/04/26/new-zine--how-dns-works-/">Julia Evans&rsquo; <em>How DNS Works!</em> Zine</a>.</p>
 <p>I was thinking about CNAMEs the other day and a silly question popped into my
