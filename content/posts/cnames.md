@@ -8,7 +8,7 @@ draft: false
 I dabble with DNS for work, and I'm frequently checking if CNAMEs are properly
 configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate
 that one domain name is a nickname for another domain name. For example, you
-probably encounter CNAMEs that map from the classic `www` subdomain:
+probably encounter CNAMEs that map from the classic `www` subdomains:
 
 ```none
 www.example.com CNAME example.com
@@ -202,10 +202,11 @@ ffmia098sr21vlstesk9tcas3o8r2kbi.is. 1800 IN RRSIG NSEC3 8 2 1800 20220823181002
 <a id="break-down"></a>
 <br>
 
-The `dig` output can gnarly, but let's break this down.
-`dig` is recursively asking _"Where do I find this domain?"_, starting with the
-root servers and asking the DNS server in the answer. You can imagine it walking
-through a big tree of DNS servers as they get more and more specific.
+The `dig` output can look gnarly, but let's break this down. `dig` is
+recursively asking _"Where do I find this domain?"_, starting with the root
+servers and asking the DNS server in the answer. You can imagine it walking down
+a tree of DNS servers as they get more and more specific for the domain in
+question.
 
 You can see the first request in the first `QUESTION SECTION`: `. IN NS`, or
 _"I'm looking for any domain. Who are the root servers?"_. This query did fine,
@@ -233,10 +234,10 @@ m.root-servers.net.	313522	IN	A	202.12.27.33
 <br>
 
 The next question was to ask the root servers about this domain. We can see it
-asked the server with IP `202.12.27.33`, which corresponds to
+asked the server with the IP `202.12.27.33`, which corresponds to
 `m.root-servers.net` above. We asked it how to find `a.alexanderell.is`, and it
-pointed us to the `.is` TLD name servers (and a Swedish name server, see the
-`.se`). Again we can see that there was no error, which makes sense.
+pointed us towards the `.is` TLD name servers (and a Swedish name server, see
+the `.se`). Again we can see that there was no error, which makes sense.
 
 ```none
 ;; Got answer:
@@ -453,8 +454,8 @@ make? Another exercise left to the reader.
 I'm no expert on DNS servers (I'm more of an "application layer well after DNS"
 guy), but after a quick search, I found an interesting article about
 [DNS loops and potential attack vectors](https://www.sidnlabs.nl/en/news-and-blogs/tsuname-dns-loops-are-a-well-known-problem-but-arent-properly-addressed-by-current-rfcs),
-where they found from a real-world example that NS record cycles can be
-used to magnify queries to the authoritative servers. In their words:
+where they found a real-world example where NS record cycles led to a
+magnification of queries to the authoritative servers. In their words:
 
 > Last May, we publicly disclosed tsuNAME, a DNS vulnerability that could be
 > exploited to mount DDoS attacks, where resolvers, clients and/or forwarders
@@ -475,8 +476,10 @@ From [their technical report on tsuNAME](https://tsuname.io/tech_report.pdf):
 
 From the _Emulating TSUNAME_ section, they describe recreating the issue with
 their own authoritative servers. They used probes to send ~18,000 DNS queries to
-their first hop resolvers, and those requests were _magnified to ~8,000,000
-queries to the authoritative servers_. Recommend reading through the technical
-report if you're curious — it's pretty interesting stuff.
+their first hop resolvers, and those requests were eventually _magnified to
+~8,000,000 queries to the authoritative servers_.
+
+Recommend reading through the rest of the technical report if you're curious —
+it's pretty interesting stuff.
 
 Glad I stopped at CNAMEs.

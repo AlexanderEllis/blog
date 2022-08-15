@@ -13,7 +13,7 @@
       <pubDate>Sun, 14 Aug 2022 20:46:39 -0400</pubDate>
       
       <guid>https://alexanderell.is/posts/cnames/</guid>
-      <description>I dabble with DNS for work, and I&amp;rsquo;m frequently checking if CNAMEs are properly configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate that one domain name is a nickname for another domain name. For example, you probably encounter CNAMEs that map from the classic www subdomain:
+      <description>I dabble with DNS for work, and I&amp;rsquo;m frequently checking if CNAMEs are properly configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate that one domain name is a nickname for another domain name. For example, you probably encounter CNAMEs that map from the classic www subdomains:
 www.example.com CNAME example.com This entry indicates that example.com is the Canonical NAME for www.example.com. When you go to www.example.com, your DNS resolver sees this entry and looks up the right side instead, example.</description>
     </item>
     

@@ -22,7 +22,7 @@
 		
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="What happens if you point two CNAMEs at each other? Not much, really"/>
-<meta name="twitter:description" content="I dabble with DNS for work, and I&rsquo;m frequently checking if CNAMEs are properly configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate that one domain name is a nickname for another domain name. For example, you probably encounter CNAMEs that map from the classic www subdomain:
+<meta name="twitter:description" content="I dabble with DNS for work, and I&rsquo;m frequently checking if CNAMEs are properly configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate that one domain name is a nickname for another domain name. For example, you probably encounter CNAMEs that map from the classic www subdomains:
 www.example.com CNAME example.com This entry indicates that example.com is the Canonical NAME for www.example.com. When you go to www.example.com, your DNS resolver sees this entry and looks up the right side instead, example."/>
 
 	</head>
@@ -56,7 +56,7 @@ www.example.com CNAME example.com This entry indicates that example.com is the C
                     </h2>
                     <h2 class="headline">
                     Aug 14, 2022
-                    · 2591 words
+                    · 2600 words
                     · 13 minutes read
                       <span class="tags">
                             
@@ -68,7 +68,7 @@ www.example.com CNAME example.com This entry indicates that example.com is the C
                     <p>I dabble with DNS for work, and I&rsquo;m frequently checking if CNAMEs are properly
 configured. CNAMEs are Canonical NAMEs, kind of like nicknames, that indicate
 that one domain name is a nickname for another domain name. For example, you
-probably encounter CNAMEs that map from the classic <code>www</code> subdomain:</p>
+probably encounter CNAMEs that map from the classic <code>www</code> subdomains:</p>
 <pre tabindex="0"><code class="language-none" data-lang="none">www.example.com CNAME example.com
 </code></pre><p>This entry indicates that <code>example.com</code> is the Canonical NAME for
 <code>www.example.com</code>. When you go to <code>www.example.com</code>, your DNS resolver sees this
@@ -242,10 +242,11 @@ ffmia098sr21vlstesk9tcas3o8r2kbi.is. 1800 IN RRSIG NSEC3 8 2 1800 20220823181002
 ;; MSG SIZE  rcvd: 46
 </code></pre><p><a id="break-down"></a>
 <br></p>
-<p>The <code>dig</code> output can gnarly, but let&rsquo;s break this down.
-<code>dig</code> is recursively asking <em>&ldquo;Where do I find this domain?&rdquo;</em>, starting with the
-root servers and asking the DNS server in the answer. You can imagine it walking
-through a big tree of DNS servers as they get more and more specific.</p>
+<p>The <code>dig</code> output can look gnarly, but let&rsquo;s break this down. <code>dig</code> is
+recursively asking <em>&ldquo;Where do I find this domain?&rdquo;</em>, starting with the root
+servers and asking the DNS server in the answer. You can imagine it walking down
+a tree of DNS servers as they get more and more specific for the domain in
+question.</p>
 <p>You can see the first request in the first <code>QUESTION SECTION</code>: <code>. IN NS</code>, or
 <em>&ldquo;I&rsquo;m looking for any domain. Who are the root servers?&rdquo;</em>. This query did fine,
 and it returned the root servers and where to find them.</p>
@@ -267,10 +268,10 @@ m.root-servers.net.	313522	IN	A	202.12.27.33
 ... where to find other root servers
 </code></pre><br>
 <p>The next question was to ask the root servers about this domain. We can see it
-asked the server with IP <code>202.12.27.33</code>, which corresponds to
+asked the server with the IP <code>202.12.27.33</code>, which corresponds to
 <code>m.root-servers.net</code> above. We asked it how to find <code>a.alexanderell.is</code>, and it
-pointed us to the <code>.is</code> TLD name servers (and a Swedish name server, see the
-<code>.se</code>). Again we can see that there was no error, which makes sense.</p>
+pointed us towards the <code>.is</code> TLD name servers (and a Swedish name server, see
+the <code>.se</code>). Again we can see that there was no error, which makes sense.</p>
 <pre tabindex="0"><code class="language-none" data-lang="none">;; Got answer:
 ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 4649
 ;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 8, ADDITIONAL: 13
@@ -442,8 +443,8 @@ make? Another exercise left to the reader.</p>
 <p>I&rsquo;m no expert on DNS servers (I&rsquo;m more of an &ldquo;application layer well after DNS&rdquo;
 guy), but after a quick search, I found an interesting article about
 <a href="https://www.sidnlabs.nl/en/news-and-blogs/tsuname-dns-loops-are-a-well-known-problem-but-arent-properly-addressed-by-current-rfcs">DNS loops and potential attack vectors</a>,
-where they found from a real-world example that NS record cycles can be
-used to magnify queries to the authoritative servers. In their words:</p>
+where they found a real-world example where NS record cycles led to a
+magnification of queries to the authoritative servers. In their words:</p>
 <blockquote>
 <p>Last May, we publicly disclosed tsuNAME, a DNS vulnerability that could be
 exploited to mount DDoS attacks, where resolvers, clients and/or forwarders
@@ -464,9 +465,10 @@ to normal levels</p>
 </blockquote>
 <p>From the <em>Emulating TSUNAME</em> section, they describe recreating the issue with
 their own authoritative servers. They used probes to send ~18,000 DNS queries to
-their first hop resolvers, and those requests were <em>magnified to ~8,000,000
-queries to the authoritative servers</em>. Recommend reading through the technical
-report if you&rsquo;re curious — it&rsquo;s pretty interesting stuff.</p>
+their first hop resolvers, and those requests were eventually <em>magnified to
+~8,000,000 queries to the authoritative servers</em>.</p>
+<p>Recommend reading through the rest of the technical report if you&rsquo;re curious —
+it&rsquo;s pretty interesting stuff.</p>
 <p>Glad I stopped at CNAMEs.</p>
 
                 </section>
