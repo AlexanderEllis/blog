@@ -1,0 +1,843 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.99.1" />
+		<title>Writing a toy websocket server from scratch &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Writing a toy websocket server from scratch"/>
+<meta name="twitter:description" content="WebSocket (WS) connections are pretty neat. I&rsquo;ve gotten to play around with them before, both for personal and professional projects, but my view has mostly been at a high level and concerned mainly with the things that I can build on top of them. I haven&rsquo;t spent much time digging through the protocol.
+I thought it would be pretty interesting to build a toy WS server from scratch. Like many other projects, I find building a toy system to be such a good way to learn more, and I&rsquo;ll be talking about this toy WS server (and some of those things I learned) in the rest of the post."/>
+
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Writing a toy websocket server from scratch
+                    </h1>
+                    <h2>
+                        ...so you can appreciate the libraries that do it for you
+                    </h2>
+                    <h2 class="headline">
+                    Aug 28, 2022
+                    · 4067 words
+                    · 20 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>WebSocket (WS) connections are pretty neat. I&rsquo;ve gotten to play around with them
+before, both for personal and professional projects, but my view has mostly been
+at a high level and concerned mainly with the things that I can build on top of
+them. I haven&rsquo;t spent much time digging through the protocol.</p>
+<p>I thought it would be pretty interesting to build a toy WS server from scratch.
+Like many other projects, I find building a toy system to be such a good way to
+learn more, and I&rsquo;ll be talking about this toy WS server (and some of those
+things I learned) in the rest of the post.</p>
+<h1 id="websocket">WebSocket</h1>
+<p>The main idea behind the WebSocket protocol is bi-directional communication.
+Rather than the usual request/response lifecycle, with a client asking a server
+for resources, WebSockets allow for messages to be sent in either direction.
+Think of a chat application, where the client should be notified by the server
+that there&rsquo;s a new message for them. You could have the client long poll,
+continuously asking the server if there&rsquo;s anything new, but with a WebSocket
+connection, the server can independently send those new messages to the client,
+allowing the client to passively receive when it needs to.</p>
+<h1 id="the-websocket-connection-flow">The WebSocket connection flow</h1>
+<p>WebSocket connections are initiated via a regular HTTP request from the client
+that indicates it would like to switch, or upgrade, to talking via a WebSocket
+connection. It&rsquo;s <em>kind of</em> like sending someone a Slack message asking if they
+want to hop on a quick video call — it&rsquo;s still communicating over the computer,
+and you&rsquo;re using one method to initiate the next.</p>
+<p>The steps to the flow are the following:</p>
+<ol>
+<li>Client sends an HTTP request to the server indicating it would like to switch
+to WS</li>
+<li>Server responds saying it&rsquo;s OK to switch to WS</li>
+<li>Client and server can start sending WS frames back and forth</li>
+</ol>
+<br>
+<p><img src="basic-handshake.png" alt="Sequence diagram showing the basic WS handshake"></p>
+<p>The real steps are of course a little more complicated, including the origin,
+what and how to upgrade, protocols, extensions, and a few other pieces of data.
+A typical handshake request may look like this:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">GET /chat HTTP/1.1
+Host: server.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+Origin: http://example.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+</code></pre><p>And a typical response:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+</code></pre><p>If you&rsquo;re interested in more details, I&rsquo;d <a href="https://datatracker.ietf.org/doc/html/rfc6455">recommend reading through RFC6455</a> — it&rsquo;s not too bad to dig through!</p>
+<p>What&rsquo;s this <code>Sec-WebSocket-*</code> business? It&rsquo;s one of the ways that the server can
+prove to the client that it received the handshake and it&rsquo;s responding to that
+request. The server does so by hashing the key with a well-known magic string,
+<code>258EAFA5-E914-47DA-95CA-C5AB0DC85B11</code>, then base64 encoding it and sending it
+back as the handshake response. <a href="https://datatracker.ietf.org/doc/html/rfc6455#section-1.3">If you&rsquo;re curious, you can see section 1.3 for more details,</a>
+and I&rsquo;ll have an example in the later code as well.</p>
+<p>This means the full conversation looks a little more like this:</p>
+<br>
+<p><img src="detailed-handshake.png" alt="Sequence diagram showing the HTTP messages being sent back and forth"></p>
+<h1 id="a-toy-websocket-server">A toy websocket server</h1>
+<p>I started with a basic idea: what&rsquo;s the smallest server we can build that can
+handle an incoming websocket message? For example, what would it take to handle
+the following, which is the most basic way to initiate WS communication via
+JavaScript:</p>
+<pre tabindex="0"><code>const exampleWS = new WebSocket(&#34;ws://localhost:5006/websocket&#34;);
+exampleWS.send(&#34;foo&#34;);
+</code></pre><p>These two little lines are deceiving; there&rsquo;s a lot going on under the hood.</p>
+<p>First, for this toy project, it&rsquo;s helpful for myself to define two things:</p>
+<p><strong>Goal</strong>: write a basic server that can handle the WS handshake and parse an incoming WS frame to see the message sent from the client</p>
+<p><strong>Non-goals</strong>: writing a robust or real HTTP server, writing a fully compliant WS server, or handling all edge cases</p>
+<p>With that in mind, the steps will look something along these lines:</p>
+<ol>
+<li>Make a very basic HTTP server to handle incoming HTTP requests</li>
+<li>Handle the initial handshake request and the connection upgrade</li>
+<li>Actually parse the incoming WS frames</li>
+</ol>
+<br>
+<h2 id="starting-with-http">Starting with HTTP</h2>
+<p>We can start by writing a very basic HTTP server that can handle incoming
+requests. This example is very much inspired by Beej&rsquo;s Guide to Network
+Programming<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, and the flow is the following:</p>
+<ul>
+<li>Have one socket that listens for incoming connections</li>
+<li>When there&rsquo;s a new connection on it, create a new socket for listening to it</li>
+<li>When the new sockets are ready to read from, handle the incoming requests</li>
+</ul>
+<br>
+<p>This isn&rsquo;t very exciting, but we can roll a very rough server in a big handful
+of lines:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Very basic HTTP server that just listens on a port and responds.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> socket
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> select
+</span></span><span style="display:flex;"><span>TCP_IP <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;127.0.0.1&#39;</span>
+</span></span><span style="display:flex;"><span>TCP_PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">5006</span>
+</span></span><span style="display:flex;"><span>BUFFER_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DEFAULT_HTTP_RESPONSE <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;&#39;&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&#34;content-type&#34; content=&#34;text/html;charset=utf-8&#34;&gt;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;TITLE&gt;200 OK&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;H1&gt;200 OK&lt;/H1&gt;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Welcome to the default.</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/BODY&gt;&lt;/HTML&gt;</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#39;&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Creates the front-door TCP socket and listens for connections.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># We can have a main socket that listens for initial connections.</span>
+</span></span><span style="display:flex;"><span>    tcp_socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>    tcp_socket<span style="color:#f92672">.</span>setsockopt(socket<span style="color:#f92672">.</span>SOL_SOCKET, socket<span style="color:#f92672">.</span>SO_REUSEADDR, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    tcp_socket<span style="color:#f92672">.</span>bind((TCP_IP, TCP_PORT))
+</span></span><span style="display:flex;"><span>    tcp_socket<span style="color:#f92672">.</span>listen(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Listening on port: &#39;</span>, TCP_PORT)
+</span></span><span style="display:flex;"><span>    input_sockets <span style="color:#f92672">=</span> [tcp_socket]
+</span></span><span style="display:flex;"><span>    output_sockets <span style="color:#f92672">=</span> []  <span style="color:#75715e"># Maybe use, we&#39;ll see</span>
+</span></span><span style="display:flex;"><span>    xlist <span style="color:#f92672">=</span> []  <span style="color:#75715e"># Not using</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the sockets that are ready to read (the first of the</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># three-tuple).</span>
+</span></span><span style="display:flex;"><span>        readable_sockets <span style="color:#f92672">=</span> select<span style="color:#f92672">.</span>select(input_sockets,
+</span></span><span style="display:flex;"><span>                                         output_sockets,
+</span></span><span style="display:flex;"><span>                                         xlist,
+</span></span><span style="display:flex;"><span>                                         <span style="color:#ae81ff">5</span>)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> ready_socket <span style="color:#f92672">in</span> readable_sockets:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Make sure it&#39;s not already closed</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (ready_socket<span style="color:#f92672">.</span>fileno() <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> ready_socket <span style="color:#f92672">==</span> tcp_socket:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">&#39;Handling main door socket&#39;</span>)
+</span></span><span style="display:flex;"><span>                handle_new_connection(tcp_socket, input_sockets)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">&#39;Handling regular socket read&#39;</span>)
+</span></span><span style="display:flex;"><span>                handle_request(ready_socket, input_sockets)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_new_connection</span>(main_door_socket, input_sockets):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># When we get a connection on the main socket, we want to accept a new</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># connection and add it to our input socket list. When we loop back around,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># that socket will be ready to read from.</span>
+</span></span><span style="display:flex;"><span>    client_socket, client_addr <span style="color:#f92672">=</span> main_door_socket<span style="color:#f92672">.</span>accept()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;New socket&#39;</span>, client_socket<span style="color:#f92672">.</span>fileno(), <span style="color:#e6db74">&#39;from address:&#39;</span>, client_addr)
+</span></span><span style="display:flex;"><span>    input_sockets<span style="color:#f92672">.</span>append(client_socket)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_request</span>(client_socket, input_sockets):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Handling request from client socket:&#39;</span>, client_socket<span style="color:#f92672">.</span>fileno())
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Very naive approach: read until we find the last blank line</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        data_in_bytes <span style="color:#f92672">=</span> client_socket<span style="color:#f92672">.</span>recv(BUFFER_SIZE)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Connection on client side has closed.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(data_in_bytes) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            close_socket(client_socket, input_sockets)
+</span></span><span style="display:flex;"><span>            input_sockets<span style="color:#f92672">.</span>remove(client_socket)
+</span></span><span style="display:flex;"><span>            client_socket<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>        message_segment <span style="color:#f92672">=</span> data_in_bytes<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>        message <span style="color:#f92672">+=</span> message_segment
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (len(message) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">and</span> message_segment[<span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>:] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#39;</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Received message:&#39;</span>)
+</span></span><span style="display:flex;"><span>    print(message)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    (method, target, http_version, headers_map) <span style="color:#f92672">=</span> parse_request(message)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;method, target, http_version:&#39;</span>, method, target, http_version)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;headers:&#39;</span>)
+</span></span><span style="display:flex;"><span>    print(headers_map)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># For now, just return a 200. Should probably return length too, eh</span>
+</span></span><span style="display:flex;"><span>    client_socket<span style="color:#f92672">.</span>send(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;HTTP/1.1 200 OK</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> DEFAULT_HTTP_RESPONSE)
+</span></span><span style="display:flex;"><span>    close_socket(client_socket, input_sockets)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Parses the first line and headers from the request.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">parse_request</span>(request):
+</span></span><span style="display:flex;"><span>    headers_map <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Assume headers and body are split by &#39;\r\n\r\n&#39; and we always have them.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Also assume all headers end with&#39;\r\n&#39;.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Also assume it starts with the method.</span>
+</span></span><span style="display:flex;"><span>    split_request <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#39;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    [method, target, http_version] <span style="color:#f92672">=</span> split_request[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39; &#39;</span>)
+</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> split_request[<span style="color:#ae81ff">1</span>:]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> header_entry <span style="color:#f92672">in</span> headers:
+</span></span><span style="display:flex;"><span>        [header, value] <span style="color:#f92672">=</span> header_entry<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;: &#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Headers are case insensitive, so we can just keep track in lowercase.</span>
+</span></span><span style="display:flex;"><span>        headers_map[header<span style="color:#f92672">.</span>lower()] <span style="color:#f92672">=</span> value
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (method, target, http_version, headers_map)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">close_socket</span>(client_socket, input_sockets):
+</span></span><span style="display:flex;"><span>    input_sockets<span style="color:#f92672">.</span>remove(client_socket)
+</span></span><span style="display:flex;"><span>    client_socket<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p>Not very robust, but life is short and toy projects are for fun! What does that look like from the client side?</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">~: $ curl -v 127.0.0.1:5006
+*   Trying 127.0.0.1:5006...
+* Connected to 127.0.0.1 (127.0.0.1) port 5006 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: 127.0.0.1:5006
+&gt; User-Agent: curl/7.77.0
+&gt; Accept: */*
+&gt;
+* Mark bundle as not supporting multiuse
+&lt; HTTP/1.1 200 OK
+* no chunk, no close, no size. Assume close to signal end
+&lt;
+&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&#34;content-type&#34; content=&#34;text/html;charset=utf-8&#34;&gt;
+&lt;TITLE&gt;200 OK&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;200 OK&lt;/H1&gt;
+Welcome to the default.
+&lt;/BODY&gt;&lt;/HTML&gt;
+
+* Closing connection 0
+</code></pre><p>Nice. And on the server?</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">websockets-from-scratch: $ python3 foo.py
+Listening on port:  5006
+Handling main door socket
+New socket 4 from address: (&#39;127.0.0.1&#39;, 60294)
+Handling regular socket read
+Handling request from client socket: 4
+Received message:
+GET / HTTP/1.1
+Host: 127.0.0.1:5006
+User-Agent: curl/7.77.0
+Accept: */*
+
+
+method, target, http_version: GET / HTTP/1.1
+headers:
+{&#39;host&#39;: &#39;127.0.0.1:5006&#39;, &#39;user-agent&#39;: &#39;curl/7.77.0&#39;, &#39;accept&#39;: &#39;*/*&#39;}
+</code></pre><p>Nice! This is basically all the HTTP we need, since we&rsquo;ll be responding to a
+basic GET request and parsing the headers, so no need to get fancier.</p>
+<h2 id="handling-the-initial-handshake-request">Handling the initial handshake request</h2>
+<p>As I mentioned before, the initial handshake includes a few indicators that the
+client would like to switch over to talking over WebSocket. We can do a few
+basic checks to see if an incoming request is something along those lines,
+starting with a check to see if it&rsquo;s a valid request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_valid_ws_handshake_request</span>(method, target, http_version, headers_map):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># There are a few things to verify to see if it&#39;s a valid WS handshake.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># First, the method must be get.</span>
+</span></span><span style="display:flex;"><span>    is_get <span style="color:#f92672">=</span> method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;GET&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># HTTP version must be &gt;= 1.1. We can do a really naive check.</span>
+</span></span><span style="display:flex;"><span>    http_version_number <span style="color:#f92672">=</span> float(http_version<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;/&#39;</span>)[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>    http_version_enough <span style="color:#f92672">=</span> http_version_number <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Finally, we should have the right headers. This is a subset of what we&#39;d</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># really want to check, but it works for now!</span>
+</span></span><span style="display:flex;"><span>    headers_valid <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>        (<span style="color:#e6db74">&#39;upgrade&#39;</span> <span style="color:#f92672">in</span> headers_map <span style="color:#f92672">and</span>
+</span></span><span style="display:flex;"><span>         headers_map<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;upgrade&#39;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;websocket&#39;</span>) <span style="color:#f92672">and</span>
+</span></span><span style="display:flex;"><span>        (<span style="color:#e6db74">&#39;connection&#39;</span> <span style="color:#f92672">in</span> headers_map <span style="color:#f92672">and</span>
+</span></span><span style="display:flex;"><span>         headers_map<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;connection&#39;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Upgrade&#39;</span>) <span style="color:#f92672">and</span>
+</span></span><span style="display:flex;"><span>        (<span style="color:#e6db74">&#39;sec-websocket-key&#39;</span> <span style="color:#f92672">in</span> headers_map)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (is_get <span style="color:#f92672">and</span> http_version_enough <span style="color:#f92672">and</span> headers_valid)
+</span></span></code></pre></div><p>If it is a valid handshake request, we&rsquo;ll need to do that trick with the
+incoming <code>Sec-WebSocket-Key</code> header, where we concatenate it with the Magic
+String, sha1 hash it, and base64 encode it before returning it as the
+<code>Sec-WebSocket-Accept</code> header.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>MAGIC_WEBSOCKET_UUID_STRING <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;258EAFA5-E914-47DA-95CA-C5AB0DC85B11&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_sec_websocket_accept</span>(sec_websocket_key):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># We generate the accept key by concatenating the sec-websocket-key</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># and the magic string, Sha1 hashing it, and base64 encoding it.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># See https://datatracker.ietf.org/doc/html/rfc6455#page-7</span>
+</span></span><span style="display:flex;"><span>    combined <span style="color:#f92672">=</span> sec_websocket_key <span style="color:#f92672">+</span> MAGIC_WEBSOCKET_UUID_STRING
+</span></span><span style="display:flex;"><span>    hashed_combined_string <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(combined<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>    encoded <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(hashed_combined_string<span style="color:#f92672">.</span>digest())
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> encoded
+</span></span></code></pre></div><p>Finally, we just need to tie this together with a check on the target and a handler for the handshake that returns the appropriate response:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>WS_ENDPOINT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/websocket&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_request</span>(client_socket, input_sockets, ws_sockets):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Handling request from client socket:&#39;</span>, client_socket<span style="color:#f92672">.</span>fileno())
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Very naive approach: read until we find the last blank line</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        data_in_bytes <span style="color:#f92672">=</span> client_socket<span style="color:#f92672">.</span>recv(BUFFER_SIZE)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Connection on client side has closed.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(data_in_bytes) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            close_socket(client_socket, input_sockets, ws_sockets)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>        message_segment <span style="color:#f92672">=</span> data_in_bytes<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>        message <span style="color:#f92672">+=</span> message_segment
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (len(message) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">and</span> message_segment[<span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>:] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#39;</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Received message:&#39;</span>)
+</span></span><span style="display:flex;"><span>    print(message)
+</span></span><span style="display:flex;"><span>    (method, target, http_version, headers_map) <span style="color:#f92672">=</span> parse_request(message)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;method, target, http_version:&#39;</span>, method, target, http_version)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;headers:&#39;</span>)
+</span></span><span style="display:flex;"><span>    print(headers_map)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># We will know it&#39;s a websockets request if the handshake request is</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># present.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> target <span style="color:#f92672">==</span> WS_ENDPOINT:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;request to ws endpoint!&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> is_valid_ws_handshake_request(method,
+</span></span><span style="display:flex;"><span>                                         target,
+</span></span><span style="display:flex;"><span>                                         http_version,
+</span></span><span style="display:flex;"><span>                                         headers_map):
+</span></span><span style="display:flex;"><span>            handle_ws_handshake_request(
+</span></span><span style="display:flex;"><span>                client_socket,
+</span></span><span style="display:flex;"><span>                ws_sockets,
+</span></span><span style="display:flex;"><span>                headers_map)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Invalid WS request.</span>
+</span></span><span style="display:flex;"><span>            client_socket<span style="color:#f92672">.</span>send(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;HTTP/1.1 400 Bad Request&#39;</span>)
+</span></span><span style="display:flex;"><span>            close_socket(client_socket, input_sockets, ws_sockets)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_ws_handshake_request</span>(client_socket,
+</span></span><span style="display:flex;"><span>                                ws_sockets,
+</span></span><span style="display:flex;"><span>                                headers_map):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Save this socket in the WS sockets list so we will know to speak WS with</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># it in the future.</span>
+</span></span><span style="display:flex;"><span>    ws_sockets<span style="color:#f92672">.</span>append(client_socket)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># To handle a WS handshake, we have to generate an accept key from the</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># sec-websocket-key and a magic string.</span>
+</span></span><span style="display:flex;"><span>    sec_websocket_accept_value <span style="color:#f92672">=</span> generate_sec_websocket_accept(
+</span></span><span style="display:flex;"><span>        headers_map<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;sec-websocket-key&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># We can now build the response, telling the client we&#39;re switching</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># protocols while providing the key.</span>
+</span></span><span style="display:flex;"><span>    websocket_response <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    websocket_response <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;HTTP/1.1 101 Switching Protocols</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>    websocket_response <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;Upgrade: websocket</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>    websocket_response <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;Connection: Upgrade</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>    websocket_response <span style="color:#f92672">+=</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Sec-WebSocket-Accept: &#39;</span> <span style="color:#f92672">+</span> sec_websocket_accept_value<span style="color:#f92672">.</span>decode() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    websocket_response <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">response:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>,websocket_response)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    client_socket<span style="color:#f92672">.</span>send(websocket_response<span style="color:#f92672">.</span>encode())
+</span></span></code></pre></div><p>Finally, when we&rsquo;re checking a socket that&rsquo;s read to read from, we can see if
+it&rsquo;s a socket we&rsquo;re chatting WS with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Creates the front-door TCP socket and listens for connections.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># We can have a main socket that listens for initial connections.</span>
+</span></span><span style="display:flex;"><span>    tcp_socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
+</span></span><span style="display:flex;"><span>    tcp_socket<span style="color:#f92672">.</span>setsockopt(socket<span style="color:#f92672">.</span>SOL_SOCKET, socket<span style="color:#f92672">.</span>SO_REUSEADDR, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    tcp_socket<span style="color:#f92672">.</span>bind((TCP_IP, TCP_PORT))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    tcp_socket<span style="color:#f92672">.</span>listen(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Listening on port: &#39;</span>, TCP_PORT)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    input_sockets <span style="color:#f92672">=</span> [tcp_socket]
+</span></span><span style="display:flex;"><span>    output_sockets <span style="color:#f92672">=</span> []  <span style="color:#75715e"># Maybe use, we&#39;ll see</span>
+</span></span><span style="display:flex;"><span>    xlist <span style="color:#f92672">=</span> []  <span style="color:#75715e"># Not using</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># NEW: keeping track of which sockets we&#39;re talking to over WS</span>
+</span></span><span style="display:flex;"><span>    ws_sockets <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the sockets that are ready to read (the first of the</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># three-tuple).</span>
+</span></span><span style="display:flex;"><span>        readable_sockets <span style="color:#f92672">=</span> select<span style="color:#f92672">.</span>select(input_sockets,
+</span></span><span style="display:flex;"><span>                                         output_sockets,
+</span></span><span style="display:flex;"><span>                                         xlist,
+</span></span><span style="display:flex;"><span>                                         <span style="color:#ae81ff">5</span>)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> ready_socket <span style="color:#f92672">in</span> readable_sockets:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Make sure it&#39;s not already closed</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (ready_socket<span style="color:#f92672">.</span>fileno() <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> ready_socket <span style="color:#f92672">==</span> tcp_socket:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">&#39;Handling main door socket&#39;</span>)
+</span></span><span style="display:flex;"><span>                handle_new_connection(tcp_socket, input_sockets)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">### NEW CODE HERE</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> ready_socket <span style="color:#f92672">in</span> ws_sockets:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">&#39;this is where we would handle the websocket message&#39;</span>)
+</span></span><span style="display:flex;"><span>                handle_websocket_message(ready_socket, input_sockets,
+</span></span><span style="display:flex;"><span>                                         ws_sockets)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">### END NEW CODE</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">&#39;Handling regular socket read&#39;</span>)
+</span></span><span style="display:flex;"><span>                handle_request(ready_socket, input_sockets, ws_sockets)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_websocket_message</span>(client_socket, input_sockets, ws_sockets):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Handling WS message from client socket:&#39;</span>, client_socket<span style="color:#f92672">.</span>fileno())
+</span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># TODO: handle websocket message</span>
+</span></span></code></pre></div><p>You can see the full commit for this step <a href="https://github.com/AlexanderEllis/websocket-from-scratch/commit/b5b6620e89a6db695921d14935fb1dff85bd8571">here</a>.</p>
+<p>Trying this out, we can see the successful handshake in action:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">~: $ curl -v 127.0.0.1:5006/websocket -H &#34;Upgrade: websocket&#34; -H &#34;connection: Upgrade&#34; -H &#34;sec-websocket-key: dGhlIHNhbXBsZSBub25jZQ==&#34;
+*   Trying 127.0.0.1:5006...
+* Connected to 127.0.0.1 (127.0.0.1) port 5006 (#0)
+&gt; GET /websocket HTTP/1.1
+&gt; Host: 127.0.0.1:5006
+&gt; User-Agent: curl/7.77.0
+&gt; Accept: */*
+&gt; Upgrade: websocket
+&gt; connection: Upgrade
+&gt; sec-websocket-key: dGhlIHNhbXBsZSBub25jZQ==
+&gt;
+* Mark bundle as not supporting multiuse
+&lt; HTTP/1.1 101 Switching Protocols
+&lt; Upgrade: websocket
+&lt; Connection: Upgrade
+&lt; Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+&lt;
+</code></pre><p>And on the server side:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">websockets-from-scratch: $ python3 foo.py
+Listening on port:  5006
+Handling main door socket
+New socket 4 from address: (&#39;127.0.0.1&#39;, 54357)
+Handling regular socket read
+Handling request from client socket: 4
+Received message:
+GET /websocket HTTP/1.1
+Host: 127.0.0.1:5006
+User-Agent: curl/7.77.0
+Accept: */*
+Upgrade: websocket
+connection: Upgrade
+sec-websocket-key: dGhlIHNhbXBsZSBub25jZQ==
+
+
+method, target, http_version: GET /websocket HTTP/1.1
+headers:
+{&#39;host&#39;: &#39;127.0.0.1:5006&#39;, &#39;user-agent&#39;: &#39;curl/7.77.0&#39;, &#39;accept&#39;: &#39;*/*&#39;, &#39;upgrade&#39;: &#39;websocket&#39;, &#39;connection&#39;: &#39;Upgrade&#39;, &#39;sec-websocket-key&#39;: &#39;dGhlIHNhbXBsZSBub25jZQ==&#39;}
+request to ws endpoint!
+
+response:
+ HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+</code></pre><p>What if we try with JS?</p>
+<pre tabindex="0"><code>const exampleSocket = new WebSocket(&#34;ws://localhost:5006/websocket&#34;);
+exampleSocket.send(&#39;foo&#39;)
+</code></pre><pre tabindex="0"><code class="language-none" data-lang="none">Listening on port:  5006
+Handling main door socket
+New socket 4 from address: (&#39;127.0.0.1&#39;, 55842)
+Handling regular socket read
+Handling request from client socket: 4
+Received message:
+GET /websocket HTTP/1.1
+Host: localhost:5006
+Connection: Upgrade
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36
+Upgrade: websocket
+Origin: http://localhost:5006
+Sec-WebSocket-Version: 13
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Sec-WebSocket-Key: mTNcafNQdQ6VrDiH5/ytoA==
+Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+
+
+method, target, http_version: GET /websocket HTTP/1.1
+headers:
+{&#39;host&#39;: &#39;localhost:5006&#39;, &#39;connection&#39;: &#39;Upgrade&#39;, &#39;pragma&#39;: &#39;no-cache&#39;, &#39;cache-control&#39;: &#39;no-cache&#39;, &#39;user-agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36&#39;, &#39;upgrade&#39;: &#39;websocket&#39;, &#39;origin&#39;: &#39;http://localhost:5006&#39;, &#39;sec-websocket-version&#39;: &#39;13&#39;, &#39;accept-encoding&#39;: &#39;gzip, deflate, br&#39;, &#39;accept-language&#39;: &#39;en-US,en;q=0.9&#39;, &#39;sec-websocket-key&#39;: &#39;mTNcafNQdQ6VrDiH5/ytoA==&#39;, &#39;sec-websocket-extensions&#39;: &#39;permessage-deflate; client_max_window_bits&#39;}
+request to ws endpoint!
+
+response:
+ HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: RfGS7Se2ChrHy1OSvUyWZmsOiJU=
+
+
+this is where we would handle the websocket message
+Handling WS message from client socket: 4
+</code></pre><p>Nice! It looks like we&rsquo;ve gotten all the way to having the data read into the
+<code>handle_websocket_message</code> call. Now comes the hard part.</p>
+<h2 id="the-websocket-frames">The WebSocket frames</h2>
+<p>Now that we can actually get the web sockets connected and send data on it, we
+need to take the incoming bytes and translate them into a WebSocket frame.</p>
+<p>The WebSocket frame looks like this:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-------+-+-------------+-------------------------------+
+     |F|R|R|R| opcode|M| Payload len |    Extended payload length    |
+     |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
+     |N|V|V|V|       |S|             |   (if payload len==126/127)   |
+     | |1|2|3|       |K|             |                               |
+     +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +
+     |     Extended payload length continued, if payload len == 127  |
+     + - - - - - - - - - - - - - - - +-------------------------------+
+     |                               |Masking-key, if MASK set to 1  |
+     +-------------------------------+-------------------------------+
+     | Masking-key (continued)       |          Payload Data         |
+     +-------------------------------- - - - - - - - - - - - - - - - +
+     :                     Payload Data continued ...                :
+     + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
+     |                     Payload Data continued ...                |
+     +---------------------------------------------------------------+
+</code></pre><p>This looks complicated, but the main idea is that there are four sections:
+flags, payload length, the masking key (maybe), and the payload data. You can
+read about everything in <a href="https://datatracker.ietf.org/doc/html/rfc6455#section-5.2">section 5.2</a>,
+but I&rsquo;m going to cover a few particularly interesting ones here.</p>
+<h3 id="masking">Masking</h3>
+<p>First, a quick note about masking. Traffic can be (and sometimes must be)
+<em>masked</em> with a masking key, to prevent the WS traffic from mimicking other
+traffic and HTTP requests, which has the potential to cause problems in
+intermediary devices.</p>
+<p>For example, let&rsquo;s say your request goes through a cache that doesn&rsquo;t know about
+WebSocket connections and it caches responses based on their Host header. If
+you&rsquo;re communicating via WebSockets, you could make the payload
+<em>look</em> like a regular HTTP response, and the cache may try to cache it. If you
+were nefarious, this would let you poison the cache and potentially redirect
+requests at will.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>WebSocket gets around this by forcing the data to be masked with a random
+number, making it hard to deterministically shape the traffic on the wire,  with
+an algorithm that works in either direction:</p>
+<blockquote>
+<p>Octet i of the transformed data (&ldquo;transformed-octet-i&rdquo;) is the XOR of</p>
+<p>octet i of the original data (&ldquo;original-octet-i&rdquo;) with octet at index</p>
+<p>i modulo 4 of the masking key (&ldquo;masking-key-octet-j&rdquo;):</p>
+</blockquote>
+<p>Or, in (hopefully) more clear terms, for each byte of the payload, we bitwise OR
+it with the corresponding byte of the random number, wrapping around with modulo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>masking_key <span style="color:#f92672">=</span> <span style="color:#f92672">...</span> <span style="color:#75715e"># A 4-byte random number from the message</span>
+</span></span><span style="display:flex;"><span>decoded_payload <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> index, byte <span style="color:#f92672">in</span> enumerate(encoded_payload):
+</span></span><span style="display:flex;"><span>  bitmask <span style="color:#f92672">=</span> masking_key[index <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span>]
+</span></span><span style="display:flex;"><span>  decoded_byte <span style="color:#f92672">=</span> byte <span style="color:#f92672">^</span> bitmask  <span style="color:#75715e"># Bitwise OR</span>
+</span></span><span style="display:flex;"><span>  decoded_payload<span style="color:#f92672">.</span>append(decoded_byte)
+</span></span></code></pre></div><p>This works in the other direction, too, since we&rsquo;re really just doing bitwise
+ORs here.</p>
+<h3 id="back-to-the-frame">Back to the frame</h3>
+<p>But, the payload isn&rsquo;t always masked, though for client-&gt;server it must be. The
+<code>MASK</code> flag, the first bit of the second byte, tells us whether or not it&rsquo;s
+present.</p>
+<p>This is the first hint that the layout of the frame can change based on its
+contents. An <a href="https://en.wikipedia.org/wiki/IPv4#Header">IPv4 header can vary depending on the options</a>,
+but normally we&rsquo;d expect the fields to be where the fields are. Interestingly
+enough, that&rsquo;s not the case for websockets.</p>
+<p>Along with the mask flag, there&rsquo;s also the variation due to the varying number
+of bytes we use to determine the payload length. This is a weird one, but it
+depends on the initial 7 bits that are always in the same spot. The logic is as
+follows:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">def get_payload_length():
+  initial_payload_len = last 7 bits of the 2nd byte
+  if initial_payload_len &lt; 126:
+    return initial_payload_len
+  if initial_payload_len == 126:
+    return those 7 bits with the next 2 bytes
+  if initial_payload_len == 127:
+    return those 7 bits with the next _8_ bytes
+</code></pre><p>So where do we find our payload data? It depends! It depends on both having a
+mask and the initial payload length from those 7 bits. There are only 6
+different cases and we can write some code for it (and I did, which you can read
+later), but it feels odd to look at. What do you mean the fields aren&rsquo;t always
+in the same place — isn&rsquo;t that what the spec is for? How many bytes are we
+really saving here?</p>
+<h3 id="parsing-the-frame">Parsing the frame</h3>
+<p>We can start thinking about how to translate these incoming bytes into some
+representation of a WebSocket frame. Let&rsquo;s say that we have some class
+<code>WebsocketFrame</code>, and we can populate it from a message made up of bytes. Let&rsquo;s
+assume for now that our bytes represent exactly one full frame. We can start
+with the flags:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebsocketFrame</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_parse_flags</span>(self, data_in_bytes):
+</span></span><span style="display:flex;"><span>      first_byte <span style="color:#f92672">=</span> data_in_bytes[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Bad python formatting, but it helps to see where each one is.</span>
+</span></span><span style="display:flex;"><span>      self<span style="color:#f92672">.</span>_fin    <span style="color:#f92672">=</span> first_byte <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b10000000</span>
+</span></span><span style="display:flex;"><span>      self<span style="color:#f92672">.</span>_rsv1   <span style="color:#f92672">=</span> first_byte <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b01000000</span>
+</span></span><span style="display:flex;"><span>      self<span style="color:#f92672">.</span>_rsv2   <span style="color:#f92672">=</span> first_byte <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b00100000</span>
+</span></span><span style="display:flex;"><span>      self<span style="color:#f92672">.</span>_rsv3   <span style="color:#f92672">=</span> first_byte <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b00010000</span>
+</span></span><span style="display:flex;"><span>      self<span style="color:#f92672">.</span>_opcode <span style="color:#f92672">=</span> first_byte <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b00001111</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      second_byte <span style="color:#f92672">=</span> data_in_bytes[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>      self<span style="color:#f92672">.</span>_mask <span style="color:#f92672">=</span> second_byte <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b10000000</span>
+</span></span></code></pre></div><p>That&rsquo;s not so bad — by visually lining it up, we can see where each one is.</p>
+<p>Next up would be parsing the payload length — this one is odd, because the
+actual bytes we&rsquo;ll translate into a number depend on the initial 7 bits that we
+read, but if we need to combine those bits with later bytes, we need to only use
+the 7 (and not the masking bit). Speaking of masking, because the payload length
+also determines where we&rsquo;ll find our mask key (as the position will vary), we
+can keep track of that at the same time.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebsocketFrame</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_parse_payload_length</span>(self, data_in_bytes):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># The payload length is the first 7 bits of the 2nd byte, or more if</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># it&#39;s longer.</span>
+</span></span><span style="display:flex;"><span>        payload_length <span style="color:#f92672">=</span> (data_in_bytes[<span style="color:#ae81ff">1</span>]) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b01111111</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># We can also parse the mask key at the same time. If the payload</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># length is &lt;126, the mask will start at the 3th byte.</span>
+</span></span><span style="display:flex;"><span>        mask_key_start <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Depending on the payload length, the masking key may be offset by</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># some number of bytes. We can assume big endian for now because I&#39;m</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># just running it locally.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> payload_length <span style="color:#f92672">==</span> <span style="color:#ae81ff">126</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># If the length is 126, then the length also includes the next 2</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># bytes. Also parse length into first length byte to get rid of</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># mask bit.</span>
+</span></span><span style="display:flex;"><span>            payload_length <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(
+</span></span><span style="display:flex;"><span>                (bytes(payload_length) <span style="color:#f92672">+</span> data_in_bytes[<span style="color:#ae81ff">2</span>:<span style="color:#ae81ff">4</span>]),
+</span></span><span style="display:flex;"><span>                byteorder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;big&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># This will also mean the mask is offset by 2 additional bytes.</span>
+</span></span><span style="display:flex;"><span>            mask_key_start <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> payload_length <span style="color:#f92672">==</span> <span style="color:#ae81ff">127</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># If the length is 127, then the length also includes the next 8</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># bytes. Also parse length into first length byte to get rid of</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># mask bit.</span>
+</span></span><span style="display:flex;"><span>            payload_length <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(
+</span></span><span style="display:flex;"><span>                (bytes(payload_length) <span style="color:#f92672">+</span> data_in_bytes[<span style="color:#ae81ff">2</span>:<span style="color:#ae81ff">9</span>]),
+</span></span><span style="display:flex;"><span>                byteorder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;big&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># This will also mean the mask is offset by 8 additional bytes.</span>
+</span></span><span style="display:flex;"><span>            mask_key_start <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_payload_length <span style="color:#f92672">=</span> payload_length
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_mask_key_start <span style="color:#f92672">=</span> mask_key_start
+</span></span></code></pre></div><p>Now that we have our flags, our payload length, and where the mask starts, we
+can parse the mask (if it exists). It&rsquo;ll be the next 4 bytes from that position:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebsocketFrame</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_maybe_parse_masking_key</span>(self, data_in_bytes):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>_mask:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_masking_key <span style="color:#f92672">=</span> data_in_bytes[
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>_mask_key_start:self<span style="color:#f92672">.</span>_mask_key_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>]
+</span></span></code></pre></div><p>Finally, we have our flags, we have our payload length, we know where it starts,
+we know if we&rsquo;re masked, and we have the mask. We can finally go through the
+payload data, decode like before, and generate the final data (and add a getter
+for it):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WebsocketFrame</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_parse_payload</span>(self, data_in_bytes):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># All client data_in_bytes should be masked</span>
+</span></span><span style="display:flex;"><span>        payload_data <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (self<span style="color:#f92672">.</span>_payload_length <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> payload_data
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>_mask:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Get the masking key</span>
+</span></span><span style="display:flex;"><span>            payload_start <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_mask_key_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>            encoded_payload <span style="color:#f92672">=</span> data_in_bytes[payload_start:]
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># To decode the payload, we do a bitwise OR with the mask at the</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># mask index determined by the payload index modulo 4.</span>
+</span></span><span style="display:flex;"><span>            decoded_payload <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>                byte <span style="color:#f92672">^</span> self<span style="color:#f92672">.</span>_masking_key[i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span>]
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">for</span> i, byte <span style="color:#f92672">in</span> enumerate(encoded_payload)]
+</span></span><span style="display:flex;"><span>            payload_data <span style="color:#f92672">=</span> bytes(decoded_payload)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># If we don&#39;t have a mask, the payload starts where the mask would</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># have.</span>
+</span></span><span style="display:flex;"><span>            payload_start <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_mask_key_start
+</span></span><span style="display:flex;"><span>            payload_data <span style="color:#f92672">=</span> data_in_bytes[payload_start:]
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_payload_data <span style="color:#f92672">=</span> payload_data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_payload_data</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>_payload_data
+</span></span></code></pre></div><p>If we put that all together, we can update our <code>handle_websocket_message</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_websocket_message</span>(client_socket, input_sockets, ws_sockets):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Let&#39;s assume that we get a full single frame in each recv (may not</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># be true IRL)</span>
+</span></span><span style="display:flex;"><span>    data_in_bytes <span style="color:#f92672">=</span> client_socket<span style="color:#f92672">.</span>recv(BUFFER_SIZE)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    websocket_frame <span style="color:#f92672">=</span> toy_websocket_frame<span style="color:#f92672">.</span>WebsocketFrame()
+</span></span><span style="display:flex;"><span>    websocket_frame<span style="color:#f92672">.</span>populateFromWebsocketFrameMessage(data_in_bytes)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Received message:&#39;</span>, websocket_frame<span style="color:#f92672">.</span>get_payload_data()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span></code></pre></div><p>And finally, we can run it in the browser console:</p>
+<p><img src="final-js-testing.png" alt="Screenshot showing me creating the WebSocket in JavaScript and sending &amp;lsquo;foo&amp;rsquo;"></p>
+<br>
+<p><img src="final-terminal-testing.png" alt="Screenshot the terminal printing the message it received, &amp;lsquo;foo&amp;rsquo;"></p>
+<p>You&rsquo;ll notice I also included a much longer message, with over 127 bytes, just
+to make sure we were parsing correctly. It took a little debugging, but it
+works!</p>
+<p>The code is rough because it&rsquo;s just for fun, but you can see the full thing
+<a href="https://github.com/AlexanderEllis/websocket-from-scratch">here</a>.</p>
+<h2 id="fun-with-toy-programs">Fun with toy programs</h2>
+<p>Here&rsquo;s a short and incomplete list of the things I haven&rsquo;t touched on:</p>
+<ul>
+<li>Sending data back</li>
+<li>Message fragmentation: what if I don&rsquo;t have a full message? I would need to
+keep track of the payload length received so far.</li>
+<li>Threading: what would be a good threading model for these messages? How much
+would you have to keep in shared buffers as you wait for the rest of
+incomplete messages?</li>
+<li>How should we handle opcodes? Closing the connection? Origin checks?</li>
+<li>Extensions? Subprotocols?</li>
+<li>How should we actually encode our data?</li>
+<li>WSS and encrypting our WS connections?</li>
+<li>And probably many, many more</li>
+</ul>
+<br>
+<p>I&rsquo;m so grateful we&rsquo;ve had smart people working on these things already. Much
+like <a href="/posts/rpc-from-scratch">my post on RPCs</a>, writing this from
+scratch made me really appreciate the libraries we already have to do this work
+for us. But, even with a tiny slice of reality, this gave us some insight into
+the handshake, the details of the handshake, the frame, how these things are
+built, and the problems they have to solve.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="https://beej.us/guide/bgnet/">Beej&rsquo;s Guide to Network Programming</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>See something like <a href="https://stackoverflow.com/questions/14174184/what-is-the-mask-in-a-websocket-frame#:~:text=Masking%20of%20WebSocket%20traffic%20from,an%20attack%20of%20some%20kind.">this</a> for an even better explanation.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2022
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

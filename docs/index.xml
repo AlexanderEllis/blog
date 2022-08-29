@@ -6,7 +6,17 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 14 Aug 2022 20:46:39 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Aug 2022 12:06:08 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing a toy websocket server from scratch</title>
+      <link>https://alexanderell.is/posts/websockets-from-scratch/</link>
+      <pubDate>Sun, 28 Aug 2022 12:06:08 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/websockets-from-scratch/</guid>
+      <description>WebSocket (WS) connections are pretty neat. I&amp;rsquo;ve gotten to play around with them before, both for personal and professional projects, but my view has mostly been at a high level and concerned mainly with the things that I can build on top of them. I haven&amp;rsquo;t spent much time digging through the protocol.
+I thought it would be pretty interesting to build a toy WS server from scratch. Like many other projects, I find building a toy system to be such a good way to learn more, and I&amp;rsquo;ll be talking about this toy WS server (and some of those things I learned) in the rest of the post.</description>
+    </item>
+    
     <item>
       <title>What happens if you point two CNAMEs at each other? Not much, really</title>
       <link>https://alexanderell.is/posts/cnames/</link>
