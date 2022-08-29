@@ -56,7 +56,7 @@ I thought it would be pretty interesting to build a toy WS server from scratch. 
                     </h2>
                     <h2 class="headline">
                     Aug 28, 2022
-                    · 4067 words
+                    · 4153 words
                     · 20 minutes read
                       <span class="tags">
                             
@@ -97,6 +97,20 @@ to WS</li>
 </ol>
 <br>
 <p><img src="basic-handshake.png" alt="Sequence diagram showing the basic WS handshake"></p>
+<!---
+participant "Client" as C
+participant "Server" as S
+
+C->S: HTTP: "I would like to talk WebSocket with you!"
+
+S->C: HTTP: "WebSocket sounds good to me!"
+
+C->S: WebSocket: "data"
+
+S->C: WebSocket: "some other data"
+
+S->C: WebSocket: "some other data initiated by the server"
+-->
 <p>The real steps are of course a little more complicated, including the origin,
 what and how to upgrade, protocols, extensions, and a few other pieces of data.
 A typical handshake request may look like this:</p>
@@ -123,6 +137,24 @@ and I&rsquo;ll have an example in the later code as well.</p>
 <p>This means the full conversation looks a little more like this:</p>
 <br>
 <p><img src="detailed-handshake.png" alt="Sequence diagram showing the HTTP messages being sent back and forth"></p>
+<!---
+participant "Client" as C
+participant "Server" as S
+
+C->S: GET /websocket HTTP/1.1\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Key: key
+
+note over S: Hash key with magic string and encode.\nMaybe decide on extension/protocol
+
+S->C: HTTP/1.1 101 Switching Protocols\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: modified-key
+
+note over C: Start sending WS frames
+
+C->S: WebSocket frames as binary
+
+S->C: WebSocket frames as binary
+
+S->C: WebSocket frames as binary
+-->
 <h1 id="a-toy-websocket-server">A toy websocket server</h1>
 <p>I started with a basic idea: what&rsquo;s the smallest server we can build that can
 handle an incoming websocket message? For example, what would it take to handle

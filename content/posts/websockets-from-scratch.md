@@ -45,6 +45,21 @@ The steps to the flow are the following:
 
 ![Sequence diagram showing the basic WS handshake](basic-handshake.png)
 
+<!---
+participant "Client" as C
+participant "Server" as S
+
+C->S: HTTP: "I would like to talk WebSocket with you!"
+
+S->C: HTTP: "WebSocket sounds good to me!"
+
+C->S: WebSocket: "data"
+
+S->C: WebSocket: "some other data"
+
+S->C: WebSocket: "some other data initiated by the server"
+-->
+
 The real steps are of course a little more complicated, including the origin,
 what and how to upgrade, protocols, extensions, and a few other pieces of data.
 A typical handshake request may look like this:
@@ -83,6 +98,25 @@ This means the full conversation looks a little more like this:
 <br>
 
 ![Sequence diagram showing the HTTP messages being sent back and forth](detailed-handshake.png)
+
+<!---
+participant "Client" as C
+participant "Server" as S
+
+C->S: GET /websocket HTTP/1.1\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Key: key
+
+note over S: Hash key with magic string and encode.\nMaybe decide on extension/protocol
+
+S->C: HTTP/1.1 101 Switching Protocols\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: modified-key
+
+note over C: Start sending WS frames
+
+C->S: WebSocket frames as binary
+
+S->C: WebSocket frames as binary
+
+S->C: WebSocket frames as binary
+-->
 
 # A toy websocket server
 
