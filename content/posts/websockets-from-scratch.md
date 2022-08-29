@@ -1,5 +1,5 @@
 ---
-title: "Writing a toy websocket server from scratch"
+title: "Writing a toy WebSocket server from scratch"
 subtitle: "...so you can appreciate the libraries that do it for you"
 date: 2022-08-28T12:06:08-04:00
 draft: false

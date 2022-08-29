@@ -8,7 +8,7 @@
     <language>en</language>
     <lastBuildDate>Sun, 28 Aug 2022 12:06:08 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Writing a toy websocket server from scratch</title>
+      <title>Writing a toy WebSocket server from scratch</title>
       <link>https://alexanderell.is/posts/websockets-from-scratch/</link>
       <pubDate>Sun, 28 Aug 2022 12:06:08 -0400</pubDate>
       
