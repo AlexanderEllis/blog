@@ -6,7 +6,17 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 28 Aug 2022 12:06:08 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 11 Sep 2022 16:28:14 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stubbornness and programming</title>
+      <link>https://alexanderell.is/posts/stubborn/</link>
+      <pubDate>Sun, 11 Sep 2022 16:28:14 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/stubborn/</guid>
+      <description>Every now and then, there will be the type of problem to solve where I know it will require an extra cup of coffee, a long block of dedicated time, and a lot of careful reading, debugging, note taking, and going for walks to think.
+This is often &amp;ldquo;subtle bugs that are hard to repro but we need to fix&amp;rdquo; territory; it&amp;rsquo;s not fun greenfield development with a lot of brand new code (which, of course, would be a problem-free fresh start&amp;hellip;), but instead, probably a small PR with only a few lines changed that completely undersells the deep investigation required.</description>
+    </item>
+    
     <item>
       <title>Writing a toy WebSocket server from scratch</title>
       <link>https://alexanderell.is/posts/websockets-from-scratch/</link>

@@ -3,10 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://alexanderell.is/</loc>
-    <lastmod>2022-08-28T12:06:08-04:00</lastmod>
+    <lastmod>2022-09-11T16:28:14-04:00</lastmod>
   </url><url>
     <loc>https://alexanderell.is/posts/</loc>
-    <lastmod>2022-08-28T12:06:08-04:00</lastmod>
+    <lastmod>2022-09-11T16:28:14-04:00</lastmod>
+  </url><url>
+    <loc>https://alexanderell.is/posts/stubborn/</loc>
+    <lastmod>2022-09-11T16:28:14-04:00</lastmod>
   </url><url>
     <loc>https://alexanderell.is/posts/websockets-from-scratch/</loc>
     <lastmod>2022-08-28T12:06:08-04:00</lastmod>
