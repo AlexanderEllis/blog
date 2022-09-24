@@ -1,5 +1,5 @@
 ---
-title: "iPhones and action discoverability, or \"How the hell was I supposed to know?\""
+title: "iPhones and action discoverability, or \"How the hell was I supposed to know that?\""
 date: 2022-09-24T11:26:15-04:00
 draft: false
 ---
