@@ -6,7 +6,123 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 24 Sep 2022 11:26:15 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Oct 2022 21:51:56 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Learning by working on problems just outside of your reach</title>
+      <link>https://alexanderell.is/posts/scoped-problems/</link>
+      <pubDate>Sun, 02 Oct 2022 21:51:56 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/scoped-problems/</guid>
+      <description>&lt;p&gt;There&amp;rsquo;s a common pattern I&amp;rsquo;ve seen when learning something new, where you can
+effectively move towards a larger goal by working on problems just outside of
+your reach.  I did a little thinking about what that would look like and how to
+find the right steps to take.&lt;/p&gt;
+&lt;h4 id=&#34;circles-of-knowledge-what-i-do-and-do-not-know&#34;&gt;Circles of knowledge: what I do and do not know&lt;/h4&gt;
+&lt;p&gt;Let&amp;rsquo;s say you have some general knowledge in some areas. I sometimes think about
+knowledge and &amp;ldquo;things you know and understand&amp;rdquo; as some sort of multidimensional
+blob that can grow, contract, and connect in many different ways as you learn
+and practice. For the sake of easy visualization, we can think of it as a circle
+of knowledge, dividing everything into two categories: things you know and
+things you don&amp;rsquo;t know.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;circle-of-knowledge.png&#34; alt=&#34;Circle saying things I know and the space outside of the circle saying things I do not know&#34;&gt;&lt;/p&gt;
+&lt;p&gt;My knowledge is a weird mix of things I&amp;rsquo;ve picked up over the last few decades.
+There are some things I know well, like the names of all 50 states in
+alphabetical order (thanks to the song), but there are many things that only
+partially fall within my circle with much of their depth unknown to me.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;things-i-know.png&#34; alt=&#34;A few subjects (like math and programming) falling some within the circle and some without&#34;&gt;&lt;/p&gt;
+&lt;p&gt;There are so many things I don&amp;rsquo;t know, and there are frequently things that I
+want to learn. Maybe it&amp;rsquo;s something relatively small, like a new JS web API I&amp;rsquo;m
+curious about, but maybe it&amp;rsquo;s something big and amorphous, like &amp;ldquo;distributed
+systems&amp;rdquo;. If we think about this boundary, where the rubber of the new thing
+meets the road of what I already know, we can imagine that it&amp;rsquo;s just outside
+this circle.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s take distributed systems, for example, where I may have already known some
+parts of a few languages, some general programming concepts, and some networking
+concepts. Staring me in the face is this intimidating box, &amp;ldquo;distributed
+systems&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;distributed-systems.png&#34; alt=&#34;A few subjects (like math and programming) falling some within the circle and a big box, distributed systems, outside&#34;&gt;&lt;/p&gt;
+&lt;p&gt;In reality, this broad &amp;ldquo;distributed systems&amp;rdquo; is made up of many things,
+including concepts around distributed computation, RPCs, fault tolerance,
+consensus, debugging, and many things off the screen to the bottom.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;boundary-for-distributed-systems.png&#34; alt=&#34;A few programming things I know and many distributed systems concepts in the unknown&#34;&gt;&lt;/p&gt;
+&lt;p&gt;You don&amp;rsquo;t learn the big box at once. You work your way towards the goal, slowly
+expanding your new beachhead of knowledge by working problems always just
+outside of your reach. Much like
+&lt;a href=&#34;https://matt.might.net/articles/phd-school-in-pictures/&#34;&gt;the race to the edge of human knowledge in the illustrated guide to a Ph.D.&lt;/a&gt;, it&amp;rsquo;s like
+continuously adding a single additional piece of unknown as you take steps
+towards the goal. Maybe you start with MapReduce to learn more about distributed
+computation and ideas around splitting up work.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;map-reduce.png&#34; alt=&#34;The circle expanded to include the first concept, map reduce&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Suddenly, your pretty circle of knowledge has a blemish where you&amp;rsquo;ve expanded
+out into the unknown. The border of the known has shifted a little, and picking
+off RPCs grows it even further:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;rpcs.png&#34; alt=&#34;The circle expanded to include the second concept as well, RPCs&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Bumpy! You&amp;rsquo;ve picked up a few more things, the bumpy surface of your
+understanding now including a few more things, and you&amp;rsquo;re slowly building
+towards that broader goal. What you learn builds off of what you&amp;rsquo;ve already
+learned, and you grow your knowledge by picking off concepts and ideas.&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;expanded-knowledge.png&#34; alt=&#34;The circle expanded to include most of the rest of the concepts&#34;&gt;&lt;/p&gt;
+&lt;p&gt;And just like that, suddenly you&amp;rsquo;ve got pretty good coverage across this broad
+area. Of course, it isn&amp;rsquo;t a slowly expanding circle, and these things rarely
+are fully in your circle of knowledge. It&amp;rsquo;s some sort of amorphous blob of
+connections, strengthened understanding, and jutting things you don&amp;rsquo;t know.
+Everything relates to everything else, especially in programming, and everything
+is so complex.&lt;/p&gt;
+&lt;p&gt;The concepts above are also pretty interchangeable in their order, but that&amp;rsquo;s
+not always the case for working your way through. As an exercise left to the
+reader, think about what this would look like for learning a foreign language,
+ramping up a new engineer on a code base, or learning a new programming
+language.&lt;/p&gt;
+&lt;h4 id=&#34;working-on-problems-just-outside-of-reach&#34;&gt;Working on problems just outside of reach&lt;/h4&gt;
+&lt;p&gt;One of the most helpful things about this is that it gives more immediate and
+appropriately scoped goals; as a junior engineer new to a codebase, I shouldn&amp;rsquo;t
+be trying to learn the whole codebase in one go, but instead I should learn
+parts of it by fixing bugs and adding features with the scope increasing as I
+understand more and more. Someone new to programming shouldn&amp;rsquo;t be setting out to
+&amp;ldquo;learn programming&amp;rdquo;, but should instead start with small programs, like printing
+the sum of the first ten integers, then spend the next &lt;a href=&#34;https://norvig.com/21-days.html&#34;&gt;ten years&lt;/a&gt; working on more complicated projects. I
+find it also helps to give a guided path towards these goals, especially if
+you&amp;rsquo;re able to start your first steps with fundamentals that later steps will
+build off of, much like you probably spent a lot of time doing basic arithmetic before learning algebra.&lt;/p&gt;
+&lt;p&gt;How do you find those right steps to take? This is where guidance from a third
+party can be tremendously helpful, as appropriate scoping for steps can really
+help with your movement towards the eventual goal.&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; Books are nice, as they
+frequently give a path and steps for you to follow. Better yet is if you have
+someone that knows the path well and is able to guide you along it, crafting
+those steps for your current knowledge and checking to see where you are. This
+is where classes are great, as they (hopefully) offer a nice balance between a
+well-trod path through a subject and a helping hand from the professor and/or
+TAs to guide you through it.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s one of the things I really enjoy about mentorship, where you can help
+create these paths and guide people along them. It&amp;rsquo;s one of the things I most
+enjoyed about my previous life working as a tutor, long before I got into tech.
+It was a game of figuring out where the student&amp;rsquo;s understanding was and what the
+best way to get them to the next step would be. It would be a constant game of
+empathy and translation, both seeing where they were and exploring the best way
+to map the subject material to something that they would understand and be able
+to explore themselves. This is where I think the personal touch really matters,
+as the single path presented in the textbook may not be the one that makes the
+most sense to your brain and where your current understanding is.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s a very tricky problem, but it&amp;rsquo;s a wonderful one to solve.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;Outside the scope of this section is &lt;em&gt;the best way to learn new things&lt;/em&gt;.
+I&amp;rsquo;d recommend a mix of reading, building, experimentation, and talking to
+smart people. It&amp;rsquo;s really up to you to discover what works best for
+yourself!&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
+&lt;p&gt;Of course, you can always figure it out by yourself as you go. I&amp;rsquo;d
+recommend at least some guidance from someone with experience on the path,
+since it can be so hard without knowing what you don&amp;rsquo;t know.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
     <item>
       <title>iPhones and action discoverability, or &#34;How the hell was I supposed to know that?&#34;</title>
       <link>https://alexanderell.is/posts/iphone-discoverability/</link>
