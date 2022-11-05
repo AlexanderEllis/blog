@@ -14,7 +14,7 @@ publishDir = "docs"
   description = ""
   bio = "Writing about tech, our minds, and how things work."
   # Enter optionally your twitter account
-  twitter = "lxmkls"
+  # twitter = "lxmkls"
   enableRSS = true
 
   # Disqus comment
@@ -67,7 +67,7 @@ publishDir = "docs"
 # Add additional social link entries underneath
 [social]
   github-square = "https://github.com/alexanderellis"
-  twitter-square = "https://twitter.com/lxmkls"
+  # twitter-square = "https://twitter.com/lxmkls"
   home = "https://alexanderell.is"
 
   [markup.goldmark.renderer]
