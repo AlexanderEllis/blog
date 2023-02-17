@@ -6,7 +6,62 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Nov 2022 20:28:03 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Feb 2023 22:50:02 -0500</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>In the desert, no service, and your partner&#39;s late to the rendezvous. What now?</title>
+      <link>https://alexanderell.is/posts/desert/</link>
+      <pubDate>Thu, 16 Feb 2023 22:50:02 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/desert/</guid>
+      <description>&lt;p&gt;Let&amp;rsquo;s say, purely hypothetically, that you&amp;rsquo;re in Joshua Tree National Park. Your partner dropped you off in the morning, and you&amp;rsquo;ve
+spent the day hiking and scrambling in pretty populated areas of the park. You arranged to meet your partner at 4:45PM at the place where they dropped you off.
+You&amp;rsquo;re currently in possession of a cell phone (though without any service), some snacks and water left over from your
+day, a notebook, and a pen. You&amp;rsquo;re 7 miles from the entrance of the park, and there&amp;rsquo;s a decent number of other visitors
+around.&lt;/p&gt;
+&lt;p&gt;You&amp;rsquo;re standing at the meeting spot, and you glance at your watch. It&amp;rsquo;s 5:02. What now?&lt;/p&gt;
+&lt;p&gt;At that moment, you realize how much you&amp;rsquo;ve taken cell phone service for granted. You also realize you hadn&amp;rsquo;t discussed
+any contingency plans in case anything goes wrong. You had let them know which rocks you&amp;rsquo;d be scrambling on, but you
+hadn&amp;rsquo;t discussed worst case scenarios in case they couldn&amp;rsquo;t get to you.&lt;/p&gt;
+&lt;p&gt;The good news is you have options. The bad news is that none of them are great.&lt;/p&gt;
+&lt;p&gt;Do you wait indefinitely? You don&amp;rsquo;t really have enough gear to spend the night comfortably, though you&amp;rsquo;ve got plenty of
+warm layers thanks to a layering habit from growing up in a colder climate. You&amp;rsquo;d also likely want to
+hitchhike out before it gets too dark, especially as your likelihood of being picked up for a ride will probably drop
+as it gets darker — the long beard probably won&amp;rsquo;t help. How long do you wait? Maybe another 30 minutes? If it&amp;rsquo;s
+something calamitous and they&amp;rsquo;re at urgent care or something, thirty minutes won&amp;rsquo;t make much of a difference. But what
+if you hitchhike but then pass them on the way out? Do you ask your kind ride-sharer to drop you off, then you walk back
+to the spot? Maybe we pair that with some frantic waving?&lt;/p&gt;
+&lt;p&gt;Ah, we have our notebook. Maybe we can leave a note under a rock on a little signpost here. Not exactly leaving no
+trace though, and it could easily blow away (or be picked up as litter by another visitor). They&amp;rsquo;re not very big pages
+though, and would they even see it? Maybe it&amp;rsquo;s worth it anyways, and when you do meet up with your partner, you can come
+back and pick it up.&lt;/p&gt;
+&lt;p&gt;What if you hitchhike out but miss them as you pass them? Then you&amp;rsquo;d be at the park entrance, and they&amp;rsquo;d be waiting at
+the meeting point. Their not being there on time brings to mind images of a flat tire, but &lt;em&gt;you&lt;/em&gt; not being there an hour after the
+meeting time hints at a broken leg. Would they try to walk out to the rocks you told them you&amp;rsquo;d be near? You remember
+that you have the newly purchased family headlamp, and it&amp;rsquo;s probably not great for them to be out there with just their phone flashlights
+looking for you, especially if you&amp;rsquo;re not even out there. Maybe you should leave that note.&lt;/p&gt;
+&lt;p&gt;This feels like an interview problem. &amp;ldquo;What&amp;rsquo;s the best strategy to ensure you rendezvous with your partner?&amp;rdquo; The clear
+answer is that you arrange a plan if things go wrong &lt;em&gt;ahead of time&lt;/em&gt; and stick to that plan, but that&amp;rsquo;s not what they
+want to hear. They just want to see how you think through a problem, though it would be nice if it compiled and passed some
+tests at the end.&lt;/p&gt;
+&lt;p&gt;Great.&lt;/p&gt;
+&lt;p&gt;It does all feel very game theory-ish, though. If I had to assign things values, I&amp;rsquo;d say that the worst case would be
+them spending the night out here looking for me. Let&amp;rsquo;s call that value -99. If I had to spend the night, it wouldn&amp;rsquo;t be
+terrible, but it would be uncomfortable and they&amp;rsquo;d worry about me. Let&amp;rsquo;s call that -5. Walking 7 miles in the waning
+light is also unideal, especially since I don&amp;rsquo;t have &lt;em&gt;that&lt;/em&gt; much water left. Let&amp;rsquo;s say that&amp;rsquo;s an additional -3. Leaving
+the note is a slight hit to the ethic, so let&amp;rsquo;s call that -0.5.&lt;/p&gt;
+&lt;p&gt;So the worst case would be if I walked 7 miles, still slept out here, &lt;em&gt;and&lt;/em&gt; they missed me and spent the night searching,
+for a whopping value of -107. Let&amp;rsquo;s leave that note, though it pains me. Maybe what I can do is hitchhike out to the
+entrance (skipping the 7 mile walk) while keeping a very diligent eye out for their rental car — I think it was a gray Toyota Corolla — and I wave out the window or
+something to catch their eye. I hope I can see their car in the evening light.&lt;/p&gt;
+&lt;p&gt;If I make it to the park entrance and still haven&amp;rsquo;t seen them, at least I&amp;rsquo;ll have cell
+service and can call them, and if I still can&amp;rsquo;t reach them, I&amp;rsquo;ll hope that they&amp;rsquo;re back at the rental and not
+out looking for me (hopefully they saw the note in the dark). It&amp;rsquo;s getting pretty cold, and I&amp;rsquo;m not sure they would
+have brought their heavier jacket to pick me up.  But what action do I think they&amp;rsquo;ll take?&lt;/p&gt;
+&lt;p&gt;You glance at your watch. It&amp;rsquo;s now 5:07. As you look up, you see your partner&amp;rsquo;s car pull into the parking lot.&lt;/p&gt;
+&lt;p&gt;They were just a little late.&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>Practice being a beginner</title>
       <link>https://alexanderell.is/posts/beginner/</link>
