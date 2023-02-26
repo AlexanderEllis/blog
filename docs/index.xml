@@ -6,7 +6,85 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 16 Feb 2023 22:50:02 -0500</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Feb 2023 15:29:21 -0500</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Things that are hard to measure, things that are easy to measure</title>
+      <link>https://alexanderell.is/posts/measure/</link>
+      <pubDate>Sun, 26 Feb 2023 15:29:21 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/measure/</guid>
+      <description>&lt;p&gt;There are things that are hard to measure, and there are things that are easy to measure. I think about this duality a
+lot when it comes to software engineering, especially when it comes to the difficult task of measuring developer
+productivity and engineer effectiveness&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Taking a very naive approach, there are many easily measurable aspects of the job that you &lt;em&gt;could&lt;/em&gt; use&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Jira tickets closed&lt;/li&gt;
+&lt;li&gt;Number of pull requests submitted (or reviewed)&lt;/li&gt;
+&lt;li&gt;Number of lines of code&lt;/li&gt;
+&lt;li&gt;Number of interviews given&lt;/li&gt;
+&lt;li&gt;Number of design documents written&lt;/li&gt;
+&lt;li&gt;Features shipped&lt;/li&gt;
+&lt;li&gt;Money coming in because of those features (if there&amp;rsquo;s a direct connection)&lt;/li&gt;
+&lt;li&gt;Time engineer spends at the office&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;p&gt;What about the parts of the job that are harder to measure?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The quality of those PRs, PR reviews, lines of codes, or interviews&lt;/li&gt;
+&lt;li&gt;How well those features are built&lt;/li&gt;
+&lt;li&gt;Mentoring and helping other engineers grow&lt;/li&gt;
+&lt;li&gt;Giving technical talks and spreading knowledge&lt;/li&gt;
+&lt;li&gt;Reducing technical debt&lt;/li&gt;
+&lt;li&gt;Deciding to &lt;em&gt;not&lt;/em&gt; build features (when appropriate)&lt;/li&gt;
+&lt;li&gt;The monetary value of engineering that&amp;rsquo;s not directly connected to revenue&lt;/li&gt;
+&lt;li&gt;The knowledge accumulated by building an initial feature that you can use as a foundation for future work&lt;/li&gt;
+&lt;li&gt;Even just the value of two team members just sitting down for coffee&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;p&gt;Some of these can be correlated to things across the divide. If you&amp;rsquo;re an effective engineer shipping new features, you
+may write a fair bit of code. If you&amp;rsquo;re able to effectively build consensus about solving a difficult problem with
+cross team buy-in, you may end up writing a few design documents. If you&amp;rsquo;re able to narrow down your team&amp;rsquo;s focus to
+just those features the team can (and should) build, you&amp;rsquo;ll likely be able to better ship those features.&lt;/p&gt;
+&lt;p&gt;But, this positive relationship doesn&amp;rsquo;t hold up in the other direction, and that&amp;rsquo;s the danger. The number of
+lines of code an engineer writes is not indicative of the value of that code — we&amp;rsquo;re in the business of &lt;em&gt;elegant&lt;/em&gt;
+solutions to complex problems after all. You can&amp;rsquo;t build consensus by sheer volume of documents and meetings alone,
+unless you&amp;rsquo;re hoping that the other party resigns out of fatigue by the time the decision has to be made. If you do a
+bunch of interviews, is it valuable if you&amp;rsquo;re a jerk in those interviews?&lt;/p&gt;
+&lt;p&gt;On the other hand, does the negative relationship hold up in the other direction? Well, it&amp;rsquo;s nuanced. Maybe the project was
+exploration-heavy, and that didn&amp;rsquo;t translate to many PRs. Maybe it was a critical one line fix, but it took a month of
+intensive investigation to find it. Or, maybe I really do have a second remote job,
+and I&amp;rsquo;ve been too busy with it this quarter to get to all of my Jira tickets&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s not possible to measure the full picture by just the easily measured metrics alone. Doing so ignores the real
+depth of the job.&lt;/p&gt;
+&lt;p&gt;More so, if 1) you&amp;rsquo;re just using the easy ones and 2) the way you evaluate is visible to the engineers under review&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;,
+they&amp;rsquo;re going to game it. How could they not? If they&amp;rsquo;re being evaluated on the number of new features they ship and
+this evaluation has a direct relationship to the money they receive or their career trajectory, of course they&amp;rsquo;re going
+to optimize their time and effort towards the new features. It&amp;rsquo;s your fault for hiring a bunch of smart cookies!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;So how do you measure how effective an engineer is? This is where I&amp;rsquo;m going to take the easy way out — that&amp;rsquo;s well
+beyond the scope of this short post, written by a lowly engineer. All that I ask is that if you&amp;rsquo;re in the position where
+you&amp;rsquo;re evaluating engineers, you look beyond the easy-to-measure metrics, as there&amp;rsquo;s so much more to the work. It&amp;rsquo;s
+hard, but this is the way.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;Though I&amp;rsquo;m not convinced it&amp;rsquo;s a decidable problem.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
+&lt;p&gt;Quick caveat that neither of these are exhaustive lists.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
+&lt;p&gt;Quick caveat that I don&amp;rsquo;t have a second remote job.&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
+&lt;p&gt;As it should be.&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
     <item>
       <title>In the desert, no service, and your partner&#39;s late to the rendezvous. What now?</title>
       <link>https://alexanderell.is/posts/desert/</link>

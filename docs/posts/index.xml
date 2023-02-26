@@ -6,7 +6,18 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 16 Feb 2023 22:50:02 -0500</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Feb 2023 15:29:21 -0500</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Things that are hard to measure, things that are easy to measure</title>
+      <link>https://alexanderell.is/posts/measure/</link>
+      <pubDate>Sun, 26 Feb 2023 15:29:21 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/measure/</guid>
+      <description>There are things that are hard to measure, and there are things that are easy to measure. I think about this duality a lot when it comes to software engineering, especially when it comes to the difficult task of measuring developer productivity and engineer effectiveness1.
+Taking a very naive approach, there are many easily measurable aspects of the job that you could use2:
+ Jira tickets closed Number of pull requests submitted (or reviewed) Number of lines of code Number of interviews given Number of design documents written Features shipped Money coming in because of those features (if there&amp;rsquo;s a direct connection) Time engineer spends at the office  What about the parts of the job that are harder to measure?</description>
+    </item>
+    
     <item>
       <title>In the desert, no service, and your partner&#39;s late to the rendezvous. What now?</title>
       <link>https://alexanderell.is/posts/desert/</link>

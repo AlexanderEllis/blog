@@ -269,7 +269,7 @@ a, #post-nav a, #post-list a {
 ul {
     margin: 0;
     padding: 0;
-    padding-left: 1em;
+    padding-left: 20px;
 }
 
 /*
@@ -277,7 +277,7 @@ ul {
   That messed up footnotes, so I added the .footnotes styles below.
 */
 li {
-    list-style-position: inside;
+    list-style-position: outside;
 }
 
 ul>li {
