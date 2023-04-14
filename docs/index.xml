@@ -46,7 +46,7 @@ mind, and it&amp;rsquo;s now my first go-to thing when checking&lt;sup id=&#34;f
 &amp;ldquo;scar tissue&amp;rdquo; for little problems you&amp;rsquo;ve seen and built up experience with. I think about this a lot when working with software, as we
 see similar instances of small problems we&amp;rsquo;ve seen before. As you learn from seeing something weird, from making a
 mistake, or from spending time debugging, you slowly build this arsenal of problems you&amp;rsquo;ve seen before. Most of
-them are really just nameless echos of time you&amp;rsquo;ve spent digging into hairy bugs or things that have burned you in the
+them are really just nameless echoes of time you&amp;rsquo;ve spent digging into hairy bugs or things that have burned you in the
 past.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&amp;ldquo;Ah, a 502? That probably means something related to security groups when talking to the upstream service, and I&amp;rsquo;d check there first.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&amp;ldquo;For that new feature, it&amp;rsquo;ll be helpful to add metrics and logging _before_ you may need them.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;

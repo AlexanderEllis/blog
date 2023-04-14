@@ -50,7 +50,7 @@ The other day at work, when walking a new team member through some of our system
 "scar tissue" for little problems you've seen and built up experience with. I think about this a lot when working with software, as we 
 see similar instances of small problems we've seen before. As you learn from seeing something weird, from making a 
 mistake, or from spending time debugging, you slowly build this arsenal of problems you've seen before. Most of
-them are really just nameless echos of time you've spent digging into hairy bugs or things that have burned you in the
+them are really just nameless echoes of time you've spent digging into hairy bugs or things that have burned you in the
 past.
 
 *"Ah, a 502? That probably means something related to security groups when talking to the upstream service, and I'd check there first."*
