@@ -6,7 +6,67 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 26 Feb 2023 15:29:21 -0500</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 13 Apr 2023 08:01:09 -0500</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The dog hair and the computer mouse</title>
+      <link>https://alexanderell.is/posts/dog-hair-mouse/</link>
+      <pubDate>Thu, 13 Apr 2023 08:01:09 -0500</pubDate>
+      
+      <guid>https://alexanderell.is/posts/dog-hair-mouse/</guid>
+      <description>&lt;p&gt;Because I spend my entire workday on the computer, my mouse is very important to me. With my basic optical mouse, I&amp;rsquo;m
+far from a connoisseur, but there are a few things that I&amp;rsquo;m just so used to that I notice any changes immediately. For
+example, it&amp;rsquo;s easy for me to notice changes to my mouse acceleration, and even the slightest change in acceleration
+throws me off. I notice it so much that have a program on my mac to disable any mouse acceleration — even the default
+lowest value isn&amp;rsquo;t good enough for me.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m also very, very far from a hardware expert.  My physical object debugging skills include unplugging and plugging it
+back in, turning it off and back on, and then trying it with different hardware if possible. This is usually enough to
+solve 99% of the problems I encounter, but I do fear that other 1%.&lt;/p&gt;
+&lt;p&gt;So you can imagine my dismay when one day, my computer mouse stopped working.&lt;/p&gt;
+&lt;p&gt;It had been working fine all morning. I had clicked, scrolled, panned, dragged, and opened in a new tab all day without
+any issue. All of a sudden, it was jittery. The cursor would jump weirdly, sometimes respecting my movements, but
+sometimes jumping across the screen at random.&lt;/p&gt;
+&lt;p&gt;I went through the usual steps. Unplug, plug back in. Unplug from USB hub and plug directly in. Switch out the USB-A to
+USB-C adaptor. Try a different USB port. Quit the mouse acceleration program, just in case, then restart it. Check to
+make sure I don&amp;rsquo;t have the mouse on a reflective surface. Try to make do for a bit without the mouse, but then struggle
+when trying to effectively tab through a new Google search page. Restart the computer, just in case.&lt;/p&gt;
+&lt;p&gt;After a few unsuccessful minutes of this, I happened to look at the bottom of my
+mouse.&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;img src=&#34;bottom-of-mouse.png&#34; alt=&#34;Picture of the bottom of my optical mouse with a dog hair stuck in the laser&#34;&gt;&lt;/p&gt;
+&lt;p&gt;There was a small dog hair&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; stuck in the little laser area. Optical mice work by shining a light on the surface below and
+using a sensor to compare how the pattern it sees changes from one instant to another. If the small pattern on your
+mouse pad has moved a millimeter, it&amp;rsquo;s likely that the mouse has moved a millimeter, and it can send that signal. But,
+if there&amp;rsquo;s a dog hair in the way, there may be some wildly different patterns as the hair is dragged across the front of
+the sensor. You may just end up with weird, jittery motion.&lt;/p&gt;
+&lt;p&gt;I removed the hair, and the mouse worked fine.&lt;/p&gt;
+&lt;h3 id=&#34;facing-little-problems-youve-seen-before&#34;&gt;Facing little problems you&amp;rsquo;ve seen before&lt;/h3&gt;
+&lt;p&gt;This has since happened a few times, and every time, I&amp;rsquo;ve (usually correctly) checked for dog hair first. It&amp;rsquo;s top of
+mind, and it&amp;rsquo;s now my first go-to thing when checking&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;The other day at work, when walking a new team member through some of our systems, I found myself using the metaphor of
+&amp;ldquo;scar tissue&amp;rdquo; for little problems you&amp;rsquo;ve seen and built up experience with. I think about this a lot when working with software, as we
+see similar instances of small problems we&amp;rsquo;ve seen before. As you learn from seeing something weird, from making a
+mistake, or from spending time debugging, you slowly build this arsenal of problems you&amp;rsquo;ve seen before. Most of
+them are really just nameless echos of time you&amp;rsquo;ve spent digging into hairy bugs or things that have burned you in the
+past.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;Ah, a 502? That probably means something related to security groups when talking to the upstream service, and I&amp;rsquo;d check there first.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;For that new feature, it&amp;rsquo;ll be helpful to add metrics and logging _before_ you may need them.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;The text fits in the div when it&amp;rsquo;s in English, but have you tried when the page is in German?&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;If you ask me how I know these things, it&amp;rsquo;s because I&amp;rsquo;ve already found a hundred dog hairs in a hundred different mice. I&amp;rsquo;ll
+probably find hundreds more.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;../terrier-dist-sys/real-karl.jpg&#34;&gt;Small dog tax&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
+&lt;p&gt;I also furminator my dog quite a bit, but to no avail. He is a scruffy, grumpy, hair-creating machine.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
     <item>
       <title>Things that are hard to measure, things that are easy to measure</title>
       <link>https://alexanderell.is/posts/measure/</link>
