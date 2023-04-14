@@ -7,7 +7,7 @@ draft: false
 Because I spend my entire workday on the computer, my mouse is very important to me. With my basic optical mouse, I'm
 far from a connoisseur, but there are a few things that I'm just so used to that I notice any changes immediately. For
 example, it's easy for me to notice changes to my mouse acceleration, and even the slightest change in acceleration
-throws me off. I notice it so much that have a program on my mac to disable any mouse acceleration — even the default
+throws me off. I notice it so much that I have a program on my laptop to disable any mouse acceleration — even the default
 lowest value isn't good enough for me.
 
 I'm also very, very far from a hardware expert.  My physical object debugging skills include unplugging and plugging it
