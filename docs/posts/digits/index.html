@@ -1,0 +1,461 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.99.1" />
+		<title>Brute-forcing the NYT Digits game &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Brute-forcing the NYT Digits game"/>
+<meta name="twitter:description" content="You&rsquo;re given a list of integers and a target number. You can add, subtract, multiply, or divide numbers, and you can use the result for future operations. Once you have used a number in an operation, you may not use it again. Your task is to find a combination of arithmetic steps to get to the target number.
+For example, if you&rsquo;re given [1, 2, 3] and the target is 9, a valid path would be the following:"/>
+
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Brute-forcing the NYT Digits game
+                    </h1>
+                    <h2>
+                        
+                    </h2>
+                    <h2 class="headline">
+                    Jul 11, 2023
+                    · 3304 words
+                    · 16 minutes read
+                      <span class="tags">
+                            
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <blockquote>
+<p>You&rsquo;re given a list of integers and a target number. You can add, subtract, multiply, or divide numbers, and you can use the result for future operations. Once you have used a number in an operation, you may not use it again.
+Your task is to find a combination of arithmetic steps to get to the target number.</p>
+<p>For example, if you&rsquo;re given <code>[1, 2, 3]</code> and the target is <code>9</code>, a valid path would be the following:</p>
+<pre tabindex="0"><code>Current numbers: [1, 2, 3]
+(1 + 2) -&gt; 3, current numbers now [3, 3]
+(3 * 3) -&gt; 9, current numbers now [9], target reached
+Resulting in the path: [(1 + 2), (3 * 3)]
+</code></pre><p>Given the input <code>[5, 7, 11, 19, 23, 25]</code> and the target number <code>438</code>, find a path to the target.</p>
+</blockquote>
+<p>Is this your third algorithm interview question in a hellish day of interviewing for a programming job where you won&rsquo;t really see problems like this?</p>
+<p>No!</p>
+<p>This is the new New York Times game, <em>Digits</em>:</p>
+<p><img src="digits.png" alt="Screenshot of the New York Times Digits game"></p>
+<p>This game recently came out, and after playing for a while, I got to thinking more about the game.</p>
+<p>Part of the game is that you progress through 5 different combinations of input lists and targets. For example, in the above screenshot, you can see that I already solved the <code>156</code> puzzle. When I first started playing, I assumed the difficulty would progress as you went through them, with 62 being the easiest and 438 being the hardest.</p>
+<p>This got me thinking: this is a very non-linear game, where it can sometimes feel like you make very little progress. How would you define difficulty for these problems?</p>
+<h2 id="digits--difficulty">Digits &amp; difficulty</h2>
+<p>In the real game, you get 1-3 stars depending on how close you get to the target, with 3 being an exact match. For now, let&rsquo;s just look at getting exactly to the target. I&rsquo;m mostly interested in the 3-star solutions, and there are plenty of other areas to add more complexity to if we really wanted to.</p>
+<p>The first thing that came to mind is that there must be something related to the number of solutions for each combination of operations. You have to find <em>a</em> combination, not the shortest combination, so as long as you find one combination that gets you to the target number, you get full points. That made me think that the more possible combinations that get you to the target there are, the easier the problem would feel.</p>
+<p>For example, let&rsquo;s say you&rsquo;re given <code>[1, 2, 3]</code>, and your target is <code>6</code>. Depending on how we do the order and deduplication, there are multiple ways to get there:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">2 * 3 -&gt; 6 ✓
+
+1 + 2 -&gt; 3
+3 + 3 -&gt; 6 ✓
+
+1 + 3 -&gt; 4
+2 + 4 -&gt; 6 ✓
+
+2 + 3 -&gt; 5
+5 + 1 -&gt; 6 ✓
+</code></pre><p>But, let&rsquo;s say you&rsquo;re given the same input, but your target is <code>7</code>. There&rsquo;s only really one path to get there, if we consider <code>2*3</code> to be the same as <code>3*2</code>:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">2 * 3 -&gt; 6
+6 + 1 -&gt; 7 ✓
+</code></pre><p>Does that mean the first one is easier? I think that could be a rough heuristic, though it doesn&rsquo;t really take into account the size of the number (with smaller numbers seeming easier) or the complexity of the operations, where it seems easier to just add all of the numbers together (just spamming the <code>+</code> button) than it does to multiple two numbers, multiply two other numbers together, then add the products.</p>
+<p>What would this look like for the real problem? How would we go about estimating the size of the solution space?</p>
+<h2 id="what-would-the-computer-say">What would the computer say?</h2>
+<p>Because I spend a lot of my time trying to convince computers to do what I want, my next thought was &ldquo;how do I get the computer to do it for me?&rdquo;</p>
+<p>I joked earlier about it being like an algorithm interview problem, but its saving graces were that 1) it was something I was curious about, 2) it wasn&rsquo;t something I was being asked to do, and 3) there was no cursed relationship between this toy problem and my ability to buy expensive cheese. With these three pillars of playful coding established, I thought a bit about how I&rsquo;d go about solving this.</p>
+<h3 id="brutal-force">Brutal force</h3>
+<p>My first thought was some weird combination of calculating all of the possible representations of these operations. Doing <code>2 * 3 -&gt; 6</code> and <code>6 + 1 -&gt; 7</code> really looked like this if you write it out with the order of operations:</p>
+<p><code>(2 * 3) + 1 -&gt; 7</code></p>
+<p>What would all possible paths look like? Maybe we could think about how to programmatically create the string, then feed it into <code>eval</code> and call it a day. We can also swap in an <code>op</code> placeholder for the operators, since we&rsquo;d potentially have to try all 4. This was getting pretty weird, pretty quickly:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">1 op (2 op 3)
+(1 op 2) op 3
+(1 op 3) op 2
+1 op (3 op 2)
+... 8 other combinations
+</code></pre><p>Now, some of these combinations wouldn&rsquo;t be valid. <code>Digits</code> doesn&rsquo;t let you do <code>3 / 2</code> or <code>2 - 3</code>, as it restricts you to dealing with just positive integers here. But still, this is already getting hairy for just 3 numbers in the input list, and once I started thinking about what it would look like for 6 numbers, it got even worse. Nested parentheses, since you could keep multiplying, and maybe you&rsquo;d have to try swapping each operand too, since order matters for <code>/</code> and <code>-</code>.</p>
+<p>I spent a little time thinking through what this would look like. Maybe some sort of odd graph? Visions of state machines came to mind, some cursed thing like the following with a bunch of conditional transitions:</p>
+<p><img src="state-machine.png" alt="Diagram of some weird state machine showing the possible combinations for this complicated string"></p>
+<p>Gross. We could probably figure something out here, but do you really want to keep track of everything for all of the combinations for six digits?</p>
+<h3 id="recursion-and-representing-the-game-as-a-tree">Recursion and representing the game as a tree</h3>
+<p>It was around here that I took my dog for a short walk, and I found myself asking the dangerous question: &ldquo;what if we used recursion?&rdquo;</p>
+<p>If you start with a list of numbers like <code>[1, 2, 3]</code>, once you do an operation, you&rsquo;re really left with the same problem, just with a smaller list. For example,</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">Current list: [1, 2, 3], target: 7
+2 * 3 -&gt; 6
+
+Current list: [1, 6], target: 7
+1 + 6 -&gt; 7
+
+Current list: [7], target: 7, target has been found
+</code></pre><p>That&rsquo;s the happy path, but we can imagine branching at every step for 1) each combination of operands and 2) each operator. It would look like this diagram, but much more complicated — each subproblem would have many more branches off of it for each (operand, operator, operand) combination.</p>
+<p><img src="tree.png" alt="Diagram of tree showing how the state would evolve "></p>
+<br>
+<p>This is actually similar to how you play the game.  You start with <code>[1, 2, 3]</code>, you add <code>1</code> and <code>3</code>, then you&rsquo;re left with <code>[4, 2]</code>, and you can go from there. There are many paths through this tree with many outcomes that don&rsquo;t lead to the target number — some are included in light red — but there are paths (at least in this case) that do end up with the target number.</p>
+<p>Are we guaranteed to have a path? For the <em>Digits</em> game, I&rsquo;m sure they always pick a target that you can get to in a number of ways, but mathematically speaking, there&rsquo;s no guarantee at all. We could have tried <code>8</code> as the target above, which would have no solution.</p>
+<p>Thinking with trees and recursion made this problem much easier to visualize and translate to a computational solution. Breaking this down, we&rsquo;ll basically do the following for each subproblem in our function:</p>
+<ul>
+<li>Check if the target is in the list of numbers. If it is, we&rsquo;re done.</li>
+<li>Otherwise, go through every pair of numbers.</li>
+<li>For each operator for each pair, calculate the new resulting number and call the function recursively with that number in the list instead of the pair.</li>
+</ul>
+<br>
+<p>The pseudocode would look like the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>operators <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;+&#39;</span>, <span style="color:#e6db74">&#39;-&#39;</span>, <span style="color:#e6db74">&#39;*&#39;</span>, <span style="color:#e6db74">&#39;/&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_combo</span>(numbers, target, steps_so_far):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Check if we already have the target</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> target <span style="color:#f92672">in</span> numbers:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Found solution!&#39;</span>, steps_so_far)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Try each of the combinations of operands with each operator</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> index, number <span style="color:#f92672">in</span> enumerate(numbers):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> second_index, second_number <span style="color:#f92672">in</span> enumerate(numbers):
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Though not with itself.</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> index <span style="color:#f92672">==</span> second_index:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Get a list of the other numbers to pass to the recursive call</span>
+</span></span><span style="display:flex;"><span>      other_numbers <span style="color:#f92672">=</span> numbers<span style="color:#f92672">.</span>copy()
+</span></span><span style="display:flex;"><span>      other_numbers<span style="color:#f92672">.</span>remove(number)
+</span></span><span style="display:flex;"><span>      other_numbers<span style="color:#f92672">.</span>remove(second_number)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> operator <span style="color:#f92672">in</span> operators:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># We can do a basic check here to make sure that</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># the operation is valid</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> is_valid(number, operator, second_number):
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Turn it into &#39;2 * 3&#39;</span>
+</span></span><span style="display:flex;"><span>        operation_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(number,
+</span></span><span style="display:flex;"><span>                                           operator,
+</span></span><span style="display:flex;"><span>                                           second_number)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Do not ever do this in any code that isn&#39;t</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># low-effort, throwaway blog post code.</span>
+</span></span><span style="display:flex;"><span>        new_number <span style="color:#f92672">=</span> int(eval(operation_string))
+</span></span><span style="display:flex;"><span>        check_combo(other_numbers <span style="color:#f92672">+</span> [new_number],
+</span></span><span style="display:flex;"><span>                    target,
+</span></span><span style="display:flex;"><span>                    steps_so_far <span style="color:#f92672">+</span> [operation_string])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># We&#39;ll want to ensure that the operations for the given</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># operands are valid for the rules of the game.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_valid</span>(first_operand, operator, second_operand):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># No negatives allowed</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;-&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> first_operand <span style="color:#f92672">&gt;</span> second_operand
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Also, integers only</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;/&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> first_operand <span style="color:#f92672">%</span> second_operand <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>check_combo([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>], <span style="color:#ae81ff">6</span>, [])
+</span></span></code></pre></div><p>Oh wait, that&rsquo;s not pseudocode, it&rsquo;s Python! Running it yields the following:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">Found solution! [&#39;1 + 2&#39;, &#39;3 + 3&#39;]
+Found solution! [&#39;1 + 2&#39;, &#39;3 + 3&#39;]
+Found solution! [&#39;1 * 2&#39;, &#39;3 * 2&#39;]
+Found solution! [&#39;1 * 2&#39;, &#39;2 * 3&#39;]
+Found solution! [&#39;1 + 3&#39;, &#39;2 + 4&#39;]
+Found solution! [&#39;1 + 3&#39;, &#39;4 + 2&#39;]
+Found solution! [&#39;1 * 3&#39;, &#39;2 * 3&#39;]
+Found solution! [&#39;1 * 3&#39;, &#39;3 * 2&#39;]
+Found solution! [&#39;2 + 1&#39;, &#39;3 + 3&#39;]
+Found solution! [&#39;2 + 1&#39;, &#39;3 + 3&#39;]
+Found solution! [&#39;2 * 1&#39;, &#39;3 * 2&#39;]
+Found solution! [&#39;2 * 1&#39;, &#39;2 * 3&#39;]
+Found solution! [&#39;2 / 1&#39;, &#39;3 * 2&#39;]
+Found solution! [&#39;2 / 1&#39;, &#39;2 * 3&#39;]
+Found solution! [&#39;2 + 3&#39;, &#39;1 + 5&#39;]
+Found solution! [&#39;2 + 3&#39;, &#39;5 + 1&#39;]
+Found solution! [&#39;2 * 3&#39;]
+Found solution! [&#39;3 + 1&#39;, &#39;2 + 4&#39;]
+Found solution! [&#39;3 + 1&#39;, &#39;4 + 2&#39;]
+Found solution! [&#39;3 * 1&#39;, &#39;2 * 3&#39;]
+Found solution! [&#39;3 * 1&#39;, &#39;3 * 2&#39;]
+Found solution! [&#39;3 / 1&#39;, &#39;2 * 3&#39;]
+Found solution! [&#39;3 / 1&#39;, &#39;3 * 2&#39;]
+Found solution! [&#39;3 + 2&#39;, &#39;1 + 5&#39;]
+Found solution! [&#39;3 + 2&#39;, &#39;5 + 1&#39;]
+Found solution! [&#39;3 * 2&#39;]
+</code></pre><p>These all look like valid solutions, but there are two pretty clear problems. First, some of these operations are redundant. <code>1 * 2</code> is technically a valid step before doing <code>2 * 3</code>, but we can ignore redundant ones to keep our solution set a little crisper. Additionally, a lot of these operations are commutative — <code>3 + 2</code> is the same as <code>2 + 3</code>, so we can add some basic checks for that as well.</p>
+<p>With those in place, it may look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>operators <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;+&#39;</span>, <span style="color:#e6db74">&#39;-&#39;</span>, <span style="color:#e6db74">&#39;*&#39;</span>, <span style="color:#e6db74">&#39;/&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_combo</span>(numbers, target, steps_so_far):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Check if we already have the target</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> target <span style="color:#f92672">in</span> numbers:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Found solution!&#39;</span>, steps_so_far)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Keep a set of the commutative operations we&#39;ve tried already</span>
+</span></span><span style="display:flex;"><span>  checked_commutative_operations <span style="color:#f92672">=</span> set()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Try each of the combinations of operands with each operator</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> index, number <span style="color:#f92672">in</span> enumerate(numbers):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> second_index, second_number <span style="color:#f92672">in</span> enumerate(numbers):
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Though not with itself.</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> index <span style="color:#f92672">==</span> second_index:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Get a list of the other numbers to pass to the recursive call</span>
+</span></span><span style="display:flex;"><span>      other_numbers <span style="color:#f92672">=</span> numbers<span style="color:#f92672">.</span>copy()
+</span></span><span style="display:flex;"><span>      other_numbers<span style="color:#f92672">.</span>remove(number)
+</span></span><span style="display:flex;"><span>      other_numbers<span style="color:#f92672">.</span>remove(second_number)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> operator <span style="color:#f92672">in</span> operators:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># We can do a basic check here to make sure that</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># the operation is valid and not redundant</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">not</span> is_valid(number, operator, second_number)
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">or</span> is_redundant(number, operator, second_number)):
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Turn it into &#39;2 * 3&#39;</span>
+</span></span><span style="display:flex;"><span>        operation_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(number,
+</span></span><span style="display:flex;"><span>                                           operator,
+</span></span><span style="display:flex;"><span>                                           second_number)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Do not ever do this in any code that isn&#39;t</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># low-effort, throwaway blog post code.</span>
+</span></span><span style="display:flex;"><span>        new_number <span style="color:#f92672">=</span> int(eval(operation_string))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If it&#39;s commutative, see if we&#39;ve already checked that combo.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If so, skip it. If not, add it to the set for future pairs.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> is_commutative(operator):
+</span></span><span style="display:flex;"><span>          canonical_form <span style="color:#f92672">=</span> get_canonical_form(number, operator, second_number)
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">if</span> canonical_form <span style="color:#f92672">in</span> checked_commutative_operations:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>          checked_commutative_operations<span style="color:#f92672">.</span>add(canonical_form)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Recursive call</span>
+</span></span><span style="display:flex;"><span>        check_combo(other_numbers <span style="color:#f92672">+</span> [new_number],
+</span></span><span style="display:flex;"><span>                    target,
+</span></span><span style="display:flex;"><span>                    steps_so_far <span style="color:#f92672">+</span> [operation_string])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># We&#39;ll want to ensure that the operations for the given</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># operands are valid for the rules of the game.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_valid</span>(first_operand, operator, second_operand):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># No negatives allowed</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;-&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> first_operand <span style="color:#f92672">&gt;</span> second_operand
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Also, integers only</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;/&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> first_operand <span style="color:#f92672">%</span> second_operand <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If we&#39;re multiplying or dividing and either operand is a 1, we can just skip it.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_redundant</span>(first_operand, operator, second_operand):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> ((operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;*&#39;</span> <span style="color:#f92672">or</span> operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">and</span> (first_operand <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">or</span> second_operand <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_commutative</span>(operator):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;*&#39;</span> <span style="color:#f92672">or</span> operator <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;+&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2 + 3 is the same as 3 + 2, but we can put them</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># in the same &#39;smaller operator larger&#39; form</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_canonical_form</span>(first_operand, operator, second_operand):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(min(first_operand, second_operand),
+</span></span><span style="display:flex;"><span>                           operator,
+</span></span><span style="display:flex;"><span>                           max(first_operand, second_operand))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>check_combo([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>], <span style="color:#ae81ff">6</span>, [])
+</span></span></code></pre></div><p>Now, we have a nice, crisp output:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">Found solution! [&#39;1 + 2&#39;, &#39;3 + 3&#39;]
+Found solution! [&#39;1 + 3&#39;, &#39;2 + 4&#39;]
+Found solution! [&#39;2 + 3&#39;, &#39;1 + 5&#39;]
+Found solution! [&#39;2 * 3&#39;]
+</code></pre><p>That matches what we had before, and just to check for <code>7</code>, we can do <code>check_combo([1, 2, 3], 7, [])</code>, which gives us the single, expected answer:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">Found solution! [&#39;2 * 3&#39;, &#39;1 + 6&#39;]
+</code></pre><h3 id="trying-on-the-real-problem">Trying on the real problem</h3>
+<p>We can try this on one of the real problems now to see how it does:</p>
+<p><img src="real-example.png" alt="Screenshot of one of the Digits problems, with [1, 2, 4, 5, 10, 25] and target 94"></p>
+<p>Calling <code>check_combo([1, 2, 4, 5, 10, 25], 94, [])</code> results in&hellip; a lot:</p>
+<p><img src="monstrosity.gif" alt="Screencast of an absolute cascade of results — there are many, many solutions"></p>
+<p>That&rsquo;s only a small subset of the answers as the repl was firing away — there are clearly a ton, even after our basic improvements.</p>
+<p>Instead of printing them, let&rsquo;s do a few things:</p>
+<ul>
+<li>We can count the total number of solutions</li>
+<li>We can also save them by length, and inspect just one of each</li>
+</ul>
+<br>
+<p>I won&rsquo;t include all of the code here, but the changes would be like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>operators <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;+&#39;</span>, <span style="color:#e6db74">&#39;-&#39;</span>, <span style="color:#e6db74">&#39;*&#39;</span>, <span style="color:#e6db74">&#39;/&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>all_solutions <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>total_checked <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_combo</span>(numbers, target, steps_so_far):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">global</span> total_checked
+</span></span><span style="display:flex;"><span>  total_checked <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Check if we already have the target</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> target <span style="color:#f92672">in</span> numbers:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># print(&#39;Found solution!&#39;, steps_so_far)</span>
+</span></span><span style="display:flex;"><span>    all_solutions<span style="color:#f92672">.</span>append(steps_so_far)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ... all of the other code, then at the end:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">metrics</span>():
+</span></span><span style="display:flex;"><span>  counts_by_length <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>  short_solution <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> solution <span style="color:#f92672">in</span> all_solutions:
+</span></span><span style="display:flex;"><span>    solution_length <span style="color:#f92672">=</span> len(solution)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> solution_length <span style="color:#f92672">in</span> counts_by_length:
+</span></span><span style="display:flex;"><span>      counts_by_length[solution_length] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>      counts_by_length[solution_length] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Also keep around one of the shortest solutions to see later</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> short_solution <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">or</span> solution_length <span style="color:#f92672">&lt;</span> len(short_solution):
+</span></span><span style="display:flex;"><span>      short_solution <span style="color:#f92672">=</span> solution
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;We checked&#39;</span>, total_checked, <span style="color:#e6db74">&#39;subproblems&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;We have&#39;</span>, len(all_solutions), <span style="color:#e6db74">&#39;total solutions!&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;The number of solutions by number of operations:&#39;</span>, counts_by_length)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;One of the shortest solutions:&#39;</span>, short_solution)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>check_combo([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">25</span>], <span style="color:#ae81ff">94</span>, [])
+</span></span><span style="display:flex;"><span>metrics()
+</span></span></code></pre></div><p>Running this with the metrics yields the following after a bit:</p>
+<pre tabindex="0"><code class="language-none" data-lang="none">We checked 777019 subproblems
+We have 1319 total solutions!
+The number of solutions by number of operations: {5: 1119, 4: 194, 3: 6}
+One of the shortest solutions: [&#39;1 + 5&#39;, &#39;4 * 25&#39;, &#39;100 - 6&#39;]
+</code></pre><p>No wonder this took a while — we ended up checking <em>hundreds of thousands</em> of subproblems. There were over a thousand ways to get to the target with 5 operations, around two hundred that got there with 194, and just six that got there in 3 operations. I printed out one of those &ldquo;get it in 3&rdquo; solutions, and it&rsquo;s actually a pretty natural one for coming up by hand — usually I try to get somewhere close to the total with multiplication with the bigger numbers, then look for adding/subtracting from there.</p>
+<p>That brings up another question: why are we able to solve this as humans, with our puny little brain calculators, without trying every solution? It&rsquo;s because we use strategy to avoid the full tree. Things like targeting large intermediate numbers that are close to the solution or knowing that if you&rsquo;re in the thousands already from multiplying big numbers and that there&rsquo;s no real point going farther than that. It&rsquo;s interesting to think how we might translate some of these solutions to a programmatic approach, but I&rsquo;ve left that for another day.</p>
+<h3 id="what-does-the-difficulty-look-like">What does the difficulty look like?</h3>
+<p>I ran this for the rest of today&rsquo;s problems to see what the solution space looked like for each one.</p>
+<br>
+<p>(obviously, game spoilers below)</p>
+<br>
+<br>
+<pre tabindex="0"><code class="language-none" data-lang="none">checking [2, 3, 5, 10, 15, 25] 195
+We checked 1250803 subproblems
+We have 1844 total solutions!
+The number of solutions by number of operations: {5: 1294, 4: 510, 3: 39, 2: 1}
+One of the shortest solutions: [&#39;3 + 10&#39;, &#39;15 * 13&#39;]
+
+checking [3, 5, 7, 9, 11, 20] 251
+We checked 1077566 subproblems
+We have 375 total solutions!
+The number of solutions by number of operations: {4: 102, 5: 268, 3: 5}
+One of the shortest solutions: [&#39;3 * 7&#39;, &#39;11 * 21&#39;, &#39;20 + 231&#39;]
+
+checking [4, 5, 6, 9, 11, 20] 382
+We checked 991830 subproblems
+We have 106 total solutions!
+The number of solutions by number of operations: {5: 87, 4: 19}
+One of the shortest solutions: [&#39;4 * 9&#39;, &#39;11 * 36&#39;, &#39;6 + 396&#39;, &#39;402 - 20&#39;]
+
+checking [3, 13, 19, 20, 23, 25] 456
+We checked 938291 subproblems
+We have 989 total solutions!
+The number of solutions by number of operations: {5: 916, 4: 73}
+One of the shortest solutions: [&#39;3 * 13&#39;, &#39;19 * 23&#39;, &#39;39 - 20&#39;, &#39;437 + 19&#39;]
+</code></pre><p>Overall, it seems like they&rsquo;re trending fewer solutions to the right, save for the very last one. This generally makes sense if we think about our wetware approaches as well, as these big numbers also seem a little more intimidating. I&rsquo;m much more familiar with my multiples below 15, and I feel like I have much more intuition for the smaller numbers. For the last problem, I think this is where more of the complicated difficulty concepts come into play. There may be more ways to get to <code>456</code>, but 1) our starter numbers are generally much larger and 2) the larger target feels trickier to get to.</p>
+<p>Pretty neat.</p>
+<h3 id="improving-this-further">Improving this further</h3>
+<p>Even with these improvements, it&rsquo;s still a brutally brute-force solution, and each problem takes ~30 seconds when I run it in the repl. We could still probably improve it further — for example, we&rsquo;re definitely duplicating work, since the code above isn&rsquo;t looking at commutative across steps (or even if the result of the step is used later in the solution — who cares about an intermediate number if it doesn&rsquo;t show up in the rest of the steps). The counts are also definitely not a perfect reflection of difficulty, as <code>'6 + 396', '402 - 20'</code> is the same as both <code>'396 - 20', '376 + 6'</code> <em>and</em> <code>'20 - 6', '402 - 14'</code>.</p>
+<p>This works though, which meets my bar for fun, exploratory code. I&rsquo;ll leave further improvements as an exercise for the reader, as this is good enough for now.</p>
+<hr>
+<blockquote>
+<p>Thank you again for attending our onsite interview process. Based on your interview performance, we have chosen to not move you forward in the process. In particular, interviewers mentioned your lack of interest in further optimizing your solutions and your constant mentioning of naps and your desire to go home to play with your dog.</p>
+<p>We will keep your resume on file for future openings.</p>
+</blockquote>
+<p>You can play with the code (at your own risk) at <a href="https://replit.com/@lxls/JointRedundantSquare">https://replit.com/@lxls/JointRedundantSquare</a>, with the caveat that it&rsquo;s just throwaway blog post code.</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2023
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+    </body>
+</html>

@@ -6,7 +6,359 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Apr 2023 08:01:09 -0500</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 11 Jul 2023 22:06:31 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Brute-forcing the NYT Digits game</title>
+      <link>https://alexanderell.is/posts/digits/</link>
+      <pubDate>Tue, 11 Jul 2023 22:06:31 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/digits/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;You&amp;rsquo;re given a list of integers and a target number. You can add, subtract, multiply, or divide numbers, and you can use the result for future operations. Once you have used a number in an operation, you may not use it again.
+Your task is to find a combination of arithmetic steps to get to the target number.&lt;/p&gt;
+&lt;p&gt;For example, if you&amp;rsquo;re given &lt;code&gt;[1, 2, 3]&lt;/code&gt; and the target is &lt;code&gt;9&lt;/code&gt;, a valid path would be the following:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Current numbers: [1, 2, 3]
+(1 + 2) -&amp;gt; 3, current numbers now [3, 3]
+(3 * 3) -&amp;gt; 9, current numbers now [9], target reached
+Resulting in the path: [(1 + 2), (3 * 3)]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Given the input &lt;code&gt;[5, 7, 11, 19, 23, 25]&lt;/code&gt; and the target number &lt;code&gt;438&lt;/code&gt;, find a path to the target.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Is this your third algorithm interview question in a hellish day of interviewing for a programming job where you won&amp;rsquo;t really see problems like this?&lt;/p&gt;
+&lt;p&gt;No!&lt;/p&gt;
+&lt;p&gt;This is the new New York Times game, &lt;em&gt;Digits&lt;/em&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;digits.png&#34; alt=&#34;Screenshot of the New York Times Digits game&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This game recently came out, and after playing for a while, I got to thinking more about the game.&lt;/p&gt;
+&lt;p&gt;Part of the game is that you progress through 5 different combinations of input lists and targets. For example, in the above screenshot, you can see that I already solved the &lt;code&gt;156&lt;/code&gt; puzzle. When I first started playing, I assumed the difficulty would progress as you went through them, with 62 being the easiest and 438 being the hardest.&lt;/p&gt;
+&lt;p&gt;This got me thinking: this is a very non-linear game, where it can sometimes feel like you make very little progress. How would you define difficulty for these problems?&lt;/p&gt;
+&lt;h2 id=&#34;digits--difficulty&#34;&gt;Digits &amp;amp; difficulty&lt;/h2&gt;
+&lt;p&gt;In the real game, you get 1-3 stars depending on how close you get to the target, with 3 being an exact match. For now, let&amp;rsquo;s just look at getting exactly to the target. I&amp;rsquo;m mostly interested in the 3-star solutions, and there are plenty of other areas to add more complexity to if we really wanted to.&lt;/p&gt;
+&lt;p&gt;The first thing that came to mind is that there must be something related to the number of solutions for each combination of operations. You have to find &lt;em&gt;a&lt;/em&gt; combination, not the shortest combination, so as long as you find one combination that gets you to the target number, you get full points. That made me think that the more possible combinations that get you to the target there are, the easier the problem would feel.&lt;/p&gt;
+&lt;p&gt;For example, let&amp;rsquo;s say you&amp;rsquo;re given &lt;code&gt;[1, 2, 3]&lt;/code&gt;, and your target is &lt;code&gt;6&lt;/code&gt;. Depending on how we do the order and deduplication, there are multiple ways to get there:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;2 * 3 -&amp;gt; 6 ✓
+
+1 + 2 -&amp;gt; 3
+3 + 3 -&amp;gt; 6 ✓
+
+1 + 3 -&amp;gt; 4
+2 + 4 -&amp;gt; 6 ✓
+
+2 + 3 -&amp;gt; 5
+5 + 1 -&amp;gt; 6 ✓
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But, let&amp;rsquo;s say you&amp;rsquo;re given the same input, but your target is &lt;code&gt;7&lt;/code&gt;. There&amp;rsquo;s only really one path to get there, if we consider &lt;code&gt;2*3&lt;/code&gt; to be the same as &lt;code&gt;3*2&lt;/code&gt;:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;2 * 3 -&amp;gt; 6
+6 + 1 -&amp;gt; 7 ✓
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Does that mean the first one is easier? I think that could be a rough heuristic, though it doesn&amp;rsquo;t really take into account the size of the number (with smaller numbers seeming easier) or the complexity of the operations, where it seems easier to just add all of the numbers together (just spamming the &lt;code&gt;+&lt;/code&gt; button) than it does to multiple two numbers, multiply two other numbers together, then add the products.&lt;/p&gt;
+&lt;p&gt;What would this look like for the real problem? How would we go about estimating the size of the solution space?&lt;/p&gt;
+&lt;h2 id=&#34;what-would-the-computer-say&#34;&gt;What would the computer say?&lt;/h2&gt;
+&lt;p&gt;Because I spend a lot of my time trying to convince computers to do what I want, my next thought was &amp;ldquo;how do I get the computer to do it for me?&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;I joked earlier about it being like an algorithm interview problem, but its saving graces were that 1) it was something I was curious about, 2) it wasn&amp;rsquo;t something I was being asked to do, and 3) there was no cursed relationship between this toy problem and my ability to buy expensive cheese. With these three pillars of playful coding established, I thought a bit about how I&amp;rsquo;d go about solving this.&lt;/p&gt;
+&lt;h3 id=&#34;brutal-force&#34;&gt;Brutal force&lt;/h3&gt;
+&lt;p&gt;My first thought was some weird combination of calculating all of the possible representations of these operations. Doing &lt;code&gt;2 * 3 -&amp;gt; 6&lt;/code&gt; and &lt;code&gt;6 + 1 -&amp;gt; 7&lt;/code&gt; really looked like this if you write it out with the order of operations:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;(2 * 3) + 1 -&amp;gt; 7&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;What would all possible paths look like? Maybe we could think about how to programmatically create the string, then feed it into &lt;code&gt;eval&lt;/code&gt; and call it a day. We can also swap in an &lt;code&gt;op&lt;/code&gt; placeholder for the operators, since we&amp;rsquo;d potentially have to try all 4. This was getting pretty weird, pretty quickly:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;1 op (2 op 3)
+(1 op 2) op 3
+(1 op 3) op 2
+1 op (3 op 2)
+... 8 other combinations
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Now, some of these combinations wouldn&amp;rsquo;t be valid. &lt;code&gt;Digits&lt;/code&gt; doesn&amp;rsquo;t let you do &lt;code&gt;3 / 2&lt;/code&gt; or &lt;code&gt;2 - 3&lt;/code&gt;, as it restricts you to dealing with just positive integers here. But still, this is already getting hairy for just 3 numbers in the input list, and once I started thinking about what it would look like for 6 numbers, it got even worse. Nested parentheses, since you could keep multiplying, and maybe you&amp;rsquo;d have to try swapping each operand too, since order matters for &lt;code&gt;/&lt;/code&gt; and &lt;code&gt;-&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I spent a little time thinking through what this would look like. Maybe some sort of odd graph? Visions of state machines came to mind, some cursed thing like the following with a bunch of conditional transitions:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;state-machine.png&#34; alt=&#34;Diagram of some weird state machine showing the possible combinations for this complicated string&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Gross. We could probably figure something out here, but do you really want to keep track of everything for all of the combinations for six digits?&lt;/p&gt;
+&lt;h3 id=&#34;recursion-and-representing-the-game-as-a-tree&#34;&gt;Recursion and representing the game as a tree&lt;/h3&gt;
+&lt;p&gt;It was around here that I took my dog for a short walk, and I found myself asking the dangerous question: &amp;ldquo;what if we used recursion?&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;If you start with a list of numbers like &lt;code&gt;[1, 2, 3]&lt;/code&gt;, once you do an operation, you&amp;rsquo;re really left with the same problem, just with a smaller list. For example,&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;Current list: [1, 2, 3], target: 7
+2 * 3 -&amp;gt; 6
+
+Current list: [1, 6], target: 7
+1 + 6 -&amp;gt; 7
+
+Current list: [7], target: 7, target has been found
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That&amp;rsquo;s the happy path, but we can imagine branching at every step for 1) each combination of operands and 2) each operator. It would look like this diagram, but much more complicated — each subproblem would have many more branches off of it for each (operand, operator, operand) combination.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;tree.png&#34; alt=&#34;Diagram of tree showing how the state would evolve &#34;&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;This is actually similar to how you play the game.  You start with &lt;code&gt;[1, 2, 3]&lt;/code&gt;, you add &lt;code&gt;1&lt;/code&gt; and &lt;code&gt;3&lt;/code&gt;, then you&amp;rsquo;re left with &lt;code&gt;[4, 2]&lt;/code&gt;, and you can go from there. There are many paths through this tree with many outcomes that don&amp;rsquo;t lead to the target number — some are included in light red — but there are paths (at least in this case) that do end up with the target number.&lt;/p&gt;
+&lt;p&gt;Are we guaranteed to have a path? For the &lt;em&gt;Digits&lt;/em&gt; game, I&amp;rsquo;m sure they always pick a target that you can get to in a number of ways, but mathematically speaking, there&amp;rsquo;s no guarantee at all. We could have tried &lt;code&gt;8&lt;/code&gt; as the target above, which would have no solution.&lt;/p&gt;
+&lt;p&gt;Thinking with trees and recursion made this problem much easier to visualize and translate to a computational solution. Breaking this down, we&amp;rsquo;ll basically do the following for each subproblem in our function:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Check if the target is in the list of numbers. If it is, we&amp;rsquo;re done.&lt;/li&gt;
+&lt;li&gt;Otherwise, go through every pair of numbers.&lt;/li&gt;
+&lt;li&gt;For each operator for each pair, calculate the new resulting number and call the function recursively with that number in the list instead of the pair.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;p&gt;The pseudocode would look like the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;operators &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;+&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;check_combo&lt;/span&gt;(numbers, target, steps_so_far):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Check if we already have the target&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; target &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; numbers:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Found solution!&amp;#39;&lt;/span&gt;, steps_so_far)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Try each of the combinations of operands with each operator&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; index, number &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(numbers):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; second_index, second_number &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(numbers):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;# Though not with itself.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; index &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; second_index:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;# Get a list of the other numbers to pass to the recursive call&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      other_numbers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; numbers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      other_numbers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;remove(number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      other_numbers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;remove(second_number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; operators:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# We can do a basic check here to make sure that&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# the operation is valid&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; is_valid(number, operator, second_number):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# Turn it into &amp;#39;2 * 3&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        operation_string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(number,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                                           operator,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                                           second_number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# Do not ever do this in any code that isn&amp;#39;t&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# low-effort, throwaway blog post code.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        new_number &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(eval(operation_string))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        check_combo(other_numbers &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; [new_number],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    target,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    steps_so_far &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; [operation_string])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# We&amp;#39;ll want to ensure that the operations for the given&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# operands are valid for the rules of the game.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;is_valid&lt;/span&gt;(first_operand, operator, second_operand):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# No negatives allowed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; first_operand &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; second_operand
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Also, integers only&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; first_operand &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; second_operand &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;check_combo([&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;], &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;, [])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Oh wait, that&amp;rsquo;s not pseudocode, it&amp;rsquo;s Python! Running it yields the following:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;Found solution! [&amp;#39;1 + 2&amp;#39;, &amp;#39;3 + 3&amp;#39;]
+Found solution! [&amp;#39;1 + 2&amp;#39;, &amp;#39;3 + 3&amp;#39;]
+Found solution! [&amp;#39;1 * 2&amp;#39;, &amp;#39;3 * 2&amp;#39;]
+Found solution! [&amp;#39;1 * 2&amp;#39;, &amp;#39;2 * 3&amp;#39;]
+Found solution! [&amp;#39;1 + 3&amp;#39;, &amp;#39;2 + 4&amp;#39;]
+Found solution! [&amp;#39;1 + 3&amp;#39;, &amp;#39;4 + 2&amp;#39;]
+Found solution! [&amp;#39;1 * 3&amp;#39;, &amp;#39;2 * 3&amp;#39;]
+Found solution! [&amp;#39;1 * 3&amp;#39;, &amp;#39;3 * 2&amp;#39;]
+Found solution! [&amp;#39;2 + 1&amp;#39;, &amp;#39;3 + 3&amp;#39;]
+Found solution! [&amp;#39;2 + 1&amp;#39;, &amp;#39;3 + 3&amp;#39;]
+Found solution! [&amp;#39;2 * 1&amp;#39;, &amp;#39;3 * 2&amp;#39;]
+Found solution! [&amp;#39;2 * 1&amp;#39;, &amp;#39;2 * 3&amp;#39;]
+Found solution! [&amp;#39;2 / 1&amp;#39;, &amp;#39;3 * 2&amp;#39;]
+Found solution! [&amp;#39;2 / 1&amp;#39;, &amp;#39;2 * 3&amp;#39;]
+Found solution! [&amp;#39;2 + 3&amp;#39;, &amp;#39;1 + 5&amp;#39;]
+Found solution! [&amp;#39;2 + 3&amp;#39;, &amp;#39;5 + 1&amp;#39;]
+Found solution! [&amp;#39;2 * 3&amp;#39;]
+Found solution! [&amp;#39;3 + 1&amp;#39;, &amp;#39;2 + 4&amp;#39;]
+Found solution! [&amp;#39;3 + 1&amp;#39;, &amp;#39;4 + 2&amp;#39;]
+Found solution! [&amp;#39;3 * 1&amp;#39;, &amp;#39;2 * 3&amp;#39;]
+Found solution! [&amp;#39;3 * 1&amp;#39;, &amp;#39;3 * 2&amp;#39;]
+Found solution! [&amp;#39;3 / 1&amp;#39;, &amp;#39;2 * 3&amp;#39;]
+Found solution! [&amp;#39;3 / 1&amp;#39;, &amp;#39;3 * 2&amp;#39;]
+Found solution! [&amp;#39;3 + 2&amp;#39;, &amp;#39;1 + 5&amp;#39;]
+Found solution! [&amp;#39;3 + 2&amp;#39;, &amp;#39;5 + 1&amp;#39;]
+Found solution! [&amp;#39;3 * 2&amp;#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;These all look like valid solutions, but there are two pretty clear problems. First, some of these operations are redundant. &lt;code&gt;1 * 2&lt;/code&gt; is technically a valid step before doing &lt;code&gt;2 * 3&lt;/code&gt;, but we can ignore redundant ones to keep our solution set a little crisper. Additionally, a lot of these operations are commutative — &lt;code&gt;3 + 2&lt;/code&gt; is the same as &lt;code&gt;2 + 3&lt;/code&gt;, so we can add some basic checks for that as well.&lt;/p&gt;
+&lt;p&gt;With those in place, it may look something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;operators &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;+&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;check_combo&lt;/span&gt;(numbers, target, steps_so_far):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Check if we already have the target&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; target &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; numbers:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Found solution!&amp;#39;&lt;/span&gt;, steps_so_far)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Keep a set of the commutative operations we&amp;#39;ve tried already&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  checked_commutative_operations &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Try each of the combinations of operands with each operator&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; index, number &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(numbers):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; second_index, second_number &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(numbers):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;# Though not with itself.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; index &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; second_index:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;# Get a list of the other numbers to pass to the recursive call&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      other_numbers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; numbers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;copy()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      other_numbers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;remove(number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      other_numbers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;remove(second_number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; operators:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# We can do a basic check here to make sure that&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# the operation is valid and not redundant&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; is_valid(number, operator, second_number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; is_redundant(number, operator, second_number)):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# Turn it into &amp;#39;2 * 3&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        operation_string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(number,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                                           operator,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                                           second_number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# Do not ever do this in any code that isn&amp;#39;t&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# low-effort, throwaway blog post code.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        new_number &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(eval(operation_string))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# If it&amp;#39;s commutative, see if we&amp;#39;ve already checked that combo.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# If so, skip it. If not, add it to the set for future pairs.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; is_commutative(operator):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          canonical_form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_canonical_form(number, operator, second_number)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; canonical_form &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; checked_commutative_operations:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          checked_commutative_operations&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(canonical_form)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# Recursive call&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        check_combo(other_numbers &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; [new_number],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    target,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    steps_so_far &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; [operation_string])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# We&amp;#39;ll want to ensure that the operations for the given&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# operands are valid for the rules of the game.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;is_valid&lt;/span&gt;(first_operand, operator, second_operand):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# No negatives allowed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; first_operand &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; second_operand
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Also, integers only&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; first_operand &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; second_operand &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# If we&amp;#39;re multiplying or dividing and either operand is a 1, we can just skip it.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;is_redundant&lt;/span&gt;(first_operand, operator, second_operand):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ((operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; (first_operand &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; second_operand &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;is_commutative&lt;/span&gt;(operator):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; operator &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;+&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 2 + 3 is the same as 3 + 2, but we can put them&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# in the same &amp;#39;smaller operator larger&amp;#39; form&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_canonical_form&lt;/span&gt;(first_operand, operator, second_operand):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(min(first_operand, second_operand),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                           operator,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                           max(first_operand, second_operand))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;check_combo([&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;], &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;, [])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, we have a nice, crisp output:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;Found solution! [&amp;#39;1 + 2&amp;#39;, &amp;#39;3 + 3&amp;#39;]
+Found solution! [&amp;#39;1 + 3&amp;#39;, &amp;#39;2 + 4&amp;#39;]
+Found solution! [&amp;#39;2 + 3&amp;#39;, &amp;#39;1 + 5&amp;#39;]
+Found solution! [&amp;#39;2 * 3&amp;#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That matches what we had before, and just to check for &lt;code&gt;7&lt;/code&gt;, we can do &lt;code&gt;check_combo([1, 2, 3], 7, [])&lt;/code&gt;, which gives us the single, expected answer:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;Found solution! [&amp;#39;2 * 3&amp;#39;, &amp;#39;1 + 6&amp;#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;trying-on-the-real-problem&#34;&gt;Trying on the real problem&lt;/h3&gt;
+&lt;p&gt;We can try this on one of the real problems now to see how it does:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;real-example.png&#34; alt=&#34;Screenshot of one of the Digits problems, with [1, 2, 4, 5, 10, 25] and target 94&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Calling &lt;code&gt;check_combo([1, 2, 4, 5, 10, 25], 94, [])&lt;/code&gt; results in&amp;hellip; a lot:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;monstrosity.gif&#34; alt=&#34;Screencast of an absolute cascade of results — there are many, many solutions&#34;&gt;&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s only a small subset of the answers as the repl was firing away — there are clearly a ton, even after our basic improvements.&lt;/p&gt;
+&lt;p&gt;Instead of printing them, let&amp;rsquo;s do a few things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We can count the total number of solutions&lt;/li&gt;
+&lt;li&gt;We can also save them by length, and inspect just one of each&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+&lt;p&gt;I won&amp;rsquo;t include all of the code here, but the changes would be like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;operators &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;+&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;all_solutions &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;total_checked &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;check_combo&lt;/span&gt;(numbers, target, steps_so_far):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;global&lt;/span&gt; total_checked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  total_checked &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Check if we already have the target&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; target &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; numbers:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# print(&amp;#39;Found solution!&amp;#39;, steps_so_far)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    all_solutions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(steps_so_far)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# ... all of the other code, then at the end:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;metrics&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  counts_by_length &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  short_solution &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; solution &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; all_solutions:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    solution_length &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; len(solution)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; solution_length &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; counts_by_length:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      counts_by_length[solution_length] &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      counts_by_length[solution_length] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Also keep around one of the shortest solutions to see later&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; short_solution &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; solution_length &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; len(short_solution):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      short_solution &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; solution
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;We checked&amp;#39;&lt;/span&gt;, total_checked, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;subproblems&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;We have&amp;#39;&lt;/span&gt;, len(all_solutions), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;total solutions!&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;The number of solutions by number of operations:&amp;#39;&lt;/span&gt;, counts_by_length)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;One of the shortest solutions:&amp;#39;&lt;/span&gt;, short_solution)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;check_combo([&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;25&lt;/span&gt;], &lt;span style=&#34;color:#ae81ff&#34;&gt;94&lt;/span&gt;, [])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;metrics()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Running this with the metrics yields the following after a bit:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;We checked 777019 subproblems
+We have 1319 total solutions!
+The number of solutions by number of operations: {5: 1119, 4: 194, 3: 6}
+One of the shortest solutions: [&amp;#39;1 + 5&amp;#39;, &amp;#39;4 * 25&amp;#39;, &amp;#39;100 - 6&amp;#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;No wonder this took a while — we ended up checking &lt;em&gt;hundreds of thousands&lt;/em&gt; of subproblems. There were over a thousand ways to get to the target with 5 operations, around two hundred that got there with 194, and just six that got there in 3 operations. I printed out one of those &amp;ldquo;get it in 3&amp;rdquo; solutions, and it&amp;rsquo;s actually a pretty natural one for coming up by hand — usually I try to get somewhere close to the total with multiplication with the bigger numbers, then look for adding/subtracting from there.&lt;/p&gt;
+&lt;p&gt;That brings up another question: why are we able to solve this as humans, with our puny little brain calculators, without trying every solution? It&amp;rsquo;s because we use strategy to avoid the full tree. Things like targeting large intermediate numbers that are close to the solution or knowing that if you&amp;rsquo;re in the thousands already from multiplying big numbers and that there&amp;rsquo;s no real point going farther than that. It&amp;rsquo;s interesting to think how we might translate some of these solutions to a programmatic approach, but I&amp;rsquo;ve left that for another day.&lt;/p&gt;
+&lt;h3 id=&#34;what-does-the-difficulty-look-like&#34;&gt;What does the difficulty look like?&lt;/h3&gt;
+&lt;p&gt;I ran this for the rest of today&amp;rsquo;s problems to see what the solution space looked like for each one.&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;(obviously, game spoilers below)&lt;/p&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-none&#34; data-lang=&#34;none&#34;&gt;checking [2, 3, 5, 10, 15, 25] 195
+We checked 1250803 subproblems
+We have 1844 total solutions!
+The number of solutions by number of operations: {5: 1294, 4: 510, 3: 39, 2: 1}
+One of the shortest solutions: [&amp;#39;3 + 10&amp;#39;, &amp;#39;15 * 13&amp;#39;]
+
+checking [3, 5, 7, 9, 11, 20] 251
+We checked 1077566 subproblems
+We have 375 total solutions!
+The number of solutions by number of operations: {4: 102, 5: 268, 3: 5}
+One of the shortest solutions: [&amp;#39;3 * 7&amp;#39;, &amp;#39;11 * 21&amp;#39;, &amp;#39;20 + 231&amp;#39;]
+
+checking [4, 5, 6, 9, 11, 20] 382
+We checked 991830 subproblems
+We have 106 total solutions!
+The number of solutions by number of operations: {5: 87, 4: 19}
+One of the shortest solutions: [&amp;#39;4 * 9&amp;#39;, &amp;#39;11 * 36&amp;#39;, &amp;#39;6 + 396&amp;#39;, &amp;#39;402 - 20&amp;#39;]
+
+checking [3, 13, 19, 20, 23, 25] 456
+We checked 938291 subproblems
+We have 989 total solutions!
+The number of solutions by number of operations: {5: 916, 4: 73}
+One of the shortest solutions: [&amp;#39;3 * 13&amp;#39;, &amp;#39;19 * 23&amp;#39;, &amp;#39;39 - 20&amp;#39;, &amp;#39;437 + 19&amp;#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Overall, it seems like they&amp;rsquo;re trending fewer solutions to the right, save for the very last one. This generally makes sense if we think about our wetware approaches as well, as these big numbers also seem a little more intimidating. I&amp;rsquo;m much more familiar with my multiples below 15, and I feel like I have much more intuition for the smaller numbers. For the last problem, I think this is where more of the complicated difficulty concepts come into play. There may be more ways to get to &lt;code&gt;456&lt;/code&gt;, but 1) our starter numbers are generally much larger and 2) the larger target feels trickier to get to.&lt;/p&gt;
+&lt;p&gt;Pretty neat.&lt;/p&gt;
+&lt;h3 id=&#34;improving-this-further&#34;&gt;Improving this further&lt;/h3&gt;
+&lt;p&gt;Even with these improvements, it&amp;rsquo;s still a brutally brute-force solution, and each problem takes ~30 seconds when I run it in the repl. We could still probably improve it further — for example, we&amp;rsquo;re definitely duplicating work, since the code above isn&amp;rsquo;t looking at commutative across steps (or even if the result of the step is used later in the solution — who cares about an intermediate number if it doesn&amp;rsquo;t show up in the rest of the steps). The counts are also definitely not a perfect reflection of difficulty, as &lt;code&gt;&#39;6 + 396&#39;, &#39;402 - 20&#39;&lt;/code&gt; is the same as both &lt;code&gt;&#39;396 - 20&#39;, &#39;376 + 6&#39;&lt;/code&gt; &lt;em&gt;and&lt;/em&gt; &lt;code&gt;&#39;20 - 6&#39;, &#39;402 - 14&#39;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This works though, which meets my bar for fun, exploratory code. I&amp;rsquo;ll leave further improvements as an exercise for the reader, as this is good enough for now.&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Thank you again for attending our onsite interview process. Based on your interview performance, we have chosen to not move you forward in the process. In particular, interviewers mentioned your lack of interest in further optimizing your solutions and your constant mentioning of naps and your desire to go home to play with your dog.&lt;/p&gt;
+&lt;p&gt;We will keep your resume on file for future openings.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;You can play with the code (at your own risk) at &lt;a href=&#34;https://replit.com/@lxls/JointRedundantSquare&#34;&gt;https://replit.com/@lxls/JointRedundantSquare&lt;/a&gt;, with the caveat that it&amp;rsquo;s just throwaway blog post code.&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>The dog hair and the computer mouse</title>
       <link>https://alexanderell.is/posts/dog-hair-mouse/</link>

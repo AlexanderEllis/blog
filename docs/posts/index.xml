@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Apr 2023 08:01:09 -0500</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 11 Jul 2023 22:06:31 -0400</lastBuildDate><atom:link href="https://alexanderell.is/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Brute-forcing the NYT Digits game</title>
+      <link>https://alexanderell.is/posts/digits/</link>
+      <pubDate>Tue, 11 Jul 2023 22:06:31 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/digits/</guid>
+      <description>You&amp;rsquo;re given a list of integers and a target number. You can add, subtract, multiply, or divide numbers, and you can use the result for future operations. Once you have used a number in an operation, you may not use it again. Your task is to find a combination of arithmetic steps to get to the target number.
+For example, if you&amp;rsquo;re given [1, 2, 3] and the target is 9, a valid path would be the following:</description>
+    </item>
+    
     <item>
       <title>The dog hair and the computer mouse</title>
       <link>https://alexanderell.is/posts/dog-hair-mouse/</link>
