@@ -60,7 +60,8 @@ and PR descriptions, as well as comments I left in PR reviews.
 #### A handful of Jira tickets
 
 We loosely track our work items in Jira, and I added a few, mostly summarizing a
-few future work items. Not much to write home about here.
+few future work items. I also provided updates on existing tickets. Not much to
+write home about here.
 
 
 #### A feedback form for the new grad on our team
@@ -94,8 +95,7 @@ architecture, mostly for my own knowledge. This is tangentially writing — it'
 more like writing a name in a box, then putting it in the right place and
 drawing arrows to its neighbors.
 
-For more on this, see [Julia Evans' masterful zine on
-debugging](https://jvns.ca/blog/2022/12/21/new-zine--the-pocket-guide-to-debugging/).
+For more on this, see [Julia Evans' masterful zine on debugging](https://jvns.ca/blog/2022/12/21/new-zine--the-pocket-guide-to-debugging/).
 
 #### A few technical docs
 
