@@ -54,7 +54,8 @@ lines of code&amp;rdquo; problems.&lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#3
 and PR descriptions, as well as comments I left in PR reviews.&lt;/p&gt;
 &lt;h4 id=&#34;a-handful-of-jira-tickets&#34;&gt;A handful of Jira tickets&lt;/h4&gt;
 &lt;p&gt;We loosely track our work items in Jira, and I added a few, mostly summarizing a
-few future work items. Not much to write home about here.&lt;/p&gt;
+few future work items. I also provided updates on existing tickets. Not much to
+write home about here.&lt;/p&gt;
 &lt;h4 id=&#34;a-feedback-form-for-the-new-grad-on-our-team&#34;&gt;A feedback form for the new grad on our team&lt;/h4&gt;
 &lt;p&gt;I&amp;rsquo;m the mentor for a new grad that joined our team in August, and this week I
 had to submit a feedback form for their first three months and the new grad
@@ -80,8 +81,7 @@ with, leading to a lot of investigation.&lt;/p&gt;
 architecture, mostly for my own knowledge. This is tangentially writing — it&amp;rsquo;s
 more like writing a name in a box, then putting it in the right place and
 drawing arrows to its neighbors.&lt;/p&gt;
-&lt;p&gt;For more on this, see &lt;a href=&#34;https://jvns.ca/blog/2022/12/21/new-zine--the-pocket-guide-to-debugging/&#34;&gt;Julia Evans&amp;rsquo; masterful zine on
-debugging&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For more on this, see &lt;a href=&#34;https://jvns.ca/blog/2022/12/21/new-zine--the-pocket-guide-to-debugging/&#34;&gt;Julia Evans&amp;rsquo; masterful zine on debugging&lt;/a&gt;.&lt;/p&gt;
 &lt;h4 id=&#34;a-few-technical-docs&#34;&gt;A few technical docs&lt;/h4&gt;
 &lt;p&gt;I find design documents extremely helpful for thinking through a hard problem
 and sharing context and ideas with others. I find that if I can&amp;rsquo;t clearly
