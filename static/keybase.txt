@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/alex_ellis
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://alexanderell.is
+  * I am alex_ellis (https://keybase.io/alex_ellis) on keybase.
+  * I have a public key ASDeqIZ-khuJXhqW9CsLXKgobOirFtM0IJAWWxuLKPwyHgo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120dea8867e921b895e1a96f42b0b5ca8286ce8ab16d3342090165b1b8b28fc321e0a",
+      "host": "keybase.io",
+      "kid": "0120dea8867e921b895e1a96f42b0b5ca8286ce8ab16d3342090165b1b8b28fc321e0a",
+      "uid": "83ecbcbcf850be1b73a6bee5d7d7d819",
+      "username": "alex_ellis"
+    },
+    "merkle_root": {
+      "ctime": 1720371970,
+      "hash": "d9bfd6b28a45a3139475fd043a0777dd6dae9534ce3fa97d3173750017b5363c3793f88b2cf7f96305db5392f4a686a07e49c56056afb9e9680fd40e2ac24645",
+      "hash_meta": "15ec76c80d4cdf397141753970cb9001b7e30a7bcf4174b3d2bbad1de54ce6a6",
+      "seqno": 25899422
+    },
+    "service": {
+      "entropy": "K8IGAn+BkBhyCrkyMiX4Z7sY",
+      "hostname": "alexanderell.is",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.3.0"
+  },
+  "ctime": 1720371978,
+  "expire_in": 504576000,
+  "prev": "bc70c765be92292f2038fc24f6f6d85b70bcd7c33c32c8bc04338cdde4d0065f",
+  "seqno": 7,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg3qiGfpIbiV4alvQrC1yoKGzoqxbTNCCQFlsbiyj8Mh4Kp3BheWxvYWTESpcCB8QgvHDHZb6SKS8gOPwk9vbYW3C818M8Msi8BDOM3eTQBl/EIAAtgp1piHgg4FpBQnOsdSe5lTs2L79EqD7MD4a2d3KsAgHCo3NpZ8RA5ZU1yuBjd42kRwurDZi6EqDvlv/lNLMnfYeaDqcBxA0LbKJm/2kJvSBWhxzR3W+AWqAdin6ISjnvIl7pXlBoAKhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIKdaBCKaFO6ShZWfeLDcIU+1muwEo9UlILl0RUYeUziZo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/alex_ellis
+
+==================================================================
