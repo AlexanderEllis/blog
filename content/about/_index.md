@@ -12,7 +12,7 @@ Recommended viewing: https://www.youtube.com/watch?v=8d4RtvMQp10
 
 I live with my wife and dog in the Boston area where I work remotely as a software engineer at Netflix.  I studied physics and French during my undergrad at Washington University in St. Louis, and I more recently [studied computer science part-time at Tufts while working](/posts/mscs). I love to write and teach, and I've found that explaining things is the best way to learn.
 
-I used to work at Google, and before that I worked at [Giant Otter Technologies](https://www.giantotter.com), a very small AI startup that got acquired by [Drift](https://www.drift.com/).
+I used to work at Google, and before that I worked at [Giant Otter Technologies](https://www.giantotter.com), a very small AI startup.
 
 Want to get in touch? Feel free to reach out! I'm on [GitHub](https://github.com/AlexanderEllis), [LinkedIn](https://www.linkedin.com/in/alexander-ellis/) (minimally), and [Hacker News](https://news.ycombinator.com/user?id=otras).
 
