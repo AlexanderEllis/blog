@@ -104,8 +104,8 @@ room to grow, and it should be OK with whoever you're working with as well.
 
 That does make it feel like it wouldn't translate well into relationships without trust or with power imbalances. For
 example, if I was a junior engineer sending out my resume to hiring managers, I wouldn't want to tell anyone that my
-coding skills are a 1/10. If I had crippling imposter syndrome and was worried that my manager was going to fire me, I
-may be less comfortable being honest about my weaknesses.
+coding skills are a 1/10. If I didn't have psychological safety and was worried that my manager was going to fire me
+for any displayed weakness, I would be much less comfortable being honest.
 
 I've shared my own evaluation because I value transparency and I'm in a very fortunate position to lead by example for
 psychological safety. I have a strong work history and confidence in my abilities, and really if anyone reads this and
@@ -126,7 +126,7 @@ science, but maybe not if I'm evaluating my abilities with the lens of my curren
 
 In case it's not clear by now, this is also not "Alex's exhaustive list of the things that every software engineer
 needs". These are skills and areas that I've noticed in my day to day job that come into play. The ones I've included
-are different for different roles and they're not all needed at different companies. They also come with huge asterisks;
+are different for different roles, and they're not all needed at different companies. They also come with huge asterisks;
 who
 cares about office politics really? I don't care in the grand scheme of things, but I care in the scope of understanding
 how the game works so I can ensure a coworker of mine gets proper recognition for the important work they're doing or
@@ -138,7 +138,7 @@ I think it's a pretty neat visualization, but there are some clear drawbacks.
 
 One is that there's some obvious crossover between axes that isn't represented in these charts. Empathy and
 communication skills are the building blocks for mentoring, writing, technical talks, leading, and much more. Breaking
-them up into these more concrete areas makes it easier to think about how to grow; it's easier to work with "I want to
+them up into these more concrete areas makes it easier to think about how to grow them; it's easier to work with "I want to
 practice my technical talks" than an amorphous "I want to improve my general communication skills". But having them as
 discrete axes loses some of that foundational, crossover effect, where improving at one will likely make you better at
 another.
@@ -158,7 +158,7 @@ arbitrary values, not necessarily my own evaluation):
 -----
 
 With those caveats, I think it's a neat visualization. Like writing, one of the real benefits of this exercise is the
-thinking that it forces you to do, particularly the honest evaluation of where you are.
+thinking that it forces you to do, particularly as you do an honest evaluation.
 
 There's no perfect way to do it, but I like these visuals.
 
