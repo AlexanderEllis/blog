@@ -132,6 +132,20 @@ cares about office politics really? I don't care in the grand scheme of things, 
 how the game works so I can ensure a coworker of mine gets proper recognition for the important work they're doing or
 help a junior colleague get promoted.
 
+Along those lines, I think it's also an interesting exercise to do this for different categories. I included the
+ones I've done for technical skills and soft skills, with a subset of the axes for each, but there are a few other ones
+that would be great to work through:
+
+- Different services your team manages and interacts with
+- Different frameworks, technologies, and subareas for your role.
+    - For a networking role, this could include Wireshark, Netty, HTTP/2, QUIC, security, DDoS attacks, and more
+- Various focus areas within software engineering
+    - E.g. databases, data engineering, front-end, mobile development, etc
+- Various focus areas within computer science
+    - E.g. compilers, networking, graphics, etc)
+
+<br>
+
 ### Where does the radar chart fall short, and how could it be better?
 
 I think it's a pretty neat visualization, but there are some clear drawbacks.
