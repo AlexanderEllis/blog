@@ -159,6 +159,12 @@ measure, we can see this clear shift with the average pixels side by side.&lt;/p
 eyes &lt;a href=&#34;https://photo.stackexchange.com/questions/10208/how-many-colors-and-shades-can-the-human-eye-distinguish-in-a-single-scene&#34;&gt;are&lt;/a&gt; &lt;a href=&#34;https://labs.psych.unr.edu/websterlab/Research.html&#34;&gt;incredibly&lt;/a&gt; &lt;a href=&#34;https://www.aao.org/eye-health/tips-prevention/how-humans-see-in-color&#34;&gt;complex&lt;/a&gt;,
 and the answer is much more nuanced than the average pixel value: our eyes adapt to the environment, remember the color
 of things, and change dynamically.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re interested in a rabbit hole, I&amp;rsquo;d recommend
+this &lt;a href=&#34;https://colorusage.arc.nasa.gov/Simult_and_succ_cont.php&#34;&gt;NASA Research Center Color Usage Research Lab article on simultaneous and successive contrast&lt;/a&gt;
+and these this Wikipedia article
+on &lt;a href=&#34;https://en.wikipedia.org/wiki/Chromatic_adaptation&#34;&gt;chromatic adaptation&lt;/a&gt;,  &lt;a href=&#34;https://en.wikipedia.org/wiki/Color_appearance_model&#34;&gt;color appearance model&lt;/a&gt;,
+and &lt;a href=&#34;https://en.wikipedia.org/wiki/Color_constancy&#34;&gt;color constancy&lt;/a&gt;. It obviously extends well past a simple average
+pixel color!&lt;/p&gt;
 &lt;p&gt;Given that the trick is happening in our eyes, I think a better experiment would be a human-focused experiment for how
 we perceive the average color. Maybe we could have two groups, with bag and without, and we show them the cropped photos
 and have them pick the average (or most dominant?) color they perceive in the photo. We&amp;rsquo;d then be able to compare across

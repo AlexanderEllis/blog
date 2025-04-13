@@ -103,6 +103,13 @@ eyes [are](https://photo.stackexchange.com/questions/10208/how-many-colors-and-s
 and the answer is much more nuanced than the average pixel value: our eyes adapt to the environment, remember the color
 of things, and change dynamically.
 
+If you're interested in a rabbit hole, I'd recommend
+this [NASA Research Center Color Usage Research Lab article on simultaneous and successive contrast](https://colorusage.arc.nasa.gov/Simult_and_succ_cont.php)
+and these this Wikipedia article
+on [chromatic adaptation](https://en.wikipedia.org/wiki/Chromatic_adaptation),  [color appearance model](https://en.wikipedia.org/wiki/Color_appearance_model),
+and [color constancy](https://en.wikipedia.org/wiki/Color_constancy). It obviously extends well past a simple average 
+pixel color!
+
 Given that the trick is happening in our eyes, I think a better experiment would be a human-focused experiment for how
 we perceive the average color. Maybe we could have two groups, with bag and without, and we show them the cropped photos
 and have them pick the average (or most dominant?) color they perceive in the photo. We'd then be able to compare across
