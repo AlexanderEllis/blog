@@ -150,8 +150,10 @@ between this first pale yellow and the second, more robust orange:&lt;/p&gt;
 &lt;div style=&#34;width: 100px; height: 100px; background-color: rgb(242, 197, 38);&#34;&gt;&lt;/div&gt;
 &lt;div style=&#34;width: 100px; height: 100px; background-color: rgb(222, 167, 32);&#34;&gt;&lt;/div&gt;
 &lt;br&gt;
-&lt;p&gt;OK, maybe not exactly a robust orange, and not exactly more appetizing, but again, I think our mind is probably playing more
-tricks on us. There&amp;rsquo;s also probably a better way to think about color shifts that I&amp;rsquo;m not familiar with, but even as a basic
+&lt;p&gt;OK, maybe not exactly a robust orange, and not exactly more appetizing, but again, I think our mind is probably playing
+more
+tricks on us. There&amp;rsquo;s also probably a better way to think about color shifts that I&amp;rsquo;m not familiar with, but even as a
+basic
 measure, we can see this clear shift with the average pixels side by side.&lt;/p&gt;
 &lt;p&gt;Of course, as expected,
 eyes &lt;a href=&#34;https://photo.stackexchange.com/questions/10208/how-many-colors-and-shades-can-the-human-eye-distinguish-in-a-single-scene&#34;&gt;are&lt;/a&gt; &lt;a href=&#34;https://labs.psych.unr.edu/websterlab/Research.html&#34;&gt;incredibly&lt;/a&gt; &lt;a href=&#34;https://www.aao.org/eye-health/tips-prevention/how-humans-see-in-color&#34;&gt;complex&lt;/a&gt;,
@@ -241,8 +243,8 @@ average:&lt;/p&gt;
 our eyes work, and these ended up looking more muted anyways. Maybe because I messed something up in
 the translation? The average pixel values ended up being very, very similar though, so I ended up just using the
 &lt;code&gt;magick&lt;/code&gt; ones in the table above. Fun to experiment with though!&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-&lt;p&gt;This was also a great example of how much easier this experimentation is with LLMs — being able to easily discover&lt;br&gt;
-tools for cropping or pixel evaluation meant that the time from idea to proof of concept was very, very short.&lt;/p&gt;
+&lt;p&gt;This was also a great example of how much easier this experimentation is with LLMs — being able to easily discover tools
+for cropping or pixel evaluation meant that the time from idea to proof of concept was very, very short.&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;Even with these lackluster brown average pixels, I&amp;rsquo;m convinced that the red mesh bags make the oranges look oranger.
 It&amp;rsquo;s not big enough to call the FTC for, but it is an effective little trick, a small ripeness deception that we all

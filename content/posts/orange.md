@@ -2,7 +2,7 @@
 title: "How much oranger do red orange bags make oranges look?"
 date: 2025-04-13T00:39:45-04:00
 draft: false
-tags: ['Human-Citrus Interaction']
+tags: [ 'Human-Citrus Interaction' ]
 ---
 
 Look at this orange:
@@ -92,8 +92,10 @@ between this first pale yellow and the second, more robust orange:
 
 <br>
 
-OK, maybe not exactly a robust orange, and not exactly more appetizing, but again, I think our mind is probably playing more
-tricks on us. There's also probably a better way to think about color shifts that I'm not familiar with, but even as a basic
+OK, maybe not exactly a robust orange, and not exactly more appetizing, but again, I think our mind is probably playing
+more
+tricks on us. There's also probably a better way to think about color shifts that I'm not familiar with, but even as a
+basic
 measure, we can see this clear shift with the average pixels side by side.
 
 Of course, as expected,
@@ -108,10 +110,7 @@ the groups to confirm that the with-bag photos skew redder.
 
 Maybe another day. I think I've already been staring at pictures of oranges for too long.
 
-
 ## Anyways, here's how I set this up.
-
-
 
 ![My experimental setup for taking photos of oranges, with my dog looking on](experimental-setup.jpg)
 *The experimental setup, with the author's attentive assistant*
@@ -166,7 +165,7 @@ orange-1-without-cropped.jpeg: #D0530A
 
 Pretty neat!
 
-Once I found that everything was showing up a lot more brown, I also experimented with a basic Python script that 
+Once I found that everything was showing up a lot more brown, I also experimented with a basic Python script that
 leveraged OpenCV. This script creates a mask for each image that excludes non-orange-ish pixels, defined by a range that
 I define. It can then take the average over just the orange pixels that fall outside of the mask.
 
@@ -204,7 +203,7 @@ for file in files:
 ```
 
 This was pretty neat, because it meant that I could mask away any non-orange pixels (like very dark shadows). That ended
-up looking something like this, with the original photo, the mask, and just the orange parts that would be used for the 
+up looking something like this, with the original photo, the mask, and just the orange parts that would be used for the
 average:
 
 <img src="cropped/orange-5-with-cropped.jpeg" width="300"/>
@@ -219,8 +218,8 @@ our eyes work, and these ended up looking more muted anyways. Maybe because I me
 the translation? The average pixel values ended up being very, very similar though, so I ended up just using the
 `magick` ones in the table above. Fun to experiment with though![^3]
 
-This was also a great example of how much easier this experimentation is with LLMs — being able to easily discover  
-tools for cropping or pixel evaluation meant that the time from idea to proof of concept was very, very short. 
+This was also a great example of how much easier this experimentation is with LLMs — being able to easily discover tools
+for cropping or pixel evaluation meant that the time from idea to proof of concept was very, very short.
 
 -----
 
