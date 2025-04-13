@@ -6,7 +6,265 @@
     <description>Recent content on Caffeinspiration</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 12 Apr 2025 12:47:16 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 13 Apr 2025 00:39:45 -0400</lastBuildDate><atom:link href="https://alexanderell.is/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How much oranger do red orange bags make oranges look?</title>
+      <link>https://alexanderell.is/posts/orange/</link>
+      <pubDate>Sun, 13 Apr 2025 00:39:45 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/orange/</guid>
+      <description>&lt;p&gt;Look at this orange:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;orange-3-without.jpeg&#34; alt=&#34;Picture of an orange without the orange bag that they come in&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now look at this orange:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;orange-3-with.jpeg&#34; alt=&#34;Picture of an orange with the orange bag that they come in&#34;&gt;&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s the same orange.&lt;/p&gt;
+&lt;p&gt;But, look how much more orange it looks with the red mesh on top of it:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;orange-3.gif&#34; alt=&#34;gif going back and forth between the two&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If you buy bags of oranges (at least at many places in the US), they frequently come in this red mesh bag. This bag
+makes the
+oranges look more orange. Oranger.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s what that looks like at a local grocery store&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;oranges-at-trader-joes.jpg&#34; alt=&#34;Picture of Sumo oranges for sale at Trader Joe&amp;amp;rsquo;s, with one bin in bags and the other bin just individual oranges&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Ripe oranges are usually oranger, so this bag makes the oranges look better than they may actually be. Maybe the secret
+is to never buy bagged fruit, since it&amp;rsquo;s harder to evaluate the quality of each orange.&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;style&gt;
+table td, table th {
+  width: 150px;
+  text-align: center;
+}
+&lt;/style&gt;
+&lt;p&gt;This made me wonder — how does the bag change how we perceive the color?&lt;/p&gt;
+&lt;p&gt;I thought this difference would be visible if we did some quick and tricky digital math: what if we had a picture of the
+orange with and without the bag under the same light and camera conditions, then checked the average pixel?&lt;/p&gt;
+&lt;p&gt;Here are the results from 11 different orange photos, with and without the mesh:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Orange&lt;/th&gt;
+&lt;th&gt;Without bag&lt;/th&gt;
+&lt;th&gt;With bag&lt;/th&gt;
+&lt;th&gt;Avg. color without&lt;/th&gt;
+&lt;th&gt;Avg. color with&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;1&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-1-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-1-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #D0530A;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #B9310A;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;2&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-2-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-2-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #B23C07;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #C1370A;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;3&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-3-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-3-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #D0570D;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #CB3E0D;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;4&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-4-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-4-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #D0570D;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #CB3E0D;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;5&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-5-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-5-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #982606;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #A82808;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;6&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-6-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-6-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #9A2B05;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #A22406;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;7&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-7-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-7-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #982207;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #A21E09;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;8&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-10-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-10-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #D55B0B;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #D73A08;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;9&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-11-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-11-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #E3550C;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #CE3507;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;10&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-12-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-12-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #C1500A;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #BD3C09;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;h2&gt;11&lt;/h2&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-13-without-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cropped/orange-13-with-cropped.jpeg&#34; width=&#34;100&#34; height=&#34;100&#34;/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #C7500B;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div style=&#34;width: 100px; height: 100px; background-color: #B73E09;&#34;&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;There are a few interesting things here. First, the average pixel is not what I would expect it to be at all, to be
+honest. I even ran the average pixel calculation a second time with more advanced calculations, including some
+orange-only-masking to avoid non-orange colors, but I got similar results. They&amp;rsquo;re all much more brown than my eyes
+would assume when I look at the images.&lt;/p&gt;
+&lt;p&gt;Weirdly, that kind of makes sense when you look at each image closely. Here&amp;rsquo;s a &lt;strong&gt;big trypophobia warning&lt;/strong&gt;, but you can
+open the spoiler below.&lt;/p&gt;
+&lt;details&gt;
+  &lt;summary&gt;Click to see a close up photo of orange skin, which is kinda weird to be honest&lt;/summary&gt;
+  &lt;img src=&#34;cropped/orange-1-without-cropped.jpeg&#34;/&gt;
+  &lt;p&gt;Look how much brown there really is when you look closely! Also, kind of gross.&lt;/p&gt;
+&lt;/details&gt;
+&lt;br&gt;
+&lt;p&gt;Kinda weird, right? This kind of makes sense though — this whole thing was motivated by the feeling that our eyes are
+tricked by colors, so it makes sense that our eyes are much less analytical than my computer averaging over all of the
+pixels.&lt;/p&gt;
+&lt;p&gt;The other interesting thing is that the addition of the red mesh clearly adds a warmth to each of the average colors.
+We can see a clear shift, even for those showing up as brown.&lt;/p&gt;
+&lt;p&gt;We see the RGB shift mostly in the green, interestingly enough. The average change to RGB values is around (-15, -20,
+-4) with the bag, with some larger shifts in the green. That&amp;rsquo;s a little hard to visualize, but that&amp;rsquo;s the difference
+between this first pale yellow and the second, more robust orange:&lt;/p&gt;
+&lt;div style=&#34;width: 100px; height: 100px; background-color: rgb(242, 197, 38);&#34;&gt;&lt;/div&gt;
+&lt;div style=&#34;width: 100px; height: 100px; background-color: rgb(222, 167, 32);&#34;&gt;&lt;/div&gt;
+&lt;br&gt;
+&lt;p&gt;OK, maybe not exactly a robust orange, and not exactly more appetizing, but again, I think our mind is probably playing more
+tricks on us. There&amp;rsquo;s also probably a better way to think about color shifts that I&amp;rsquo;m not familiar with, but even as a basic
+measure, we can see this clear shift with the average pixels side by side.&lt;/p&gt;
+&lt;p&gt;Of course, as expected,
+eyes &lt;a href=&#34;https://photo.stackexchange.com/questions/10208/how-many-colors-and-shades-can-the-human-eye-distinguish-in-a-single-scene&#34;&gt;are&lt;/a&gt; &lt;a href=&#34;https://labs.psych.unr.edu/websterlab/Research.html&#34;&gt;incredibly&lt;/a&gt; &lt;a href=&#34;https://www.aao.org/eye-health/tips-prevention/how-humans-see-in-color&#34;&gt;complex&lt;/a&gt;,
+and the answer is much more nuanced than the average pixel value: our eyes adapt to the environment, remember the color
+of things, and change dynamically.&lt;/p&gt;
+&lt;p&gt;Given that the trick is happening in our eyes, I think a better experiment would be a human-focused experiment for how
+we perceive the average color. Maybe we could have two groups, with bag and without, and we show them the cropped photos
+and have them pick the average (or most dominant?) color they perceive in the photo. We&amp;rsquo;d then be able to compare across
+the groups to confirm that the with-bag photos skew redder.&lt;/p&gt;
+&lt;p&gt;Maybe another day. I think I&amp;rsquo;ve already been staring at pictures of oranges for too long.&lt;/p&gt;
+&lt;h2 id=&#34;anyways-heres-how-i-set-this-up&#34;&gt;Anyways, here&amp;rsquo;s how I set this up.&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;experimental-setup.jpg&#34; alt=&#34;My experimental setup for taking photos of oranges, with my dog looking on&#34;&gt;
+&lt;em&gt;The experimental setup, with the author&amp;rsquo;s attentive assistant&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I took 11 different photos of various oranges in the same position, with and without the red mesh, and cropped the same
+section of each photo.&lt;/p&gt;
+&lt;p&gt;I found the pixel locations of the square I wanted, then I translated those coordinates into specific offsets for a
+&lt;code&gt;sips&lt;/code&gt; command (Scriptable Image Processing System), which I learned about today. It made this programmatic cropping
+very easy. For example, cropping two photos of Orange 1 in the same position, with and without mesh, as two files,
+&lt;code&gt;orange-1-with.jpeg&lt;/code&gt; and &lt;code&gt;orange-1-without.jpeg&lt;/code&gt;:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;for f in orange-1*.jpeg; 
+  do sips -c 788 740 --cropOffset 1519 1083 &amp;#34;$f&amp;#34;; 
+done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This let me go from these two photos:&lt;/p&gt;
+&lt;img src=&#34;orange-1-with.jpeg&#34; width=&#34;300&#34;/&gt;
+&lt;br&gt;
+&lt;img src=&#34;orange-1-without.jpeg&#34; width=&#34;300&#34;/&gt;
+&lt;p&gt;To these two photos&lt;/p&gt;
+&lt;img src=&#34;cropped/orange-1-with-cropped.jpeg&#34; width=&#34;200&#34;/&gt;
+&lt;br&gt;
+&lt;img src=&#34;cropped/orange-1-without-cropped.jpeg&#34; width=&#34;200&#34;/&gt;
+&lt;br&gt;
+&lt;p&gt;Assuming I put the mesh on without disturbing the orange, this meant that we would be doing an exact comparison between
+the two.&lt;/p&gt;
+&lt;p&gt;After I did this for all of the photos, with and without mesh, I then used &lt;code&gt;magick&lt;/code&gt; to calculate the average pixel
+value:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ for f in *-cropped.jpeg; 
+&amp;gt;   do   echo -n &amp;#34;$f: &amp;#34;;   
+&amp;gt;   magick &amp;#34;$f&amp;#34; -resize 1x1 txt:- | grep -o &amp;#39;#[A-Fa-f0-9]\{6\}&amp;#39;; 
+&amp;gt; done
+orange-1-with-cropped.jpeg: #B9310A
+orange-1-without-cropped.jpeg: #D0530A
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Pretty neat!&lt;/p&gt;
+&lt;p&gt;Once I found that everything was showing up a lot more brown, I also experimented with a basic Python script that
+leveraged OpenCV. This script creates a mask for each image that excludes non-orange-ish pixels, defined by a range that
+I define. It can then take the average over just the orange pixels that fall outside of the mask.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; file &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; files:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    image &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;imread(file)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Convert to HSV color space (better for color detection)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    hsv &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cvtColor(image, cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;COLOR_BGR2HSV)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Define the range for orange in HSV. This took some tinkering to get the right values.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lower_orange &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array([&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;150&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;150&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    upper_orange &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array([&lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;255&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;255&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Mask the image to get only the orange parts.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    mask &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;inRange(hsv, lower_orange, upper_orange)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    orange_pixels &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;bitwise_and(image, image, mask&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mask)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# For debugging, I saved the binary mask to visualize them.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    mask_filename &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(output_mask_dir, os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;basename(file)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replace(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.jpeg&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;_mask.png&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;imwrite(mask_filename, mask)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# I also saved just the orange parts to visualize it.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    orange_only_filename &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(output_orange_only_dir, os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;basename(file)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replace(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.jpeg&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;_orange.png&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;imwrite(orange_only_filename, orange_pixels)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Now, take the mean of the orange pixels with the mask, which means we&amp;#39;re (hopefully) ignoring all of the browner &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# pixels when calculating the mean.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    bgr_avg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(orange_pixels, mask&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mask)[:&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Then, translate to RGB (and HSV for debugging).&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rgb_avg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tuple(reversed(bgr_avg))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    hsv_avg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cvtColor(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;uint8([[bgr_avg]]), cv2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;COLOR_BGR2HSV)[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;][&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(file, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Average RGB orange color:&amp;#34;&lt;/span&gt;, rgb_avg, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;HSV:&amp;#34;&lt;/span&gt;, hsv_avg)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This was pretty neat, because it meant that I could mask away any non-orange pixels (like very dark shadows). That ended
+up looking something like this, with the original photo, the mask, and just the orange parts that would be used for the
+average:&lt;/p&gt;
+&lt;img src=&#34;cropped/orange-5-with-cropped.jpeg&#34; width=&#34;300&#34;/&gt;
+&lt;br&gt;
+&lt;img src=&#34;masks/orange-5-with-cropped_mask.png&#34; width=&#34;300&#34;/&gt;
+&lt;br&gt;
+&lt;img src=&#34;orange_only/orange-5-with-cropped_orange.png&#34; width=&#34;300&#34;/&gt;
+&lt;br&gt;
+&lt;p&gt;I must confess, I was cheating and trying to get the CSS boxes in the table above to look more orange. This isn&amp;rsquo;t how
+our eyes work, and these ended up looking more muted anyways. Maybe because I messed something up in
+the translation? The average pixel values ended up being very, very similar though, so I ended up just using the
+&lt;code&gt;magick&lt;/code&gt; ones in the table above. Fun to experiment with though!&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;This was also a great example of how much easier this experimentation is with LLMs — being able to easily discover&lt;br&gt;
+tools for cropping or pixel evaluation meant that the time from idea to proof of concept was very, very short.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Even with these lackluster brown average pixels, I&amp;rsquo;m convinced that the red mesh bags make the oranges look oranger.
+It&amp;rsquo;s not big enough to call the FTC for, but it is an effective little trick, a small ripeness deception that we all
+have to live with.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;This post is not affiliated with &lt;a href=&#34;https://sumocitrus.com/&#34;&gt;Sumo Citrus&lt;/a&gt;, though the author would be very
+interested in a sponsorship deal.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
+&lt;p&gt;Stores also do this with green bags for avocados, and others. That&amp;rsquo;ll be the follow up paper that cites this one.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
+&lt;p&gt;New addition to the resume: &amp;ldquo;proficient in computer vision&amp;rdquo;&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
     <item>
       <title>Visualizing my strengths and areas for growth with RPG radar charts</title>
       <link>https://alexanderell.is/posts/radar-charts/</link>
