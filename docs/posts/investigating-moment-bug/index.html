@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.152.2">
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Investigating a Bug in Moment.js &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,13 +18,11 @@
 		
 
 		
-			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Investigating a Bug in Moment.js">
-  <meta name="twitter:description" content="Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times.
-Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some roundabout work. When reading about someone else’s work, I’ve found that it’s very valuable to see both what worked and what didn’t work.">
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Investigating a Bug in Moment.js"/>
+<meta name="twitter:description" content="Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times. Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some"/>
 
 	</head>
 
@@ -41,7 +39,7 @@ Rather than write about what would have ideally happened (the steps of which wou
 	
 
 	
-	<a class="cta" href="/index.xml">RSS</a>
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
 	
 </nav>
 
@@ -353,6 +351,23 @@ localeData.week(aMoment);  // returns week-of-year of aMoment
             
 
             <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+
+
+</div>
+
     
     <p class="small">
     

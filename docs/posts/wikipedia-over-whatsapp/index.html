@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.152.2">
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Wikipedia Over WhatsApp &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,12 +18,13 @@
 		
 
 		
-			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Wikipedia Over WhatsApp">
-  <meta name="twitter:description" content="In-flight messaging I was on a Delta flight the other day, and I was thinking about how they offer free messaging from your smartphone.">
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Wikipedia Over WhatsApp"/>
+<meta name="twitter:description" content="In-flight messaging I was on a Delta flight the other day, and I was thinking about how they offer free messaging from your smartphone.
+How do they limit the wifi? Maybe they have some basic filter that says &ldquo;deny everything except the urls for these 3 messaging apps&rdquo;, which makes sense conceptually.
+What if we don&rsquo;t want to pay for wifi and we still want to be able to browse the web?"/>
 
 	</head>
 
@@ -40,7 +41,7 @@
 	
 
 	
-	<a class="cta" href="/index.xml">RSS</a>
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
 	
 </nav>
 
@@ -68,17 +69,11 @@
                     <h2 id="in-flight-messaging">In-flight messaging</h2>
 <p>I was on a Delta flight the other day, and I was thinking about how they offer
 free messaging from your smartphone.</p>
-<p><img src="delta.png" alt="Screenshot of Delta site that says &ldquo;Connect to Delta Wi-Fi to book, change, or
-check the status of your flight on delta.com, all without purchasing a Wi-Fi
-pass. You can also message for free from your smartphone via iMessage, Facebook
-Messenger or WhatsApp (limited to text and emojis, SMS
-unavailable).&rdquo;"></p>
+<p><img src="delta.png" alt="Screenshot of Delta site that says &amp;ldquo;Connect to Delta Wi-Fi to book, change, orcheck the status of your flight on delta.com, all without purchasing a Wi-Fipass. You can also message for free from your smartphone via iMessage, FacebookMessenger or WhatsApp (limited to text and emojis, SMSunavailable).&amp;rdquo;"></p>
 <p>How do they limit the wifi? Maybe they have some basic filter that says &ldquo;deny
 everything except the urls for these 3 messaging apps&rdquo;, which makes sense
 conceptually.</p>
-<p><img src="delta-wifi.png" alt="Basic diagram of my phone, Delta Wifi, and the rest of the internet, with
-Delta wifi blocking all types of requests other than messaging
-requests"></p>
+<p><img src="delta-wifi.png" alt="Basic diagram of my phone, Delta Wifi, and the rest of the internet, withDelta wifi blocking all types of requests other than messagingrequests"></p>
 <p>What if we don&rsquo;t want to pay for wifi and we still want to be able to browse the
 web?</p>
 <h2 id="tunneling-through-whatsapp">Tunneling through WhatsApp</h2>
@@ -94,8 +89,7 @@ query Wikipedia pages and read them over WhatsApp?</p>
 number. If we hook that number into a WhatsApp automated backend (probably via
 Twilio), we can have that backend parse the message, query Wikipedia, and send
 the response.</p>
-<p><img src="system.png" alt="System diagram of phone talking to WhatsApp that talks to a proxy service that
-talks to Wikipedia"></p>
+<p><img src="system.png" alt="System diagram of phone talking to WhatsApp that talks to a proxy service thattalks to Wikipedia"></p>
 <p>There are two main components to this Wikipedia Over WhatsApp, or <code>WoW</code> service:</p>
 <ul>
 <li>The parsing of the messages and making requests to Wikipedia</li>
@@ -176,8 +170,7 @@ results was exactly on the money:</p>
 up a sandbox Twilio WhatsApp environment that you can send and receive messages
 with. I hooked this up with a few changes, and the relevant parts are in the
 following diagram:</p>
-<p><img src="mvp.png" alt="Diagram of the various components connected from the user to the service and
-back"></p>
+<p><img src="mvp.png" alt="Diagram of the various components connected from the user to the service andback"></p>
 <p>The flow is roughly like this:</p>
 <ul>
 <li>The user sends a message to the WhatsApp number that corresponds with a Twilio
@@ -239,7 +232,7 @@ this:</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> str(MessagingResponse())
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/message&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/message&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;POST&#39;</span>])
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">reply</span>():
 </span></span><span style="display:flex;"><span>    message <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;Body&#39;</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> message:
@@ -280,6 +273,23 @@ my next flight.</p>
             
 
             <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+
+
+</div>
+
     
     <p class="small">
     

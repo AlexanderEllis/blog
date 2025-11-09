@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.152.2">
+		<meta name="generator" content="Hugo 0.99.1" />
 		<title>Investigating JavaScript&#39;s RegExp Lookbehind &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,16 +18,14 @@
 		
 
 		
-			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Investigating JavaScript&#39;s RegExp Lookbehind">
-  <meta name="twitter:description" content="Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.
-Jamie Zawinski
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Investigating JavaScript&#39;s RegExp Lookbehind"/>
+<meta name="twitter:description" content="Some people, when confronted with a problem, think “I know, I&rsquo;ll use regular expressions.” Now they have two problems.
+ Jamie Zawinski
 Regular Expression Lookbehinds I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.
-In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it.
-Let’s say I have the strings &#39;aabbcc&#39; and &#39;bbccdd&#39;. I might want to be able to locate the substring &#39;cc&#39; only if it occured at some point after the substring &#39;aa&#39;. This is called a positive lookbehind, and this would only match the &#39;cc&#39; in the first string.">
+In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it."/>
 
 	</head>
 
@@ -44,7 +42,7 @@ Let’s say I have the strings &#39;aabbcc&#39; and &#39;bbccdd&#39;. I might wa
 	
 
 	
-	<a class="cta" href="/index.xml">RSS</a>
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
 	
 </nav>
 
@@ -121,52 +119,52 @@ null
 </blockquote>
 <p>This meant that V8 6.2 had them available, which is why it worked in my Chrome 66.  The next check was to the <a href="https://nodejs.org/en/download/releases/">Node releases page</a>.  Here&rsquo;s the relevant section:</p>
 <table>
-  <thead>
-      <tr>
-          <th>Version</th>
-          <th>LTS</th>
-          <th>Date</th>
-          <th>V8</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td>Node.js 8.10.0</td>
-          <td>Carbon</td>
-          <td>2018-03-06</td>
-          <td>6.2.414.50</td>
-      </tr>
-      <tr>
-          <td>Node.js 8.9.4</td>
-          <td>Carbon</td>
-          <td>2018-01-02</td>
-          <td>6.1.534.50</td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td>Node.js 6.0.0</td>
-          <td></td>
-          <td>2016-04-26</td>
-          <td>5.0.71.35</td>
-      </tr>
-      <tr>
-          <td>Node.js 5.12.0</td>
-          <td></td>
-          <td>2016-06-23</td>
-          <td>4.6.85.32</td>
-      </tr>
-  </tbody>
+<thead>
+<tr>
+<th>Version</th>
+<th>LTS</th>
+<th>Date</th>
+<th>V8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Node.js 8.10.0</td>
+<td>Carbon</td>
+<td>2018-03-06</td>
+<td>6.2.414.50</td>
+</tr>
+<tr>
+<td>Node.js 8.9.4</td>
+<td>Carbon</td>
+<td>2018-01-02</td>
+<td>6.1.534.50</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Node.js 6.0.0</td>
+<td></td>
+<td>2016-04-26</td>
+<td>5.0.71.35</td>
+</tr>
+<tr>
+<td>Node.js 5.12.0</td>
+<td></td>
+<td>2016-06-23</td>
+<td>4.6.85.32</td>
+</tr>
+</tbody>
 </table>
 <p>This means that V8 version 6.2 made it into Node on March 6, 2018 in version 8.10.0, and V8 version 4.9 (allowing this with the <code>--harmony</code> flag) made it into Node 6.0.0.  After switching to 8.10.0, my negative lookbehinds successfully ran on Node, and I was able to finish the build script.</p>
 
@@ -180,6 +178,23 @@ null
             
 
             <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+
+
+</div>
+
     
     <p class="small">
     

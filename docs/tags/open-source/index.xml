@@ -4,16 +4,17 @@
     <title>Open Source on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/open-source/</link>
     <description>Recent content in Open Source on Caffeinspiration</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 06 Jan 2018 11:37:37 -0500</lastBuildDate>
-    <atom:link href="https://alexanderell.is/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Jan 2018 11:37:37 -0500</lastBuildDate><atom:link href="https://alexanderell.is/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Investigating a Bug in Moment.js</title>
       <link>https://alexanderell.is/posts/investigating-moment-bug/</link>
       <pubDate>Sat, 06 Jan 2018 11:37:37 -0500</pubDate>
+      
       <guid>https://alexanderell.is/posts/investigating-moment-bug/</guid>
-      <description>&lt;h3 id=&#34;investigating-a-bug-in-momentjs&#34;&gt;Investigating a bug in Moment.js&lt;/h3&gt;&#xA;&lt;p&gt;In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times.&lt;/p&gt;&#xA;&lt;p&gt;Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some roundabout work.  When reading about someone else&amp;rsquo;s work, I&amp;rsquo;ve found that it&amp;rsquo;s very valuable to see both what worked &lt;em&gt;and&lt;/em&gt; what didn&amp;rsquo;t work.&lt;/p&gt;</description>
+      <description>Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times. Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some</description>
     </item>
+    
   </channel>
 </rss>

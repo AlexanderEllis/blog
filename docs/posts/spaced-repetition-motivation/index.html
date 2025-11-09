@@ -1,0 +1,189 @@
+    <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Alex Ellis">
+		
+		<meta name="generator" content="Hugo 0.47.1" />
+		<title>Spaced Repetition Motivation &middot; Caffeinspiration</title>
+		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
+		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
+		<link rel="stylesheet" href="https://alexanderell.is/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="https://alexanderell.is/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://alexanderell.is/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://alexanderell.is/posts'>Archive</a>
+	<a href='https://alexanderell.is/tags'>Tags</a>
+	<a href='https://alexanderell.is/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>
+                        Spaced Repetition Motivation
+                    </h1>
+                    <h2 class="headline">
+                    Aug 13, 2017
+                    · 930 words
+                    · 5 minutes read
+                      <span class="tags">
+                            <a href="https://alexanderell.is/tags/studying">studying</a>
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    
+
+<p>I&rsquo;ve been kicking around the idea of a spaced repetition app for a while now, and I&rsquo;d like to explore some of the motivation behind this project.</p>
+
+<p>With anything, the key to getting better is practice and repetition.  The goal is deliberate practice and spaced repetition.</p>
+
+<p>For me, one key to learning and getting better is making it easy to get to the uncomfortable state where I&rsquo;m improving.  This means very little analysis of what I should be studying and more time spent working.  It&rsquo;s easy for me to get stuck on analyizing what I should work on instead of working, especially when there&rsquo;s just so much out there.  Even zooming in from computer science to web development to front end web development, there&rsquo;s still so much!</p>
+
+<p>I&rsquo;d like to make it easy for myself.  Specifically, I&rsquo;d like to be able to keep track of what I&rsquo;ve studied, when I studied it, and when I will need to study it again.</p>
+
+<h3 id="spaced-repetition">Spaced Repetition</h3>
+
+<p>Here&rsquo;s what I want:</p>
+
+<ul>
+<li>List of items to study</li>
+<li>Ability to add and remove items</li>
+<li>For each item, option of having a prompt and an answer (quiz style) or just prompt (summary style)</li>
+<li>For each item, date to next review it</li>
+<li>Ability to change date depending on how well I review it</li>
+<li>Ability to review the top n items due for today (i.e. the list needs to be sorted)</li>
+<li>Different lists for different subjects</li>
+</ul>
+
+<h4 id="index-cards">Index cards</h4>
+
+<p>First thing that comes to mind is a classic stack of index cards.  I could make a stack for items to study.  I could make new cards or throw away old cards.  On one side, I could write the prompt, and on the other, the answer.  I could write the due date on each card, and once I review it, I could update the date.  I&rsquo;d be able to have different stacks for different subjects.</p>
+
+<p>The best aspect of this approach is the physical part of having index cards.  It&rsquo;s a visual reminder to review them if you put them where you&rsquo;ll see them.  You&rsquo;ll be able to slow down and write content by hand to further reinforce concepts.  You&rsquo;ll add in the spatial component for remembering.</p>
+
+<p>Physicality aside, there are many cons to this approach. Cards get worn. Crossing out dates and rewriting is messy. You would have to calculate the dates by hand every time. Shuffling could be a pain. It would take longer to make them. They would not be very portable, and you’d have to bring all of your cards everywhere. Keeping track of 100 cards is no joke for me. Rubber bands, or maybe a lunch box?</p>
+
+<p>The biggest drawback to me is the idea of sorting in order to select those that are due today.  This would occur both when adding a new item, when you update the date, and when you want to select just today&rsquo;s.  This sounds pretty lazy, but my goal is to make everything around the work easy.</p>
+
+<h4 id="spreadsheet-approach">Spreadsheet approach</h4>
+
+<p>I then worked through the next iteration, a spreadsheet.  In one column, I could have the title or prompt.  In the next, I could have the answer or description.  In the last column, I could have the date to review.</p>
+
+<p>Getting better!  This knocks out a few of the drawbacks of the index cards.  You lose the physical relationship with the cards, so there&rsquo;s a smaller mental connection to the card and stack itself, but you do let the computer handle more of the work.  It stores them, so you wouldn&rsquo;t have to worry about them.  It would be very easy to replace the date with a new date.  It could even sort them so you wouldn&rsquo;t have to, saving time and mental energy.  Let&rsquo;s be lazy here.  Typing in the content would be fast, and you would be able to have simple organization with different spreadsheets for different topics.</p>
+
+<p>One drawback is that I don&rsquo;t have any spreadsheet apps that aren&rsquo;t heavy to load and use, which limits how accessible the method would be both for desktop and on mobile.  Another drawback here is that the updating would have to be done manually.  I would need to manually decide how far in the future I would want to review.  Even if I had three selections, I would have to edit the review date for each one to the correct date in the future.  There&rsquo;s no natural flashcard UI system, and since we wouldn&rsquo;t have the stack of cards, we wouldn&rsquo;t have any integrated reminder/notification.  Still not the easiest.</p>
+
+<h4 id="app">App</h4>
+
+<p>Next up is solving my problem through an app.  Many spaced repetition apps exist, but so far I haven&rsquo;t been able to find one that I liked, and even as a developer, I&rsquo;m not interested in spending $25 for Anki.  I think I can make something good enough for what I need.</p>
+
+<p>The good news is that I already have my own requirements as user stories, with some changes:</p>
+
+<ul>
+<li>List of items to study</li>
+<li>Ability to add and remove items</li>
+<li>For each item, option of having a prompt and an answer (quiz style) or just prompt (summary style)</li>
+<li>For each item, date to next review it</li>
+<li>Ability to <em>automatically</em> change date depending on how well I review it</li>
+<li>Ability to review the top n items due for today (ie the list needs to be <em>automatically</em> sorted)</li>
+<li>Different lists for different subjects</li>
+<li><em>Easily accessible for fast access on desktop or mobile</em></li>
+</ul>
+
+<p>Not a bad start.  My next step is to lay out the application and work through some of the initial concepts.</p>
+
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/alexanderellis">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://alexanderell.is">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/lxmkls">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2019
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://alexanderell.is/js/jquery-2.2.4.min.js"></script>
+<script src="https://alexanderell.is/js/main.js"></script>
+<script src="https://alexanderell.is/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116211054-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+    </body>
+</html>

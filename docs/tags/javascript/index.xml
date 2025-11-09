@@ -1,75 +1,104 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>JavaScript on Caffeinspiration</title>
+    <title>Javascript on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/javascript/</link>
-    <description>Recent content in JavaScript on Caffeinspiration</description>
-    <generator>Hugo</generator>
+    <description>Recent content in Javascript on Caffeinspiration</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 20 Mar 2022 13:00:15 -0400</lastBuildDate>
-    <atom:link href="https://alexanderell.is/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Mar 2022 13:00:15 -0400</lastBuildDate><atom:link href="https://alexanderell.is/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Detecting pitch with the Web Audio API and autocorrelation</title>
       <link>https://alexanderell.is/posts/tuner/</link>
       <pubDate>Sun, 20 Mar 2022 13:00:15 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/tuner/</guid>
-      <description>&lt;p&gt;I&amp;rsquo;ve been playing with the Web Audio API recently, and I made a basic app that will detect the pitch of incoming tones using your microphone. You can try it by pressing &amp;ldquo;Start&amp;rdquo; (be sure to try both the sine wave and the frequency displays), and I&amp;rsquo;ll be walking through how it works below.&lt;/p&gt;&#xA;&lt;p&gt;&lt;canvas class=&#34;visualizer&#34; width=&#34;640&#34; height=&#34;100&#34;&gt;&lt;/canvas&gt;&#xA;&lt;br&gt;&#xA;&lt;button id=&#34;init&#34; onClick=&#34;init()&#34;&gt;Start&lt;/button&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;note&#34;&gt;Press start to begin&lt;/h1&gt;&#xA;&lt;legend&gt;Rounding options:&lt;/legend&gt;&#xA;&lt;div&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;roundingNone&#34; name=&#34;rounding&#34; value=&#34;none&#34; &gt;&#xA;  &lt;label for=&#34;roundingNone&#34;&gt;No rounding&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;roundingMedium&#34; name=&#34;rounding&#34; value=&#34;hz&#34; checked&gt;&#xA;  &lt;label for=&#34;roundingMedium&#34;&gt;Round to nearest Hz&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;roundingHard&#34; name=&#34;rounding&#34; value=&#34;note&#34;&gt;&#xA;  &lt;label for=&#34;roundingHard&#34;&gt;Round to nearest note&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;&lt;/div&gt;&#xA;&lt;br&gt;&#xA;&lt;legend&gt;Smoothing options:&lt;/legend&gt;&#xA;&lt;div&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;smoothingNone&#34; name=&#34;smoothing&#34; value=&#34;none&#34;&gt;&#xA;  &lt;label for=&#34;smoothingNone&#34;&gt;No smoothing&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;smoothingMedium&#34; name=&#34;smoothing&#34; value=&#34;basic&#34; checked&gt;&#xA;  &lt;label for=&#34;smoothingMedium&#34;&gt;Basic smoothing&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;smoothingHard&#34; name=&#34;smoothing&#34; value=&#34;very&#34;&gt;&#xA;  &lt;label for=&#34;smoothingHard&#34;&gt;Very smoothed (note must be more consistent and held for longer)&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;&lt;/div&gt;&#xA;&lt;br&gt;&#xA;&lt;legend&gt;Display (click Start after you switch):&lt;/legend&gt;&#xA;&lt;div&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;displaySine&#34; name=&#34;display&#34; value=&#34;sine&#34; checked&gt;&#xA;  &lt;label for=&#34;displaySine&#34;&gt;Sine wave&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;  &lt;input type=&#34;radio&#34; id=&#34;displayFrequency&#34; name=&#34;display&#34; value=&#34;frequency&#34; &gt;&#xA;  &lt;label for=&#34;displayFrequency&#34;&gt;Frequency&lt;/label&gt;&#xA;  &lt;br&gt;&#xA;&lt;/div&gt;&#xA;&lt;br&gt;&#xA;&lt;noscript&gt;&#xA;  Unfortunately, JavaScript is needed to run this. The only JS running on my site is for the projects (no tracking, etc) if you want to enable it. If not, I totally understand :)&#xA;&lt;p&gt;&lt;a href=&#34;440hz.png&#34;&gt;Here&amp;rsquo;s what the pitch detection looks like.&lt;/a&gt;&#xA;&lt;/noscript&gt;&lt;/p&gt;</description>
+      <description>I&amp;rsquo;ve been playing with the Web Audio API recently, and I made a basic app that will detect the pitch of incoming tones using your microphone. You can try it by pressing &amp;ldquo;Start&amp;rdquo; (be sure to try both the sine wave and the frequency displays), and I&amp;rsquo;ll be walking through how it works below.
+ Start
+Press start to begin Rounding options:  No rounding Round to nearest Hz Round to nearest note  Smoothing options:  No smoothing Basic smoothing Very smoothed (note must be more consistent and held for longer)  Display (click Start after you switch):  Sine wave Frequency   Unfortunately, JavaScript is needed to run this.</description>
     </item>
+    
     <item>
       <title>Writing Morse code games in JavaScript using the Web Audio API</title>
       <link>https://alexanderell.is/posts/writing-morse-code-games/</link>
       <pubDate>Sat, 12 Feb 2022 12:36:19 -0500</pubDate>
+      
       <guid>https://alexanderell.is/posts/writing-morse-code-games/</guid>
-      <description>&lt;div id=&#34;toc&#34;&gt;&#xA;  &lt;nav id=&#34;TableOfContents&#34;&gt;&#xA;  &lt;ul&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#playing-sound-with-the-web-audio-api&#34;&gt;Playing sound with the Web Audio API&lt;/a&gt;&lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#playing-morse-code&#34;&gt;Playing Morse code&lt;/a&gt;&#xA;      &lt;ul&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#morse-code-timing&#34;&gt;Morse code timing&lt;/a&gt;&lt;/li&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#playing-letters-words-and-sentences&#34;&gt;Playing letters, words, and sentences&lt;/a&gt;&lt;/li&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#adjusting-the-speed&#34;&gt;Adjusting the speed&lt;/a&gt;&lt;/li&gt;&#xA;      &lt;/ul&gt;&#xA;    &lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-listening-game&#34;&gt;The Listening Game&lt;/a&gt;&#xA;      &lt;ul&gt;&#xA;        &lt;li&gt;&lt;/li&gt;&#xA;      &lt;/ul&gt;&#xA;    &lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#the-speaking-game&#34;&gt;The &amp;ldquo;Speaking&amp;rdquo; game&lt;/a&gt;&#xA;      &lt;ul&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#parsing-the-incoming-signal-into-morse-code&#34;&gt;Parsing the incoming signal into Morse code&lt;/a&gt;&lt;/li&gt;&#xA;        &lt;li&gt;&lt;a href=&#34;#hooking-it-up-to-user-input&#34;&gt;Hooking it up to user input&lt;/a&gt;&lt;/li&gt;&#xA;      &lt;/ul&gt;&#xA;    &lt;/li&gt;&#xA;    &lt;li&gt;&lt;a href=&#34;#finishing-thoughts&#34;&gt;Finishing thoughts&lt;/a&gt;&lt;/li&gt;&#xA;  &lt;/ul&gt;&#xA;&lt;/nav&gt;&#xA;&lt;/div&gt;&#xA;&#xA;&lt;p&gt;Last week, I posted &lt;a href=&#34;https://alexanderell.is/posts/morse-code&#34;&gt;a pair of games I made to play with Morse code in your browser&lt;/a&gt;. I wanted to take some time to describe how I made them and some of the challenges that came up along the way.&lt;/p&gt;</description>
+      <description>Playing sound with the Web Audio API Playing Morse code  Morse code timing Playing letters, words, and sentences Adjusting the speed   The Listening Game     The &amp;ldquo;Speaking&amp;rdquo; game  Parsing the incoming signal into Morse code Hooking it up to user input   Finishing thoughts    Last week, I posted a pair of games I made to play with Morse code in your browser.</description>
     </item>
+    
     <item>
       <title>Don&#39;t touch my clipboard</title>
       <link>https://alexanderell.is/posts/taking-over-my-clipboard/</link>
       <pubDate>Mon, 17 Feb 2020 18:01:11 -0500</pubDate>
+      
       <guid>https://alexanderell.is/posts/taking-over-my-clipboard/</guid>
-      <description>&lt;h2 id=&#34;looking-for-an-em-dash&#34;&gt;Looking for an em dash&lt;/h2&gt;&#xA;&lt;p&gt;I was recently trying to find an &lt;a href=&#34;https://en.wikipedia.org/wiki/Dash#En_dash_versus_em_dash&#34;&gt;em dash&lt;/a&gt; character to use in a piece of writing. Since I don&amp;rsquo;t have the shortcut memorized—for future reference, shift+option+minus on Mac—I did a quick search for it. I didn&amp;rsquo;t see one on the search results page to copy, so I clicked into the first result: &amp;ldquo;The Punctuation Guide&amp;rdquo;:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;the-punctuation-guide.png&#34; alt=&#34;Screenshot of The Punctuation Guide, the website I visited&#34;&gt;&#xA;&lt;em&gt;From &lt;a href=&#34;https://www.thepunctuationguide.com/em-dash.html&#34;&gt;https://www.thepunctuationguide.com/em-dash.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;</description>
+      <description>Looking for an em dash I was recently trying to find an em dash character to use in a piece of writing. Since I don&amp;rsquo;t have the shortcut memorized—for future reference, shift+option+minus on Mac—I did a quick search for it. I didn&amp;rsquo;t see one on the search results page to copy, so I clicked into the first result: &amp;ldquo;The Punctuation Guide&amp;rdquo;:
+From https://www.thepunctuationguide.com/em-dash.html
+I&amp;rsquo;m a sucker for a good copy and paste, so I selected the em dash character, copied it, and pasted back into my doc.</description>
     </item>
+    
     <item>
       <title>Investigating JavaScript&#39;s RegExp Lookbehind</title>
       <link>https://alexanderell.is/posts/regex-lookbehind/</link>
       <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/regex-lookbehind/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.”  Now they have two problems.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://regex.info/blog/2006-09-15/247&#34;&gt;&lt;em&gt;Jamie Zawinski&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;regular-expression-lookbehinds&#34;&gt;Regular Expression Lookbehinds&lt;/h3&gt;&#xA;&lt;p&gt;I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.&lt;/p&gt;&#xA;&lt;p&gt;In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it.&lt;/p&gt;&#xA;&lt;p&gt;Let&amp;rsquo;s say I have the strings &lt;code&gt;&#39;aabbcc&#39;&lt;/code&gt; and &lt;code&gt;&#39;bbccdd&#39;&lt;/code&gt;.  I might want to be able to locate the substring &lt;code&gt;&#39;cc&#39;&lt;/code&gt; only if it occured at some point after the substring &lt;code&gt;&#39;aa&#39;&lt;/code&gt;.  This is called a &lt;strong&gt;positive lookbehind&lt;/strong&gt;, and this would only match the &lt;code&gt;&#39;cc&#39;&lt;/code&gt; in the first string.&lt;/p&gt;</description>
+      <description>Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.” Now they have two problems.
+ Jamie Zawinski
+Regular Expression Lookbehinds I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.
+In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it.</description>
     </item>
+    
     <item>
       <title>JavaScript: Writing your own Array.reduce</title>
       <link>https://alexanderell.is/posts/javascript-array-reduce/</link>
       <pubDate>Sun, 01 Apr 2018 09:51:00 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/javascript-array-reduce/</guid>
-      <description>&lt;p&gt;I&amp;rsquo;ve found that one of the best ways for me to really understand anything is to implement it myself.  Between the ECMAScript spec and a few lines of JavaScript, you can build a chunk of knowledge for a very specific area of JavaScript.  Doing this often is a great way to gain a deeper understanding of the language, and it&amp;rsquo;s a great exercise in reading the docs, reading code, and creating your own solution.&lt;/p&gt;</description>
+      <description>I&amp;rsquo;ve found that one of the best ways for me to really understand anything is to implement it myself. Between the ECMAScript spec and a few lines of JavaScript, you can build a chunk of knowledge for a very specific area of JavaScript. Doing this often is a great way to gain a deeper understanding of the language, and it&amp;rsquo;s a great exercise in reading the docs, reading code, and creating your own solution.</description>
     </item>
+    
     <item>
       <title>typeof null: investigating a classic JavaScript bug</title>
       <link>https://alexanderell.is/posts/typeof-null/</link>
       <pubDate>Mon, 19 Mar 2018 08:40:17 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/typeof-null/</guid>
-      <description>&lt;p&gt;In my last post, I looked into some JavaScript casting and explored why &lt;code&gt;0 &amp;lt;= null&lt;/code&gt; evaluates as true.&lt;/p&gt;&#xA;&lt;p&gt;For this post, I&amp;rsquo;d like to investigate another unexpected behavior in JavaScript: why &lt;code&gt;typeof(null)&lt;/code&gt; evaluates as &lt;code&gt;&#39;object&#39;&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;This is a &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof&#34;&gt;well-known bug&lt;/a&gt;, and we&amp;rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.&lt;/p&gt;&#xA;&lt;p&gt;The main idea is that the code assigned each item some bits for use as flags for different types, but &lt;em&gt;null&lt;/em&gt; was different.  Objects had a flag of &lt;code&gt;000&lt;/code&gt;, so an object&amp;rsquo;s last 3 bits were &lt;code&gt;000&lt;/code&gt;.  &lt;em&gt;null&lt;/em&gt; was previously defined as 32 &lt;code&gt;0&lt;/code&gt; bits: &lt;code&gt;00000000000000000000000000000000&lt;/code&gt;.  When the code tried to check &lt;em&gt;null&lt;/em&gt;&amp;rsquo;s flag, the last three bits of &lt;em&gt;null&lt;/em&gt; (&lt;code&gt;000&lt;/code&gt;) matched the Object flag (&lt;code&gt;000&lt;/code&gt;), so it was incorrectly determined to be an object.&lt;/p&gt;</description>
+      <description>In my last post, I looked into some JavaScript casting and explored why 0 &amp;lt;= null evaluates as true.
+For this post, I&amp;rsquo;d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
+This is a well-known bug, and we&amp;rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
+The main idea is that the code assigned each item some bits for use as flags for different types, but null was different.</description>
     </item>
+    
     <item>
       <title>Investigating JavaScript Casting Behavior</title>
       <link>https://alexanderell.is/posts/javascript-casting/</link>
       <pubDate>Sun, 18 Mar 2018 11:14:19 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/javascript-casting/</guid>
-      <description>&lt;p&gt;The disconnect between &amp;ldquo;what seems like it should happen&amp;rdquo; and &amp;ldquo;what happens&amp;rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast &lt;code&gt;null&lt;/code&gt; into 0 by accident in JavaScript.&lt;/p&gt;&#xA;&lt;p&gt;For more on JavaScript&amp;rsquo;s unintuitive behavior, please watch (or rewatch) &lt;a href=&#34;https://www.destroyallsoftware.com/talks/wat&#34;&gt;wat&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Much of this behavior can be explained by JavaScript&amp;rsquo;s casting.  From ECMAScipt: &amp;ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.&amp;rdquo;  Since knowing is half the battle, I&amp;rsquo;ve found it helpful to know of the unexpected behavior so that it&amp;rsquo;s in the back of my mind when writing new code.&lt;/p&gt;</description>
+      <description>The disconnect between &amp;ldquo;what seems like it should happen&amp;rdquo; and &amp;ldquo;what happens&amp;rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast null into 0 by accident in JavaScript.
+For more on JavaScript&amp;rsquo;s unintuitive behavior, please watch (or rewatch) wat.
+Much of this behavior can be explained by JavaScript&amp;rsquo;s casting. From ECMAScipt: &amp;ldquo;The ECMAScript language implicitly performs automatic type conversion as needed.</description>
     </item>
+    
     <item>
       <title>Investigating a Bug in Moment.js</title>
       <link>https://alexanderell.is/posts/investigating-moment-bug/</link>
       <pubDate>Sat, 06 Jan 2018 11:37:37 -0500</pubDate>
+      
       <guid>https://alexanderell.is/posts/investigating-moment-bug/</guid>
-      <description>&lt;h3 id=&#34;investigating-a-bug-in-momentjs&#34;&gt;Investigating a bug in Moment.js&lt;/h3&gt;&#xA;&lt;p&gt;In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times.&lt;/p&gt;&#xA;&lt;p&gt;Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some roundabout work.  When reading about someone else&amp;rsquo;s work, I&amp;rsquo;ve found that it&amp;rsquo;s very valuable to see both what worked &lt;em&gt;and&lt;/em&gt; what didn&amp;rsquo;t work.&lt;/p&gt;</description>
+      <description>Investigating a bug in Moment.js In this post, I walk through the steps I took while investigating a bug in Moment.js, an open source JavaScript library for dealing with dates and times. Rather than write about what would have ideally happened (the steps of which would look like 1) see bug, 2) know issue, 3) investigate fix, 4) open PR), I wanted to include the entire process, which included some</description>
     </item>
+    
     <item>
       <title>Connecting Arduino with a Node Server</title>
       <link>https://alexanderell.is/posts/arduinode/</link>
       <pubDate>Mon, 01 Jan 2018 09:59:52 -0500</pubDate>
+      
       <guid>https://alexanderell.is/posts/arduinode/</guid>
-      <description>&lt;h3 id=&#34;arduinode&#34;&gt;Arduinode&lt;/h3&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet.  Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.&lt;/p&gt;</description>
+      <description>Arduinode I&amp;rsquo;ve been working through the Arduino Starter Kit projects recently, and I wanted to try a new project that was outside of the pre-made booklet. Working with an offline Arduino (intranet of things?) has let me learn a great deal, and I wanted to see how difficult it would be to connect my Arduino to a simple Node server, which would get me ready to connect it in any future projects.</description>
     </item>
+    
   </channel>
 </rss>
