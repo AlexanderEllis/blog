@@ -4,16 +4,20 @@
     <title>UX Analysis on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/ux-analysis/</link>
     <description>Recent content in UX Analysis on Caffeinspiration</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 05 Aug 2017 21:29:38 -0400</lastBuildDate>
-    <atom:link href="https://alexanderell.is/tags/ux-analysis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Aug 2017 21:29:38 -0400</lastBuildDate><atom:link href="https://alexanderell.is/tags/ux-analysis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Noticing UI: Shazam&#39;s loading screen</title>
       <link>https://alexanderell.is/posts/noticing-ui-shazam/</link>
       <pubDate>Sat, 05 Aug 2017 21:29:38 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/noticing-ui-shazam/</guid>
-      <description>&lt;h3 id=&#34;shazams-loading-screen&#34;&gt;Shazam&amp;rsquo;s loading screen&lt;/h3&gt;&#xA;&lt;p&gt;I was pleasantly surprised by Shazam&amp;rsquo;s iPhone app loading screen, and I took a look into what makes it stand out.&lt;/p&gt;&#xA;&lt;p&gt;Here&amp;rsquo;s what it looked like:&lt;/p&gt;&#xA;&lt;video autoplay loop muted playsinline&gt;&#xA;  &lt;source src=&#34;shazam-loading.webm&#34;  type=&#34;video/webm&#34;&gt;&#xA;  &lt;source src=&#34;shazam-loading.mp4&#34;  type=&#34;video/mp4&#34;&gt;&#xA;&lt;/video&gt;&#xA;&#xA;&lt;p&gt;This felt different, and it made me look at the experience of opening apps.  I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn&amp;rsquo;t like other apps.&lt;/p&gt;</description>
+      <description>Shazam&amp;rsquo;s loading screen I was pleasantly surprised by Shazam&amp;rsquo;s iPhone app loading screen, and I took a look into what makes it stand out.
+Here&amp;rsquo;s what it looked like:
+ This felt different, and it made me look at the experience of opening apps. I started by spending a bus ride home from work opening and closing apps to get a feel for why this wasn&amp;rsquo;t like other apps.
+Loading&amp;hellip; A loading screen tells a user that the app or other result is not ready yet.</description>
     </item>
+    
   </channel>
 </rss>

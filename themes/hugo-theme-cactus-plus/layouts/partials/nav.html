@@ -12,6 +12,6 @@
 	{{ end }}
 
 	{{ if .Site.Params.enableRSS }}
-	<a class="cta" href="/index.xml">{{ with .Site.Params.subscribe }}{{ . }}{{ else }}RSS{{ end }}</a>
+	<a class="cta" href="{{ .Site.RSSLink }}">{{ with .Site.Params.subscribe }}{{ . }}{{ else }}RSS{{ end }}</a>
 	{{ end }}
 </nav>

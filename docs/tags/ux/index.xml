@@ -4,23 +4,30 @@
     <title>UX on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/ux/</link>
     <description>Recent content in UX on Caffeinspiration</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 Feb 2020 18:01:11 -0500</lastBuildDate>
-    <atom:link href="https://alexanderell.is/tags/ux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Feb 2020 18:01:11 -0500</lastBuildDate><atom:link href="https://alexanderell.is/tags/ux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Don&#39;t touch my clipboard</title>
       <link>https://alexanderell.is/posts/taking-over-my-clipboard/</link>
       <pubDate>Mon, 17 Feb 2020 18:01:11 -0500</pubDate>
+      
       <guid>https://alexanderell.is/posts/taking-over-my-clipboard/</guid>
-      <description>&lt;h2 id=&#34;looking-for-an-em-dash&#34;&gt;Looking for an em dash&lt;/h2&gt;&#xA;&lt;p&gt;I was recently trying to find an &lt;a href=&#34;https://en.wikipedia.org/wiki/Dash#En_dash_versus_em_dash&#34;&gt;em dash&lt;/a&gt; character to use in a piece of writing. Since I don&amp;rsquo;t have the shortcut memorized—for future reference, shift+option+minus on Mac—I did a quick search for it. I didn&amp;rsquo;t see one on the search results page to copy, so I clicked into the first result: &amp;ldquo;The Punctuation Guide&amp;rdquo;:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;the-punctuation-guide.png&#34; alt=&#34;Screenshot of The Punctuation Guide, the website I visited&#34;&gt;&#xA;&lt;em&gt;From &lt;a href=&#34;https://www.thepunctuationguide.com/em-dash.html&#34;&gt;https://www.thepunctuationguide.com/em-dash.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;</description>
+      <description>Looking for an em dash I was recently trying to find an em dash character to use in a piece of writing. Since I don&amp;rsquo;t have the shortcut memorized—for future reference, shift+option+minus on Mac—I did a quick search for it. I didn&amp;rsquo;t see one on the search results page to copy, so I clicked into the first result: &amp;ldquo;The Punctuation Guide&amp;rdquo;:
+From https://www.thepunctuationguide.com/em-dash.html
+I&amp;rsquo;m a sucker for a good copy and paste, so I selected the em dash character, copied it, and pasted back into my doc.</description>
     </item>
+    
     <item>
       <title>Dark pattern for autoplaying videos: clickjacking pause</title>
       <link>https://alexanderell.is/posts/intercept-pause/</link>
       <pubDate>Thu, 24 Oct 2019 20:40:52 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/intercept-pause/</guid>
-      <description>&lt;p&gt;I recently saw a common &lt;a href=&#34;https://en.wikipedia.org/wiki/Clickjacking&#34;&gt;clickjacking&lt;/a&gt; dark pattern when trying to pause a video the other day.&lt;/p&gt;&#xA;&lt;p&gt;On a Bloomberg news autoplaying video, the sound is initially muted.&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;autoplay-video.png&#34; alt=&#34;Screenshot of autoplaying Bloomberg video&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that&#39;s probably what we have here:&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;overlay.png&#34; alt=&#34;Screenshot of devtools focusing on video overlay element&#34;&gt;&lt;/p&gt;</description>
+      <description>I recently saw a common clickjacking dark pattern when trying to pause a video the other day.
+On a Bloomberg news autoplaying video, the sound is initially muted.
+Clicking anywhere on the video will unmute it. It would be pretty easy to have an invisible element overlaying the video that listens for a click, and it looks like that&#39;s probably what we have here: What&#39;s interesting is that the control panel (pause, play, scrubbing, etc.</description>
     </item>
+    
   </channel>
 </rss>

@@ -4,23 +4,28 @@
     <title>Homelab on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/homelab/</link>
     <description>Recent content in Homelab on Caffeinspiration</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 10 Nov 2020 20:48:00 -0400</lastBuildDate>
-    <atom:link href="https://alexanderell.is/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Nov 2020 20:48:00 -0400</lastBuildDate><atom:link href="https://alexanderell.is/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Checking if the Pi is done</title>
       <link>https://alexanderell.is/posts/pi-cluster-monitoring/</link>
       <pubDate>Tue, 10 Nov 2020 20:48:00 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/pi-cluster-monitoring/</guid>
-      <description>&lt;p&gt;I recently &lt;a href=&#34;https://alexanderell.is/posts/pi-cluster/&#34;&gt;put together a Raspberry Pi cluster&lt;/a&gt; to try out some toy distributed systems projects, and I wanted to start with a basic monitoring program to get my feet wet and work out the following:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Getting each node running and set up with software&lt;/li&gt;&#xA;&lt;li&gt;Running Go on each machine&lt;/li&gt;&#xA;&lt;li&gt;Deploying code to each machine&lt;/li&gt;&#xA;&lt;li&gt;Nodes listening &amp;amp; responding to RPCs&lt;/li&gt;&#xA;&lt;li&gt;Sending/receiving RPCs between laptop and nodes&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;As I&amp;rsquo;ve previously mentioned, this isn&amp;rsquo;t meant to be production grade, since I would just grab one off the shelf if that was the goal. Instead, I want to work through the problem myself to get a feel for design decisions and making it work.&lt;/p&gt;</description>
+      <description>I recently put together a Raspberry Pi cluster to try out some toy distributed systems projects, and I wanted to start with a basic monitoring program to get my feet wet and work out the following:
+ Getting each node running and set up with software Running Go on each machine Deploying code to each machine Nodes listening &amp;amp; responding to RPCs Sending/receiving RPCs between laptop and nodes  As I&amp;rsquo;ve previously mentioned, this isn&amp;rsquo;t meant to be production grade, since I would just grab one off the shelf if that was the goal.</description>
     </item>
+    
     <item>
       <title>Building a Raspberry Pi Cluster for Building Toy Distributed Systems</title>
       <link>https://alexanderell.is/posts/pi-cluster/</link>
       <pubDate>Sat, 24 Oct 2020 20:48:06 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/pi-cluster/</guid>
-      <description>&lt;p&gt;I&amp;rsquo;ve recently been getting more interested in distributed systems, and I wanted to get experience building some of the concepts I&amp;rsquo;ve read about.&lt;/p&gt;&#xA;&lt;p&gt;My interest lies more on the software and system design side &amp;ndash; more &amp;ldquo;how would we design and build an example of a distributed file system across four computers?&amp;rdquo; than &amp;ldquo;how do I make a reliable home server to play media?&amp;rdquo; &amp;ndash; which is why my focus is on playing around with some toy software problems instead of worrying about what a real production hardware setup would look like. As with anything, it&amp;rsquo;s almost too easy to get caught up in the minor details instead of what you meant to work on, and I feel like I could spend days agonizing over hardware choices.&lt;/p&gt;</description>
+      <description>I&amp;rsquo;ve recently been getting more interested in distributed systems, and I wanted to get experience building some of the concepts I&amp;rsquo;ve read about.
+My interest lies more on the software and system design side &amp;ndash; more &amp;ldquo;how would we design and build an example of a distributed file system across four computers?&amp;rdquo; than &amp;ldquo;how do I make a reliable home server to play media?&amp;rdquo; &amp;ndash; which is why my focus is on playing around with some toy software problems instead of worrying about what a real production hardware setup would look like.</description>
     </item>
+    
   </channel>
 </rss>

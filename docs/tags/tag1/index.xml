@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tag1 on Caffeinspiration</title>
+    <link>https://alexanderellis.github.io/blog/tags/tag1/</link>
+    <description>Recent content in Tag1 on Caffeinspiration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 01 Aug 2017 21:16:01 -0400</lastBuildDate>
+    
+	<atom:link href="https://alexanderellis.github.io/blog/tags/tag1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>My First Post</title>
+      <link>https://alexanderellis.github.io/blog/posts/my-first-post/</link>
+      <pubDate>Tue, 01 Aug 2017 21:16:01 -0400</pubDate>
+      
+      <guid>https://alexanderellis.github.io/blog/posts/my-first-post/</guid>
+      <description> Test post </description>
+    </item>
+    
+  </channel>
+</rss>

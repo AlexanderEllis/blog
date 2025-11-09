@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mvp on Caffeinspiration</title>
+    <link>https://alexanderell.is/tags/mvp/</link>
+    <description>Recent content in Mvp on Caffeinspiration</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 29 Oct 2017 17:30:20 -0400</lastBuildDate>
+    
+	<atom:link href="https://alexanderell.is/tags/mvp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Launching Breadth First Growth Newsletter</title>
+      <link>https://alexanderell.is/posts/shipping-breadth-first-growth/</link>
+      <pubDate>Sun, 29 Oct 2017 17:30:20 -0400</pubDate>
+      
+      <guid>https://alexanderell.is/posts/shipping-breadth-first-growth/</guid>
+      <description>I recently started a weekly newsletter.
+I love the idea of growing as a T-shaped developer. I had seen the term on Hacker News in reference to the Valve Handbook for New Employees:
+ We value “T-shaped” people.
+That is, people who are both generalists (highly skilled at a broad set of valuable things—the top of the T) and also experts (among the best in their field within a narrow discipline—the vertical leg of the T).</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -4,8 +4,7 @@
     <title>Categories on Caffeinspiration</title>
     <link>https://alexanderell.is/categories/</link>
     <description>Recent content in Categories on Caffeinspiration</description>
-    <generator>Hugo</generator>
-    <language>en</language>
-    <atom:link href="https://alexanderell.is/categories/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language><atom:link href="https://alexanderell.is/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

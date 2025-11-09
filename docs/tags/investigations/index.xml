@@ -4,16 +4,20 @@
     <title>Investigations on Caffeinspiration</title>
     <link>https://alexanderell.is/tags/investigations/</link>
     <description>Recent content in Investigations on Caffeinspiration</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 28 Apr 2018 13:22:25 -0400</lastBuildDate>
-    <atom:link href="https://alexanderell.is/tags/investigations/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Apr 2018 13:22:25 -0400</lastBuildDate><atom:link href="https://alexanderell.is/tags/investigations/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Investigating JavaScript&#39;s RegExp Lookbehind</title>
       <link>https://alexanderell.is/posts/regex-lookbehind/</link>
       <pubDate>Sat, 28 Apr 2018 13:22:25 -0400</pubDate>
+      
       <guid>https://alexanderell.is/posts/regex-lookbehind/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.”  Now they have two problems.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://regex.info/blog/2006-09-15/247&#34;&gt;&lt;em&gt;Jamie Zawinski&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;regular-expression-lookbehinds&#34;&gt;Regular Expression Lookbehinds&lt;/h3&gt;&#xA;&lt;p&gt;I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.&lt;/p&gt;&#xA;&lt;p&gt;In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it.&lt;/p&gt;&#xA;&lt;p&gt;Let&amp;rsquo;s say I have the strings &lt;code&gt;&#39;aabbcc&#39;&lt;/code&gt; and &lt;code&gt;&#39;bbccdd&#39;&lt;/code&gt;.  I might want to be able to locate the substring &lt;code&gt;&#39;cc&#39;&lt;/code&gt; only if it occured at some point after the substring &lt;code&gt;&#39;aa&#39;&lt;/code&gt;.  This is called a &lt;strong&gt;positive lookbehind&lt;/strong&gt;, and this would only match the &lt;code&gt;&#39;cc&#39;&lt;/code&gt; in the first string.&lt;/p&gt;</description>
+      <description>Some people, when confronted with a problem, think “I know, I&amp;rsquo;ll use regular expressions.” Now they have two problems.
+ Jamie Zawinski
+Regular Expression Lookbehinds I recently came across an interesting regular expressions use case that led to an interesting look into regular expressions, JavaScript engines, and release versions.
+In particular, I was trying to find a certain substring from a string that did not contain a substring preceding it.</description>
     </item>
+    
   </channel>
 </rss>
