@@ -61,7 +61,7 @@ the problem, and get closer to a solution.
 I really enjoy this Julia Evans comic about debugging: just focus on one
 question at a time, and slowly build understanding from there!
 
-{{< tweet user="b0rk" id="1554120424602193921" >}}
+![Screenshot of a Julia Evans tweet about coming up with one question as a debugging strategy](tweet.png)
 
 <br>
 
