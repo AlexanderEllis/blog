@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.99.1" />
+		<meta name="generator" content="Hugo 0.152.2">
 		<title>Writing a toy WebSocket server from scratch &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,12 +18,13 @@
 		
 
 		
-		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Writing a toy WebSocket server from scratch"/>
-<meta name="twitter:description" content="WebSocket (WS) connections are pretty neat. I&rsquo;ve gotten to play around with them before, both for personal and professional projects, but my view has mostly been at a high level and concerned mainly with the things that I can build on top of them. I haven&rsquo;t spent much time digging through the protocol.
-I thought it would be pretty interesting to build a toy WS server from scratch. Like many other projects, I find building a toy system to be such a good way to learn more, and I&rsquo;ll be talking about this toy WS server (and some of those things I learned) in the rest of the post."/>
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Writing a toy WebSocket server from scratch">
+  <meta name="twitter:description" content="WebSocket (WS) connections are pretty neat. I’ve gotten to play around with them before, both for personal and professional projects, but my view has mostly been at a high level and concerned mainly with the things that I can build on top of them. I haven’t spent much time digging through the protocol.
+I thought it would be pretty interesting to build a toy WS server from scratch. Like many other projects, I find building a toy system to be such a good way to learn more, and I’ll be talking about this toy WS server (and some of those things I learned) in the rest of the post.">
 
 	</head>
 
@@ -40,7 +41,7 @@ I thought it would be pretty interesting to build a toy WS server from scratch. 
 	
 
 	
-	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	<a class="cta" href="/index.xml">RSS</a>
 	
 </nav>
 
@@ -56,7 +57,7 @@ I thought it would be pretty interesting to build a toy WS server from scratch. 
                     </h2>
                     <h2 class="headline">
                     Aug 28, 2022
-                    · 4153 words
+                    · 4071 words
                     · 20 minutes read
                       <span class="tags">
                             
@@ -777,9 +778,9 @@ for it):</p>
 </span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Received message:&#39;</span>, websocket_frame<span style="color:#f92672">.</span>get_payload_data()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>))
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
 </span></span></code></pre></div><p>And finally, we can run it in the browser console:</p>
-<p><img src="final-js-testing.png" alt="Screenshot showing me creating the WebSocket in JavaScript and sending &amp;lsquo;foo&amp;rsquo;"></p>
+<p><img src="final-js-testing.png" alt="Screenshot showing me creating the WebSocket in JavaScript and sending &lsquo;foo&rsquo;"></p>
 <br>
-<p><img src="final-terminal-testing.png" alt="Screenshot the terminal printing the message it received, &amp;lsquo;foo&amp;rsquo;"></p>
+<p><img src="final-terminal-testing.png" alt="Screenshot the terminal printing the message it received, &lsquo;foo&rsquo;"></p>
 <p>You&rsquo;ll notice I also included a much longer message, with over 127 bytes, just
 to make sure we were parsing correctly. It took a little debugging, but it
 works!</p>
@@ -829,23 +830,6 @@ built, and the problems they have to solve.</p>
             
 
             <footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/alexanderellis">
-        <i class="fa fa-github-square"></i>
-    </a>
-    
-    <a class="symbol" href="https://alexanderell.is">
-        <i class="fa fa-home"></i>
-    </a>
-    
-
-
-</div>
-
     
     <p class="small">
     

@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.99.1" />
+		<meta name="generator" content="Hugo 0.152.2">
 		<title>Investigating JavaScript Casting Behavior &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,13 +18,14 @@
 		
 
 		
-		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Investigating JavaScript Casting Behavior"/>
-<meta name="twitter:description" content="The disconnect between &ldquo;what seems like it should happen&rdquo; and &ldquo;what happens&rdquo; causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast null into 0 by accident in JavaScript.
-For more on JavaScript&rsquo;s unintuitive behavior, please watch (or rewatch) wat.
-Much of this behavior can be explained by JavaScript&rsquo;s casting. From ECMAScipt: &ldquo;The ECMAScript language implicitly performs automatic type conversion as needed."/>
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Investigating JavaScript Casting Behavior">
+  <meta name="twitter:description" content="The disconnect between “what seems like it should happen” and “what happens” causes you to push doors that are to be pulled, tap ads that load in the place of content, and cast null into 0 by accident in JavaScript.
+For more on JavaScript’s unintuitive behavior, please watch (or rewatch) wat.
+Much of this behavior can be explained by JavaScript’s casting. From ECMAScipt: “The ECMAScript language implicitly performs automatic type conversion as needed.” Since knowing is half the battle, I’ve found it helpful to know of the unexpected behavior so that it’s in the back of my mind when writing new code.">
 
 	</head>
 
@@ -41,7 +42,7 @@ Much of this behavior can be explained by JavaScript&rsquo;s casting. From ECMAS
 	
 
 	
-	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	<a class="cta" href="/index.xml">RSS</a>
 	
 </nav>
 
@@ -197,23 +198,6 @@ true // Main casting question, and 0 &lt;= +0
             
 
             <footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/alexanderellis">
-        <i class="fa fa-github-square"></i>
-    </a>
-    
-    <a class="symbol" href="https://alexanderell.is">
-        <i class="fa fa-home"></i>
-    </a>
-    
-
-
-</div>
-
     
     <p class="small">
     

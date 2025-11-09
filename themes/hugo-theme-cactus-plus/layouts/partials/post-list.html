@@ -6,7 +6,7 @@
     <a href='{{ .Permalink }}'>
       {{ .Title }}
       <aside class="dates">{{ .Date.Format "Jan. 2, 2006" }}</aside>
-      <h2>{{ .Summary | markdownify | truncate 120}}</h2>
+      <h2>{{ .Summary | plainify | markdownify | truncate 120}}</h2>
     </a>
   </li>
   {{ end }}

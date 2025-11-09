@@ -56,7 +56,7 @@ options:
 
 <br>
 
-{{< tweet user="cramforce" id="1529866357763821583" >}}
+![Screenshot of a tweet about promotions and order status notifications being in the same toggle](tweet.png)
 
 <br>
 

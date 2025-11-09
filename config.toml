@@ -8,6 +8,7 @@ theme = "hugo-theme-cactus-plus"
 googleAnalytics = ""
 hasCJKLanguage = true
 publishDir = "docs"
+buildDrafts = false
 
 [params]
   name = "Alex Ellis"

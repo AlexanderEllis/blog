@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.99.1" />
+		<meta name="generator" content="Hugo 0.152.2">
 		<title>How do you visualize code? &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,12 +18,13 @@
 		
 
 		
-		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="How do you visualize code?"/>
-<meta name="twitter:description" content="The other day I was reading about the development of personal computers and the desktop GUI, and I was thinking about how comfortable we all have become with the analogy of the &ldquo;desktop&rdquo; for our personal computers. We place files in folders and keep them on our desktops. There&rsquo;s a lot of physical action going on.
-Humans are very good at understanding spaces, especially when it comes to remembering physical spaces, and it got me thinking about how we commonly visualize code."/>
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How do you visualize code?">
+  <meta name="twitter:description" content="The other day I was reading about the development of personal computers and the desktop GUI, and I was thinking about how comfortable we all have become with the analogy of the “desktop” for our personal computers. We place files in folders and keep them on our desktops. There’s a lot of physical action going on.
+Humans are very good at understanding spaces, especially when it comes to remembering physical spaces, and it got me thinking about how we commonly visualize code. Is there any good way to tap into that when thinking about and visualizing code?">
 
 	</head>
 
@@ -40,7 +41,7 @@ Humans are very good at understanding spaces, especially when it comes to rememb
 	
 
 	
-	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	<a class="cta" href="/index.xml">RSS</a>
 	
 </nav>
 
@@ -75,7 +76,7 @@ Humans are very good at understanding spaces, especially when it comes to rememb
 <br>
 <br>
 <p>On the other end of the spectrum, if I&rsquo;m worried about the minuscule specifics of how the computer is reading what I&rsquo;ve given it, it&rsquo;s helpful to zoom all the way in to a representation of the physical memory.</p>
-<p><img src="assembly.png" alt="Screenshot of a Google Sheets page where I&amp;rsquo;ve added assembly code in the various cells for walking through it carefully"></p>
+<p><img src="assembly.png" alt="Screenshot of a Google Sheets page where I&rsquo;ve added assembly code in the various cells for walking through it carefully"></p>
 <center>Screenshot of a Google Sheets page I once made with memory addresses and assembly in the various cells. This was helpful for walking through it very, very carefully.</center>
 <br>
 <br>
@@ -97,7 +98,7 @@ Humans are very good at understanding spaces, especially when it comes to rememb
 <p>Maybe we could rank them on how well they represent the larger system? Architecture diagrams would do well there, but a flame graph would only represent a single execution path. Maybe frequency of change? That would be an interesting one, with architecture diagrams (hopefully) staying pretty static as the source code changes frequently.</p>
 <p>What if we thought about how well the visualization represents the actual code execution through the system? In this case, maybe a high level architecture diagram wouldn&rsquo;t score very high, as it would abstract away many of the details inside the service boxes. Distributed tracing could do better, though the level of specificity would depend on the number of tracepoints you have. Class diagrams, while helpful for visualizing the relationship between classes, may not represent the actual paths taken through. Flame graphs would show a clear execution path, but again they would only show a single code path without giving visibility to the larger system.</p>
 <p>Graphing these <em>might</em> look something like the following, (though each of these dots may be better represented as a range):</p>
-<p><img src="graph.png" alt="Ranking the above visualizations on a scale from high level to low level along the x axis and &amp;ldquo;visualization of actual execution&amp;rdquo; on the y axis">
+<p><img src="graph.png" alt="Ranking the above visualizations on a scale from high level to low level along the x axis and &ldquo;visualization of actual execution&rdquo; on the y axis">
 <a href="graph.png">Link to a larger version of the graph</a></p>
 <p>This made me think about what that upper right section would be like. What would a helpful visualization look like that provided clear insight into the details? Is there a way to visualize the path through the larger system while staying at a low level?</p>
 <h2 id="what-would-it-look-like-if-we-tried-to-use-space-as-well">What would it look like if we tried to use space as well?</h2>
@@ -189,23 +190,6 @@ int main() {
             
 
             <footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/alexanderellis">
-        <i class="fa fa-github-square"></i>
-    </a>
-    
-    <a class="symbol" href="https://alexanderell.is">
-        <i class="fa fa-home"></i>
-    </a>
-    
-
-
-</div>
-
     
     <p class="small">
     

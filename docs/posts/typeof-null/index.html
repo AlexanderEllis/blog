@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.99.1" />
+		<meta name="generator" content="Hugo 0.152.2">
 		<title>typeof null: investigating a classic JavaScript bug &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,14 +18,15 @@
 		
 
 		
-		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="typeof null: investigating a classic JavaScript bug"/>
-<meta name="twitter:description" content="In my last post, I looked into some JavaScript casting and explored why 0 &lt;= null evaluates as true.
-For this post, I&rsquo;d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
-This is a well-known bug, and we&rsquo;ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
-The main idea is that the code assigned each item some bits for use as flags for different types, but null was different."/>
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="typeof null: investigating a classic JavaScript bug">
+  <meta name="twitter:description" content="In my last post, I looked into some JavaScript casting and explored why 0 &lt;= null evaluates as true.
+For this post, I’d like to investigate another unexpected behavior in JavaScript: why typeof(null) evaluates as &#39;object&#39;.
+This is a well-known bug, and we’ll investigate first in the ECMAScript specification followed by a deep dive into an early implementation of JavaScript to see the bug in its natural habitat.
+The main idea is that the code assigned each item some bits for use as flags for different types, but null was different. Objects had a flag of 000, so an object’s last 3 bits were 000. null was previously defined as 32 0 bits: 00000000000000000000000000000000. When the code tried to check null’s flag, the last three bits of null (000) matched the Object flag (000), so it was incorrectly determined to be an object.">
 
 	</head>
 
@@ -42,7 +43,7 @@ The main idea is that the code assigned each item some bits for use as flags for
 	
 
 	
-	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	<a class="cta" href="/index.xml">RSS</a>
 	
 </nav>
 
@@ -103,54 +104,54 @@ UnaryExpression : typeof UnaryExpression
 </code></pre><p>Calling GetValue with <em>null</em> will only reach the second step, as Type(null) is the Null type, and GetValue will return <em>null</em>.</p>
 <p>Finally we reach step 4: &ldquo;Return a String according to Table 35.&rdquo;  Here&rsquo;s Table 35:</p>
 <table>
-<thead>
-<tr>
-<th>Type of val</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Undefined</td>
-<td>&ldquo;undefined&rdquo;</td>
-</tr>
-<tr>
-<td>Null</td>
-<td>&ldquo;object&rdquo;</td>
-</tr>
-<tr>
-<td>Boolean</td>
-<td>&ldquo;boolean</td>
-</tr>
-<tr>
-<td>Number</td>
-<td>&ldquo;number&rdquo;</td>
-</tr>
-<tr>
-<td>String</td>
-<td>&ldquo;string&rdquo;</td>
-</tr>
-<tr>
-<td>Symbol</td>
-<td>&ldquo;symbol&rdquo;</td>
-</tr>
-<tr>
-<td>Object (ordinary and does not implement [[Call]])</td>
-<td>&ldquo;object&rdquo;</td>
-</tr>
-<tr>
-<td>Object (standard exotic and does not implement [[Call]])</td>
-<td>&ldquo;object&rdquo;</td>
-</tr>
-<tr>
-<td>Object (implements [[Call]])</td>
-<td>&ldquo;function</td>
-</tr>
-<tr>
-<td>Object (non-standard exotic and does not implement [[Call]])</td>
-<td>Implementation-defined. Must not be &ldquo;undefined&rdquo;, &ldquo;boolean&rdquo;, &ldquo;function&rdquo;, &ldquo;number&rdquo;, &ldquo;symbol&rdquo;, or &ldquo;string&rdquo;.</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Type of val</th>
+          <th>Result</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Undefined</td>
+          <td>&ldquo;undefined&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Null</td>
+          <td>&ldquo;object&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Boolean</td>
+          <td>&ldquo;boolean</td>
+      </tr>
+      <tr>
+          <td>Number</td>
+          <td>&ldquo;number&rdquo;</td>
+      </tr>
+      <tr>
+          <td>String</td>
+          <td>&ldquo;string&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Symbol</td>
+          <td>&ldquo;symbol&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Object (ordinary and does not implement [[Call]])</td>
+          <td>&ldquo;object&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Object (standard exotic and does not implement [[Call]])</td>
+          <td>&ldquo;object&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Object (implements [[Call]])</td>
+          <td>&ldquo;function</td>
+      </tr>
+      <tr>
+          <td>Object (non-standard exotic and does not implement [[Call]])</td>
+          <td>Implementation-defined. Must not be &ldquo;undefined&rdquo;, &ldquo;boolean&rdquo;, &ldquo;function&rdquo;, &ldquo;number&rdquo;, &ldquo;symbol&rdquo;, or &ldquo;string&rdquo;.</td>
+      </tr>
+  </tbody>
 </table>
 <p>Not very illuminating.  It says that <code>typeof null</code> should just return the string <code>'object'</code>.  But why?  Let&rsquo;s dive a little deeper.</p>
 <p>I came across the <a href="http://2ality.com/2013/10/typeof-null.html">2ality post about the history of <code>typeof null</code></a>, and it answers the question very well with reference to an early implementation.  As Brendan Eich wrote in the top comment, the code comes from the 1996 Spider Monkey implementation, not the very original 10-day Mocha, although the bug existed in the original as well.  Let&rsquo;s take a look!</p>
@@ -269,23 +270,6 @@ Value &amp; bitmask: 00000000000000000000000000000000
             
 
             <footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/alexanderellis">
-        <i class="fa fa-github-square"></i>
-    </a>
-    
-    <a class="symbol" href="https://alexanderell.is">
-        <i class="fa fa-home"></i>
-    </a>
-    
-
-
-</div>
-
     
     <p class="small">
     

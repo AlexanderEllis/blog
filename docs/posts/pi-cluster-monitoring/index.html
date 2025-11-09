@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Alex Ellis">
 		
-		<meta name="generator" content="Hugo 0.99.1" />
+		<meta name="generator" content="Hugo 0.152.2">
 		<title>Checking if the Pi is done &middot; Caffeinspiration</title>
 		<link rel="shortcut icon" href="https://alexanderell.is/images/favicon.ico">
 		<link rel="stylesheet" href="https://alexanderell.is/css/style.css">
@@ -18,12 +18,13 @@
 		
 
 		
-		<link href="https://alexanderell.is/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
+			<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Caffeinspiration" />
 		
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Checking if the Pi is done"/>
-<meta name="twitter:description" content="I recently put together a Raspberry Pi cluster to try out some toy distributed systems projects, and I wanted to start with a basic monitoring program to get my feet wet and work out the following:
- Getting each node running and set up with software Running Go on each machine Deploying code to each machine Nodes listening &amp; responding to RPCs Sending/receiving RPCs between laptop and nodes  As I&rsquo;ve previously mentioned, this isn&rsquo;t meant to be production grade, since I would just grab one off the shelf if that was the goal."/>
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Checking if the Pi is done">
+  <meta name="twitter:description" content="I recently put together a Raspberry Pi cluster to try out some toy distributed systems projects, and I wanted to start with a basic monitoring program to get my feet wet and work out the following:
+Getting each node running and set up with software Running Go on each machine Deploying code to each machine Nodes listening &amp; responding to RPCs Sending/receiving RPCs between laptop and nodes As I’ve previously mentioned, this isn’t meant to be production grade, since I would just grab one off the shelf if that was the goal. Instead, I want to work through the problem myself to get a feel for design decisions and making it work.">
 
 	</head>
 
@@ -40,7 +41,7 @@
 	
 
 	
-	<a class="cta" href="https://alexanderell.is/index.xml">RSS</a>
+	<a class="cta" href="/index.xml">RSS</a>
 	
 </nav>
 
@@ -245,23 +246,6 @@ func main() {
             
 
             <footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/alexanderellis">
-        <i class="fa fa-github-square"></i>
-    </a>
-    
-    <a class="symbol" href="https://alexanderell.is">
-        <i class="fa fa-home"></i>
-    </a>
-    
-
-
-</div>
-
     
     <p class="small">
     
