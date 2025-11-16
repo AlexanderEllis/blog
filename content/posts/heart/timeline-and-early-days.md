@@ -138,3 +138,6 @@ if it isn't really a problem and we can just wait it out? Why did this happen to
 the story goes well, but at the time, we were very far from knowing it would.
 
 This is how the story began. 
+
+-----
+([Link back to heart topics](../))
