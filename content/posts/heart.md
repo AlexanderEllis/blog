@@ -49,6 +49,13 @@ we spent close together, for better or for worse.
 
 I warned you about it being personal!
 
+-----
+
+### Timeline and Early Days
+
+Next up is a nice, relaxing echocardiogram and cardiologist appointment on a chilly January day: 
+[Timeline and Early Days](./timeline-and-early-days)
+
 [^1]: This is a good time to mention that I'm not a medical doctor, and obviously nothing written here is medical
 advice.
 
