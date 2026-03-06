@@ -31,7 +31,6 @@ Here's how to play:
   <option value="2">2</option>
   <option value="3">3</option>
   <option value="4">4</option>
-  <option value="5">5</option>
 </select>
 <br>
 <label for="numRepeats">Number of repeated success required:</label>
@@ -48,6 +47,10 @@ Here's how to play:
   <option value="300" selected>300ms</option>
   <option value="500">500ms</option>
 </select>
+<br>
+<label for="show-staff">Show notes</label>
+<input type="checkbox" id="show-staff" name="show-staff" value="true" checked="true">
+
 
 <br>
 
@@ -58,6 +61,8 @@ Here's how to play:
   <button id="startButton">Start</button>
   <br>
   <button id="replayButton" disabled>Replay</button>
+  <br>
+  <div id="staff"></div>
 
   <br>
   <div id="status"></div>
@@ -67,6 +72,7 @@ Here's how to play:
 
 <script src="autocorrelate.js"></script>
 <script src="note-matching.js"></script>
+<script src="vexflow-debug.js"></script>
 
 <style>
   .note {

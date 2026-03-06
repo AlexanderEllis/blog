@@ -4122,7 +4122,6 @@ target=&#34;blank_&#34;&gt;don&amp;rsquo;t like&lt;/a&gt; it either.
   &lt;option value=&#34;2&#34;&gt;2&lt;/option&gt;
   &lt;option value=&#34;3&#34;&gt;3&lt;/option&gt;
   &lt;option value=&#34;4&#34;&gt;4&lt;/option&gt;
-  &lt;option value=&#34;5&#34;&gt;5&lt;/option&gt;
 &lt;/select&gt;
 &lt;br&gt;
 &lt;label for=&#34;numRepeats&#34;&gt;Number of repeated success required:&lt;/label&gt;
@@ -4140,6 +4139,9 @@ target=&#34;blank_&#34;&gt;don&amp;rsquo;t like&lt;/a&gt; it either.
   &lt;option value=&#34;500&#34;&gt;500ms&lt;/option&gt;
 &lt;/select&gt;
 &lt;br&gt;
+&lt;label for=&#34;show-staff&#34;&gt;Show notes&lt;/label&gt;
+&lt;input type=&#34;checkbox&#34; id=&#34;show-staff&#34; name=&#34;show-staff&#34; value=&#34;true&#34; checked=&#34;true&#34;&gt;
+&lt;br&gt;
 &lt;div id=&#34;game&#34;&gt;
   &lt;div&gt;Total correct: &lt;span id=&#34;totalCorrect&#34;&gt;0&lt;/span&gt;&lt;/div&gt;
   &lt;div&gt;Perfect streak: &lt;span id=&#34;perfectStreak&#34;&gt;0&lt;/span&gt;&lt;/div&gt;
@@ -4148,12 +4150,15 @@ target=&#34;blank_&#34;&gt;don&amp;rsquo;t like&lt;/a&gt; it either.
   &lt;br&gt;
   &lt;button id=&#34;replayButton&#34; disabled&gt;Replay&lt;/button&gt;
   &lt;br&gt;
+  &lt;div id=&#34;staff&#34;&gt;&lt;/div&gt;
+  &lt;br&gt;
   &lt;div id=&#34;status&#34;&gt;&lt;/div&gt;
   &lt;div id=&#34;results&#34;&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;script src=&#34;autocorrelate.js&#34;&gt;&lt;/script&gt;
 &lt;script src=&#34;note-matching.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;vexflow-debug.js&#34;&gt;&lt;/script&gt;
 &lt;style&gt;
   .note {
     margin: 0 5px;

@@ -11,6 +11,22 @@ var ALL_NOTES = [
   "c6",                                                                             // 6
 ];
 
+var BASE_CLEF_NOTES = [
+  "a2", "a-2",                                                                      // 2
+  "c3", "c-3", "d3", "d-3", "e3", "f3", "f-3", "g3", "g-3", "a3", "a-3", "b3",      // 3
+  // "c4", "c-4", "d4", "d-4", "e4", "f4", "f-4", "g4", "g-4", "a4", "a-4", "b4",      // 4
+  // "c5", "c-5", "d5", "d-5", "e5", "f5", "f-5", "g5", "g-5", /*"a5", "a-5", "b5",*/  // 5
+  // "c6",                                                                             // 6
+];
+
+var TREBLE_CLEF_NOTES = [
+  // "a2", "a-2",                                                                      // 2
+  // "c3", "c-3", "d3", "d-3", "e3", "f3", "f-3", "g3", "g-3", "a3", "a-3", "b3",      // 3
+  "c4", "c-4", "d4", "d-4", "e4", "f4", "f-4", "g4", "g-4", "a4", "a-4", "b4",      // 4
+  "c5", "c-5", "d5", "d-5", "e5", "f5", "f-5", "g5", "g-5", /*"a5", "a-5", "b5",*/  // 5
+  "c6",                                                                             // 6
+];
+
 // C2 is 36
 var FULL_RANGE = [
   "c2", "c-2", "d2", "d-2", "e2", "f2", "f-2", "g2", "g-2", "a2", "a-2", "b2",  // 2
@@ -91,6 +107,7 @@ class NoteMatchingGame {
     this.notes = [];
     this.numRepeats = NUM_REPEATS
     this.numberOfNotes = NUM_NOTES;
+    this.showStaff = true;
     // The pending notes we've heard so far while listening.
     this.notesSoFar = [];
 
@@ -116,6 +133,8 @@ class NoteMatchingGame {
   getDefaults() {
     this.numberOfNotes = parseInt(document.getElementById('numNotes').value)
     this.numRepeats = parseInt(document.getElementById('numRepeats').value)
+    this.showStaff =
+        document.getElementById("show-staff").checked;
   }
 
   async startNewGame() {
@@ -128,9 +147,73 @@ class NoteMatchingGame {
 
     // Pick some notes
     this.notes = getRandomNotes(this.numberOfNotes);
-    // console.log(this.notes);
+
+    if (this.showStaff) {
+      this.drawNotes();
+    }
 
     await this.playNotes();
+  }
+
+  drawNotes() {
+
+    // Clear it out first
+    document.getElementById("staff").innerHTML = "";
+
+    // Create an SVG renderer and attach it to the DIV element named "staff".
+    var vf = new Vex.Flow.Factory({renderer: {elementId: 'staff', width: 800, height: 240}});
+    var score = vf.EasyScore();
+    var system = vf.System({ x: 0, y: 0, width: 500});
+
+    // Let's use the first one to figure out where we draw it.
+    let firstNote = this.notes[0];
+    let isTreble = false;
+    if (TREBLE_CLEF_NOTES.includes(firstNote)) {
+      isTreble = true;
+    }
+
+    let formattedNotes = this.notes.map((note, index, array) => {
+      let formattedNote = this.formatNote(note);
+      if (index == 0) {
+        formattedNote += "/q";
+      }
+      return formattedNote;
+    });
+    console.log("after formatting")
+    console.log(formattedNotes);
+
+    while (formattedNotes.length < 4) {
+      formattedNotes.push(isTreble ? "C5/r" : "D3/r");
+    }
+    console.log("after padding")
+    console.log(formattedNotes);
+
+    let joinedNotes = formattedNotes.join(", ");
+    console.log("after joining")
+    console.log(joinedNotes);
+
+    let trebleNotes = isTreble ? joinedNotes : "C5/1/r"
+    let bassNotes = isTreble ? "D3/1/r" : joinedNotes;
+
+    console.log("trebleNotes", trebleNotes);
+    console.log("bassNotes", bassNotes);
+
+
+    // Always add a bass and a treble
+    system.addStave({
+      voices: [
+        score.voice(score.notes(trebleNotes, {stem: 'up'})),
+      ]
+    }).addClef('treble').addTimeSignature('4/4');
+
+    system.addStave({
+      voices: [
+        score.voice(score.notes(bassNotes, {clef: 'bass', stem: 'up'})),
+      ]
+    }).addClef('bass').addTimeSignature('4/4');
+
+
+    vf.draw();
   }
 
   updateStatus(status) {
