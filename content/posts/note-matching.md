@@ -50,6 +50,9 @@ Here's how to play:
 <br>
 <label for="show-staff">Show notes</label>
 <input type="checkbox" id="show-staff" name="show-staff" value="true" checked="true">
+<br>
+<label for="play-notes">Play notes (default on for ear matching)</label>
+<input type="checkbox" id="play-notes" name="show-staff" value="true" checked="true">
 
 
 <br>

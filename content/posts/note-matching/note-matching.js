@@ -97,6 +97,9 @@ const PLAYING = 1;
 const LISTENING = 2;
 const IN_BETWEEN = 3;
 
+// Timing constants
+const WAIT_BETWEEN = 2000;
+
 
 const NUM_NOTES = 1;
 const NUM_REPEATS = 0;
@@ -108,6 +111,7 @@ class NoteMatchingGame {
     this.numRepeats = NUM_REPEATS
     this.numberOfNotes = NUM_NOTES;
     this.showStaff = true;
+    this.shouldPlayNotes = true;
     // The pending notes we've heard so far while listening.
     this.notesSoFar = [];
 
@@ -135,6 +139,7 @@ class NoteMatchingGame {
     this.numRepeats = parseInt(document.getElementById('numRepeats').value)
     this.showStaff =
         document.getElementById("show-staff").checked;
+    this.shouldPlayNotes = document.getElementById("play-notes").checked;
   }
 
   async startNewGame() {
@@ -223,11 +228,13 @@ class NoteMatchingGame {
   async playNotes() {
     // console.log(this.notes);
     this.noteListener.stopListening();
-    this.status = PLAYING;
-    this.updateStatus('Playing notes...');
-    await sleep(100);
-    await playNotes(this.notes);
-    await sleep(200);
+    if (this.shouldPlayNotes) {
+      this.status = PLAYING;
+      this.updateStatus('Playing notes...');
+      await sleep(100);
+      await playNotes(this.notes);
+      await sleep(200);
+    }
 
     // Transition to listening
     this.listenForNotes();
@@ -310,7 +317,7 @@ class NoteMatchingGame {
       const isPerfect = document.getElementById('results').childElementCount == this.numRepeats + 1;
       this.updateStreaks(isPerfect);
       this.status = IN_BETWEEN;
-      await sleep(3000);
+      await sleep(WAIT_BETWEEN);
       // Start over.
       this.startNewGame();
     } else if (currentIndex == this.notes.length - 1) {
