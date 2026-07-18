@@ -3093,8 +3093,8 @@ problem, where you take individual steps to build your understanding, explore
 the problem, and get closer to a solution.&lt;/p&gt;
 &lt;p&gt;I really enjoy this Julia Evans comic about debugging: just focus on one
 question at a time, and slowly build understanding from there!&lt;/p&gt;
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;debugging strategy: come up with one question &lt;a href=&#34;https://t.co/2Lytzl4laQ&#34;&gt;pic.twitter.com/2Lytzl4laQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; 🔎Julia Evans🔍 (@b0rk) &lt;a href=&#34;https://twitter.com/b0rk/status/1554120424602193921?ref_src=twsrc%5Etfw&#34;&gt;August 1, 2022&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;debugging strategy: come up with one question &lt;a href=&#34;https://t.co/2Lytzl4laQ&#34;&gt;pic.twitter.com/2Lytzl4laQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; 🔎Julia Evans🔍 (@b0rk) &lt;a href=&#34;https://x.com/b0rk/status/1554120424602193921?ref_src=twsrc%5Etfw&#34;&gt;August 1, 2022&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.x.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 
 
 &lt;br&gt;
@@ -3729,8 +3729,8 @@ notifications and their business engagement metrics. I say &amp;ldquo;knowingly&
 it&amp;rsquo;s pretty clear when you look at something like Starbucks&amp;rsquo; notifications
 options:&lt;/p&gt;
 &lt;br&gt;
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Dear &lt;a href=&#34;https://twitter.com/Starbucks?ref_src=twsrc%5Etfw&#34;&gt;@Starbucks&lt;/a&gt;, this is actually very simple: if you put promotions and order status into the same notifications bucket then you will not be allowed to deliver either. &lt;a href=&#34;https://t.co/6t64veJyUQ&#34;&gt;pic.twitter.com/6t64veJyUQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; Malte Ubl (@cramforce) &lt;a href=&#34;https://twitter.com/cramforce/status/1529866357763821583?ref_src=twsrc%5Etfw&#34;&gt;May 26, 2022&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Dear &lt;a href=&#34;https://x.com/Starbucks?ref_src=twsrc%5Etfw&#34;&gt;@Starbucks&lt;/a&gt;, this is actually very simple: if you put promotions and order status into the same notifications bucket then you will not be allowed to deliver either. &lt;a href=&#34;https://t.co/6t64veJyUQ&#34;&gt;pic.twitter.com/6t64veJyUQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; Malte Ubl (@cramforce) &lt;a href=&#34;https://x.com/cramforce/status/1529866357763821583?ref_src=twsrc%5Etfw&#34;&gt;May 26, 2022&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.x.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 
 
 &lt;br&gt;
@@ -4141,6 +4141,9 @@ target=&#34;blank_&#34;&gt;don&amp;rsquo;t like&lt;/a&gt; it either.
 &lt;br&gt;
 &lt;label for=&#34;show-staff&#34;&gt;Show notes&lt;/label&gt;
 &lt;input type=&#34;checkbox&#34; id=&#34;show-staff&#34; name=&#34;show-staff&#34; value=&#34;true&#34; checked=&#34;true&#34;&gt;
+&lt;br&gt;
+&lt;label for=&#34;play-notes&#34;&gt;Play notes (default on for ear matching)&lt;/label&gt;
+&lt;input type=&#34;checkbox&#34; id=&#34;play-notes&#34; name=&#34;show-staff&#34; value=&#34;true&#34; checked=&#34;true&#34;&gt;
 &lt;br&gt;
 &lt;div id=&#34;game&#34;&gt;
   &lt;div&gt;Total correct: &lt;span id=&#34;totalCorrect&#34;&gt;0&lt;/span&gt;&lt;/div&gt;
