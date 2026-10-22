@@ -36,6 +36,24 @@ var FULL_RANGE = [
   "c6", "c-6", "d6", "d-6", "e6", "f6", "f-6", "g6", "g-6", "a6", "a-6", "b6",  // 6
 ];
 
+// The flat spelling of each sharp, e.g. C# is Db.
+const FLAT_NAMES = {c: 'D', d: 'E', f: 'G', g: 'A', a: 'B'};
+
+// Supported keys. `signature` maps each letter in the key signature to its accidental, and
+// `flats` says whether black keys are spelled as flats (Bb) rather than sharps (A#).
+const KEYS = {
+  'C':  {signature: {},               flats: false},
+  'G':  {signature: {F: '#'},         flats: false},
+  'D':  {signature: {F: '#', C: '#'}, flats: false},
+  'Bb': {signature: {B: 'b', E: 'b'}, flats: true},
+};
+
+// Splits a formatted note like "Bb4" into its letter, accidental and octave.
+function parseNote(formattedNote) {
+  let [, letter, accidental, octave] = formattedNote.match(/^([A-G])([#b]?)(\d)$/);
+  return {letter, accidental, octave};
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -70,22 +88,21 @@ async function playRandomNotes(n) {
   playNotes(getRandomNotes(n));
 }
 
-function getRandomNotes(n) {
-  // Maybe we should pick a first random one, then one within 12?
-
+// Picks n random notes from pool, all within maxOffset steps of the first one.
+function getRandomNotes(n, pool = ALL_NOTES, maxOffset = 6) {
   // Get n random notes.
   let notesToPlay = [];
-  const firstNoteIndex = Math.floor(Math.random() * ALL_NOTES.length);
-  notesToPlay.push(ALL_NOTES[firstNoteIndex]);
+  const firstNoteIndex = Math.floor(Math.random() * pool.length);
+  notesToPlay.push(pool[firstNoteIndex]);
   for (let i = 1; i < n; i++) {
-    const offset = Math.floor(Math.random() * 12) - 6;
+    const offset = Math.floor(Math.random() * 2 * maxOffset) - maxOffset;
     // console.log(offset);
     if (firstNoteIndex + offset < 0) {
-      notesToPlay.push(ALL_NOTES[0]);
-    } else if (firstNoteIndex + offset >= ALL_NOTES.length) {
-      notesToPlay.push(ALL_NOTES[ALL_NOTES.length - 1]);
+      notesToPlay.push(pool[0]);
+    } else if (firstNoteIndex + offset >= pool.length) {
+      notesToPlay.push(pool[pool.length - 1]);
     } else {
-      notesToPlay.push(ALL_NOTES[firstNoteIndex + offset]);
+      notesToPlay.push(pool[firstNoteIndex + offset]);
     }
   }
   return notesToPlay;
@@ -101,8 +118,15 @@ const IN_BETWEEN = 3;
 const WAIT_BETWEEN = 2000;
 
 
-const NUM_NOTES = 1;
+const NUM_NOTES = 8;
 const NUM_REPEATS = 0;
+
+// Staff layout: quarter notes in 4/4, so 4 per bar.
+const NOTES_PER_BAR = 4;
+const FIRST_BAR_WIDTH = 350;
+const BAR_WIDTH = 270;
+// Extra room in the first bar for each sharp or flat in the key signature.
+const KEY_ACCIDENTAL_WIDTH = 12;
 
 class NoteMatchingGame {
   constructor() {
@@ -111,7 +135,10 @@ class NoteMatchingGame {
     this.numRepeats = NUM_REPEATS
     this.numberOfNotes = NUM_NOTES;
     this.showStaff = true;
-    this.shouldPlayNotes = true;
+    this.shouldPlayNotes = false;
+    this.key = 'C';
+    this.notesOutsideKey = false;
+    this.round = 0;
     // The pending notes we've heard so far while listening.
     this.notesSoFar = [];
 
@@ -122,7 +149,11 @@ class NoteMatchingGame {
 
     this.handleNote = this.handleNote.bind(this);
     this.replayNotes = this.replayNotes.bind(this);
+    this.resetAttempt = this.resetAttempt.bind(this);
+    this.nextRound = this.nextRound.bind(this);
+    document.getElementById('nextRoundButton').addEventListener('click', this.nextRound);
     document.getElementById('replayButton').addEventListener('click', this.replayNotes);
+    document.getElementById('resetButton').addEventListener('click', this.resetAttempt);
   }
 
   initializeListener() {
@@ -140,9 +171,19 @@ class NoteMatchingGame {
     this.showStaff =
         document.getElementById("show-staff").checked;
     this.shouldPlayNotes = document.getElementById("play-notes").checked;
+    this.key = document.getElementById('key').value;
+    this.notesOutsideKey = document.getElementById('outside-key').checked;
+  }
+
+  // Whether a note belongs to the current key, i.e. its accidental matches the key signature.
+  isInKey(note) {
+    let {letter, accidental} = parseNote(this.formatNote(note));
+    return accidental == (KEYS[this.key].signature[letter] || '');
   }
 
   async startNewGame() {
+    // Bumped every round so delayed steps from an earlier round know to stop.
+    this.round += 1;
     this.getDefaults();
     // Clear out status, results, etc
     this.updateStatus('');
@@ -151,7 +192,14 @@ class NoteMatchingGame {
     this.numAlreadyCorrect = 0;
 
     // Pick some notes
-    this.notes = getRandomNotes(this.numberOfNotes);
+    if (this.notesOutsideKey) {
+      this.notes = getRandomNotes(this.numberOfNotes);
+    } else {
+      // A scale has 7 of the 12 notes, so jump fewer steps to keep a similar range.
+      this.notes = getRandomNotes(this.numberOfNotes, ALL_NOTES.filter(note => this.isInKey(note)), 4);
+    }
+    // Randomly spell each note outside the key as a sharp or a flat (C# vs Db).
+    this.useFlats = this.notes.map(() => Math.random() < 0.5);
 
     if (this.showStaff) {
       this.drawNotes();
@@ -168,7 +216,6 @@ class NoteMatchingGame {
     // Create an SVG renderer and attach it to the DIV element named "staff".
     var vf = new Vex.Flow.Factory({renderer: {elementId: 'staff', width: 800, height: 240}});
     var score = vf.EasyScore();
-    var system = vf.System({ x: 0, y: 0, width: 500});
 
     // Let's use the first one to figure out where we draw it.
     let firstNote = this.notes[0];
@@ -177,48 +224,74 @@ class NoteMatchingGame {
       isTreble = true;
     }
 
-    let formattedNotes = this.notes.map((note, index, array) => {
-      let formattedNote = this.formatNote(note);
+    // Each bar gets its own system, laid out left to right. Only the first has the clefs
+    // and time signature, so it needs to be wider.
+    let x = 0;
+    for (let barStart = 0; barStart < this.notes.length; barStart += NOTES_PER_BAR) {
+      let isFirstBar = barStart == 0;
+      let numKeyAccidentals = Object.keys(KEYS[this.key].signature).length;
+      let width = isFirstBar ? FIRST_BAR_WIDTH + KEY_ACCIDENTAL_WIDTH * numKeyAccidentals : BAR_WIDTH;
+      var system = vf.System({ x: x, y: 0, width: width});
+      x += width;
+
+      let joinedNotes = this.formatBar(barStart, isTreble);
+      let trebleNotes = isTreble ? joinedNotes : "C5/1/r"
+      let bassNotes = isTreble ? "D3/1/r" : joinedNotes;
+
+      console.log("trebleNotes", trebleNotes);
+      console.log("bassNotes", bassNotes);
+
+      // Always add a bass and a treble
+      let trebleStave = system.addStave({
+        voices: [
+          score.voice(score.notes(trebleNotes, {stem: 'up'})),
+        ]
+      });
+
+      let bassStave = system.addStave({
+        voices: [
+          score.voice(score.notes(bassNotes, {clef: 'bass', stem: 'up'})),
+        ]
+      });
+
+      if (isFirstBar) {
+        trebleStave.addClef('treble').addKeySignature(this.key).addTimeSignature('4/4');
+        bassStave.addClef('bass').addKeySignature(this.key).addTimeSignature('4/4');
+      }
+    }
+
+    vf.draw();
+  }
+
+  // Formats the notes of the bar starting at barStart into an EasyScore string, padded with rests.
+  formatBar(barStart, isTreble) {
+    let barNotes = this.notes.slice(barStart, barStart + NOTES_PER_BAR);
+
+    // A sign is only drawn when a note differs from the accidental already in effect. The key
+    // signature applies to every octave, while a sign in the bar carries through the rest of the
+    // bar for that staff position only (e.g. C#4 then C4 needs a natural; in Bb, B4 needs one too).
+    // Maps staff position (e.g. "C4") to the accidental drawn earlier in this bar.
+    let signature = KEYS[this.key].signature;
+    let accidentals = {};
+    let formattedNotes = barNotes.map((note, index) => {
+      let {letter, accidental, octave} = parseNote(this.spellNote(barStart + index));
+      let position = letter + octave;
+      let inEffect = position in accidentals ? accidentals[position] : (signature[letter] || '');
+      // EasyScore uses 'n' for a natural, e.g. "Cn4". VexFlow places notes by staff position,
+      // so a plain "B4" is drawn on the B line and the key signature makes it a Bb.
+      let formattedNote = letter + (accidental == inEffect ? '' : (accidental || 'n')) + octave;
+      accidentals[position] = accidental;
       if (index == 0) {
         formattedNote += "/q";
       }
       return formattedNote;
     });
-    console.log("after formatting")
-    console.log(formattedNotes);
 
-    while (formattedNotes.length < 4) {
+    while (formattedNotes.length < NOTES_PER_BAR) {
       formattedNotes.push(isTreble ? "C5/r" : "D3/r");
     }
-    console.log("after padding")
-    console.log(formattedNotes);
 
-    let joinedNotes = formattedNotes.join(", ");
-    console.log("after joining")
-    console.log(joinedNotes);
-
-    let trebleNotes = isTreble ? joinedNotes : "C5/1/r"
-    let bassNotes = isTreble ? "D3/1/r" : joinedNotes;
-
-    console.log("trebleNotes", trebleNotes);
-    console.log("bassNotes", bassNotes);
-
-
-    // Always add a bass and a treble
-    system.addStave({
-      voices: [
-        score.voice(score.notes(trebleNotes, {stem: 'up'})),
-      ]
-    }).addClef('treble').addTimeSignature('4/4');
-
-    system.addStave({
-      voices: [
-        score.voice(score.notes(bassNotes, {clef: 'bass', stem: 'up'})),
-      ]
-    }).addClef('bass').addTimeSignature('4/4');
-
-
-    vf.draw();
+    return formattedNotes.join(", ");
   }
 
   updateStatus(status) {
@@ -263,13 +336,44 @@ class NoteMatchingGame {
     this.currentResults = null;
   }
 
+  // Skips to a fresh round with the current options, without touching the streaks.
+  nextRound() {
+    // Don't overlap the notes that are playing, same as replay.
+    if (this.status == PLAYING) {
+      return;
+    }
+    this.startNewGame();
+  }
+
+  // Throws away the notes heard so far in this attempt so you can start it over.
+  resetAttempt() {
+    if (this.status != LISTENING) {
+      return;
+    }
+    this.notesSoFar = [];
+    this.currentResults.innerHTML = '';
+  }
+
   startNewAttempt() {
     this.notesSoFar = [];
     this.currentResults = document.createElement('div');
     document.getElementById('results').appendChild(this.currentResults);
   }
 
-  formatNote(note) {
+  // Spells the note at index in this.notes as it's shown on the staff. Notes in the key use the
+  // key's spelling, and notes outside it are randomly a sharp or a flat.
+  spellNote(index) {
+    let note = this.notes[index];
+    let useFlat = this.isInKey(note) ? KEYS[this.key].flats : this.useFlats[index];
+    return this.formatNote(note, useFlat);
+  }
+
+  // Spells a note, by default for the current key, e.g. "a-4" is "Bb4" in Bb but "A#4" in D.
+  formatNote(note, useFlat = KEYS[this.key].flats) {
+    if (useFlat && note.includes('-')) {
+      // Spell the sharp as the flat of the next letter up, e.g. "c-4" -> "Db4".
+      return FLAT_NAMES[note[0]] + 'b' + note.slice(2);
+    }
     // Uppercase and replace '-' with '#'
     return note.replace('-', '#').toUpperCase();
   }
@@ -303,7 +407,8 @@ class NoteMatchingGame {
 
     let newSpan = document.createElement('span');
     newSpan.classList.add('note');
-    newSpan.innerText = this.formatNote(note);
+    // Show a correct note with the same spelling as the staff.
+    newSpan.innerText = noteMatches ? this.spellNote(currentIndex) : this.formatNote(note);
     newSpan.style.color = noteMatches ? 'green' : 'black';
     this.currentResults.appendChild(newSpan);
 
@@ -317,9 +422,12 @@ class NoteMatchingGame {
       const isPerfect = document.getElementById('results').childElementCount == this.numRepeats + 1;
       this.updateStreaks(isPerfect);
       this.status = IN_BETWEEN;
+      const round = this.round;
       await sleep(WAIT_BETWEEN);
-      // Start over.
-      this.startNewGame();
+      // Start over, unless "Next round" already did.
+      if (round == this.round) {
+        this.startNewGame();
+      }
     } else if (currentIndex == this.notes.length - 1) {
       this.noteListener.stopListening();
       // We're past what we should be listening for. Replay and restart.
@@ -331,9 +439,12 @@ class NoteMatchingGame {
         this.numAlreadyCorrect = 0;
       }
       this.status = IN_BETWEEN;
+      const round = this.round;
       await sleep(2000);
-      this.startNewAttempt();
-      this.replayNotes();
+      if (round == this.round) {
+        this.startNewAttempt();
+        this.replayNotes();
+      }
     }
   }
 
@@ -460,4 +571,6 @@ document.getElementById('startButton').addEventListener('click', () => {
   game.startNewGame();
   document.getElementById('startButton').disabled = true;
   document.getElementById('replayButton').disabled = false;
+  document.getElementById('resetButton').disabled = false;
+  document.getElementById('nextRoundButton').disabled = false;
 });

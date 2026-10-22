@@ -23,7 +23,7 @@ Here's how to play:
 
 <br>
 
-<b>Options (they'll apply to the next round):</b>
+<b>Options (they'll apply to the next round, or press "Next round" to apply them now):</b>
 <br>
 <label for="numNotes">Number of notes:</label>
 <select name="numNotes" id="numNotes">
@@ -31,6 +31,10 @@ Here's how to play:
   <option value="2">2</option>
   <option value="3">3</option>
   <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8" selected>8</option>
 </select>
 <br>
 <label for="numRepeats">Number of repeated success required:</label>
@@ -51,8 +55,19 @@ Here's how to play:
 <label for="show-staff">Show notes</label>
 <input type="checkbox" id="show-staff" name="show-staff" value="true" checked="true">
 <br>
-<label for="play-notes">Play notes (default on for ear matching)</label>
-<input type="checkbox" id="play-notes" name="show-staff" value="true" checked="true">
+<label for="play-notes">Play notes</label>
+<input type="checkbox" id="play-notes" name="show-staff" value="true">
+<br>
+<label for="key">Key:</label>
+<select name="key" id="key">
+  <option value="C" selected>C</option>
+  <option value="G">G</option>
+  <option value="D">D</option>
+  <option value="Bb">B♭</option>
+</select>
+<br>
+<label for="outside-key">Notes outside of key</label>
+<input type="checkbox" id="outside-key" name="outside-key" value="true">
 
 
 <br>
@@ -64,6 +79,10 @@ Here's how to play:
   <button id="startButton">Start</button>
   <br>
   <button id="replayButton" disabled>Replay</button>
+  <br>
+  <button id="resetButton" disabled>Reset</button>
+  <br>
+  <button id="nextRoundButton" disabled>Next round</button>
   <br>
   <div id="staff"></div>
 
