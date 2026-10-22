@@ -3,29 +3,7 @@
 // Note that b4 is actually b3 repeated!
 // C3 is 48
 // Also some notes are incorrect unfortunately, notably the As
-var ALL_NOTES = [
-  "a2", "a-2",                                                                      // 2
-  "c3", "c-3", "d3", "d-3", "e3", "f3", "f-3", "g3", "g-3", "a3", "a-3", "b3",      // 3
-  "c4", "c-4", "d4", "d-4", "e4", "f4", "f-4", "g4", "g-4", "a4", "a-4", "b4",      // 4
-  "c5", "c-5", "d5", "d-5", "e5", "f5", "f-5", "g5", "g-5", /*"a5", "a-5", "b5",*/  // 5
-  "c6",                                                                             // 6
-];
-
-var BASE_CLEF_NOTES = [
-  "a2", "a-2",                                                                      // 2
-  "c3", "c-3", "d3", "d-3", "e3", "f3", "f-3", "g3", "g-3", "a3", "a-3", "b3",      // 3
-  // "c4", "c-4", "d4", "d-4", "e4", "f4", "f-4", "g4", "g-4", "a4", "a-4", "b4",      // 4
-  // "c5", "c-5", "d5", "d-5", "e5", "f5", "f-5", "g5", "g-5", /*"a5", "a-5", "b5",*/  // 5
-  // "c6",                                                                             // 6
-];
-
-var TREBLE_CLEF_NOTES = [
-  // "a2", "a-2",                                                                      // 2
-  // "c3", "c-3", "d3", "d-3", "e3", "f3", "f-3", "g3", "g-3", "a3", "a-3", "b3",      // 3
-  "c4", "c-4", "d4", "d-4", "e4", "f4", "f-4", "g4", "g-4", "a4", "a-4", "b4",      // 4
-  "c5", "c-5", "d5", "d-5", "e5", "f5", "f-5", "g5", "g-5", /*"a5", "a-5", "b5",*/  // 5
-  "c6",                                                                             // 6
-];
+// The files only cover a2 to c6 (and skip b2, a5, a-5 and b5), so missing ones are logged.
 
 // C2 is 36
 var FULL_RANGE = [
@@ -35,6 +13,14 @@ var FULL_RANGE = [
   "c5", "c-5", "d5", "d-5", "e5", "f5", "f-5", "g5", "g-5", "a5", "a-5", "b5",  // 5
   "c6", "c-6", "d6", "d-6", "e6", "f6", "f-6", "g6", "g-6", "a6", "a-6", "b6",  // 6
 ];
+
+// The game can pick any note the listener can hear.
+var ALL_NOTES = FULL_RANGE;
+
+// Notes from c4 up go on the treble clef.
+function isTrebleNote(note) {
+  return FULL_RANGE.indexOf(note) >= FULL_RANGE.indexOf("c4");
+}
 
 // The flat spelling of each sharp, e.g. C# is Db.
 const FLAT_NAMES = {c: 'D', d: 'E', f: 'G', g: 'A', a: 'B'};
@@ -69,9 +55,9 @@ async function playNote(source) {
     var audio = audioMap[source];
     audio.onended = resolve;
     audio.play()
-      .catch(eror => {
-        // Probably iOS permissions and couldn't autoplay.
-        // console.log(error);
+      .catch(error => {
+        // Probably iOS permissions and couldn't autoplay, or a missing audio file.
+        console.warn("Couldn't play " + source + ': ' + error.message);
         resolve();
       });
   });
@@ -88,22 +74,20 @@ async function playRandomNotes(n) {
   playNotes(getRandomNotes(n));
 }
 
-// Picks n random notes from pool, all within maxOffset steps of the first one.
+// Picks n random notes from pool, all within maxOffset steps (up or down) of the first one.
 function getRandomNotes(n, pool = ALL_NOTES, maxOffset = 6) {
   // Get n random notes.
   let notesToPlay = [];
   const firstNoteIndex = Math.floor(Math.random() * pool.length);
   notesToPlay.push(pool[firstNoteIndex]);
   for (let i = 1; i < n; i++) {
-    const offset = Math.floor(Math.random() * 2 * maxOffset) - maxOffset;
-    // console.log(offset);
-    if (firstNoteIndex + offset < 0) {
-      notesToPlay.push(pool[0]);
-    } else if (firstNoteIndex + offset >= pool.length) {
-      notesToPlay.push(pool[pool.length - 1]);
-    } else {
-      notesToPlay.push(pool[firstNoteIndex + offset]);
-    }
+    // Pick a different jump if this one runs off either end, rather than piling up on the ends.
+    let index;
+    do {
+      const offset = Math.floor(Math.random() * (2 * maxOffset + 1)) - maxOffset;
+      index = firstNoteIndex + offset;
+    } while (index < 0 || index >= pool.length);
+    notesToPlay.push(pool[index]);
   }
   return notesToPlay;
 }
@@ -162,6 +146,9 @@ class NoteMatchingGame {
     for (const note of ALL_NOTES) {
       var source = 'notes/' + note + '.mp3';
       audioMap[source] = new Audio(source);
+      audioMap[source].addEventListener('error', () => {
+        console.warn('Missing audio file for ' + note + ': ' + source);
+      });
     }
   }
 
@@ -220,7 +207,7 @@ class NoteMatchingGame {
     // Let's use the first one to figure out where we draw it.
     let firstNote = this.notes[0];
     let isTreble = false;
-    if (TREBLE_CLEF_NOTES.includes(firstNote)) {
+    if (isTrebleNote(firstNote)) {
       isTreble = true;
     }
 
