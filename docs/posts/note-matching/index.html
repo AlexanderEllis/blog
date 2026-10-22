@@ -57,7 +57,7 @@ You can also try singing/whistling, but note that the pitch detection is hand ro
                     </h2>
                     <h2 class="headline">
                     May 14, 2022
-                    · 183 words
+                    · 202 words
                     · 1 minute read
                       <span class="tags">
                             
@@ -82,7 +82,7 @@ target="blank_">don&rsquo;t like</a> it either.
 <li>Play around with the options and continue as long as you want :)</li>
 </ul>
 <br>
-<p><b>Options (they&rsquo;ll apply to the next round):</b>
+<p><b>Options (they&rsquo;ll apply to the next round, or press &ldquo;Next round&rdquo; to apply them now):</b>
 <br>
 <label for="numNotes">Number of notes:</label>
 <select name="numNotes" id="numNotes"></p>
@@ -90,6 +90,10 @@ target="blank_">don&rsquo;t like</a> it either.
   <option value="2">2</option>
   <option value="3">3</option>
   <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8" selected>8</option>
 </select>
 <br>
 <label for="numRepeats">Number of repeated success required:</label>
@@ -110,8 +114,19 @@ target="blank_">don&rsquo;t like</a> it either.
 <label for="show-staff">Show notes</label>
 <input type="checkbox" id="show-staff" name="show-staff" value="true" checked="true">
 <br>
-<label for="play-notes">Play notes (default on for ear matching)</label>
-<input type="checkbox" id="play-notes" name="show-staff" value="true" checked="true">
+<label for="play-notes">Play notes</label>
+<input type="checkbox" id="play-notes" name="show-staff" value="true">
+<br>
+<label for="key">Key:</label>
+<select name="key" id="key">
+  <option value="C" selected>C</option>
+  <option value="G">G</option>
+  <option value="D">D</option>
+  <option value="Bb">B♭</option>
+</select>
+<br>
+<label for="outside-key">Notes outside of key</label>
+<input type="checkbox" id="outside-key" name="outside-key" value="true">
 <br>
 <div id="game">
   <div>Total correct: <span id="totalCorrect">0</span></div>
@@ -120,6 +135,10 @@ target="blank_">don&rsquo;t like</a> it either.
   <button id="startButton">Start</button>
   <br>
   <button id="replayButton" disabled>Replay</button>
+  <br>
+  <button id="resetButton" disabled>Reset</button>
+  <br>
+  <button id="nextRoundButton" disabled>Next round</button>
   <br>
   <div id="staff"></div>
   <br>
