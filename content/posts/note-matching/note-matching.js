@@ -4,6 +4,7 @@
 // C3 is 48
 // Also some notes are incorrect unfortunately, notably the As
 // The files only cover a2 to c6 (and skip b2, a5, a-5 and b5), so missing ones are logged.
+// That leaves c2 to g-2, b2, a5, a-5, b5 and c-6 to e6 without audio.
 
 // C2 is 36
 var FULL_RANGE = [
@@ -14,8 +15,10 @@ var FULL_RANGE = [
   "c6", "c-6", "d6", "d-6", "e6", "f6", "f-6", "g6", "g-6", "a6", "a-6", "b6",  // 6
 ];
 
-// The game can pick any note the listener can hear.
-var ALL_NOTES = FULL_RANGE;
+// The notes the game can pick. Real music rarely goes past 3 ledger lines before switching to
+// 8va, so the top is e6 (3 above the treble clef). The bottom is c2 (2 below the bass clef), as
+// low as the listener hears.
+var ALL_NOTES = FULL_RANGE.slice(FULL_RANGE.indexOf("c2"), FULL_RANGE.indexOf("e6") + 1);
 
 // Notes from c4 up go on the treble clef.
 function isTrebleNote(note) {
@@ -109,6 +112,10 @@ const NUM_REPEATS = 0;
 const NOTES_PER_BAR = 4;
 const FIRST_BAR_WIDTH = 350;
 const BAR_WIDTH = 270;
+// Room above the staves for ledger lines and stems, enough for e6 on the treble clef, and
+// total height with room below for c2 on the bass clef.
+const STAFF_TOP_MARGIN = 15;
+const STAFF_HEIGHT = 260;
 // Extra room in the first bar for each sharp or flat in the key signature.
 const KEY_ACCIDENTAL_WIDTH = 12;
 
@@ -201,7 +208,7 @@ class NoteMatchingGame {
     document.getElementById("staff").innerHTML = "";
 
     // Create an SVG renderer and attach it to the DIV element named "staff".
-    var vf = new Vex.Flow.Factory({renderer: {elementId: 'staff', width: 800, height: 240}});
+    var vf = new Vex.Flow.Factory({renderer: {elementId: 'staff', width: 800, height: STAFF_HEIGHT}});
     var score = vf.EasyScore();
 
     // Let's use the first one to figure out where we draw it.
@@ -218,7 +225,7 @@ class NoteMatchingGame {
       let isFirstBar = barStart == 0;
       let numKeyAccidentals = Object.keys(KEYS[this.key].signature).length;
       let width = isFirstBar ? FIRST_BAR_WIDTH + KEY_ACCIDENTAL_WIDTH * numKeyAccidentals : BAR_WIDTH;
-      var system = vf.System({ x: x, y: 0, width: width});
+      var system = vf.System({ x: x, y: STAFF_TOP_MARGIN, width: width});
       x += width;
 
       let joinedNotes = this.formatBar(barStart, isTreble);
@@ -231,13 +238,13 @@ class NoteMatchingGame {
       // Always add a bass and a treble
       let trebleStave = system.addStave({
         voices: [
-          score.voice(score.notes(trebleNotes, {stem: 'up'})),
+          score.voice(score.notes(trebleNotes)),
         ]
       });
 
       let bassStave = system.addStave({
         voices: [
-          score.voice(score.notes(bassNotes, {clef: 'bass', stem: 'up'})),
+          score.voice(score.notes(bassNotes, {clef: 'bass'})),
         ]
       });
 
@@ -451,6 +458,8 @@ function midiNoteFromPitch(frequency) {
 
 
 const MIN_NOTE_DURATION_MS = 400;
+// How long a note can drop out (silence or a stray reading) before we treat it as stopped.
+const MAX_DROPOUT_MS = 100;
 
 // Basic class for a listener.
 class NoteListener {
@@ -461,6 +470,11 @@ class NoteListener {
     // Keeping track of the current note that we want to report
     this.currentNote = null;
     this.currentNoteStart = null;
+    // When the current note was last heard, for riding out short dropouts.
+    this.lastHeard = null;
+    // A different note heard during a dropout, and when it started.
+    this.nextNote = null;
+    this.nextNoteStart = null;
     // Only report the same note once.
     this.sentNote = false;
 
@@ -473,7 +487,7 @@ class NoteListener {
   }
 
   stopListening() {
-    this.listening = true;
+    this.listening = false;
   }
 
   initialize() {
@@ -488,7 +502,15 @@ class NoteListener {
       alert('Sorry, getUserMedia is required for the app.')
       return;
     } else {
-      var constraints = { audio: true };
+      // Turn off the browser's voice processing, which is tuned for speech and can treat a held
+      // note as background noise and fade it out.
+      var constraints = {
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+        },
+      };
       navigator.mediaDevices.getUserMedia(constraints)
         .then(
           (stream) => {
@@ -508,46 +530,57 @@ class NoteListener {
 
   listen() {
     this.listenNote = requestAnimationFrame(this.listen);
-    if (!this.listening) {
-      return;
-    }
+    // Keep tracking notes even when we're not listening, just without reporting them. That way a
+    // note still ringing when we start listening (like the end of the notes we played) isn't
+    // reported, but a note played fresh after some silence is.
     var bufferLength = this.analyser.fftSize;
     var buffer = new Float32Array(bufferLength);
     this.analyser.getFloatTimeDomainData(buffer);
     var autoCorrelateValue = autoCorrelate(buffer, this.audioContext.sampleRate)
+    const now = Date.now();
 
-    if (autoCorrelateValue === -1) {
-      // No value found, reset.
-      this.currentNote = null;
-      this.currentNoteStart = null;
-      return;
+    // The note we heard this frame, or null if there wasn't one in our range.
+    let note = null;
+    if (autoCorrelateValue !== -1) {
+      const midiNoteValue = midiNoteFromPitch(autoCorrelateValue);
+      // Our "full range" starts at 36 (c2).
+      const noteIndex = midiNoteValue - 36;
+      if (noteIndex >= 0 && noteIndex < FULL_RANGE.length) {
+        note = FULL_RANGE[noteIndex];
+      }
     }
 
-    const midiNoteValue = midiNoteFromPitch(autoCorrelateValue);
-    // Our "full range" starts at 36 and ends at
-    const noteIndex = midiNoteValue - 36;
-    if (noteIndex < 0 || noteIndex >= FULL_RANGE.length) {
-      // Outside of our range, so reset.
-      this.currentNote = null;
-      this.currentNoteStart = null;
-      return;
-    }
-    const note = FULL_RANGE[noteIndex];
-
-    // We have a note!
-    // Check if it's the same as the current note - we want to hear a note for at least 1 second.
-    if (note == this.currentNote) {
+    // Check if it's the same as the current note - we want to hear a note for at least min_duration.
+    if (note != null && note == this.currentNote) {
+      this.lastHeard = now;
       // If we're past the threshold, report it once.
       const min_duration = document.getElementById('minDuration').value;
-      if (Date.now() - this.currentNoteStart > min_duration && !this.sentNote) {
-        this.onNote(note);
+      if (now - this.currentNoteStart > min_duration && !this.sentNote) {
+        if (this.listening) {
+          this.onNote(note);
+        }
         this.sentNote = true;
       }
-    } else {
-      this.currentNote = note;
-      this.currentNoteStart = Date.now();
-      this.sentNote = false;
+      return;
     }
+
+    // Silence or a different note. A fading note can drop out for a frame or two, so ignore short
+    // gaps instead of restarting its timer.
+    if (this.currentNote != null && now - this.lastHeard < MAX_DROPOUT_MS) {
+      // Remember when a new note started, in case it's really the next note being played.
+      if (note != null && note != this.nextNote) {
+        this.nextNote = note;
+        this.nextNoteStart = now;
+      }
+      return;
+    }
+
+    // The current note has really stopped, so move on to whatever we're hearing now.
+    this.currentNote = note;
+    this.currentNoteStart = note != null && note == this.nextNote ? this.nextNoteStart : now;
+    this.lastHeard = now;
+    this.sentNote = false;
+    this.nextNote = null;
   }
 }
 

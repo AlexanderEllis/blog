@@ -33,7 +33,9 @@ function autoCorrelate(buffer, sampleRate) {
     sumOfSquares += val * val;
   }
   var rootMeanSquare = Math.sqrt(sumOfSquares / SIZE)
-  if (rootMeanSquare < 0.01) {
+  // Lowered from 0.01 so quieter, fading notes (especially high ones) are still detected, but
+  // not so low that ambient noise gets through.
+  if (rootMeanSquare < 0.006) {
     return -1;
   }
 
